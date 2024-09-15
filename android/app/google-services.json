@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "844257141722",
+    "project_id": "tennisbookings",
+    "storage_bucket": "tennisbookings.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844257141722:android:ec179ed1dd16a03dd6d6e3",
+        "android_client_info": {
+          "package_name": "au.com.tennisbookings"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDysjLlF8PhF5pXn8a5IY5k3GRUBe9eaZU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

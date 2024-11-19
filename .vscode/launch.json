@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug",
+      "type": "dart",
+      "request": "launch",
+      "flutterMode": "debug",
+      "args": ["-d", "chrome"]
+    },
+    {
+      "name": "Profile",
+      "type": "dart",
+      "request": "launch",
+      "flutterMode": "profile",
+      "args": ["-d", "chrome"]
+    },
+    {
+      "name": "Release",
+      "type": "dart",
+      "request": "launch",
+      "flutterMode": "release",
+      "args": ["-d", "chrome"]
+    }
+  ]
+}

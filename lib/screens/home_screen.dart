@@ -18,7 +18,7 @@ class HomeScreen extends HookConsumerWidget {
     final eventNotifier = ref.watch(eventStatusProvider.notifier);
     final event = ref.watch(eventStatusProvider);
 
-    event.myEsLogger('Event Status');
+    event.log('Event Status');
 
     return EventfulWidget(
       child: PopScope(
@@ -38,7 +38,7 @@ class HomeScreen extends HookConsumerWidget {
               ),
               ElevatedButton(
                   onPressed: () async {
-                    'HomeScreen'.myEsLogger('Button pressed');
+                    'HomeScreen'.log('Button pressed');
                     eventNotifier.showLoading(title: 'Loading', message: 'Please wait');
                     await wait(2000);
                     eventNotifier.hideLoading();

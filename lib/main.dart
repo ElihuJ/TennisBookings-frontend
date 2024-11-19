@@ -12,16 +12,16 @@ import 'types/index.dart';
 Future<void> main() async {
   // cspell: disable
   const reCaptchaKey = '&a2NEe7aTmx@M66L#TTVGNC695bAm';
-  ''.myEsLogger('main');
+  ''.log('main');
   Config(environment: Environment.prod);
-  ''.myEsLogger('main2');
+  ''.log('main2');
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  ''.myEsLogger('main3');
+  ''.log('main3');
   await FirebaseAppCheck.instance.activate(webProvider: ReCaptchaV3Provider(reCaptchaKey));
 
-  ''.myEsLogger('main4');
+  ''.log('main4');
   await Locales.init(SupportedLocales.all);
-  ''.myEsLogger('main5');
+  ''.log('main5');
 
   runApp(const Entry());
 }

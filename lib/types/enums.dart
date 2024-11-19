@@ -83,7 +83,7 @@ enum BeanRoast implements IsEnum {
       case 'dark':
         return BeanRoast.dark;
       default:
-        roast?.myEsLogger('WRONG ROAST TYPE', DebugLevel.warning);
+        roast?.log('WRONG ROAST TYPE', DebugLevel.warning);
         return null;
     }
   }
@@ -134,7 +134,7 @@ enum BeanType implements IsEnum {
       case 'mix':
         return BeanType.mix;
       default:
-        roast?.myEsLogger('WRONG BEAN TYPE', DebugLevel.warning);
+        roast?.log('WRONG BEAN TYPE', DebugLevel.warning);
         return null;
     }
   }

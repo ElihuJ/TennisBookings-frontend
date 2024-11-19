@@ -20,6 +20,8 @@
     },
     "peacock.color": "green",
     "cSpell.words": [
+        "cupertino",
+        "firestore",
         "flushbar",
         "riverpod",
         "tennisbookings"

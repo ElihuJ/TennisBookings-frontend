@@ -31,7 +31,7 @@ class LoadingBox extends StatelessWidget {
               if (message.isNotEmpty) PrettyText(message, style: messageStyle, textAlign: TextAlign.center),
               const SizedBox(height: 20.0),
               const CircularProgressIndicator(
-                color: AppColors.green,
+                color: AppColors.primaryGreen,
               ),
               const SizedBox(height: 20.0),
             ],

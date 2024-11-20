@@ -7,7 +7,7 @@ final ThemeData _theme = ThemeData();
 const _fontFamily = 'FredokaOne';
 
 final ThemeData selectedTheme = ThemeData(
-  checkboxTheme: CheckboxThemeData(fillColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+  checkboxTheme: CheckboxThemeData(fillColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
     return AppColors.white;
   })),
 
@@ -16,44 +16,44 @@ final ThemeData selectedTheme = ThemeData(
     backgroundColor: AppColors.white,
     titleTextStyle: TextStyle(color: Colors.black, fontFamily: _fontFamily, fontSize: 20),
     centerTitle: true,
-    iconTheme: IconThemeData(color: AppColors.green),
+    iconTheme: IconThemeData(color: AppColors.white),
   ), // * App bar style
   fontFamily: _fontFamily,
   primaryColor: AppColors.white,
   colorScheme: _theme.colorScheme.copyWith(
     primary: AppColors.white,
-    secondary: AppColors.green,
+    secondary: AppColors.primaryGreen,
   ),
   primaryColorDark: AppColors.white,
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: AppColors.white,
-    selectedItemColor: AppColors.green,
+    selectedItemColor: AppColors.primaryGreen,
     unselectedItemColor: AppColors.grey,
   ), // Bottom Menu
   iconTheme: _theme.iconTheme.copyWith(
-    color: AppColors.black, // * Changes icon color as Back button in email login screen
+    color: AppColors.white, // * Changes icon color as Back button in email login screen
   ),
   cardTheme: const CardTheme(
     color: AppColors.white,
     elevation: 5,
   ),
   searchBarTheme: SearchBarThemeData(
-    backgroundColor: MaterialStateColor.resolveWith((states) => AppColors.white),
+    backgroundColor: WidgetStateProperty.resolveWith((states) => AppColors.white),
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: AppColors.green,
+    backgroundColor: AppColors.primaryGreen,
   ),
   buttonTheme: ButtonThemeData(
-    buttonColor: AppColors.green,
+    buttonColor: AppColors.primaryGreen,
     disabledColor: AppColors.grey,
-    colorScheme: _theme.colorScheme.copyWith(primary: AppColors.green),
+    colorScheme: _theme.colorScheme.copyWith(primary: AppColors.primaryGreen),
     textTheme: ButtonTextTheme.primary,
     padding: const EdgeInsets.all(10),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.green,
+      backgroundColor: AppColors.primaryGreen,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       padding: const EdgeInsets.all(10),
     ),
@@ -77,7 +77,7 @@ final ThemeData selectedTheme = ThemeData(
   ),
   textSelectionTheme: const TextSelectionThemeData(
     // * Cursor color
-    cursorColor: AppColors.green,
+    cursorColor: AppColors.primaryGreen,
   ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 57),

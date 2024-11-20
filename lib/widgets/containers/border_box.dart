@@ -7,7 +7,7 @@ BoxDecoration borderedBoxDecoration() {
     borderRadius: BorderRadius.circular(15),
     color: AppColors.white,
     border: Border.all(
-      color: AppColors.primaryBrown,
+      color: AppColors.primaryGreen,
       width: 1,
     ),
   );

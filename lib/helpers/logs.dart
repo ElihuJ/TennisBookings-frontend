@@ -11,7 +11,7 @@ final config = Config();
 enum DebugLevel { trace, debug, info, warning, error, fatal }
 
 extension Log on Object {
-  void log([String? title, DebugLevel debugLevel = DebugLevel.debug]) {
+  void tbLogger([String? title, DebugLevel debugLevel = DebugLevel.debug]) {
     String myLog = '===============  ';
     myLog += title != null ? title.toUpperCase() : 'DEBUG';
     myLog += '  ===============\n';

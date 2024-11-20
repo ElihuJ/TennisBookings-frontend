@@ -27,7 +27,7 @@ class BorderedBox extends StatelessWidget {
       height: height,
       margin: margin,
       decoration: BoxDecoration(
-          border: Border.all(color: borderColor ?? AppColors.primaryBrown, width: 1),
+          border: Border.all(color: borderColor ?? AppColors.primaryGreen, width: 1),
           borderRadius: BorderRadius.circular(15),
           color: AppColors.almostWhite),
       padding: padding,

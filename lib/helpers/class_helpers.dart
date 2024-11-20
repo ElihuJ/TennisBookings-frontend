@@ -19,7 +19,7 @@ T verifyRequiredProp<T>({
 }) {
   if (prop == null) {
     final classString = getClassString(StackTrace.current);
-    propName.log('$classString: Required Prop Missing ', DebugLevel.warning);
+    propName.tbLogger('$classString: Required Prop Missing ', DebugLevel.warning);
     return defaultValue;
   }
 
@@ -31,7 +31,7 @@ T verifyRequiredProp<T>({
 T? verifyNotRequiredProp<T>({required T? prop, required String propName}) {
   if (prop == null) {
     final classString = getClassString(StackTrace.current);
-    propName.log('$classString: Not Required Prop Missing', DebugLevel.info);
+    propName.tbLogger('$classString: Not Required Prop Missing', DebugLevel.info);
     return null;
   }
   return prop;
@@ -44,10 +44,10 @@ void verifyProps(FirestoreResponse json, List<String> props) {
     final classString = getClassString(StackTrace.current);
     final propsNotInMap = json.keys.where((key) => !props.contains(key));
     if (propsNotInMap.isNotEmpty) {
-      propsNotInMap.log('$classString: Props in json not in map', DebugLevel.warning);
+      propsNotInMap.tbLogger('$classString: Props in json not in map', DebugLevel.warning);
     }
   } catch (e) {
-    e.log('verifyProps error', DebugLevel.error);
+    e.tbLogger('verifyProps error', DebugLevel.error);
   }
 }
 
@@ -87,11 +87,11 @@ class ResultHandler {
     success = false;
     if (error is String) {
       errorInfo = (MessageType.error, error);
-      error.log('String error', DebugLevel.error);
+      error.tbLogger('String error', DebugLevel.error);
     }
     if (error is fb_storage.FirebaseException) {
       errorInfo = (MessageType.warning, error.message ?? errorMessage);
-      error.message?.log('FB Storage Error', DebugLevel.error);
+      error.message?.tbLogger('FB Storage Error', DebugLevel.error);
     }
   }
 }

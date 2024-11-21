@@ -1,0 +1,17 @@
+{
+  "version": "0.2",
+  "language": "en,en-AU,es",
+  "words": [],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/build/**",
+    "**/dist/**",
+    "**/android/**",
+    "**/ios/**",
+    "**/web",
+    "package.json",
+    "assets/",
+    "*.lock"
+  ],
+  "flagWords": []
+}

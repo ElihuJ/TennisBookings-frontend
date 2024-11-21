@@ -57,5 +57,6 @@ flutter:
   assets:
     - assets/app-icons/
     - assets/locales/
+    - assets/icons/
 
   uses-material-design: true

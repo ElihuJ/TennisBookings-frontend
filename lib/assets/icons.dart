@@ -1,6 +1,11 @@
-const _prefix = 'icons';
+import '../config/config.dart';
+import '../types/index.dart';
+
+final config = Config();
+
+final _prefix = config.environment == Environment.prod ? 'assets/app_icons' : 'app_icons';
 
 //* Icons
-const logoPgn = '$_prefix/logo.png';
+final logoPgn = '$_prefix/logo.png';
 
 // * SVGs

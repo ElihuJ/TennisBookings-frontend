@@ -55,8 +55,7 @@ flutter:
       fonts:
         - asset: assets/fonts/FredokaOne-Regular.ttf
   assets:
-    - assets/app-icons/
+    - assets/app_icons/
     - assets/locales/
-    - assets/icons/
 
   uses-material-design: true

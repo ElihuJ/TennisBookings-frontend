@@ -14,7 +14,7 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = fb_auth.FirebaseAuth.instance.currentUser;
     final isLoggedIn = currentUser != null && currentUser.emailVerified;
-    ''.tbLogger('Header, $isLoggedIn');
+    ''.tbLogger('Header, $logoPgn');
 
     return AppBar(
       leadingWidth: 180,

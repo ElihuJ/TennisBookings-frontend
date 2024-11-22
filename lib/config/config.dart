@@ -14,7 +14,7 @@ class Config {
     return _instance ??= Config._(environment: environment);
   }
 
-  Config._({this.environment}) : envString = environment == Environment.prod ? 'Prod' : environment.toString() {
+  Config._({this.environment}) : envString = environment.toString() {
     WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -50,35 +50,11 @@ class Config {
   static const mediumNotifierDuration = Duration(seconds: 3);
   static const longNotifierDuration = Duration(seconds: 5);
 
-  // * SOCIALS
-  static const youtubeUrl = 'https://www.youtube.com/channel/UCwHQFrxWkOcX9m8Pm34-r6Q';
-  static const supportEmail = 'support@myespresso.club';
-  static const defaultSupportSubject = 'Support Request';
-
-  // * LEGAL URLS
-  static const privacyPolicyUrl = 'https://myespresso.club/privacy-policy';
-  static const appleEulaUrl = 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/';
 
   // ^ ================== APP CONFIG ==================
   static const appName = "Tennis Bookings";
   static const functionsRegion = "australia-southeast1";
 
-  static const appleSubscriptionIds = {'myespresso_premium_monthly', 'myespresso_premium_yearly'};
-
-  static const androidSubscriptionIds = 'myespresso_base_subscription';
-
-  static const appleSubscriptionsUrl = 'https://apps.apple.com/account/subscriptions';
-  static const androidSubscriptionsUrl = 'https://play.google.com/store/account/subscriptions';
-
-  // static const supportedLocales = [
-  //   Locale.fromSubtags(languageCode: 'en', countryCode: 'US'),
-  //   Locale.fromSubtags(languageCode: 'es', countryCode: 'ES'),
-  // ];
-  // static const localizationsDelegates = [
-  //   GlobalMaterialLocalizations.delegate,
-  //   GlobalWidgetsLocalizations.delegate,
-  //   GlobalCupertinoLocalizations.delegate
-  // ];
 
   @override
   String toString() => 'Config: $envString environment is running'

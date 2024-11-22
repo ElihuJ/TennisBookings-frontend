@@ -8,7 +8,11 @@ class EventStatusNotifier extends StateNotifier<EventStatus> {
   EventStatusNotifier() : super(const EventStatus.empty());
 
   void showLoading({String? title, String? message}) {
-    state = state.copyWith(title: title ?? '', message: message ?? '', isLoading: true, eventType: EventType.loadingBox);
+    state = state.copyWith(
+        title: title ?? '',
+        message: message ?? '',
+        isLoading: true,
+        eventType: EventType.loadingBox);
   }
 
   void hideLoading() {
@@ -16,12 +20,16 @@ class EventStatusNotifier extends StateNotifier<EventStatus> {
   }
 
   void showMessage({
-    String? title,
-    String? message,
+    String title = '',
+    String message = '',
     required MessageType messageType,
     Duration duration = Config.defaultNotifierDuration,
   }) {
-    state = state.copyWith(title: title ?? '', message: message ?? '', eventType: EventType.message, messageType: messageType);
+    state = state.copyWith(
+        title: title,
+        message: message,
+        eventType: EventType.message,
+        messageType: messageType);
     Future.delayed(duration, () {
       state = state.copyWith(title: '', message: '', eventType: EventType.none);
     });

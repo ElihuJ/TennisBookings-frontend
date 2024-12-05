@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/theme/index.dart';
 
+import '../../theme/index.dart';
 import '../index.dart';
 
 class LoadingBox extends StatelessWidget {
@@ -26,9 +26,13 @@ class LoadingBox extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (title.isNotEmpty) PrettyText(title, style: titleStyle, textAlign: TextAlign.center),
+              if (title.isNotEmpty)
+                PrettyText(title,
+                    style: titleStyle, textAlign: TextAlign.center),
               if (message.isNotEmpty) const SizedBox(height: 20.0),
-              if (message.isNotEmpty) PrettyText(message, style: messageStyle, textAlign: TextAlign.center),
+              if (message.isNotEmpty)
+                PrettyText(message,
+                    style: messageStyle, textAlign: TextAlign.center),
               const SizedBox(height: 20.0),
               const CircularProgressIndicator(
                 color: AppColors.primaryGreen,

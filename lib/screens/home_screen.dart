@@ -2,13 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/helpers/index.dart';
-import 'package:tennisbookings/strings/settings/index.dart';
-import 'package:tennisbookings/widgets/header/header.dart';
 
 import '../state/event_status/index.dart';
+import '../strings/settings/index.dart';
 import '../types/index.dart';
 import '../widgets/eventful/eventful.dart';
+import '../widgets/header/header.dart';
 
 class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});
@@ -55,6 +54,11 @@ class HomeScreen extends HookConsumerWidget {
                 child: Text(
                   context.localeString(SettingsLanguageDialogStrings.spanish),
                 ),
+              ),
+              Spacer(),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pushNamed('Login'),
+                child: Text('Go to Login'),
               ),
               Spacer(),
             ],

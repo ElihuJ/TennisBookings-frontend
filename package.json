@@ -8,6 +8,7 @@
   "scripts": {
     "run-web": "flutter run -d chrome",
     "run-web-release": "flutter run -d chrome --release",
-    "build-web": "flutter build web --dart-define=Dart2jsOptimization=00 && cp -r build/web/* ../Firebase/public"
+    "clear-web": "rm -rf ../Firebase/public/*",
+    "build-web": "flutter build web --dart-define=Dart2jsOptimization=00 && yarn clear-web && cp -r build/web/* ../Firebase/public"
   }
 }

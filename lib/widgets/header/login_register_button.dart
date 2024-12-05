@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/theme/colors.dart';
+
+import '../../theme/colors.dart';
 
 class LoginRegisterButton extends StatelessWidget {
   const LoginRegisterButton({

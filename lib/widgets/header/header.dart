@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/assets/icons.dart';
-import 'package:tennisbookings/helpers/logs.dart';
-import 'package:tennisbookings/theme/index.dart';
 
+import '../../assets/icons.dart';
+import '../../helpers/logs.dart';
+import '../../screens/home_screen.dart';
+import '../../theme/index.dart';
 import 'index.dart';
 
 class Header extends HookConsumerWidget implements PreferredSizeWidget {
@@ -22,7 +23,7 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
       leading: IconButton(
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
-        onPressed: () {},
+        onPressed: () => Navigator.of(context).pushNamed(HomeScreen.route),
         icon: Image.asset(logoPgn),
       ),
       backgroundColor: AppColors.primaryGreen,

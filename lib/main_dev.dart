@@ -10,7 +10,7 @@ import 'types/index.dart';
 
 Future<void> main() async {
   // cspell: disable
-  const reCaptchaKey = '&a2NEe7aTmx@M66L#TTVGNC695bAm';
+  const reCaptchaKey = '6LcL-pIqAAAAAFst2A5a5euogGwK_SktvTECs3z_';
   Config(environment: Environment.dev);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseAppCheck.instance.activate(webProvider: ReCaptchaV3Provider(reCaptchaKey));

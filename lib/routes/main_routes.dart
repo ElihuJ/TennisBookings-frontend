@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/home_screen.dart';
-import '../screens/login_screen.dart';
+import '../screens/login/login_screen.dart';
 import 'index.dart';
 
 Route<dynamic> generateLoginRoutes(RouteSettings settings) {

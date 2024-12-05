@@ -9,3 +9,4 @@ final _prefix = config.environment == Environment.prod ? 'assets/app_icons' : 'a
 final logoPgn = '$_prefix/logo.png';
 
 // * SVGs
+final googleSvg = '$_prefix/google.svg';

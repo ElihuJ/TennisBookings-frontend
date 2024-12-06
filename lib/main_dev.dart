@@ -12,8 +12,14 @@ Future<void> main() async {
   // cspell: disable
   const reCaptchaKey = '6LcL-pIqAAAAAFst2A5a5euogGwK_SktvTECs3z_';
   Config(environment: Environment.dev);
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseAppCheck.instance.activate(webProvider: ReCaptchaV3Provider(reCaptchaKey));
+  try {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+  } catch (e) {
+    print(e);
+  }
+  await FirebaseAppCheck.instance
+      .activate(webProvider: ReCaptchaV3Provider(reCaptchaKey));
 
   await Locales.init(SupportedLocales.all);
 

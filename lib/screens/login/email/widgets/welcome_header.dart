@@ -1,0 +1,30 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
+
+import '../../../../strings/login/index.dart';
+import 'text_area.dart';
+
+class WelcomeHeader extends StatelessWidget {
+  const WelcomeHeader({
+    super.key,
+    required this.isLogin,
+  });
+
+  final bool isLogin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      TextArea(
+        text: isLogin
+            ? context.localeString(EmailLoginScreenStrings.login)
+            : context.localeString(EmailLoginScreenStrings.signUp),
+        isTitle: true,
+      ),
+      TextArea(
+          text: isLogin
+              ? context.localeString(EmailLoginScreenStrings.welcomeBack)
+              : context.localeString(EmailLoginScreenStrings.justAFewThings))
+    ]);
+  }
+}

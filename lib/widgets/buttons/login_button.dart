@@ -26,7 +26,7 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: widthPercent(percentage: 65, context),
+      width: widthPercent(percentage: 30, context),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(10),

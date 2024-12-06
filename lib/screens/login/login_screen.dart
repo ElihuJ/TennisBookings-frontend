@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/widgets/buttons/login_button.dart';
 
 import '../../assets/icons.dart';
 import '../../helpers/index.dart';
 import '../../state/index.dart';
 import '../../strings/index.dart';
+import '../../widgets/buttons/login_button.dart';
 import '../../widgets/eventful/eventful.dart';
 import '../../widgets/header/index.dart';
+import 'email/email_login_screen.dart';
 import 'helper.dart';
 
 class LoginScreen extends HookConsumerWidget {
@@ -50,16 +51,22 @@ class LoginScreen extends HookConsumerWidget {
                       }
                     },
                     icon: SvgPicture.asset(googleSvg),
-                    text: context.localeString(LoginScreenStrings.loginWithGoogle),
+                    text: context
+                        .localeString(LoginScreenStrings.loginWithGoogle),
                   ),
-                  SizedBox(height: 16),
-                  // ElevatedButton.icon(
-                  //   onPressed: () {
-                  //     // Handle Email login
-                  //   },
-                  //   icon: Icon(Icons.email),
-                  //   label: Text('Login with Email'),
-                  // ),
+                  SizedBox(height: 100),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: LoginButton(
+                      onTap: () {
+                        // * Handle email login
+                        Navigator.pushNamed(context, EmailLoginScreen.route);
+                      },
+                      text: context
+                          .localeString(LoginScreenStrings.loginWithEmail),
+                      icon: const Icon(Icons.email),
+                    ),
+                  ),
                 ],
               ),
             )),

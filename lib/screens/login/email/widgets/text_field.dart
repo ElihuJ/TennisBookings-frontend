@@ -5,11 +5,10 @@ import '../../../../strings/login/index.dart';
 import '../../../../theme/colors.dart';
 import '../types.dart';
 
-const double _margin = 15;
+const double _margin = 30;
 
 class LoginTextField extends StatelessWidget {
-  const LoginTextField(
-      {super.key, required this.controller, required this.fieldType, required this.validator, this.initialValue});
+  const LoginTextField({super.key, required this.controller, required this.fieldType, required this.validator, this.initialValue});
 
   final TextEditingController controller;
   final FieldType fieldType;
@@ -32,6 +31,7 @@ class LoginTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 400,
       margin: const EdgeInsets.only(bottom: _margin),
       padding: const EdgeInsets.only(left: 10, top: 10),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: AppColors.white),

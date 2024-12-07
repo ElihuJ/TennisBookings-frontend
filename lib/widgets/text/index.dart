@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../helpers/index.dart';
+import '../../global_helpers/index.dart';
 
 class PrettyText extends StatelessWidget {
   const PrettyText(this.text, {super.key, this.style, this.textAlign, this.overflow, this.maxLines = 1});

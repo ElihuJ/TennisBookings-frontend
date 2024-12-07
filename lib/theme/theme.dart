@@ -11,12 +11,13 @@ final ThemeData selectedTheme = ThemeData(
     return AppColors.white;
   })),
 
-  primaryIconTheme: const IconThemeData(color: AppColors.black), // * Burger menu icon color
+  primaryIconTheme: const IconThemeData(color: AppColors.primaryGreen), // * Burger menu icon color
+
   appBarTheme: const AppBarTheme(
     backgroundColor: AppColors.white,
     titleTextStyle: TextStyle(color: Colors.black, fontFamily: _fontFamily, fontSize: 20),
     centerTitle: true,
-    iconTheme: IconThemeData(color: AppColors.white),
+    iconTheme: IconThemeData(color: AppColors.primaryGreen),
   ), // * App bar style
   fontFamily: _fontFamily,
   primaryColor: AppColors.white,
@@ -31,7 +32,7 @@ final ThemeData selectedTheme = ThemeData(
     unselectedItemColor: AppColors.grey,
   ), // Bottom Menu
   iconTheme: _theme.iconTheme.copyWith(
-    color: AppColors.white, // * Changes icon color as Back button in email login screen
+    color: AppColors.primaryGreen, // * Changes icon color as Back button in email login screen
   ),
   cardTheme: const CardTheme(
     color: AppColors.white,
@@ -59,6 +60,7 @@ final ThemeData selectedTheme = ThemeData(
     ),
   ),
   canvasColor: AppColors.almostWhite, // * Background color of the scaffold / Drawer / SearchBox
+  scaffoldBackgroundColor: AppColors.almostWhite, // * Background color of the scaffold
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

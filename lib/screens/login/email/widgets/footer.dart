@@ -7,12 +7,7 @@ import '../types.dart';
 import 'text_area.dart';
 
 class Footer extends StatelessWidget {
-  const Footer(
-      {super.key,
-      required this.isLogin,
-      required this.toggleScreenMode,
-      required this.screenMode,
-      required this.email});
+  const Footer({super.key, required this.isLogin, required this.toggleScreenMode, required this.screenMode, required this.email});
 
   final bool isLogin;
   final void Function() toggleScreenMode;
@@ -21,22 +16,13 @@ class Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      InkWell(
-        onTap: toggleScreenMode,
-        child: TextArea(
-            text: screenMode == ScreenMode.login
-                ? context.localeString(EmailLoginScreenStrings.dontHaveAnAccount)
-                : context.localeString(EmailLoginScreenStrings.alreadyHaveAnAccount)),
-      ),
-      // * ======================== Forgot password section ========================
-      if (isLogin)
-        InkWell(
-          onTap: () {
-            Navigator.pushNamed(context, ForgotPasswordScreen.route, arguments: email);
-          },
-          child: TextArea(text: context.localeString(EmailLoginScreenStrings.forgotPassword)),
-        ),
-    ]);
+    return isLogin
+        ? InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, ForgotPasswordScreen.route, arguments: email);
+            },
+            child: TextArea(text: context.localeString(EmailLoginScreenStrings.forgotPassword)),
+          )
+        : Container();
   }
 }

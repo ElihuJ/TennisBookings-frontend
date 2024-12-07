@@ -498,6 +498,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  g_recaptcha_v3:
+    dependency: "direct main"
+    description:
+      name: g_recaptcha_v3
+      sha256: b493d9bbad64bb4631a2b7bb86f7b4c6c6a3c2b327729c4130b3c95817bedf29
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   glob:
     dependency: transitive
     description:

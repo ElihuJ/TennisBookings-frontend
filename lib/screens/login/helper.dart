@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 
-import '../../helpers/index.dart';
+import '../../global_helpers/index.dart';
 import '../../state/index.dart';
 import '../../strings/index.dart';
 

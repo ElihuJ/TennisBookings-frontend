@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../assets/icons.dart';
-import '../../helpers/logs.dart';
 import '../../screens/home_screen.dart';
+import '../../state/index.dart';
 import '../../theme/index.dart';
 import 'index.dart';
 
@@ -13,9 +13,9 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(firebaseAuthProvider);
     final currentUser = fb_auth.FirebaseAuth.instance.currentUser;
     final isLoggedIn = currentUser != null && currentUser.emailVerified;
-    ''.tbLogger('Header, $logoPgn');
 
     return AppBar(
       leadingWidth: 180,

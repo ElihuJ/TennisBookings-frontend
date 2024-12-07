@@ -4,13 +4,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../assets/icons.dart';
-import '../../helpers/index.dart';
+import '../../global_helpers/index.dart';
 import '../../state/index.dart';
 import '../../strings/index.dart';
 import '../../widgets/buttons/login_button.dart';
 import '../../widgets/eventful/eventful.dart';
 import '../../widgets/header/index.dart';
 import 'email/email_login_screen.dart';
+import 'email/types.dart';
 import 'helper.dart';
 
 class LoginScreen extends HookConsumerWidget {
@@ -51,19 +52,17 @@ class LoginScreen extends HookConsumerWidget {
                       }
                     },
                     icon: SvgPicture.asset(googleSvg),
-                    text: context
-                        .localeString(LoginScreenStrings.loginWithGoogle),
+                    text: context.localeString(LoginScreenStrings.loginWithGoogle),
                   ),
-                  SizedBox(height: 100),
+                  SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: LoginButton(
                       onTap: () {
                         // * Handle email login
-                        Navigator.pushNamed(context, EmailLoginScreen.route);
+                        Navigator.pushNamed(context, EmailLoginScreen.route, arguments: ScreenMode.login);
                       },
-                      text: context
-                          .localeString(LoginScreenStrings.loginWithEmail),
+                      text: context.localeString(LoginScreenStrings.loginWithEmail),
                       icon: const Icon(Icons.email),
                     ),
                   ),

@@ -1,13 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../config/apple_sign_in.dart';
-import '../../helpers/index.dart';
+import '../../global_helpers/index.dart';
+import '../../models/index.dart';
 import '../../strings/firebase/index.dart';
 import '../../types/index.dart';
 import '../index.dart';
 import 'helpers.dart';
+
+final usersCollection = FirebaseFirestore.instance.collection(FirestoreCollection.users);
 
 class FirebaseAuthNotifier extends StateNotifier<FirebaseAuth> {
   FirebaseAuthNotifier() : super(FirebaseAuth.empty());
@@ -88,21 +92,22 @@ class FirebaseAuthNotifier extends StateNotifier<FirebaseAuth> {
         return (null, localResultHandler.error);
       }
       // * Check if user exists in database
-      // final userDocument = await usersCollection.doc(state.firebaseInstance.currentUser?.uid).get();
+      final userDocument = await usersCollection.doc(state.firebaseInstance.currentUser?.uid).get();
 
       loginUser(user);
       // * If user does not exist, return user so we create user with user notifier
       // * With the user details
-      // if (!userDocument.exists) {
-      //   return (user, localResultHandler.error);
-      // }
+      if (!userDocument.exists) {
+        return (user, localResultHandler.error);
+      }
       // * If user exists, return null
       return (null, null);
     } on fb_auth.FirebaseAuthException catch (error) {
+      error.tbLogger('Error Auth', DebugLevel.error);
       localResultHandler.errorInfo = getErrorMessage(errorCode: error.code);
       return (null, localResultHandler.error);
     } catch (error) {
-      error.tbLogger('Error');
+      error.tbLogger('Error', DebugLevel.error);
       localResultHandler.errorInfo = (MessageType.error, FirebaseErrorStrings.somethingWentWrong);
       return (null, localResultHandler.error);
     }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../helpers/index.dart';
+import '../../../global_helpers/index.dart';
 import '../../../theme/colors.dart';
 import '../../../widgets/eventful/eventful.dart';
 import '../../../widgets/header/index.dart';
@@ -11,24 +11,27 @@ import 'widgets/welcome_header.dart';
 
 class EmailLoginScreen extends StatefulWidget {
   static const route = 'LoginSignupEmail';
+  final ScreenMode screenMode;
 
-  const EmailLoginScreen({super.key});
+  const EmailLoginScreen({super.key, required this.screenMode});
 
   @override
   State<EmailLoginScreen> createState() => EmailLoginScreenState();
 }
 
 class EmailLoginScreenState extends State<EmailLoginScreen> {
+  String _email = '';
   ScreenMode _screenMode = ScreenMode.login;
 
-  String _email = '';
-  bool get isLogin => _screenMode == ScreenMode.login;
+  @override
+  void initState() {
+    super.initState();
+    _screenMode = widget.screenMode;
+  }
 
   void toggleScreenMode() {
     setState(() {
-      _screenMode = _screenMode == ScreenMode.login
-          ? ScreenMode.signUp
-          : ScreenMode.login;
+      _screenMode = _screenMode == ScreenMode.login ? ScreenMode.signUp : ScreenMode.login;
     });
   }
 
@@ -38,27 +41,23 @@ class EmailLoginScreenState extends State<EmailLoginScreen> {
     });
   }
 
+  bool get isLogin => _screenMode == ScreenMode.login;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Header(),
       backgroundColor: AppColors.almostWhite,
       body: EventfulWidget(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: widthPercent(percentage: 30, context),
-              vertical: heightPercent(percentage: 1, context)),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: widthPercent(percentage: 30, context), vertical: heightPercent(percentage: 1, context)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               WelcomeHeader(isLogin: isLogin),
-              LoginSignupForm(
-                  isLogin: isLogin, email: _email, updateEmail: updateEmail),
-              Footer(
-                  isLogin: isLogin,
-                  toggleScreenMode: toggleScreenMode,
-                  screenMode: _screenMode,
-                  email: _email)
+              LoginSignupForm(isLogin: isLogin, email: _email, updateEmail: updateEmail),
+              Footer(isLogin: isLogin, toggleScreenMode: toggleScreenMode, screenMode: _screenMode, email: _email)
             ],
           ),
         ),

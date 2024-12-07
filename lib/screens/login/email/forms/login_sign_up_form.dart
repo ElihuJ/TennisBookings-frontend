@@ -3,19 +3,22 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../assets/icons.dart';
+import '../../../../global_helpers/index.dart';
 import '../../../../state/index.dart';
 import '../../../../strings/login/index.dart';
 import '../../../../types/index.dart';
-import '../../../../widgets/buttons/standard_buttons.dart';
 import '../../../../widgets/index.dart';
 import '../../../home_screen.dart';
+import '../../helper.dart';
 import '../helpers/form_helpers.dart';
 import '../types.dart';
 import '../widgets/text_field.dart';
 
-const double _margin = 50;
+const double _margin = 15;
 
 class LoginSignupForm extends StatefulHookConsumerWidget {
   const LoginSignupForm({
@@ -75,6 +78,7 @@ class _LoginSignupFormState extends ConsumerState<LoginSignupForm> {
     final eventStatusNotifier = ref.read(eventStatusProvider.notifier);
     final firebaseNotifier = ref.read(firebaseAuthProvider.notifier);
     final userNotifier = ref.read(userProvider.notifier);
+    final eventNotifier = ref.read(eventStatusProvider.notifier);
 
     return Form(
       key: formKey,
@@ -87,29 +91,19 @@ class _LoginSignupFormState extends ConsumerState<LoginSignupForm> {
             fieldType: FieldType.email,
             validator: (value) => emailValidator(value, context),
           ),
-          SizedBox(height: _margin / 3),
           LoginTextField(
             controller: passwordController,
             fieldType: FieldType.password,
             validator: (value) => passwordValidator(value, context),
           ),
           if (!isLogin)
-            Column(
-              children: [
-                SizedBox(height: _margin / 3),
-                LoginTextField(
-                  controller: confirmPasswordController,
-                  fieldType: FieldType.confirmPassword,
-                  validator: (String? value) =>
-                      confirmPasswordValidator(value, password, context),
-                ),
-              ],
+            LoginTextField(
+              controller: confirmPasswordController,
+              fieldType: FieldType.confirmPassword,
+              validator: (value) => confirmPasswordValidator(value, password, context),
             ),
-          const SizedBox(height: _margin),
           TbTextButton(
-            text: (isLogin
-                ? context.localeString(EmailLoginScreenStrings.login)
-                : context.localeString(EmailLoginScreenStrings.createAccount)),
+            text: (isLogin ? context.localeString(EmailLoginScreenStrings.login) : context.localeString(EmailLoginScreenStrings.createAccount)),
             onPressed: () async {
               // * Validate form
               bool success = formKey.currentState!.validate();
@@ -119,43 +113,34 @@ class _LoginSignupFormState extends ConsumerState<LoginSignupForm> {
               eventStatusNotifier.showLoading(
                   message: isLogin
                       ? context.localeString(EmailLoginScreenStrings.loggingIn)
-                      : context.localeString(
-                          EmailLoginScreenStrings.creatingAccount));
+                      : context.localeString(EmailLoginScreenStrings.creatingAccount));
 
               // * Login or create account
               ErrorInfo? errorInfo;
               fb_auth.User? user;
 
               if (isLogin) {
-                errorInfo = await firebaseNotifier.login(
-                    email: widget.email, password: password);
+                errorInfo = await firebaseNotifier.login(email: widget.email, password: password);
               } else {
-                (user, errorInfo) = await firebaseNotifier.createAccount(
-                    email: widget.email, password: password);
+                (user, errorInfo) = await firebaseNotifier.createAccount(email: widget.email, password: password);
               }
 
               // * Clear fields if no errorInfo
               if (errorInfo == null) {
                 clearFields();
-                FocusManager.instance.primaryFocus
-                    ?.unfocus(); // * Hide keyboard
                 if (!isLogin && user != null) {
-                  (success, errorInfo) = await userNotifier.createUser(
-                      name: user.displayName, uid: user.uid, email: user.email);
+                  (success, errorInfo) = await userNotifier.createUser(name: user.displayName, uid: user.uid, email: user.email);
                 }
               }
 
               // * Message handling
 
-              final messageType =
-                  errorInfo != null ? errorInfo.$1 : MessageType.success;
+              final messageType = errorInfo != null ? errorInfo.$1 : MessageType.success;
               final message = errorInfo != null
                   ? context.localeString(errorInfo.$2)
                   : isLogin
-                      ? context.localeString(
-                          EmailLoginScreenStrings.loginToYourAccount)
-                      : context.localeString(
-                          EmailLoginScreenStrings.verificationEmailSent);
+                      ? context.localeString(EmailLoginScreenStrings.loginToYourAccount)
+                      : context.localeString(EmailLoginScreenStrings.verificationEmailSent);
               showToast(
                 context: context,
                 messageType: messageType,
@@ -165,14 +150,63 @@ class _LoginSignupFormState extends ConsumerState<LoginSignupForm> {
               eventStatusNotifier.hideLoading();
 
               if (isLogin && errorInfo == null && context.mounted) {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, HomeScreen.route, (route) => false);
+                Navigator.pushNamedAndRemoveUntil(context, HomeScreen.route, (route) => false);
               }
             },
           ),
           const SizedBox(height: _margin),
+          if (!isLogin)
+            SocialsSignUp(
+                confirmPasswordController: confirmPasswordController,
+                password: password,
+                eventNotifier: eventNotifier,
+                firebaseNotifier: firebaseNotifier,
+                userNotifier: userNotifier),
         ],
       ),
+    );
+  }
+}
+
+class SocialsSignUp extends StatelessWidget {
+  const SocialsSignUp({
+    super.key,
+    required this.confirmPasswordController,
+    required this.password,
+    required this.eventNotifier,
+    required this.firebaseNotifier,
+    required this.userNotifier,
+  });
+
+  final TextEditingController confirmPasswordController;
+  final String password;
+  final EventStatusNotifier eventNotifier;
+  final FirebaseAuthNotifier firebaseNotifier;
+  final UserNotifier userNotifier;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(context.localeString(EmailLoginScreenStrings.orContinueWith)),
+        LoginButton(
+          onTap: () async {
+            final resultHandler = ResultHandler();
+            await signInWithGoogle(
+              context: context,
+              eventNotifier: eventNotifier,
+              firebaseAuthNotifier: firebaseNotifier,
+              userNotifier: userNotifier,
+              resultHandler: resultHandler,
+            );
+            if (resultHandler.error == null) {
+              // Navigator.pushNamedAndRemoveUntil(context, HomeScreen.route, (route) => false);
+            }
+          },
+          icon: SvgPicture.asset(googleSvg),
+          text: context.localeString(LoginScreenStrings.loginWithGoogle),
+        ),
+      ],
     );
   }
 }

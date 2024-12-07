@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../helpers/index.dart';
+import '../../global_helpers/index.dart';
 import '../index.dart';
 
 class LoginButton extends StatelessWidget {
@@ -26,7 +26,8 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: widthPercent(percentage: 30, context),
+      margin: EdgeInsets.only(bottom: 30),
+      width: 400,
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(10),

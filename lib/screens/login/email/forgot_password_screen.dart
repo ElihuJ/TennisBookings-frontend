@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../helpers/index.dart';
+import '../../../global_helpers/index.dart';
 import '../../../theme/colors.dart';
 import '../../../widgets/containers/bordered_box.dart';
 import '../../../widgets/eventful/eventful.dart';

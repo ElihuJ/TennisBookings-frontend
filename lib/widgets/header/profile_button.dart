@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/theme/colors.dart';
 
-class ProfileButton extends StatelessWidget {
+import '../../state/index.dart';
+
+class ProfileButton extends HookConsumerWidget {
   const ProfileButton({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final fbNotifier = ref.read(firebaseAuthProvider.notifier);
+
     return IconButton(
-      icon: Icon(Icons.person),
-      onPressed: () {
-        // Handle profile
-      },
-    );
+        icon: Icon(
+          Icons.person,
+          color: AppColors.white,
+        ),
+        onPressed: () => fbNotifier.logout());
   }
 }

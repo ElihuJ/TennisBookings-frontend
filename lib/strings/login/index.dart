@@ -24,6 +24,7 @@ class EmailLoginScreenStrings {
   static const createAccount = 'email_login_screen_create_account';
   static const welcomeBack = 'email_login_screen_welcome_back';
   static const forgotPassword = 'email_login_screen_forgot_password';
+  static const orContinueWith = 'email_login_screen_or_continue_with';
 
   EmailLoginScreenStrings._();
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../screens/login/email/email_login_screen.dart';
+import '../../screens/login/email/types.dart';
+import '../../screens/login/login_screen.dart';
 import '../../theme/colors.dart';
 
 class LoginRegisterButton extends StatelessWidget {
@@ -15,7 +18,7 @@ class LoginRegisterButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.secondaryGreen,
           ),
-          onPressed: () {},
+          onPressed: () => Navigator.of(context).pushNamed(LoginScreen.route),
           child: Text(
             'Login',
             style: TextStyle(color: AppColors.white),
@@ -26,7 +29,7 @@ class LoginRegisterButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.darkGreen,
           ),
-          onPressed: () {},
+          onPressed: () => Navigator.of(context).pushNamed(EmailLoginScreen.route, arguments: ScreenMode.signUp),
           child: Text(
             'Register',
             style: TextStyle(color: AppColors.white),

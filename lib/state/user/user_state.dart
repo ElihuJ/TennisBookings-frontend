@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 
-import '../../helpers/index.dart';
+import '../../global_helpers/index.dart';
 import '../../models/index.dart';
 import '../../types/index.dart';
 
@@ -16,19 +16,16 @@ class User extends MapView<String, dynamic> {
   final String name;
   final String email;
   final int createdAt;
-  final bool isPremium;
 
   User({
     this.name = '',
     this.uid = '',
     this.email = '',
     this.createdAt = 0,
-    this.isPremium = false,
   }) : super({
           UserFields.uid: uid,
           UserFields.name: name,
           UserFields.email: email,
-          UserFields.isPremium: isPremium,
           UserFields.createdAt: createdAt,
         });
 
@@ -41,7 +38,6 @@ class User extends MapView<String, dynamic> {
       final name = verifyRequiredProp<String>(prop: json[UserFields.name], propName: UserFields.name, defaultValue: defaultName);
       final email = verifyRequiredProp<String>(prop: json[UserFields.email], propName: UserFields.email, defaultValue: defaultEmail);
       final createdAt = verifyRequiredProp<int>(prop: json[UserFields.createdAt], propName: UserFields.createdAt, defaultValue: 0);
-      final isPremium = verifyRequiredProp<bool>(prop: json[UserFields.isPremium], propName: UserFields.isPremium, defaultValue: false);
 
       // get properties that are not in the map
       final propsList = [
@@ -49,7 +45,6 @@ class User extends MapView<String, dynamic> {
         UserFields.name,
         UserFields.email,
         UserFields.createdAt,
-        UserFields.isPremium,
       ];
 
       verifyProps(json, propsList);
@@ -59,7 +54,6 @@ class User extends MapView<String, dynamic> {
         name: name,
         email: email,
         createdAt: createdAt,
-        isPremium: isPremium,
       );
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING USER', DebugLevel.error);
@@ -72,7 +66,6 @@ class User extends MapView<String, dynamic> {
         UserFields.name: name,
         UserFields.email: email,
         UserFields.createdAt: createdAt,
-        UserFields.isPremium: isPremium,
       };
 
   User copyWith({
@@ -89,7 +82,6 @@ class User extends MapView<String, dynamic> {
       name: name ?? this.name,
       email: email ?? this.email,
       createdAt: createdAt ?? this.createdAt,
-      isPremium: isPremium ?? this.isPremium,
     );
   }
 
@@ -100,7 +92,6 @@ class User extends MapView<String, dynamic> {
         'name: $name, \n'
         'email: $email, \n'
         'createdAt: $createdAt \n'
-        'isPremium: $isPremium \n'
         ')';
   }
 }

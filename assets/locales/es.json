@@ -186,6 +186,7 @@
   "email_login_screen_sign_up": "Registrarse",
   "email_login_screen_verification_email_sent": "Email de verificación enviado",
   "email_login_screen_welcome_back": "¡Bienvenido de nuevo!",
+  "email_login_screen_or_continue_with": "O continuar con",
 
   "empty_list_no_machines": "Presiona el botón ➕ para añadir una máquina",
   "empty_list_no_beans": "Presiona el botón ➕ para añadir un grano",
@@ -355,7 +356,7 @@
   "tab_bar_recipes": "Recetas",
 
   "versioning_update_available": "Actualización disponible",
-  "versioning_please_update" : "Actualiza a la última versión",
+  "versioning_please_update": "Actualiza a la última versión",
   "general_contact_us": "Contáctenos",
 
   "warnings_you_have_reached_the_limit": "Has alcanzado el límite de",

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../screens/home_screen.dart';
 import '../screens/login/email/email_login_screen.dart';
 import '../screens/login/email/forgot_password_screen.dart';
+import '../screens/login/email/types.dart';
 import '../screens/login/login_screen.dart';
 import 'index.dart';
 
@@ -16,7 +17,8 @@ Route<dynamic> generateLoginRoutes(RouteSettings settings) {
       page = const LoginScreen();
       break;
     case EmailLoginScreen.route:
-      page = const EmailLoginScreen();
+      final screenMode = settings.arguments as ScreenMode;
+      page = EmailLoginScreen(screenMode: screenMode);
       break;
     case ForgotPasswordScreen.route:
       final emailFromArgs = settings.arguments as String? ?? '';

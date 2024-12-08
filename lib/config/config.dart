@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../global_types/index.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../theme/index.dart';
-import '../types/index.dart';
 
 // * SINGLETON
 class Config {
@@ -26,21 +26,11 @@ class Config {
   final String envString;
   static ThemeData theme = selectedTheme;
 
-  // ! MAXIMUMS
-  static const recipeBatchSize = 30;
-  static const maxNotesPerBean = 7;
-  static const maxBeans = 3;
-  static const maxBaskets = 2;
-  static const maxGrinders = 2;
-  static const maxMachines = 2;
-  static const commentsMaxLength = 200;
-  static const aiCommentsMaxLength = 1000;
-
   // * VERSIONING
-  static const majorVersion = 1;
-  static const minorVersion = 5;
-  static const patchVersion = 7;
-  static const buildNumber = 67;
+  static const majorVersion = 0;
+  static const minorVersion = 0;
+  static const patchVersion = 1;
+  static const buildNumber = 1;
 
   static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';
 
@@ -50,11 +40,9 @@ class Config {
   static const mediumNotifierDuration = Duration(seconds: 3);
   static const longNotifierDuration = Duration(seconds: 5);
 
-
   // ^ ================== APP CONFIG ==================
   static const appName = "Tennis Bookings";
   static const functionsRegion = "australia-southeast1";
-
 
   @override
   String toString() => 'Config: $envString environment is running'

@@ -7,7 +7,7 @@ import '../../config/apple_sign_in.dart';
 import '../../global_helpers/index.dart';
 import '../../models/index.dart';
 import '../../strings/firebase/index.dart';
-import '../../types/index.dart';
+import '../../global_types/index.dart';
 import '../index.dart';
 import 'helpers.dart';
 

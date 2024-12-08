@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 
+import '../../global_types/enums.dart';
+import '../../global_types/types.dart';
 import '../../strings/firebase/index.dart';
-import '../../types/enums.dart';
-import '../../types/types.dart';
 import 'types.dart';
 
 ErrorInfo getErrorMessage({required ErrorCode errorCode}) {

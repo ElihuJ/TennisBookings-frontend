@@ -3,8 +3,8 @@ import 'dart:collection';
 import 'package:flutter/foundation.dart';
 
 import '../../global_helpers/index.dart';
+import '../../global_types/index.dart';
 import '../../models/index.dart';
-import '../../types/index.dart';
 
 final defaultId = getUuid();
 const defaultName = 'Problem loading user';

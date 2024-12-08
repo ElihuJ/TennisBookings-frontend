@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../global_types/index.dart';
+import '../global_widgets/eventful/eventful.dart';
+import '../global_widgets/header/header.dart';
 import '../strings/settings/index.dart';
-import '../types/index.dart';
-import '../widgets/eventful/eventful.dart';
-import '../widgets/header/header.dart';
 
 class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});

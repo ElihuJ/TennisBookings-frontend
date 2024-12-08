@@ -1,7 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart' as fb_storage;
 import 'package:uuid/uuid.dart';
 
-import '../types/index.dart';
+import '../global_types/index.dart';
 import 'index.dart';
 
 const uuid = Uuid();

@@ -1,4 +1,4 @@
-import '../types/index.dart';
+import '../global_types/index.dart';
 
 abstract class HasJson<T> {
   factory HasJson.fromJson(FirestoreResponse json) => throw UnimplementedError();

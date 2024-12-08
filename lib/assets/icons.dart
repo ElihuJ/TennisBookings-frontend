@@ -1,5 +1,5 @@
 import '../config/config.dart';
-import '../types/index.dart';
+import '../global_types/index.dart';
 
 final config = Config();
 

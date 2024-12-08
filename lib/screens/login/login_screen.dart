@@ -7,12 +7,12 @@ import '../../assets/icons.dart';
 import '../../global_helpers/index.dart';
 import '../../state/index.dart';
 import '../../strings/index.dart';
-import '../../widgets/buttons/login_button.dart';
-import '../../widgets/eventful/eventful.dart';
-import '../../widgets/header/index.dart';
-import 'email/email_login_screen.dart';
-import 'email/types.dart';
-import 'helper.dart';
+import '../../global_widgets/buttons/login_button.dart';
+import '../../global_widgets/eventful/eventful.dart';
+import '../../global_widgets/header/index.dart';
+import 'email_login_screen.dart';
+import 'types.dart';
+import 'helpers/helper.dart';
 
 class LoginScreen extends HookConsumerWidget {
   const LoginScreen({super.key});

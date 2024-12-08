@@ -6,7 +6,3 @@ class FirestoreCollection {
 class ConfigDocuments {
   static const main = 'main';
 }
-
-class UserSubCollection {
-  static const recipeBatches = 'recipeBatches';
-}

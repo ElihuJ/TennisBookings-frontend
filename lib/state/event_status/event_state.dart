@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../../types/index.dart';
+import '../../global_types/index.dart';
 
 enum EventType { loadingBox, message, none }
 

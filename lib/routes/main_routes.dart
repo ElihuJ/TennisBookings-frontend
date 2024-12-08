@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../screens/home_screen.dart';
-import '../screens/login/email/email_login_screen.dart';
-import '../screens/login/email/forgot_password_screen.dart';
-import '../screens/login/email/types.dart';
+import '../screens/login/email_login_screen.dart';
+import '../screens/login/forgot_password_screen.dart';
+import '../screens/login/types.dart';
 import '../screens/login/login_screen.dart';
 import 'index.dart';
 

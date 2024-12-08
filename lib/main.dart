@@ -8,7 +8,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'config/config.dart';
 import 'config/firebase_options.dart';
 import 'entry.dart';
-import 'types/index.dart';
+import 'global_types/index.dart';
 
 Future<void> main() async {
   // cspell: disable

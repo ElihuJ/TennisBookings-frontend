@@ -34,6 +34,7 @@ dependencies:
   flutter_svg: ^2.0.16
   g_recaptcha_v3: ^0.0.6
   crypto: ^3.0.6
+  carousel_slider: ^5.0.0
 
 dev_dependencies:
   build_runner: ^2.4.12
@@ -61,4 +62,5 @@ flutter:
         - asset: assets/fonts/FredokaOne-Regular.ttf
   assets:
     - assets/app_icons/
+    - assets/images/
     - assets/locales/

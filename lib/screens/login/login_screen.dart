@@ -3,7 +3,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../assets/icons.dart';
+import '../../assets/index.dart';
 import '../../global_helpers/index.dart';
 import '../../state/index.dart';
 import '../../strings/index.dart';

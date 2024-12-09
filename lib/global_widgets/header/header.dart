@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../assets/icons.dart';
+import '../../assets/index.dart';
 import '../../screens/home_screen.dart';
 import '../../state/index.dart';
 import '../../theme/index.dart';

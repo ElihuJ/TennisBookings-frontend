@@ -29,6 +29,8 @@ class DefaultFirebaseOptions {
     }
   }
 
+  // cspell:disable
+
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyB5UbOnod6alVrI0PIi4JmTosw-PPmcsL4',
     appId: '1:844257141722:web:aa0af5b48460738dd6d6e3',
@@ -73,3 +75,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'tennisbookings.appspot.com',
   );
 }
+
+// cspell:enable

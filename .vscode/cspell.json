@@ -1,7 +1,10 @@
 {
   "version": "0.2",
   "language": "en,en-AU,es",
-  "words": [],
+  "words": [
+    "Fredoka",
+    "recaptcha"
+  ],
   "ignorePaths": [
     "**/node_modules/**",
     "**/build/**",

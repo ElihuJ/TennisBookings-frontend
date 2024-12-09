@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/theme/index.dart';
 
-import '../global_types/index.dart';
+import '../assets/index.dart';
 import '../global_widgets/eventful/eventful.dart';
 import '../global_widgets/header/header.dart';
-import '../strings/settings/index.dart';
+import 'login/widgets/containers.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});
@@ -14,34 +15,49 @@ class HomeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final List<String> imgList = [amanda1Png, elihu1jpeg, anthony1Png, elihu2jpg, elihu3jpeg, matt1jpg];
+
     return EventfulWidget(
       child: PopScope(
         canPop: false,
         child: Scaffold(
           appBar: Header(),
-          body: SizedBox(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Spacer(),
-                ElevatedButton(
-                  onPressed: () => Locales.change(context, SupportedLocales.en),
-                  child: Text(
-                    context.localeString(SettingsLanguageDialogStrings.english),
+          body: ContainerWithBackground(
+            imagePath: homeBackgroundPng,
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                        autoPlay: true,
+                        enlargeCenterPage: true,
+                      ),
+                      items: imgList
+                          .map((item) => Container(
+                                child: Center(
+                                  child: Image.asset(item, fit: BoxFit.cover, width: 1000),
+                                ),
+                              ))
+                          .toList(),
+                    ),
                   ),
-                ),
-                Spacer(),
-                ElevatedButton(
-                  onPressed: () => Locales.change(context, SupportedLocales.es),
-                  child: Text(
-                    context.localeString(SettingsLanguageDialogStrings.spanish),
-                  ),
-                ),
-                Spacer(),
-              ],
+                  SizedBox(height: 20),
+                  Text(
+                    'FIND A COURT \nFIND A PARTNER\nPLAY',
+                    style: TextStyle(
+                      fontSize: 60,
+                      color: AppColors.almostWhite,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
             ),
           ),
         ),

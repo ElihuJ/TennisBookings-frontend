@@ -39,10 +39,8 @@ class HomeScreen extends HookConsumerWidget {
                         enlargeCenterPage: true,
                       ),
                       items: imgList
-                          .map((item) => Container(
-                                child: Center(
-                                  child: Image.asset(item, fit: BoxFit.cover, width: 1000),
-                                ),
+                          .map((item) => Center(
+                                child: Image.asset(item, fit: BoxFit.cover, width: 1000),
                               ))
                           .toList(),
                     ),

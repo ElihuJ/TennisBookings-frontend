@@ -156,12 +156,12 @@ class _LoginSignupFormState extends ConsumerState<LoginSignupForm> {
           ),
           const SizedBox(height: _margin),
           if (!isLogin)
-            SocialsSignUp(
-                confirmPasswordController: confirmPasswordController,
-                password: password,
-                eventNotifier: eventNotifier,
-                firebaseNotifier: firebaseNotifier,
-                userNotifier: userNotifier),
+            Column(
+              children: [
+                Text(context.localeString(EmailLoginScreenStrings.orContinueWith)),
+                SocialsSignUp(eventNotifier: eventNotifier, firebaseNotifier: firebaseNotifier, userNotifier: userNotifier),
+              ],
+            )
         ],
       ),
     );
@@ -171,15 +171,11 @@ class _LoginSignupFormState extends ConsumerState<LoginSignupForm> {
 class SocialsSignUp extends StatelessWidget {
   const SocialsSignUp({
     super.key,
-    required this.confirmPasswordController,
-    required this.password,
     required this.eventNotifier,
     required this.firebaseNotifier,
     required this.userNotifier,
   });
 
-  final TextEditingController confirmPasswordController;
-  final String password;
   final EventStatusNotifier eventNotifier;
   final FirebaseAuthNotifier firebaseNotifier;
   final UserNotifier userNotifier;
@@ -188,7 +184,6 @@ class SocialsSignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(context.localeString(EmailLoginScreenStrings.orContinueWith)),
         LoginButton(
           onTap: () async {
             final resultHandler = ResultHandler();
@@ -199,8 +194,8 @@ class SocialsSignUp extends StatelessWidget {
               userNotifier: userNotifier,
               resultHandler: resultHandler,
             );
-            if (resultHandler.error == null) {
-              // Navigator.pushNamedAndRemoveUntil(context, HomeScreen.route, (route) => false);
+            if (resultHandler.error == null && context.mounted) {
+              Navigator.pushNamedAndRemoveUntil(context, HomeScreen.route, (route) => false);
             }
           },
           icon: SvgPicture.asset(googleSvg),

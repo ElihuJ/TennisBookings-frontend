@@ -6,7 +6,7 @@ import '../assets/index.dart';
 import '../global_widgets/eventful/eventful.dart';
 import '../global_widgets/header/header.dart';
 import 'login/widgets/containers.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});
@@ -15,7 +15,7 @@ class HomeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<String> imgList = [amanda1Png, elihu1jpeg, anthony1Png, elihu2jpg, elihu3jpeg, matt1jpg];
+    // final List<String> imgList = [amanda1Png, elihu1jpeg, anthony1Png, elihu2jpg, elihu3jpeg, matt1jpg];
 
     return EventfulWidget(
       child: PopScope(
@@ -24,38 +24,46 @@ class HomeScreen extends HookConsumerWidget {
           appBar: Header(),
           body: ContainerWithBackground(
             imagePath: homeBackgroundPng,
-            child: SizedBox(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                        autoPlay: true,
-                        enlargeCenterPage: true,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                // SizedBox(
+                //   height: MediaQuery.of(context).size.height * 0.5,
+                //   child: CarouselSlider(
+                //     options: CarouselOptions(
+                //       autoPlay: true,
+                //       enlargeCenterPage: true,
+                //     ),
+                //     items: imgList
+                //         .map((item) => Center(
+                //               child: Image.asset(item, fit: BoxFit.cover, width: 500),
+                //             ))
+                //         .toList(),
+                //   ),
+                // ),
+                SizedBox(height: 20),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.black.withOpacity(0.2),
+                    border: Border.all(color: AppColors.almostWhite, width: 2),
+                    backgroundBlendMode: BlendMode.multiply,
+                  ),
+                  child: Container(
+                    margin: EdgeInsets.all(40),
+                    child: Text(
+                      'GET A COURT \nFIND A PARTNER\nPLAY', // TODO : TRANSLATE
+                      style: TextStyle(
+                        fontSize: 80,
+                        color: AppColors.almostWhite,
                       ),
-                      items: imgList
-                          .map((item) => Center(
-                                child: Image.asset(item, fit: BoxFit.cover, width: 1000),
-                              ))
-                          .toList(),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    'FIND A COURT \nFIND A PARTNER\nPLAY',
-                    style: TextStyle(
-                      fontSize: 60,
-                      color: AppColors.almostWhite,
-                    ),
-                    textAlign: TextAlign.center,
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           ),
         ),

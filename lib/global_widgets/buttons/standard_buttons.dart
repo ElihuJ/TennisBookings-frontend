@@ -41,35 +41,6 @@ class TbTextButton extends StatelessWidget {
   }
 }
 
-class MyEsButton extends StatelessWidget {
-  final Widget child;
-  final void Function()? onPressed;
-  final Color color;
-  final double height;
-  final double width;
-
-  const MyEsButton({
-    super.key,
-    required this.onPressed,
-    required this.child,
-    this.color = AppColors.primaryGreen,
-    this.height = 60,
-    this.width = 140,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      width: width,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        child: child,
-      ),
-    );
-  }
-}
-
 class TbTextButtonWithImage extends StatelessWidget {
   final String text;
   final void Function()? onPressed;
@@ -116,6 +87,41 @@ class TbTextButtonWithImage extends StatelessWidget {
             image,
           ],
         ),
+      ),
+    );
+  }
+}
+
+class TbTextPlainButton extends StatelessWidget {
+  final String text;
+  final void Function()? onPressed;
+  final Color textColor;
+  final double height;
+  final double width;
+
+  const TbTextPlainButton({
+    super.key,
+    required this.onPressed,
+    required this.text,
+    this.textColor = AppColors.white,
+    this.height = 60,
+    this.width = 140,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        shadowColor: Colors.transparent,
+        elevation: 10,
+      ),
+      child: PrettyText(
+        text,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: textColor),
       ),
     );
   }

@@ -10,24 +10,28 @@ class ContainerWithBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: Image.asset(
-            imagePath, // Replace with your image path
-            fit: BoxFit.cover,
-          ),
-        ),
-        Positioned.fill(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-            child: Container(
-              color: Colors.white.withOpacity(0.4),
+    return SizedBox(
+      width: double.infinity,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              imagePath, // Replace with your image path
+              fit: BoxFit.cover,
             ),
           ),
-        ),
-        child,
-      ],
+          Positioned.fill(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+              child: Container(
+                color: Colors.white.withOpacity(0.4),
+              ),
+            ),
+          ),
+          child,
+        ],
+      ),
     );
   }
 }

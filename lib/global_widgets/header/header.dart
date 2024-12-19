@@ -7,6 +7,7 @@ import '../../screens/home_screen.dart';
 import '../../state/index.dart';
 import '../../theme/index.dart';
 import 'index.dart';
+import 'play_button.dart';
 
 class Header extends HookConsumerWidget implements PreferredSizeWidget {
   const Header({super.key});
@@ -28,6 +29,9 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
       ),
       backgroundColor: AppColors.primaryGreen,
       actions: <Widget>[
+        Spacer(),
+        PlayHeaderButton(),
+        SizedBox(width: 100),
         Container(
           padding: const EdgeInsets.only(right: 30),
           child: isLoggedIn ? ProfileButton() : LoginRegisterButton(),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tennisbookings/screens/find_clubs/find_clubs.dart';
 
 import '../screens/home_screen.dart';
 import '../screens/login/email_login_screen.dart';
 import '../screens/login/forgot_password_screen.dart';
-import '../screens/login/types.dart';
 import '../screens/login/login_screen.dart';
+import '../screens/login/types.dart';
 import 'index.dart';
 
 Route<dynamic> generateLoginRoutes(RouteSettings settings) {
@@ -23,6 +24,9 @@ Route<dynamic> generateLoginRoutes(RouteSettings settings) {
     case ForgotPasswordScreen.route:
       final emailFromArgs = settings.arguments as String? ?? '';
       page = ForgotPasswordScreen(email: emailFromArgs);
+      break;
+    case FindClubsScreen.route:
+      page = const FindClubsScreen();
       break;
   }
   return MyEsRoute(builder: (_) => page, settings: settings);

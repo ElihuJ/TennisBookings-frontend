@@ -5,7 +5,7 @@ import '../../assets/index.dart';
 import '../../global_widgets/eventful/eventful.dart';
 import '../../global_widgets/header/index.dart';
 import '../../global_widgets/index.dart';
-import '../../state/index.dart';
+// import '../../state/index.dart';
 import '../login/widgets/containers.dart';
 
 class FindClubsScreen extends HookConsumerWidget {
@@ -14,9 +14,9 @@ class FindClubsScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firebaseAuthNotifier = ref.read(firebaseAuthProvider.notifier);
-    final userNotifier = ref.read(userProvider.notifier);
-    final eventNotifier = ref.read(eventStatusProvider.notifier);
+    // final firebaseAuthNotifier = ref.read(firebaseAuthProvider.notifier);
+    // final userNotifier = ref.read(userProvider.notifier);
+    // final eventNotifier = ref.read(eventStatusProvider.notifier);
 
     return EventfulWidget(
       child: PopScope(

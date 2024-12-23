@@ -30,3 +30,33 @@ enum ListOrder implements IsEnum {
     }
   }
 }
+
+enum Gender implements IsEnum {
+  male,
+  female,
+  unknown;
+
+  @override
+  String get name {
+    switch (this) {
+      case Gender.female:
+        return 'Female';
+      case Gender.male:
+        return 'Male';
+      case Gender.unknown:
+        return 'Unknown';
+    }
+  }
+
+  @override
+  String get locale {
+    switch (this) {
+      case Gender.female:
+        return 'female';
+      case Gender.male:
+        return 'male';
+      case Gender.unknown:
+        return 'unknown';
+    }
+  }
+}

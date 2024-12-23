@@ -30,7 +30,8 @@ class UserNotifier extends StateNotifier<User> {
         uid: uid,
         name: name ?? '',
         email: email ?? '',
-        createdAt: dateNowAsInt,
+        accountCreationDate: dateNowAsInt,
+        lastLogin: dateNowAsInt,
       );
       final FirestorePayload userPayload = user.toJson();
       await usersCollection.doc(uid).set(userPayload);

@@ -11,22 +11,50 @@ const defaultName = 'Problem loading user';
 const defaultEmail = 'email';
 
 @immutable
-class User extends MapView<String, dynamic> {
+class User extends MapView<String, dynamic> implements FirestoreModel {
   final String uid;
   final String name;
   final String email;
-  final int createdAt;
+  final int accountCreationDate;
+  final List<String> clubIds;
+  final List<String> bookings;
+  final int dob;
+  final Gender gender;
+  final int lastLogin;
+  final double? utrRating;
+  final bool utrVerified;
+  final String? homeClubId;
+  @override
+  final List<String> allFields = UserFields.allFields;
 
   User({
-    this.name = '',
     this.uid = '',
+    this.accountCreationDate = 0,
+    this.bookings = const [],
+    this.clubIds = const [],
+    this.dob = 0,
     this.email = '',
-    this.createdAt = 0,
+    this.gender = Gender.unknown,
+    // ignore: avoid_init_to_null
+    this.homeClubId = null,
+    this.lastLogin = 0,
+    this.name = '',
+    // ignore: avoid_init_to_null
+    this.utrRating = null,
+    this.utrVerified = false,
   }) : super({
           UserFields.uid: uid,
-          UserFields.name: name,
+          UserFields.accountCreationDate: accountCreationDate,
+          UserFields.bookings: bookings,
+          UserFields.clubIds: clubIds,
+          UserFields.dob: dob,
           UserFields.email: email,
-          UserFields.createdAt: createdAt,
+          UserFields.gender: gender,
+          UserFields.homeClubId: homeClubId,
+          UserFields.lastLogin: lastLogin,
+          UserFields.name: name,
+          UserFields.utrRating: utrRating,
+          UserFields.utrVerified: utrVerified,
         });
 
   User.empty() : this();
@@ -35,25 +63,34 @@ class User extends MapView<String, dynamic> {
     try {
       // * ================================== Required Props ==================================
       final uid = verifyRequiredProp<String>(prop: json[UserFields.uid], propName: UserFields.uid, defaultValue: defaultId);
-      final name = verifyRequiredProp<String>(prop: json[UserFields.name], propName: UserFields.name, defaultValue: defaultName);
+      final accountCreationDate =
+          verifyRequiredProp<int>(prop: json[UserFields.accountCreationDate], propName: UserFields.accountCreationDate, defaultValue: 0);
+      final bookings = verifyRequiredProp<List<String>>(prop: json[UserFields.bookings], propName: UserFields.bookings, defaultValue: []);
+      final clubIds = verifyRequiredProp<List<String>>(prop: json[UserFields.clubIds], propName: UserFields.clubIds, defaultValue: []);
+      final dob = verifyRequiredProp<int>(prop: json[UserFields.dob], propName: UserFields.dob, defaultValue: 0);
       final email = verifyRequiredProp<String>(prop: json[UserFields.email], propName: UserFields.email, defaultValue: defaultEmail);
-      final createdAt = verifyRequiredProp<int>(prop: json[UserFields.createdAt], propName: UserFields.createdAt, defaultValue: 0);
+      final gender = verifyRequiredProp<Gender>(prop: json[UserFields.gender], propName: UserFields.gender, defaultValue: Gender.male);
+      final homeClubId = verifyRequiredProp<String>(prop: json[UserFields.homeClubId], propName: UserFields.homeClubId, defaultValue: '');
+      final lastLogin = verifyRequiredProp<int>(prop: json[UserFields.lastLogin], propName: UserFields.lastLogin, defaultValue: 0);
+      final name = verifyRequiredProp<String>(prop: json[UserFields.name], propName: UserFields.name, defaultValue: defaultName);
+      final utrRating = verifyRequiredProp<double>(prop: json[UserFields.utrRating], propName: UserFields.utrRating, defaultValue: 0.0);
+      final utrVerified = verifyRequiredProp<bool>(prop: json[UserFields.utrVerified], propName: UserFields.utrVerified, defaultValue: false);
 
-      // get properties that are not in the map
-      final propsList = [
-        UserFields.uid,
-        UserFields.name,
-        UserFields.email,
-        UserFields.createdAt,
-      ];
-
-      verifyProps(json, propsList);
+      verifyProps(json, UserFields.allFields);
 
       return User(
         uid: uid,
-        name: name,
+        accountCreationDate: accountCreationDate,
+        bookings: bookings,
+        clubIds: clubIds,
+        dob: dob,
         email: email,
-        createdAt: createdAt,
+        gender: gender,
+        homeClubId: homeClubId,
+        lastLogin: lastLogin,
+        name: name,
+        utrRating: utrRating,
+        utrVerified: utrVerified,
       );
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING USER', DebugLevel.error);
@@ -61,37 +98,68 @@ class User extends MapView<String, dynamic> {
     }
   }
 
+  @override
   FirestorePayload toJson() => {
         UserFields.uid: uid,
-        UserFields.name: name,
+        UserFields.accountCreationDate: accountCreationDate,
+        UserFields.bookings: bookings,
+        UserFields.clubIds: clubIds,
+        UserFields.dob: dob,
         UserFields.email: email,
-        UserFields.createdAt: createdAt,
+        UserFields.gender: gender.name,
+        UserFields.homeClubId: homeClubId,
+        UserFields.lastLogin: lastLogin,
+        UserFields.name: name,
+        UserFields.utrRating: utrRating,
+        UserFields.utrVerified: utrVerified,
       };
 
+  @override
   User copyWith({
     String? uid,
-    String? name,
+    int? accountCreationDate,
+    List<String>? bookings,
+    List<String>? clubIds,
+    int? dob,
     String? email,
-    bool? isPremium,
-    int? createdAt,
-    List<String>? recipeBatchIds,
-    String? currentRecipeBatchId,
+    Gender? gender,
+    String? homeClubId,
+    int? lastLogin,
+    String? name,
+    double? utrRating,
+    bool? utrVerified,
   }) {
     return User(
       uid: uid ?? this.uid,
-      name: name ?? this.name,
+      accountCreationDate: accountCreationDate ?? this.accountCreationDate,
+      bookings: bookings ?? this.bookings,
+      clubIds: clubIds ?? this.clubIds,
+      dob: dob ?? this.dob,
       email: email ?? this.email,
-      createdAt: createdAt ?? this.createdAt,
+      gender: gender ?? this.gender,
+      homeClubId: homeClubId ?? this.homeClubId,
+      lastLogin: lastLogin ?? this.lastLogin,
+      name: name ?? this.name,
+      utrRating: utrRating ?? this.utrRating,
+      utrVerified: utrVerified ?? this.utrVerified,
     );
   }
 
   @override
   String toString() {
     return '==================== User ==================== \n'
-        'uid: $uid, \n'
-        'name: $name, \n'
-        'email: $email, \n'
-        'createdAt: $createdAt \n'
-        ')';
+        'uid: $uid \n'
+        'accountCreationDate: $accountCreationDate \n'
+        'bookings: $bookings \n'
+        'clubIds: $clubIds \n'
+        'dob: $dob \n'
+        'email: $email \n'
+        'gender: $gender \n'
+        'homeClubId: $homeClubId \n'
+        'lastLogin: $lastLogin \n'
+        'name: $name \n'
+        'utrRating: $utrRating \n'
+        'utrVerified: $utrVerified \n'
+        '=============================================== \n';
   }
 }

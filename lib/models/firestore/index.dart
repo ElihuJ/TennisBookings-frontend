@@ -1,2 +1,2 @@
-export './collections.dart';
 export './fields/index.dart';
+export 'collections.dart';

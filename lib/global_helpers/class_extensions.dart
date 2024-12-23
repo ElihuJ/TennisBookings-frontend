@@ -14,3 +14,9 @@ abstract class IsEnum {
   String get locale;
   String get name;
 }
+
+abstract class FirestoreModel<T> {
+  FirestorePayload toJson();
+  List<String> get allFields;
+  T copyWith();
+}

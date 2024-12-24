@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/global_helpers/index.dart';
+import 'package:tennisbookings/state/clubs/index.dart';
 
 import '../../assets/index.dart';
 import '../../screens/home_screen.dart';
@@ -15,8 +17,11 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(firebaseAuthProvider);
+    final clubs = ref.watch(clubsProvider);
     final currentUser = fb_auth.FirebaseAuth.instance.currentUser;
     final isLoggedIn = currentUser != null && currentUser.emailVerified;
+
+    clubs.tbLogger('CLUBS');
 
     return AppBar(
       leadingWidth: 180,

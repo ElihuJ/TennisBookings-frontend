@@ -4,11 +4,11 @@ class FirestoreCollection {
   static const clubs = 'clubs';
 }
 
-class ClubsSubCollections {
+class CourtsSubCollections {
   static const courts = 'courts';
 }
 
-class CourtsSubCollections {
+class BookingsSubCollections {
   static const bookings = 'bookings';
 }
 

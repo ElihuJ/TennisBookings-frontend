@@ -41,7 +41,7 @@ class CourtFields {
   static const String name = 'name';
   static const String surface = 'surface';
   static const String clubId = 'clubId';
-  static const String bookings = 'bookings';
+  static const String publicBookings = 'public_bookings';
   static const String generalUnavailability = 'generalUnavailability';
 
   static const List<String> allFields = [
@@ -49,7 +49,7 @@ class CourtFields {
     name,
     surface,
     clubId,
-    bookings,
+    publicBookings,
     generalUnavailability,
   ];
 }

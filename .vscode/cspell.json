@@ -15,7 +15,8 @@
     "**/web",
     "package.json",
     "assets/",
-    "*.lock"
+    "*.lock",
+    "~/Development/**"
   ],
   "flagWords": []
 }

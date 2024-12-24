@@ -9,7 +9,7 @@ class CourtsSubCollections {
 }
 
 class BookingsSubCollections {
-  static const bookings = 'bookings';
+  static const publicBookings = 'public_bookings';
 }
 
 class ConfigDocuments {

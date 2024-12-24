@@ -39,8 +39,6 @@ class Court extends MapView<String, dynamic> implements FirestoreModel {
 
   factory Court.fromJson(Map<String, dynamic> json) {
     try {
-      json.tbLogger('Court.fromJson');
-
       // * Verify required props
       final id = verifyRequiredProp<String>(prop: json[CourtFields.id], propName: CourtFields.id, defaultValue: defaultId);
       final clubId = verifyRequiredProp<String>(prop: json[CourtFields.clubId], propName: CourtFields.clubId, defaultValue: defaultId);
@@ -51,7 +49,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel {
           ? List<GeneralUnavailability>.from(json[CourtFields.generalUnavailability].map((x) => GeneralUnavailability.fromJson(x)))
           : [];
 
-      verifyProps(json, ClubFields.allFields);
+      verifyProps(json, CourtFields.allFields);
 
       return Court(
           id: id,

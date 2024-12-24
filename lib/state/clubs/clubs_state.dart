@@ -28,7 +28,7 @@ class Club extends MapView<String, dynamic> implements HasId {
   final String city;
   final int postcode;
   final String state;
-  final List<Court> courts; // TODO: Implement courts
+  final List<Court> courts;
 
   Club({
     required this.id,

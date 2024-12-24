@@ -52,14 +52,14 @@ class GeneralUnavailability extends MapView<String, dynamic> implements Firestor
   }
 
   factory GeneralUnavailability.fromJson(Map<String, dynamic> json) {
-    json.tbLogger('GeneralUnavailability.fromJson');
-
     try {
       // * Verify required props
 
       final from = verifyRequiredProp<int>(prop: json[GeneralUnavailabilityFields.from], propName: GeneralUnavailabilityFields.from, defaultValue: 0);
       final to = verifyRequiredProp<int>(prop: json[GeneralUnavailabilityFields.to], propName: GeneralUnavailabilityFields.to, defaultValue: 0);
       final dayOfTheWeek = DayOfTheWeek.fromString(json[GeneralUnavailabilityFields.dayOfTheWeek]);
+
+      verifyProps(json, GeneralUnavailabilityFields.allFields);
 
       return GeneralUnavailability(dayOfTheWeek: dayOfTheWeek, from: from, to: to);
     } catch (e) {

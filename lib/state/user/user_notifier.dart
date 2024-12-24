@@ -15,11 +15,11 @@ class UserNotifier extends StateNotifier<User> {
   String get userId => state.uid;
 
   void loadUser({required String uid}) async {
-    // final doc = await usersCollection.doc(uid).get();
-    // if (doc.exists) {
-    //   final data = doc.data() as FirestoreResponse;
-    //   state = User.fromJson(data);
-    // }
+    final doc = await usersCollection.doc(uid).get();
+    if (doc.exists) {
+      final data = doc.data() as FirestoreResponse;
+      state = User.fromJson(data);
+    }
   }
 
   FirestoreActionResult<Success> createUser({String? name, required String uid, required String? email, ResultHandler? resultHandler}) async {

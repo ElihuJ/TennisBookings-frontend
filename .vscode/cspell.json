@@ -3,7 +3,8 @@
   "language": "en,en-AU,es",
   "words": [
     "Fredoka",
-    "recaptcha"
+    "recaptcha",
+    "subcollections"
   ],
   "ignorePaths": [
     "**/node_modules/**",

@@ -65,29 +65,3 @@ class GeneralUnavailabilityFields {
     to,
   ];
 }
-
-class BookingFields {
-  static const String id = 'id';
-  static const String courtId = 'courtId';
-  static const String ownerId = 'ownerId';
-  static const String from = 'from';
-  static const String to = 'to';
-  static const String status = 'status';
-  static const String restrictions = 'restrictions';
-  static const String confirmedPlayerIds = 'confirmedPlayerIds';
-  static const String format = 'format';
-  static const String requests = 'requests';
-
-  static const List<String> allFields = [
-    id,
-    courtId,
-    ownerId,
-    from,
-    to,
-    status,
-    restrictions,
-    confirmedPlayerIds,
-    format,
-    requests,
-  ];
-}

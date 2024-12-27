@@ -1,20 +1,19 @@
 import 'dart:collection';
 
-import 'package:tennisbookings/global_helpers/index.dart';
-import 'package:tennisbookings/models/riverpod/general_unavailability.dart';
-
+import '../../global_helpers/index.dart';
 import '../../global_types/index.dart';
 import '../index.dart';
 
-final defaultId = getUuid();
-final defaultName = 'Problem loading Court';
+final defaultCourtId = getUuid();
+final defaultCourtName = 'Problem loading Court';
 
-class Court extends MapView<String, dynamic> implements FirestoreModel {
+class Court extends MapView<String, dynamic> implements FirestoreModel, HasId {
+  @override
   final String id;
   final String clubId;
   final String surface;
   final String name;
-  // final SubCollection bookings;
+  final List<Booking> publicBookings;
   final List<GeneralUnavailability> generalUnavailability;
   @override
   final List<String> allFields = CourtFields.allFields;
@@ -23,41 +22,52 @@ class Court extends MapView<String, dynamic> implements FirestoreModel {
     required this.id,
     required this.clubId,
     required this.surface,
-    // required this.bookings, // TODO: Implement bookings
+    required this.publicBookings,
     required this.generalUnavailability,
     required this.name,
   }) : super({
           CourtFields.id: id,
           CourtFields.clubId: clubId,
           CourtFields.surface: surface,
-          // CourtFields.bookings: bookings,
+          CourtFields.publicBookings: publicBookings,
           CourtFields.generalUnavailability: generalUnavailability,
           CourtFields.name: name,
         });
 
-  Court.empty() : this(id: defaultId, clubId: defaultId, surface: 'Unknown', name: defaultName, generalUnavailability: []);
+  Court.empty()
+      : this(id: defaultCourtId, clubId: defaultCourtId, surface: 'Unknown', name: defaultCourtName, generalUnavailability: [], publicBookings: []);
+
+  // ^ ================================== Loaders ==================================
+
+  void loadBookings(List<Booking> publicBookings) {
+    for (final publicBooking in publicBookings) {
+      if (this.publicBookings.contains(publicBooking)) {
+        continue;
+      }
+      this.publicBookings.add(publicBooking);
+    }
+  }
+
+  // ^ ================================== BoilerPlate ==================================
 
   factory Court.fromJson(Map<String, dynamic> json) {
     try {
       // * Verify required props
-      final id = verifyRequiredProp<String>(prop: json[CourtFields.id], propName: CourtFields.id, defaultValue: defaultId);
-      final clubId = verifyRequiredProp<String>(prop: json[CourtFields.clubId], propName: CourtFields.clubId, defaultValue: defaultId);
+      final id = verifyRequiredProp<String>(prop: json[CourtFields.id], propName: CourtFields.id, defaultValue: defaultCourtId);
+      final clubId = verifyRequiredProp<String>(prop: json[CourtFields.clubId], propName: CourtFields.clubId, defaultValue: defaultCourtId);
       final surface = verifyRequiredProp<String>(prop: json[CourtFields.surface], propName: CourtFields.surface, defaultValue: 'Unknown');
-      final name = verifyRequiredProp<String>(prop: json[CourtFields.name], propName: CourtFields.name, defaultValue: defaultName);
-      // final bookings = verifyRequiredProp<SubCollection>(prop: json[CourtFields.bookings], propName: CourtFields.bookings, defaultValue: SubCollection.empty());
-      List<GeneralUnavailability> generalUnavailability = json[CourtFields.generalUnavailability] != null
+      final name = verifyRequiredProp<String>(prop: json[CourtFields.name], propName: CourtFields.name, defaultValue: defaultCourtName);
+      final List<GeneralUnavailability> generalUnavailability = json[CourtFields.generalUnavailability] != null
           ? List<GeneralUnavailability>.from(json[CourtFields.generalUnavailability].map((x) => GeneralUnavailability.fromJson(x)))
           : [];
+
+      final List<Booking> publicBookings =
+          json[CourtFields.publicBookings] != null ? List<Booking>.from(json[CourtFields.publicBookings].map((x) => Booking.fromJson(x))) : [];
 
       verifyProps(json, CourtFields.allFields);
 
       return Court(
-          id: id,
-          clubId: clubId,
-          surface: surface,
-          // bookings: bookings,
-          generalUnavailability: generalUnavailability,
-          name: name);
+          id: id, clubId: clubId, surface: surface, publicBookings: publicBookings, generalUnavailability: generalUnavailability, name: name);
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING COURT', DebugLevel.error);
       return Court.empty();
@@ -69,7 +79,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel {
     String? id,
     String? clubId,
     String? surface,
-    // SubCollection? bookings,
+    List<Booking>? publicBookings,
     List<GeneralUnavailability>? generalUnavailability,
     String? name,
   }) {
@@ -77,7 +87,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel {
       id: id ?? this.id,
       clubId: clubId ?? this.clubId,
       surface: surface ?? this.surface,
-      // bookings: bookings ?? this.bookings,
+      publicBookings: publicBookings ?? this.publicBookings,
       generalUnavailability: generalUnavailability ?? this.generalUnavailability,
       name: name ?? this.name,
     );
@@ -88,7 +98,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel {
         CourtFields.id: id,
         CourtFields.clubId: clubId,
         CourtFields.surface: surface,
-        // CourtFields.bookings: bookings,
+        CourtFields.publicBookings: publicBookings,
         CourtFields.generalUnavailability: generalUnavailability,
         CourtFields.name: name,
       };

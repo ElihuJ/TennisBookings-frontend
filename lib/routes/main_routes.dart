@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/screens/find_clubs/find_clubs.dart';
 
+import '../screens/find_clubs/find_clubs.dart';
 import '../screens/home_screen.dart';
 import '../screens/login/email_login_screen.dart';
 import '../screens/login/forgot_password_screen.dart';

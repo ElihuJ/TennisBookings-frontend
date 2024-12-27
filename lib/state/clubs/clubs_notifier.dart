@@ -12,21 +12,49 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
   final storageRef = FirebaseStorage.instance.ref();
 
   void loadClubs() async {
+    // * Getting firebase data
     final querySnapshot = await clubsCollection.get();
     final docs = querySnapshot.docs;
     if (docs.isNotEmpty) {
+      // * Transform to Clubs class
       final clubs = loadClubsFromDocs(docs);
+
+      // * Getting courts data
       for (final doc in docs) {
         final clubId = doc.id;
         final courts = await clubsCollection.doc(clubId).collection(CourtsSubCollections.courts).get();
         final club = findByIdOrNull<Club>(clubs, clubId);
-        if (club != null) {
-          club.loadCourts(courts.docs);
+        if (club == null) {
+          continue;
+        }
+        // * Load Courts to club in data class
+        club.loadCourts(courts.docs);
+      }
+      // * Load Bookings to courts in data class
+      for (final club in clubs) {
+        for (final court in club.courts) {
+          await loadBookings(club, court);
         }
       }
+
       state = clubs;
       return;
     }
+    // * If no data is found
     state = [];
+  }
+
+  Future<void> loadBookings(Club club, Court court) async {
+    final querySnapshot = await clubsCollection
+        .doc(club.id)
+        .collection(CourtsSubCollections.courts)
+        .doc(court.id)
+        .collection(BookingsSubCollections.publicBookings)
+        .get();
+    final docs = querySnapshot.docs;
+    if (docs.isNotEmpty) {
+      final bookings = loadBookingsFromDocs(docs);
+      court.loadBookings(bookings);
+    }
   }
 }

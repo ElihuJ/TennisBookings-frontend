@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/screens/find_clubs/find_clubs.dart';
 
+import '../../screens/find_clubs/find_clubs.dart';
 import '../index.dart';
 
 class PlayHeaderButton extends StatelessWidget {

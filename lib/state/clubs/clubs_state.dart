@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:tennisbookings/models/riverpod/court.dart';
 
 import '../../global_helpers/index.dart';
 import '../../models/index.dart';
@@ -86,6 +85,8 @@ class Club extends MapView<String, dynamic> implements HasId {
           courts: [],
         );
 
+  // ^ ================================== Loaders ==================================
+
   void loadCourts(List<QueryDocumentSnapshot<Map<String, dynamic>>> docs) {
     final List<Court> courts = docs.map((doc) => Court.fromJson(doc.data())).toList();
     for (final court in courts) {
@@ -94,6 +95,8 @@ class Club extends MapView<String, dynamic> implements HasId {
       }
     }
   }
+
+  // ^ ================================== BoilerPlate ==================================
 
   factory Club.fromJson(Map<String, dynamic> json) {
     // * ================================== Required Props ==================================

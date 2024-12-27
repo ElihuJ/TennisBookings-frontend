@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../containers/loading_box.dart';
 import '../../state/event_status/event_provider.dart';
 import '../../state/event_status/event_state.dart';
+import '../containers/loading_box.dart';
 import '../containers/message.dart';
 
 class EventfulWidget extends HookConsumerWidget {

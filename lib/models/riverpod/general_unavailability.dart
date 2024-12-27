@@ -1,7 +1,7 @@
 import 'dart:collection';
 
-import 'package:tennisbookings/global_types/index.dart';
-import 'package:tennisbookings/models/index.dart';
+import '../../global_types/index.dart';
+import '../index.dart';
 
 import '../../global_helpers/index.dart';
 

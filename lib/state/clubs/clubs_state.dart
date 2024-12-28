@@ -6,8 +6,8 @@ import 'package:flutter/foundation.dart';
 import '../../global_helpers/index.dart';
 import '../../models/index.dart';
 
-final defaultId = getUuid();
-const defaultName = 'Problem loading Club';
+final defaultClubId = getUuid();
+const defaultClubName = 'Problem loading Club';
 
 @immutable
 class Club extends MapView<String, dynamic> implements HasId {
@@ -67,8 +67,8 @@ class Club extends MapView<String, dynamic> implements HasId {
 
   Club.empty()
       : this(
-          id: defaultId,
-          name: defaultName,
+          id: defaultClubId,
+          name: defaultClubName,
           adminIds: [],
           hardCourts: 0,
           clayCourts: 0,
@@ -87,7 +87,7 @@ class Club extends MapView<String, dynamic> implements HasId {
 
   // ^ ================================== Loaders ==================================
 
-  void loadCourts(List<QueryDocumentSnapshot<Map<String, dynamic>>> docs) {
+  void loadCourtsFromDocs(List<QueryDocumentSnapshot<Map<String, dynamic>>> docs) {
     final List<Court> courts = docs.map((doc) => Court.fromJson(doc.data())).toList();
     for (final court in courts) {
       if (!this.courts.contains(court)) {
@@ -100,8 +100,8 @@ class Club extends MapView<String, dynamic> implements HasId {
 
   factory Club.fromJson(Map<String, dynamic> json) {
     // * ================================== Required Props ==================================
-    final id = verifyRequiredProp<String>(prop: json[ClubFields.id], propName: ClubFields.id, defaultValue: defaultId);
-    final name = verifyRequiredProp<String>(prop: json[ClubFields.name], propName: ClubFields.name, defaultValue: defaultName);
+    final id = verifyRequiredProp<String>(prop: json[ClubFields.id], propName: ClubFields.id, defaultValue: defaultClubId);
+    final name = verifyRequiredProp<String>(prop: json[ClubFields.name], propName: ClubFields.name, defaultValue: defaultClubName);
     final adminIdsRaw = verifyRequiredProp<List>(prop: json[ClubFields.adminIds], propName: ClubFields.adminIds, defaultValue: []);
     final hardCourts = verifyRequiredProp<int>(prop: json[ClubFields.hardCourts], propName: ClubFields.hardCourts, defaultValue: 0);
     final clayCourts = verifyRequiredProp<int>(prop: json[ClubFields.clayCourts], propName: ClubFields.clayCourts, defaultValue: 0);

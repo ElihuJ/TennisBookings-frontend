@@ -12,6 +12,7 @@ class ContainerWithBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: double.infinity,
       child: Stack(
         alignment: Alignment.center,
         children: [

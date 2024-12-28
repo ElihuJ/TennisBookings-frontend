@@ -1,9 +1,8 @@
 import 'dart:collection';
 
+import '../../global_helpers/index.dart';
 import '../../global_types/index.dart';
 import '../index.dart';
-
-import '../../global_helpers/index.dart';
 
 class GeneralUnavailability extends MapView<String, dynamic> implements FirestoreModel {
   final DayOfTheWeek dayOfTheWeek;

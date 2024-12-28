@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../screens/club/club_selected_screen.dart';
 import '../screens/find_clubs/find_clubs_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/login/email_login_screen.dart';
 import '../screens/login/forgot_password_screen.dart';
 import '../screens/login/login_screen.dart';
 import '../screens/login/types.dart';
+import '../state/index.dart';
 import 'index.dart';
 
 Route<dynamic> generateLoginRoutes(RouteSettings settings) {
@@ -28,6 +30,13 @@ Route<dynamic> generateLoginRoutes(RouteSettings settings) {
     case FindClubsScreen.route:
       page = const FindClubsScreen();
       break;
+    case ClubSelectedScreen.route:
+      final clubSelected = settings.arguments as Club;
+      page = ClubSelectedScreen(clubSelected: clubSelected);
+      break;
   }
-  return MyEsRoute(builder: (_) => page, settings: settings);
+  return MyEsRoute(
+    builder: (_) => page,
+    settings: settings,
+  );
 }

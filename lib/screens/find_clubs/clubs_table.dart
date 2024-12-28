@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/theme/colors.dart';
 
 import '../../state/index.dart';
+import '../../theme/colors.dart';
+import '../club/club_selected_screen.dart';
 
 class ClubsTable extends StatefulWidget {
   final List<Club> clubs;
@@ -21,6 +22,10 @@ class _ClubsTableState extends State<ClubsTable> {
     setState(() {
       rowSelected.value = index;
     });
+  }
+
+  onRowTapped(Club club) {
+    Navigator.of(context).pushNamed(ClubSelectedScreen.route, arguments: club);
   }
 
   @override
@@ -63,19 +68,20 @@ class _ClubsTableState extends State<ClubsTable> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 children: [
-                  RowCell(text: club.name, onHover: setRowSelected, rowIndex: index, club: club),
-                  RowCell(text: club.hardCourts.toString(), onHover: setRowSelected, rowIndex: index, club: club),
-                  RowCell(text: club.clayCourts.toString(), onHover: setRowSelected, rowIndex: index, club: club),
-                  RowCell(text: club.grassCourts.toString(), onHover: setRowSelected, rowIndex: index, club: club),
-                  RowCell(text: club.otherSurfaceCourts.toString(), onHover: setRowSelected, rowIndex: index, club: club),
+                  RowCell(text: club.name, onHover: setRowSelected, rowIndex: index, club: club, onRowTapped: onRowTapped),
+                  RowCell(text: club.hardCourts.toString(), onHover: setRowSelected, rowIndex: index, club: club, onRowTapped: onRowTapped),
+                  RowCell(text: club.clayCourts.toString(), onHover: setRowSelected, rowIndex: index, club: club, onRowTapped: onRowTapped),
+                  RowCell(text: club.grassCourts.toString(), onHover: setRowSelected, rowIndex: index, club: club, onRowTapped: onRowTapped),
+                  RowCell(text: club.otherSurfaceCourts.toString(), onHover: setRowSelected, rowIndex: index, club: club, onRowTapped: onRowTapped),
                   RowCell(
                       text: '${club.streetAddress} ${club.suburb} ${club.postcode} ${club.state}',
                       onHover: setRowSelected,
                       rowIndex: index,
-                      club: club),
-                  RowCell(text: club.suburb, onHover: setRowSelected, rowIndex: index, club: club),
-                  RowCell(text: club.annualFee.toString(), onHover: setRowSelected, rowIndex: index, club: club),
-                  RowCell(text: club.casualFee.toString(), onHover: setRowSelected, rowIndex: index, club: club),
+                      club: club,
+                      onRowTapped: onRowTapped),
+                  RowCell(text: club.suburb, onHover: setRowSelected, rowIndex: index, club: club, onRowTapped: onRowTapped),
+                  RowCell(text: club.annualFee.toString(), onHover: setRowSelected, rowIndex: index, club: club, onRowTapped: onRowTapped),
+                  RowCell(text: club.casualFee.toString(), onHover: setRowSelected, rowIndex: index, club: club, onRowTapped: onRowTapped),
                 ],
               );
             }),
@@ -91,13 +97,14 @@ class RowCell extends StatelessWidget {
   final Club club;
   final Function(int index) onHover;
   final int rowIndex;
+  final Function(Club club) onRowTapped;
 
-  const RowCell({super.key, required this.text, required this.onHover, required this.rowIndex, required this.club});
+  const RowCell({super.key, required this.text, required this.onHover, required this.rowIndex, required this.club, required this.onRowTapped});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => print('Row cell tapped ${club.name}'),
+      onTap: () => onRowTapped(club),
       child: MouseRegion(
         onExit: (_) => onHover(-1),
         onEnter: (_) => onHover(rowIndex),

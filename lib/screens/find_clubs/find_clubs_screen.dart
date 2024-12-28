@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_helpers/index.dart';
-import 'package:tennisbookings/screens/find_clubs/clubs_table.dart';
-import 'package:tennisbookings/state/clubs/index.dart';
 
 import '../../assets/index.dart';
+import '../../global_helpers/index.dart';
 import '../../global_widgets/eventful/eventful.dart';
 import '../../global_widgets/header/index.dart';
 import '../../global_widgets/index.dart';
+import '../../state/clubs/index.dart';
 import '../login/widgets/containers.dart';
+import 'clubs_table.dart';
 
 class FindClubsScreen extends HookConsumerWidget {
   const FindClubsScreen({super.key});

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../state/index.dart';
 import '../../theme/colors.dart';
 import '../club/club_selected_screen.dart';
+
+const googleUrl = 'https://www.google.com/maps/search/?api=1&query=';
 
 class ClubsTable extends StatefulWidget {
   final List<Club> clubs;
@@ -25,7 +28,12 @@ class _ClubsTableState extends State<ClubsTable> {
   }
 
   onRowTapped(Club club) {
-    Navigator.of(context).pushNamed(ClubSelectedScreen.route, arguments: club);
+    Navigator.of(context).pushNamed('${ClubSelectedScreen.route}?clubId=${club.id}', arguments: club);
+  }
+
+  onAddressTapped(Club club) {
+    final url = '$googleUrl${Uri.encodeComponent('${club.streetAddress}, ${club.suburb}, ${club.state}, ${club.postcode}')}';
+    launchUrl(Uri.parse(url));
   }
 
   @override
@@ -35,6 +43,7 @@ class _ClubsTableState extends State<ClubsTable> {
       alignment: Alignment.topCenter,
       child: SingleChildScrollView(
         child: Table(
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           defaultColumnWidth: const IntrinsicColumnWidth(),
           border: TableBorder.all(
             color: AppColors.black,
@@ -78,10 +87,11 @@ class _ClubsTableState extends State<ClubsTable> {
                       onHover: setRowSelected,
                       rowIndex: index,
                       club: club,
-                      onRowTapped: onRowTapped),
+                      onRowTapped: onAddressTapped,
+                      isAddress: true),
                   RowCell(text: club.suburb, onHover: setRowSelected, rowIndex: index, club: club, onRowTapped: onRowTapped),
-                  RowCell(text: club.annualFee.toString(), onHover: setRowSelected, rowIndex: index, club: club, onRowTapped: onRowTapped),
-                  RowCell(text: club.casualFee.toString(), onHover: setRowSelected, rowIndex: index, club: club, onRowTapped: onRowTapped),
+                  RowCell(text: '\$ ${club.annualFee.toString()}', onHover: setRowSelected, rowIndex: index, club: club, onRowTapped: onRowTapped),
+                  RowCell(text: '\$ ${club.casualFee.toString()}', onHover: setRowSelected, rowIndex: index, club: club, onRowTapped: onRowTapped),
                 ],
               );
             }),
@@ -98,17 +108,46 @@ class RowCell extends StatelessWidget {
   final Function(int index) onHover;
   final int rowIndex;
   final Function(Club club) onRowTapped;
+  final bool isAddress;
 
-  const RowCell({super.key, required this.text, required this.onHover, required this.rowIndex, required this.club, required this.onRowTapped});
+  const RowCell({
+    super.key,
+    required this.text,
+    required this.onHover,
+    required this.rowIndex,
+    required this.club,
+    required this.onRowTapped,
+    this.isAddress = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => onRowTapped(club),
       child: MouseRegion(
+        cursor: SystemMouseCursors.click,
         onExit: (_) => onHover(-1),
-        onEnter: (_) => onHover(rowIndex),
-        child: Padding(padding: const EdgeInsets.all(8.0), child: Text(text, style: const TextStyle(color: Colors.black))),
+        onEnter: (_) {
+          onHover(rowIndex);
+        },
+        child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (isAddress)
+                  const Icon(
+                    Icons.location_on,
+                    color: AppColors.secondaryGreen,
+                  ),
+                if (isAddress) const SizedBox(width: 5),
+                Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.black),
+                ),
+              ],
+            )),
       ),
     );
   }

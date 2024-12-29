@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennisbookings/global_helpers/index.dart';
 
 import '../screens/club/club_selected_screen.dart';
 import '../screens/find_clubs/find_clubs_screen.dart';
@@ -7,12 +8,16 @@ import '../screens/login/email_login_screen.dart';
 import '../screens/login/forgot_password_screen.dart';
 import '../screens/login/login_screen.dart';
 import '../screens/login/types.dart';
-import '../state/index.dart';
 import 'index.dart';
 
 Route<dynamic> generateLoginRoutes(RouteSettings settings) {
   Widget page = const HomeScreen();
-  switch (settings.name) {
+  final settingUri = Uri.parse(settings.name ?? '');
+  final QueryParams queryParams = QueryParams(settingUri.queryParameters);
+  final path = settingUri.path;
+  path.tbLogger('PATH');
+  queryParams.toString().tbLogger('QUERY PARAMS');
+  switch (path) {
     case HomeScreen.route:
       page = const HomeScreen();
       break;
@@ -31,8 +36,8 @@ Route<dynamic> generateLoginRoutes(RouteSettings settings) {
       page = const FindClubsScreen();
       break;
     case ClubSelectedScreen.route:
-      final clubSelected = settings.arguments as Club;
-      page = ClubSelectedScreen(clubSelected: clubSelected);
+      final clubSelectedQueryParams = ClubSelectedQueryParams(queryParams.queryParams);
+      page = ClubSelectedScreen(clubSelectedQueryParams: clubSelectedQueryParams);
       break;
   }
   return MyEsRoute(

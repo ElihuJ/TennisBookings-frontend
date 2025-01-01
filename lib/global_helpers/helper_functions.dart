@@ -47,3 +47,8 @@ delayPrepare(Function prepareFunction, {Duration duration = const Duration(milli
     },
   );
 }
+
+List<T> sortAlphabetically<T>(List<HasName> list) {
+  final sortedList = list..sort((a, b) => a.name.compareTo(b.name));
+  return sortedList as List<T>;
+}

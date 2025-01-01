@@ -7,44 +7,47 @@ import '../index.dart';
 final defaultCourtId = getUuid();
 final defaultCourtName = 'Problem loading Court';
 
-class Court extends MapView<String, dynamic> implements FirestoreModel, HasId {
+class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, HasName {
   @override
   final String id;
   final String clubId;
   final String surface;
+  @override
   final String name;
-  final List<Booking> publicBookings;
+  List<Booking>? publicBookings;
   final List<GeneralUnavailability> generalUnavailability;
   @override
   final List<String> allFields = CourtFields.allFields;
+
+  List<String>? get bookingIds => publicBookings?.map((e) => e.id).toList();
 
   Court({
     required this.id,
     required this.clubId,
     required this.surface,
-    required this.publicBookings,
+    this.publicBookings,
     required this.generalUnavailability,
     required this.name,
   }) : super({
           CourtFields.id: id,
           CourtFields.clubId: clubId,
           CourtFields.surface: surface,
-          CourtFields.publicBookings: publicBookings,
           CourtFields.generalUnavailability: generalUnavailability,
+          CourtFields.publicBookings: publicBookings,
           CourtFields.name: name,
         });
 
-  Court.empty()
-      : this(id: defaultCourtId, clubId: defaultCourtId, surface: 'Unknown', name: defaultCourtName, generalUnavailability: [], publicBookings: []);
+  Court.empty() : this(id: defaultCourtId, clubId: defaultCourtId, surface: 'Unknown', name: defaultCourtName, generalUnavailability: []);
 
   // ^ ================================== Loaders ==================================
 
   void loadBookings(List<Booking> publicBookings) {
-    for (final publicBooking in publicBookings) {
-      if (this.publicBookings.contains(publicBooking)) {
-        continue;
+    this.publicBookings = [];
+    final bookingIds = this.publicBookings?.map((e) => e.id).toList();
+    for (final booking in publicBookings) {
+      if (bookingIds != null && !bookingIds.contains(booking.id)) {
+        this.publicBookings!.add(booking);
       }
-      this.publicBookings.add(publicBooking);
     }
   }
 
@@ -61,10 +64,8 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId {
           ? List<GeneralUnavailability>.from(json[CourtFields.generalUnavailability].map((x) => GeneralUnavailability.fromJson(x)))
           : [];
 
-      final List<Booking> publicBookings =
-          json[CourtFields.publicBookings] != null ? List<Booking>.from(json[CourtFields.publicBookings].map((x) => Booking.fromJson(x))) : [];
-
-      verifyProps(json, CourtFields.allFields);
+      final List<Booking>? publicBookings =
+          json[CourtFields.publicBookings] != null ? List<Booking>.from(json[CourtFields.publicBookings].map((x) => Booking.fromJson(x))) : null;
 
       return Court(
           id: id, clubId: clubId, surface: surface, publicBookings: publicBookings, generalUnavailability: generalUnavailability, name: name);

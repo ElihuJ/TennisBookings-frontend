@@ -1,44 +1,110 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tennisbookings/global_helpers/index.dart';
+import 'package:tennisbookings/global_widgets/loading/loading_screen.dart';
+import 'package:tennisbookings/screens/club/widgets/schedule_header.dart';
 
+import '../../global_widgets/containers/bordered_box.dart';
 import '../../global_widgets/header/index.dart';
+import '../../models/index.dart';
 import '../../routes/index.dart';
 import '../../state/clubs/index.dart';
 
-class ClubSelectedScreen extends HookConsumerWidget {
-  const ClubSelectedScreen({super.key, required this.clubSelectedQueryParams});
-
+class ClubSelectedScreen extends StatefulHookConsumerWidget {
   final ClubSelectedQueryParams clubSelectedQueryParams;
+  const ClubSelectedScreen({super.key, required this.clubSelectedQueryParams});
   static const String route = 'ClubSchedule';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ClubSelectedScreen> createState() => _ClubSelectedScreen();
+}
+
+class _ClubSelectedScreen extends ConsumerState<ClubSelectedScreen> {
+  Court? _courtSelected;
+  Club? _clubSelected;
+  List<Booking>? _bookings;
+  String get paramClubId => widget.clubSelectedQueryParams.clubId;
+
+  @override
+  Widget build(BuildContext context) {
     final clubs = ref.watch(clubsProvider);
+    final clubsNotifier = ref.read(clubsProvider.notifier);
 
     // * This will execute when refreshing page or loading specific URL directly
+    // ^ ============================== If clubs are not loaded  ==============================
     if (clubs.isEmpty) {
-      final clubsNotifier = ref.read(clubsProvider.notifier);
-      clubsNotifier.loadClubs();
+      clubsNotifier.loadClub(paramClubId);
+      return const LoadingScreen(message: 'Loading clubs...');
     }
 
-    final clubSelected = findByIdOrNull<Club>(clubs, clubSelectedQueryParams.clubId);
+    // ^ ============================== If club is not found  ==============================
 
-    if (clubSelected == null) {
-      return const Scaffold(
-        appBar: Header(),
-        body: Center(
-          child: Text('Club not found'),
-        ),
-      );
+    _clubSelected = findByIdOrNull(clubs, paramClubId);
+    if (_clubSelected == null) return NotFoundScreen();
+
+    // ^ ============================== Loading courts  ==============================
+
+    List<Court> courts = sortAlphabetically(_clubSelected!.courts);
+
+    if (courts.isEmpty) {
+      clubsNotifier.loadCourts(_clubSelected!);
+      return const LoadingScreen(message: 'Loading courts...');
     }
+
+    // ^ ============================== Setting default court ==============================
+
+    if (_courtSelected == null) {
+      setState(() {
+        '1'.tbLogger('1');
+        _courtSelected = courts.first;
+        clubsNotifier.loadBookings(_clubSelected!, _courtSelected!);
+      });
+      return const LoadingScreen(message: 'Loading courts...');
+    }
+
+    _bookings = _courtSelected!.publicBookings;
+
+    // ^ ============================== Loading bookings  ==============================
+
+    if (_bookings == null) {
+      '2'.tbLogger('2');
+      clubsNotifier.loadBookings(_clubSelected!, _courtSelected!);
+      final x = _courtSelected!.publicBookings;
+      _bookings = x;
+      setState(() {
+        '3'.tbLogger('3');
+      });
+      return const LoadingScreen(message: 'Loading bookings...');
+    }
+
+    // ^ ==============================  Main View  =======================================
 
     return Scaffold(
       appBar: Header(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text(clubSelected.name)],
+          children: [
+            ScheduleHeader(
+              clubSelected: _clubSelected!,
+              courts: courts,
+              courtSelected: _courtSelected!,
+              setState: (newValue) => setState(() {
+                _courtSelected = courts.firstWhere((court) => court.id == newValue);
+                _bookings = null;
+              }),
+            ),
+            Expanded(
+              child: BorderedBox(
+                margin: const EdgeInsets.all(40),
+                child: Column(
+                  children: _bookings!.map((booking) {
+                    return Text(booking.toString());
+                  }).toList(),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

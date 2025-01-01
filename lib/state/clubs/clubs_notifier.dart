@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/global_helpers/index.dart';
 
 import '../../models/index.dart';
 import 'index.dart';
@@ -58,6 +59,19 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     state = [];
   }
 
+  Future<void> loadClub(String clubId) async {
+    // * Getting firebase data
+    final doc = await clubsCollection.doc(clubId).get();
+    if (doc.exists) {
+      // * Transform to Clubs class
+      final club = loadClubFromDoc(doc);
+      if (club != null) state = [...state, club];
+      return;
+    }
+    // * If no data is found
+    state = [];
+  }
+
   Future<void> loadCourts(Club club) async {
     final querySnapshot = await clubsCollection.doc(club.id).collection(CourtsSubCollections.courts).get();
     final courtsDocs = querySnapshot.docs;
@@ -69,6 +83,9 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
   }
 
   Future<void> loadBookings(Club club, Court court) async {
+    final publicBookings = court.publicBookings;
+    if (publicBookings != null && publicBookings.isNotEmpty) return;
+    court.tbLogger('MAKING QUERY', DebugLevel.trace);
     final querySnapshot = await clubsCollection
         .doc(club.id)
         .collection(CourtsSubCollections.courts)

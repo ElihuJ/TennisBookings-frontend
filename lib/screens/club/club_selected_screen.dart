@@ -65,9 +65,7 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
 
     if (_bookings == null) {
       clubsNotifier.loadBookings(_clubSelected!, _courtSelected!);
-      final x = _courtSelected!.publicBookings;
-      _bookings = x;
-
+      _bookings = _courtSelected!.publicBookings;
       return const LoadingScreen(message: 'Loading bookings...');
     }
 

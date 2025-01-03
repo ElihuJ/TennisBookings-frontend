@@ -83,6 +83,12 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
   }
 
   Future<void> loadBookings(Club club, Court court) async {
+    if (court.publicBookings != null && court.publicBookings!.isNotEmpty) {
+      // ? Adding delay otherwise it will be too fast and cause state issues
+      await Future.delayed(const Duration(milliseconds: 10));
+      state = [...state];
+      return;
+    }
     court.tbLogger('MAKING QUERY', DebugLevel.error);
     final querySnapshot = await clubsCollection
         .doc(club.id)

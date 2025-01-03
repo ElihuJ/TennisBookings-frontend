@@ -54,11 +54,8 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
     // ^ ============================== Setting default court ==============================
 
     if (_courtSelected == null) {
-      setState(() {
-        '1'.tbLogger('1');
-        _courtSelected = courts.first;
-        clubsNotifier.loadBookings(_clubSelected!, _courtSelected!);
-      });
+      _courtSelected = courts.first;
+      clubsNotifier.loadBookings(_clubSelected!, _courtSelected!);
       return const LoadingScreen(message: 'Loading courts...');
     }
 
@@ -67,13 +64,10 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
     // ^ ============================== Loading bookings  ==============================
 
     if (_bookings == null) {
-      '2'.tbLogger('2');
       clubsNotifier.loadBookings(_clubSelected!, _courtSelected!);
       final x = _courtSelected!.publicBookings;
       _bookings = x;
-      setState(() {
-        '3'.tbLogger('3');
-      });
+
       return const LoadingScreen(message: 'Loading bookings...');
     }
 

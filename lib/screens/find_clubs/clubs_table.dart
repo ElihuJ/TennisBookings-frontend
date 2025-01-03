@@ -28,7 +28,7 @@ class _ClubsTableState extends State<ClubsTable> {
   }
 
   onRowTapped(Club club) {
-    Navigator.of(context).pushNamed('${ClubSelectedScreen.route}?clubId=${club.id}', arguments: club);
+    Navigator.of(context).pushNamed('${ScheduleScreen.route}?clubId=${club.id}', arguments: club);
   }
 
   onAddressTapped(Club club) {

@@ -35,9 +35,9 @@ Route<dynamic> generateLoginRoutes(RouteSettings settings) {
     case FindClubsScreen.route:
       page = const FindClubsScreen();
       break;
-    case ClubSelectedScreen.route:
+    case ScheduleScreen.route:
       final clubSelectedQueryParams = ClubSelectedQueryParams(queryParams.queryParams);
-      page = ClubSelectedScreen(clubSelectedQueryParams: clubSelectedQueryParams);
+      page = ScheduleScreen(clubSelectedQueryParams: clubSelectedQueryParams);
       break;
   }
   return MyEsRoute(

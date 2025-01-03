@@ -83,9 +83,7 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
   }
 
   Future<void> loadBookings(Club club, Court court) async {
-    final publicBookings = court.publicBookings;
-    if (publicBookings != null && publicBookings.isNotEmpty) return;
-    court.tbLogger('MAKING QUERY', DebugLevel.trace);
+    court.tbLogger('MAKING QUERY', DebugLevel.error);
     final querySnapshot = await clubsCollection
         .doc(club.id)
         .collection(CourtsSubCollections.courts)

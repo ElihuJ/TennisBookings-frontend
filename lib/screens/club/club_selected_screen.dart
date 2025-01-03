@@ -10,16 +10,16 @@ import '../../models/index.dart';
 import '../../routes/index.dart';
 import '../../state/clubs/index.dart';
 
-class ClubSelectedScreen extends StatefulHookConsumerWidget {
+class ScheduleScreen extends StatefulHookConsumerWidget {
   final ClubSelectedQueryParams clubSelectedQueryParams;
-  const ClubSelectedScreen({super.key, required this.clubSelectedQueryParams});
+  const ScheduleScreen({super.key, required this.clubSelectedQueryParams});
   static const String route = 'ClubSchedule';
 
   @override
-  ConsumerState<ClubSelectedScreen> createState() => _ClubSelectedScreen();
+  ConsumerState<ScheduleScreen> createState() => _ScheduleScreen();
 }
 
-class _ClubSelectedScreen extends ConsumerState<ClubSelectedScreen> {
+class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
   Court? _courtSelected;
   Club? _clubSelected;
   List<Booking>? _bookings;
@@ -48,7 +48,7 @@ class _ClubSelectedScreen extends ConsumerState<ClubSelectedScreen> {
 
     if (courts.isEmpty) {
       clubsNotifier.loadCourts(_clubSelected!);
-      return const LoadingScreen(message: 'Loading courts...');
+      return const LoadingScreen(message: 'Loading courts..');
     }
 
     // ^ ============================== Setting default court ==============================

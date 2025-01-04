@@ -3,7 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../state/index.dart';
 import '../../theme/colors.dart';
-import '../club/club_selected_screen.dart';
+import '../club/schedule_screen.dart';
 
 const googleUrl = 'https://www.google.com/maps/search/?api=1&query=';
 

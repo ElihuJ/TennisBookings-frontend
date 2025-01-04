@@ -23,26 +23,39 @@ class ScheduleHeader extends StatelessWidget {
         children: [
           Text(
             clubSelected.name,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: selectedTheme.textTheme.bodyLarge,
           ),
           const SizedBox(width: 50),
-          DropdownButton<String>(
-            value: courtSelected.id,
-            onChanged: (String? newValue) {
-              if (newValue != courtSelected.id) {
-                setState(newValue);
-              }
-            },
-            items: sortedCourts.map<DropdownMenuItem<String>>((court) {
-              return DropdownMenuItem<String>(
-                value: court.id,
-                child: Container(margin: EdgeInsets.all(5), child: Text(court.name)),
-              );
-            }).toList(),
-            dropdownColor: AppColors.backgroundGreen,
-            icon: Icon(Icons.arrow_drop_down, color: AppColors.primaryGreen),
-            underline: Container(),
-            borderRadius: BorderRadius.circular(15),
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: DropdownButton<String>(
+              value: courtSelected.id,
+              onChanged: (String? newValue) {
+                if (newValue != courtSelected.id) {
+                  setState(newValue);
+                }
+              },
+              items: sortedCourts.map<DropdownMenuItem<String>>((court) {
+                return DropdownMenuItem<String>(
+                  value: court.id,
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    margin: EdgeInsets.all(5),
+                    child: Text(
+                      court.name,
+                    ),
+                  ),
+                );
+              }).toList(),
+              dropdownColor: AppColors.white,
+              style: selectedTheme.textTheme.bodyLarge,
+              icon: Icon(Icons.arrow_drop_down, color: AppColors.primaryGreen),
+              underline: Container(),
+              borderRadius: BorderRadius.circular(15),
+            ),
           ),
         ],
       ),

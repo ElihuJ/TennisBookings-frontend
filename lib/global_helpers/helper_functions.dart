@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'index.dart';
@@ -54,4 +55,8 @@ delayPrepare(Function prepareFunction, {Duration duration = const Duration(milli
 List<T> sortAlphabetically<T>(List<HasName> list) {
   final sortedList = list..sort((a, b) => a.name.compareTo(b.name));
   return sortedList as List<T>;
+}
+
+Color getContrastColor(Color color) {
+  return color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
 }

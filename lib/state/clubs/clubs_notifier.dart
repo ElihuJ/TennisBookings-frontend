@@ -101,6 +101,11 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
       final bookings = loadBookingsFromDocs(bookingsDocs);
       court.loadBookings(bookings);
       state = [...state];
+      return;
     }
+    // * If no data is found
+    court.loadBookings([]);
+    state = [...state];
+    return;
   }
 }

@@ -4,11 +4,11 @@ import 'package:tennisbookings/global_helpers/index.dart';
 import 'package:tennisbookings/global_widgets/loading/loading_screen.dart';
 import 'package:tennisbookings/screens/club/widgets/schedule_header.dart';
 
-import '../../global_widgets/containers/bordered_box.dart';
 import '../../global_widgets/header/index.dart';
 import '../../models/index.dart';
 import '../../routes/index.dart';
 import '../../state/clubs/index.dart';
+import 'widgets/calendar_view.dart';
 
 class ScheduleScreen extends StatefulHookConsumerWidget {
   final ClubSelectedQueryParams clubSelectedQueryParams;
@@ -86,16 +86,7 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
                 _bookings = null;
               }),
             ),
-            Expanded(
-              child: BorderedBox(
-                margin: const EdgeInsets.all(40),
-                child: Column(
-                  children: _bookings!.map((booking) {
-                    return Text(booking.toString());
-                  }).toList(),
-                ),
-              ),
-            ),
+            CalendarView(bookings: _bookings!),
           ],
         ),
       ),

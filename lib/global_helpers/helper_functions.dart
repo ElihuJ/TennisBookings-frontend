@@ -7,21 +7,24 @@ int getNowInEpoch() {
 }
 
 int fromDateToEpoch(DateTime date) {
-  return date.millisecondsSinceEpoch;
+  return (date.millisecondsSinceEpoch / 1000).round();
 }
 
 DateTime fromEpochToDateTime(int epoch) {
-  return DateTime.fromMillisecondsSinceEpoch(epoch);
+  final milliseconds = epoch * 1000;
+  return DateTime.fromMillisecondsSinceEpoch(milliseconds);
 }
 
 String prettyDateFromEpoch(int epoch) {
-  final date = fromEpochToDateTime(epoch);
+  final seconds = (epoch / 1000).round();
+  final date = fromEpochToDateTime(seconds);
   final formattedDate = DateFormat('dd/MMM/yy').format(date);
   return formattedDate.toString();
 }
 
 String getMonthAndYearFromEpoch(int epoch) {
-  final date = fromEpochToDateTime(epoch);
+  final seconds = (epoch / 1000).round();
+  final date = fromEpochToDateTime(seconds);
   final formattedDate = DateFormat('MMM/yy').format(date);
   return formattedDate.toString();
 }

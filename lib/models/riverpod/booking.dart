@@ -19,6 +19,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
   final List<BookingRequest> requests;
   final List<BookingRestrictions> restrictions;
   final BookingStatus status;
+  final String title;
 
   @override
   final List<String> allFields = BookingFields.allFields;
@@ -35,6 +36,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
     required this.requests,
     required this.restrictions,
     required this.status,
+    required this.title,
   }) : super({
           BookingFields.id: id,
           BookingFields.confirmedPlayerIds: confirmedPlayerIds,
@@ -47,6 +49,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
           BookingFields.requests: requests,
           BookingFields.restrictions: restrictions,
           BookingFields.status: status,
+          BookingFields.title: title,
         });
 
   Booking.empty()
@@ -62,6 +65,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
           requests: [],
           restrictions: [],
           status: BookingStatus.open,
+          title: defaultName,
         );
 
   factory Booking.fromJson(Map<String, dynamic> json) {
@@ -75,6 +79,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
       final to = verifyRequiredProp<int>(prop: json[BookingFields.to], propName: BookingFields.to, defaultValue: 0);
       final isPrivate = verifyRequiredProp<bool>(prop: json[BookingFields.isPrivate], propName: BookingFields.isPrivate, defaultValue: false);
       final ownerId = verifyRequiredProp<String>(prop: json[BookingFields.ownerId], propName: BookingFields.ownerId, defaultValue: defaultId);
+      final title = verifyRequiredProp<String>(prop: json[BookingFields.title], propName: BookingFields.title, defaultValue: defaultName);
 
       final List<BookingRequest> requests =
           json[BookingFields.requests] != null ? List<BookingRequest>.from(json[BookingFields.requests].map((x) => BookingRequest.fromJson(x))) : [];
@@ -89,17 +94,19 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
       verifyProps(json, BookingFields.allFields);
 
       return Booking(
-          id: id,
-          confirmedPlayerIds: confirmedPlayerIds,
-          courtId: courtId,
-          format: format,
-          from: from,
-          to: to,
-          isPrivate: isPrivate,
-          ownerId: ownerId,
-          requests: requests,
-          restrictions: restrictions,
-          status: status);
+        id: id,
+        confirmedPlayerIds: confirmedPlayerIds,
+        courtId: courtId,
+        format: format,
+        from: from,
+        to: to,
+        isPrivate: isPrivate,
+        ownerId: ownerId,
+        requests: requests,
+        restrictions: restrictions,
+        status: status,
+        title: title,
+      );
     } catch (e) {
       e.tbLogger('1 ERROR CONSTRUCTING BOOKING', DebugLevel.error);
       return Booking.empty();
@@ -119,6 +126,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
     List<BookingRequest>? requests,
     List<BookingRestrictions>? restrictions,
     BookingStatus? status,
+    String? title,
   }) {
     return Booking(
       id: id ?? this.id,
@@ -132,6 +140,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
       requests: requests ?? this.requests,
       restrictions: restrictions ?? this.restrictions,
       status: status ?? this.status,
+      title: title ?? this.title,
     );
   }
 
@@ -148,5 +157,6 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
         BookingFields.requests: requests.map((x) => x.toJson()).toList(),
         BookingFields.restrictions: restrictions.map((x) => x.toJson()).toList(),
         BookingFields.status: status.name,
+        BookingFields.title: title,
       };
 }

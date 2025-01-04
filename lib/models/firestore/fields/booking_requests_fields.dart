@@ -10,8 +10,22 @@ class BookingFields {
   static const String format = 'format';
   static const String requests = 'requests';
   static const String isPrivate = 'isPrivate';
+  static const String title = 'title';
 
-  static const List<String> allFields = [id, courtId, ownerId, from, to, status, restrictions, confirmedPlayerIds, format, requests, isPrivate];
+  static const List<String> allFields = [
+    id,
+    courtId,
+    ownerId,
+    from,
+    to,
+    status,
+    restrictions,
+    confirmedPlayerIds,
+    format,
+    requests,
+    isPrivate,
+    title
+  ];
 }
 
 class BookingRequestFields {

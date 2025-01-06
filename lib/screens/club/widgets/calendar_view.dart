@@ -28,17 +28,20 @@ class _CalendarView extends ConsumerState<CalendarView> {
 
   @override
   Widget build(BuildContext context) {
-    final userId = ref.watch(userProvider).uid;
     final clubsNotifier = ref.read(clubsProvider.notifier);
     final allEvents = [..._eventController.allEvents];
     _eventController.removeAll(allEvents);
 
     _bookings = widget.courtSelected.publicBookings;
 
+    // final dateInView = widget.dateInView;
+    // ! TODO: MOCKED DATE
+    final dateInView = DateTime(2025, 1, 1);
+
     // ^ ============================== Loading bookings  ==============================
 
     if (_bookings == null) {
-      clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, widget.dateInView);
+      clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, dateInView);
       _bookings = widget.courtSelected.publicBookings;
       return const CircularProgressIndicator();
     }
@@ -57,8 +60,6 @@ class _CalendarView extends ConsumerState<CalendarView> {
     }).toList();
 
     _eventController.addAll(events);
-
-    final dateInView = widget.dateInView;
 
     return CalendarControllerProvider<Booking>(
       controller: _eventController,
@@ -91,11 +92,6 @@ class _CalendarView extends ConsumerState<CalendarView> {
             key: _calendarKey,
             heightPerMinute: 1, // height occupied by 1 minute time span.
             eventArranger: SideEventArranger(), // To define how simultaneous events will be arranged.
-            onEventTap: (events, date) {
-              if (events.first.event!.ownerId == userId) {
-                showDialog(context: context, builder: (context) => AlertDialog(content: Text('You are the owner')));
-              }
-            },
             onPageChange: (startDate, number) async {
               widget.setDateInView(startDate);
               clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, startDate);

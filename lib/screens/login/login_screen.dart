@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/assets/index.dart';
 
 import '../../global_widgets/buttons/login_button.dart';
 import '../../global_widgets/eventful/eventful.dart';
@@ -32,26 +33,38 @@ class LoginScreen extends HookConsumerWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  // ^ ================== GOOGLE LOGIN ==================
-                  SocialsSignUp(
-                    eventNotifier: eventNotifier,
-                    firebaseNotifier: firebaseAuthNotifier,
-                    userNotifier: userNotifier,
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    // ^ ================== EMAIL LOGIN ==================
-                    child: LoginButton(
-                      onTap: () {
-                        // * Handle email login
-                        Navigator.pushNamed(context, EmailLoginScreen.route, arguments: ScreenMode.login);
-                      },
-                      text: context.localeString(LoginScreenStrings.loginWithEmail),
-                      icon: const Icon(Icons.email),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    clipBehavior: Clip.antiAlias,
+                    child: Image.asset(
+                      logoPgn,
+                      width: 300,
                     ),
+                  ),
+                  // ^ ================== GOOGLE LOGIN ==================
+                  Column(
+                    children: [
+                      SocialsSignUp(
+                        eventNotifier: eventNotifier,
+                        firebaseNotifier: firebaseAuthNotifier,
+                        userNotifier: userNotifier,
+                      ),
+                      SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        // ^ ================== EMAIL LOGIN ==================
+                        child: LoginButton(
+                          onTap: () {
+                            // * Handle email login
+                            Navigator.pushNamed(context, EmailLoginScreen.route, arguments: ScreenMode.login);
+                          },
+                          text: context.localeString(LoginScreenStrings.loginWithEmail),
+                          icon: const Icon(Icons.email),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

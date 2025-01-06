@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 
+import '../../../assets/index.dart';
 import '../../../strings/login/index.dart';
 import 'text_area.dart';
 
@@ -15,6 +16,15 @@ class WelcomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
+      ClipRRect(
+        borderRadius: BorderRadius.circular(20.0),
+        clipBehavior: Clip.antiAlias,
+        child: Image.asset(
+          logoPgn,
+          width: 300,
+        ),
+      ),
+      SizedBox(height: 20),
       TextArea(
         text: isLogin ? context.localeString(EmailLoginScreenStrings.login) : context.localeString(EmailLoginScreenStrings.signUp),
         isTitle: true,

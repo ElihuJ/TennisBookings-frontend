@@ -159,6 +159,7 @@ class _LoginSignupFormState extends ConsumerState<LoginSignupForm> {
             Column(
               children: [
                 Text(context.localeString(EmailLoginScreenStrings.orContinueWith)),
+                const SizedBox(height: _margin),
                 SocialsSignUp(eventNotifier: eventNotifier, firebaseNotifier: firebaseNotifier, userNotifier: userNotifier),
               ],
             )

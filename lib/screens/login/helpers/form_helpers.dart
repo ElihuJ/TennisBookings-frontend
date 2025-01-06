@@ -5,32 +5,32 @@ import '../../../strings/login/index.dart';
 
 String? emailValidator(String? value, BuildContext context) {
   if (value == null || value.isEmpty) {
-    return context.localeString(LoginSignupValidatorStrings.emailRequired);
+    return context.localeString(LoginRegisterValidatorStrings.emailRequired);
   }
   // Use regex to verify email format
   final regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
   if (!regex.hasMatch(value)) {
-    return context.localeString(LoginSignupValidatorStrings.emailInvalid);
+    return context.localeString(LoginRegisterValidatorStrings.emailInvalid);
   }
   return null;
 }
 
 String? passwordValidator(String? value, BuildContext context) {
   if (value == null || value.isEmpty) {
-    return context.localeString(LoginSignupValidatorStrings.passwordRequired);
+    return context.localeString(LoginRegisterValidatorStrings.passwordRequired);
   }
   if (value.length < 6) {
-    return context.localeString(LoginSignupValidatorStrings.passwordInvalid);
+    return context.localeString(LoginRegisterValidatorStrings.passwordInvalid);
   }
   return null;
 }
 
 String? confirmPasswordValidator(String? value, String password, BuildContext context) {
   if (value == null || value.isEmpty) {
-    return context.localeString(LoginSignupValidatorStrings.confirmPasswordRequired);
+    return context.localeString(LoginRegisterValidatorStrings.confirmPasswordRequired);
   }
   if (value != password) {
-    return context.localeString(LoginSignupValidatorStrings.confirmPasswordInvalid);
+    return context.localeString(LoginRegisterValidatorStrings.confirmPasswordInvalid);
   }
   return null;
 }

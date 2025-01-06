@@ -1,1 +1,1 @@
-export 'login_signup_modal.dart';
+export 'login_register_modal.dart';

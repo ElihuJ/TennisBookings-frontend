@@ -26,7 +26,7 @@ class WelcomeHeader extends StatelessWidget {
       ),
       SizedBox(height: 20),
       TextArea(
-        text: isLogin ? context.localeString(EmailLoginScreenStrings.login) : context.localeString(EmailLoginScreenStrings.signUp),
+        text: isLogin ? context.localeString(EmailLoginScreenStrings.login) : context.localeString(EmailLoginScreenStrings.register),
         isTitle: true,
       ),
       TextArea(

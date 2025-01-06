@@ -8,7 +8,7 @@ typedef Success = bool;
 
 typedef ErrorCode = String;
 
-typedef SignUpResult = (fb_auth.User?, ErrorInfo?);
+typedef RegisterResult = (fb_auth.User?, ErrorInfo?);
 
 typedef AiResponse = (String?, ErrorInfo?);
 

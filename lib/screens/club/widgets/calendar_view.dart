@@ -66,7 +66,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
       child: Expanded(
         child: Container(
           width: double.infinity,
-          margin: const EdgeInsets.all(40),
+          margin: const EdgeInsets.only(bottom: 40, left: 20, right: 20),
           height: 500,
           child: WeekView<Booking>(
             liveTimeIndicatorSettings: LiveTimeIndicatorSettings(
@@ -78,7 +78,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
             hourIndicatorSettings: HourIndicatorSettings(),
             timeLineWidth: 80,
             headerStringBuilder: (date, {DateTime? secondaryDate}) =>
-                '${prettyDateFromEpoch(date.millisecondsSinceEpoch)} - ${prettyDateFromEpoch(secondaryDate!.millisecondsSinceEpoch)}',
+                '${prettyDateFromEpoch(date.millisecondsSinceEpoch)}   ---   ${prettyDateFromEpoch(secondaryDate!.millisecondsSinceEpoch)}',
             headerStyle: HeaderStyle(
               decoration: BoxDecoration(
                 color: AppColors.primaryGreen,

@@ -11,7 +11,7 @@ class LoginScreenStrings {
 class EmailLoginScreenStrings {
   static const login = 'email_login_screen_login';
   static const loggingIn = 'email_login_screen_logging_in';
-  static const signUp = 'email_login_screen_sign_up';
+  static const register = 'email_login_screen_register';
   static const creatingAccount = 'email_login_screen_creating_account';
   static const loginToYourAccount = 'email_login_screen_login_to_your_account';
   static const justAFewThings = 'email_login_screen_just_a_few_things';
@@ -38,7 +38,7 @@ class ForgotPasswordScreenStrings {
   ForgotPasswordScreenStrings._();
 }
 
-class LoginSignupValidatorStrings {
+class LoginRegisterValidatorStrings {
   static const emailRequired = 'login_sign_up_validator_email_required';
   static const emailInvalid = 'login_sign_up_validator_email_invalid';
   static const passwordRequired = 'login_sign_up_validator_password_required';
@@ -46,5 +46,5 @@ class LoginSignupValidatorStrings {
   static const confirmPasswordRequired = 'login_sign_up_validator_confirm_password_required';
   static const confirmPasswordInvalid = 'login_sign_up_validator_confirm_password_invalid';
 
-  LoginSignupValidatorStrings._();
+  LoginRegisterValidatorStrings._();
 }

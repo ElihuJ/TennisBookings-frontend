@@ -4,8 +4,8 @@ import '../../screens/login/email_login_screen.dart';
 import '../../screens/login/login_screen.dart';
 import '../../screens/login/types.dart';
 
-class LoginSignupModal extends StatelessWidget {
-  const LoginSignupModal({super.key});
+class LoginRegisterModal extends StatelessWidget {
+  const LoginRegisterModal({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +18,19 @@ class LoginSignupModal extends StatelessWidget {
           onPressed: () => Navigator.of(context).pushNamed(LoginScreen.route),
         ),
         TextButton(
-          child: Text('Sign Up'),
-          onPressed: () => Navigator.of(context).pushNamed(EmailLoginScreen.route, arguments: ScreenMode.signUp),
+          child: Text('Register'),
+          onPressed: () => Navigator.of(context).pushNamed(EmailLoginScreen.route, arguments: ScreenMode.register),
         ),
       ],
     );
   }
 }
 
-void showLoginSignupModal(BuildContext context) {
+void showLoginRegisterModal(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return LoginSignupModal();
+      return LoginRegisterModal();
     },
   );
 }

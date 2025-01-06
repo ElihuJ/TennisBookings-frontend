@@ -31,7 +31,7 @@ class LoginRegisterButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.darkGreen,
           ),
-          onPressed: () => Navigator.of(context).pushNamed(EmailLoginScreen.route, arguments: ScreenMode.signUp),
+          onPressed: () => Navigator.of(context).pushNamed(EmailLoginScreen.route, arguments: ScreenMode.register),
           child: Text(
             'Register',
             style: TextStyle(color: AppColors.white),

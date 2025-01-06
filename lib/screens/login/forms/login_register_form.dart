@@ -20,8 +20,8 @@ import '../widgets/text_field.dart';
 
 const double _margin = 15;
 
-class LoginSignupForm extends StatefulHookConsumerWidget {
-  const LoginSignupForm({
+class LoginRegisterForm extends StatefulHookConsumerWidget {
+  const LoginRegisterForm({
     super.key,
     required this.isLogin,
     required this.email,
@@ -33,10 +33,10 @@ class LoginSignupForm extends StatefulHookConsumerWidget {
   final void Function({required String newEmail}) updateEmail;
 
   @override
-  ConsumerState<LoginSignupForm> createState() => _LoginSignupFormState();
+  ConsumerState<LoginRegisterForm> createState() => _LoginRegisterFormState();
 }
 
-class _LoginSignupFormState extends ConsumerState<LoginSignupForm> {
+class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
   final formKey = GlobalKey<FormState>();
 
   String password = '';
@@ -160,7 +160,7 @@ class _LoginSignupFormState extends ConsumerState<LoginSignupForm> {
               children: [
                 Text(context.localeString(EmailLoginScreenStrings.orContinueWith)),
                 const SizedBox(height: _margin),
-                SocialsSignUp(eventNotifier: eventNotifier, firebaseNotifier: firebaseNotifier, userNotifier: userNotifier),
+                SocialsRegister(eventNotifier: eventNotifier, firebaseNotifier: firebaseNotifier, userNotifier: userNotifier),
               ],
             )
         ],
@@ -169,8 +169,8 @@ class _LoginSignupFormState extends ConsumerState<LoginSignupForm> {
   }
 }
 
-class SocialsSignUp extends StatelessWidget {
-  const SocialsSignUp({
+class SocialsRegister extends StatelessWidget {
+  const SocialsRegister({
     super.key,
     required this.eventNotifier,
     required this.firebaseNotifier,

@@ -9,7 +9,7 @@ import '../../global_widgets/header/index.dart';
 import '../../state/index.dart';
 import '../../strings/index.dart';
 import 'email_login_screen.dart';
-import 'forms/login_sign_up_form.dart';
+import 'forms/login_register_form.dart';
 import 'types.dart';
 
 class LoginScreen extends HookConsumerWidget {
@@ -46,7 +46,7 @@ class LoginScreen extends HookConsumerWidget {
                   // ^ ================== GOOGLE LOGIN ==================
                   Column(
                     children: [
-                      SocialsSignUp(
+                      SocialsRegister(
                         eventNotifier: eventNotifier,
                         firebaseNotifier: firebaseAuthNotifier,
                         userNotifier: userNotifier,

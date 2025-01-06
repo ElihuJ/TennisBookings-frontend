@@ -16,7 +16,7 @@ final usersCollection = FirebaseFirestore.instance.collection(FirestoreCollectio
 class FirebaseAuthNotifier extends StateNotifier<FirebaseAuth> {
   FirebaseAuthNotifier() : super(FirebaseAuth.empty());
 
-  Future<SignUpResult> createAccount({required String email, required String password}) async {
+  Future<RegisterResult> createAccount({required String email, required String password}) async {
     ErrorInfo? errorMessage;
     try {
       final userCredentials = await firebase.createUserWithEmailAndPassword(email: email, password: password);
@@ -71,7 +71,7 @@ class FirebaseAuthNotifier extends StateNotifier<FirebaseAuth> {
     state = FirebaseAuth.empty();
   }
 
-  Future<SignUpResult> signInWithGoogle({ResultHandler? resultHandler}) async {
+  Future<RegisterResult> signInWithGoogle({ResultHandler? resultHandler}) async {
     final localResultHandler = resultHandler ?? ResultHandler();
     try {
       final googleUser = await state.googleSignIn.signIn();
@@ -126,7 +126,7 @@ class FirebaseAuthNotifier extends StateNotifier<FirebaseAuth> {
 
   // * APPLE LOGIN
 
-  Future<SignUpResult> signInWithApple({ResultHandler? resultHandler}) async {
+  Future<RegisterResult> signInWithApple({ResultHandler? resultHandler}) async {
     // To prevent replay attacks with the credential returned from Apple, we
     // include a nonce in the credential request. When signing in with
     // Firebase, the nonce in the id token returned by Apple, is expected to

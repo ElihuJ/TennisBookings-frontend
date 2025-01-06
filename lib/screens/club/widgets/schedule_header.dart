@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennisbookings/screens/find_clubs/find_clubs_screen.dart';
 
 import '../../../models/index.dart';
 import '../../../state/index.dart';
@@ -16,49 +17,57 @@ class ScheduleHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final sortedCourts = courts..sort((a, b) => a.name.compareTo(b.name));
 
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            clubSelected.name,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pushNamed(FindClubsScreen.route),
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Text(
+                clubSelected.name,
+                style: selectedTheme.textTheme.bodyLarge,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 50),
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: DropdownButton<String>(
+            value: courtSelected.id,
+            onChanged: (String? newValue) {
+              if (newValue != courtSelected.id) {
+                setState(newValue);
+              }
+            },
+            items: sortedCourts.map<DropdownMenuItem<String>>((court) {
+              return DropdownMenuItem<String>(
+                value: court.id,
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  margin: EdgeInsets.all(5),
+                  child: Text(court.name),
+                ),
+              );
+            }).toList(),
+            dropdownColor: AppColors.white,
             style: selectedTheme.textTheme.bodyLarge,
+            icon: Icon(Icons.arrow_drop_down, color: AppColors.primaryGreen),
+            underline: Container(),
+            borderRadius: BorderRadius.circular(15),
           ),
-          const SizedBox(width: 50),
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: DropdownButton<String>(
-              value: courtSelected.id,
-              onChanged: (String? newValue) {
-                if (newValue != courtSelected.id) {
-                  setState(newValue);
-                }
-              },
-              items: sortedCourts.map<DropdownMenuItem<String>>((court) {
-                return DropdownMenuItem<String>(
-                  value: court.id,
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    margin: EdgeInsets.all(5),
-                    child: Text(
-                      court.name,
-                    ),
-                  ),
-                );
-              }).toList(),
-              dropdownColor: AppColors.white,
-              style: selectedTheme.textTheme.bodyLarge,
-              icon: Icon(Icons.arrow_drop_down, color: AppColors.primaryGreen),
-              underline: Container(),
-              borderRadius: BorderRadius.circular(15),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -46,7 +46,7 @@ class EventContainer extends HookConsumerWidget {
       child: GestureDetector(
         onTap: () {
           if (isClickable && user.uid.isEmpty) {
-            showLoginSignupModal(context);
+            showLoginRegisterModal(context);
             return;
           }
           if (events.first.event!.ownerId == user.uid) {

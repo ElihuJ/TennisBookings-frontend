@@ -4,13 +4,13 @@ import '../../global_helpers/index.dart';
 import '../../global_widgets/eventful/eventful.dart';
 import '../../global_widgets/header/index.dart';
 import '../../theme/colors.dart';
-import 'forms/login_sign_up_form.dart';
+import 'forms/login_register_form.dart';
 import 'types.dart';
 import 'widgets/footer.dart';
 import 'widgets/welcome_header.dart';
 
 class EmailLoginScreen extends StatefulWidget {
-  static const route = 'LoginSignupEmail';
+  static const route = 'LoginRegisterEmail';
   final ScreenMode screenMode;
 
   const EmailLoginScreen({super.key, required this.screenMode});
@@ -31,7 +31,7 @@ class EmailLoginScreenState extends State<EmailLoginScreen> {
 
   void toggleScreenMode() {
     setState(() {
-      _screenMode = _screenMode == ScreenMode.login ? ScreenMode.signUp : ScreenMode.login;
+      _screenMode = _screenMode == ScreenMode.login ? ScreenMode.register : ScreenMode.login;
     });
   }
 
@@ -56,7 +56,7 @@ class EmailLoginScreenState extends State<EmailLoginScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               WelcomeHeader(isLogin: isLogin),
-              LoginSignupForm(isLogin: isLogin, email: _email, updateEmail: updateEmail),
+              LoginRegisterForm(isLogin: isLogin, email: _email, updateEmail: updateEmail),
               Footer(isLogin: isLogin, toggleScreenMode: toggleScreenMode, screenMode: _screenMode, email: _email)
             ],
           ),

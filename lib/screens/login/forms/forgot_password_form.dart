@@ -24,10 +24,10 @@ class ForgotPasswordForm extends StatefulHookConsumerWidget {
   final String email;
 
   @override
-  ConsumerState<ForgotPasswordForm> createState() => _LoginSignupFormState();
+  ConsumerState<ForgotPasswordForm> createState() => _ForgotPasswordForm();
 }
 
-class _LoginSignupFormState extends ConsumerState<ForgotPasswordForm> {
+class _ForgotPasswordForm extends ConsumerState<ForgotPasswordForm> {
   final formKey = GlobalKey<FormState>();
 
   String email = '';

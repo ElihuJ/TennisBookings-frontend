@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/assets/index.dart';
 
+import '../../assets/index.dart';
 import '../../global_widgets/buttons/login_button.dart';
 import '../../global_widgets/eventful/eventful.dart';
 import '../../global_widgets/header/index.dart';

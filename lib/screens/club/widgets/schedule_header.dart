@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/theme/index.dart';
 
 import '../../../models/index.dart';
 import '../../../state/index.dart';
+import '../../../theme/index.dart';
 
 class ScheduleHeader extends StatelessWidget {
   const ScheduleHeader({super.key, required this.clubSelected, required this.courts, required this.courtSelected, required this.setState});

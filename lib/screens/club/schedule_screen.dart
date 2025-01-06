@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_helpers/index.dart';
-import 'package:tennisbookings/global_widgets/loading/loading_screen.dart';
-import 'package:tennisbookings/screens/club/widgets/schedule_header.dart';
 
+import '../../global_helpers/index.dart';
 import '../../global_widgets/header/index.dart';
+import '../../global_widgets/loading/loading_screen.dart';
 import '../../models/index.dart';
 import '../../routes/index.dart';
 import '../../state/clubs/index.dart';
 import 'widgets/calendar_view.dart';
+import 'widgets/schedule_header.dart';
 
 class ScheduleScreen extends StatefulHookConsumerWidget {
   final ClubSelectedQueryParams clubSelectedQueryParams;

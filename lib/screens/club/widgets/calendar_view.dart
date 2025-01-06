@@ -1,12 +1,12 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_helpers/index.dart';
-import 'package:tennisbookings/screens/club/widgets/event_container.dart';
-import 'package:tennisbookings/theme/index.dart';
 
+import '../../../global_helpers/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
+import '../../../theme/index.dart';
+import 'event_container.dart';
 
 class CalendarView extends StatefulHookConsumerWidget {
   const CalendarView({super.key, required this.clubSelected, required this.courtSelected, required this.dateInView, required this.setDateInView});

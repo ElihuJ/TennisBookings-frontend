@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/global_widgets/header/index.dart';
+
+import '../header/index.dart';
 
 class LoadingScreen extends StatelessWidget {
   final String message;

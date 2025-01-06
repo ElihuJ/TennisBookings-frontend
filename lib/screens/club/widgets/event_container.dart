@@ -1,13 +1,13 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_widgets/index.dart';
-import 'package:tennisbookings/theme/index.dart';
 
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
+import '../../../global_widgets/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
+import '../../../theme/index.dart';
 
 class EventContainer extends HookConsumerWidget {
   const EventContainer({

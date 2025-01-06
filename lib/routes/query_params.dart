@@ -1,4 +1,4 @@
-import 'package:tennisbookings/global_helpers/index.dart';
+import '../global_helpers/index.dart';
 
 class QueryParams {
   final Map<String, String> queryParams;

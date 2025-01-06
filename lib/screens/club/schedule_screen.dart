@@ -81,6 +81,7 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
               courtSelected: _courtSelected!,
               setState: (newValue) => setState(() {
                 _courtSelected = courts.firstWhere((court) => court.id == newValue);
+                clubsNotifier.loadBookings(_clubSelected!, _courtSelected!, _dateInView);
               }),
             ),
             CalendarView(clubSelected: _clubSelected!, courtSelected: _courtSelected!, dateInView: _dateInView, setDateInView: setDateInView),

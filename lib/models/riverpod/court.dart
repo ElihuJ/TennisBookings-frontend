@@ -42,7 +42,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
   // ^ ================================== Loaders ==================================
 
   void loadBookings(List<Booking> publicBookings) {
-    this.publicBookings = [];
+    this.publicBookings ??= [];
     final bookingIds = this.publicBookings?.map((e) => e.id).toList();
     for (final booking in publicBookings) {
       if (bookingIds != null && !bookingIds.contains(booking.id)) {

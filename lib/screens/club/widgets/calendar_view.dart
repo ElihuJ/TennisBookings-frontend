@@ -58,7 +58,6 @@ class _CalendarView extends ConsumerState<CalendarView> {
 
     _eventController.addAll(events);
 
-    widget.dateInView.tbLogger('DATE IN WIDGET');
     final dateInView = widget.dateInView;
 
     return CalendarControllerProvider<Booking>(
@@ -98,7 +97,6 @@ class _CalendarView extends ConsumerState<CalendarView> {
               }
             },
             onPageChange: (startDate, number) async {
-              'FUNCTION CALLED'.tbLogger('===========', DebugLevel.warning);
               widget.setDateInView(startDate);
               clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, startDate);
             },

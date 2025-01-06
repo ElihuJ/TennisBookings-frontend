@@ -10,6 +10,7 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
   ClubsNotifier() : super([]);
   final clubsCollection = FirebaseFirestore.instance.collection(FirestoreCollection.clubs);
   final storageRef = FirebaseStorage.instance.ref();
+  final queriesMade = <String>[];
 
   // ^ Temporarily loading all clubs and courts and bookings
   // void loadAllClubs() async {
@@ -83,25 +84,30 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
   }
 
   Future<void> loadBookings(Club club, Court court, DateTime date) async {
-    // ? TODO: OPTIMISE TO NOT QUERY EVERY TIME
-    // if (court.publicBookings != null && court.publicBookings!.isNotEmpty) {
-    //   state = [...state];
-    //   return;
-    // }
-
     final (startDate, endDate) = getStartAndEndOfWeek(date);
     final startDateEpoch = fromDateToEpoch(startDate);
     final endDateEpoch = fromDateToEpoch(endDate);
 
-    court.tbLogger('MAKING QUERY', DebugLevel.warning);
-    final querySnapshot = await clubsCollection
+    final query = clubsCollection
         .doc(club.id)
         .collection(CourtsSubCollections.courts)
         .doc(court.id)
         .collection(BookingsSubCollections.publicBookings)
         .where(BookingFields.from, isGreaterThan: startDateEpoch)
-        .where(BookingFields.to, isLessThan: endDateEpoch)
-        .get();
+        .where(BookingFields.to, isLessThan: endDateEpoch);
+
+    String queryParams = query.parameters.toString();
+    queryParams += 'courtId: ${court.id}, clubId: ${club.id}';
+
+    if (queriesMade.contains(queryParams)) {
+      return;
+    }
+
+    queriesMade.add(queryParams);
+
+    court.tbLogger('MAKING QUERY', DebugLevel.warning);
+    final querySnapshot = await query.get();
+
     final bookingsDocs = querySnapshot.docs;
     if (bookingsDocs.isNotEmpty) {
       final bookings = loadBookingsFromDocs(bookingsDocs);

@@ -82,19 +82,25 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     }
   }
 
-  Future<void> loadBookings(Club club, Court court) async {
-    if (court.publicBookings != null && court.publicBookings!.isNotEmpty) {
-      // ? Adding delay otherwise it will be too fast and cause state issues
-      await Future.delayed(const Duration(milliseconds: 10));
-      state = [...state];
-      return;
-    }
-    court.tbLogger('MAKING QUERY', DebugLevel.error);
+  Future<void> loadBookings(Club club, Court court, DateTime date) async {
+    // ? TODO: OPTIMISE TO NOT QUERY EVERY TIME
+    // if (court.publicBookings != null && court.publicBookings!.isNotEmpty) {
+    //   state = [...state];
+    //   return;
+    // }
+
+    final (startDate, endDate) = getStartAndEndOfWeek(date);
+    final startDateEpoch = fromDateToEpoch(startDate);
+    final endDateEpoch = fromDateToEpoch(endDate);
+
+    court.tbLogger('MAKING QUERY', DebugLevel.warning);
     final querySnapshot = await clubsCollection
         .doc(club.id)
         .collection(CourtsSubCollections.courts)
         .doc(court.id)
         .collection(BookingsSubCollections.publicBookings)
+        .where(BookingFields.from, isGreaterThan: startDateEpoch)
+        .where(BookingFields.to, isLessThan: endDateEpoch)
         .get();
     final bookingsDocs = querySnapshot.docs;
     if (bookingsDocs.isNotEmpty) {

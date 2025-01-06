@@ -1,34 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'index.dart';
-
-int getNowInEpoch() {
-  return DateTime.now().millisecondsSinceEpoch;
-}
-
-int fromDateToEpoch(DateTime date) {
-  return (date.millisecondsSinceEpoch / 1000).round();
-}
-
-DateTime fromEpochToDateTime(int epoch) {
-  final milliseconds = epoch * 1000;
-  return DateTime.fromMillisecondsSinceEpoch(milliseconds);
-}
-
-String prettyDateFromEpoch(int epoch) {
-  final seconds = (epoch / 1000).round();
-  final date = fromEpochToDateTime(seconds);
-  final formattedDate = DateFormat('dd/MMM/yy').format(date);
-  return formattedDate.toString();
-}
-
-String getMonthAndYearFromEpoch(int epoch) {
-  final seconds = (epoch / 1000).round();
-  final date = fromEpochToDateTime(seconds);
-  final formattedDate = DateFormat('MMM/yy').format(date);
-  return formattedDate.toString();
-}
 
 T? findByIdOrNull<T>(List<HasId> list, String? id) {
   final elementsFound = list.where((element) => element.id == id);

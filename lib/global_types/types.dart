@@ -14,6 +14,8 @@ typedef AiResponse = (String?, ErrorInfo?);
 
 typedef FirestoreActionResult<T> = Future<(T, ErrorInfo?)>;
 
+typedef StartAndEndOfWeek = (DateTime, DateTime);
+
 // ^ ==================================== CLOUD FUNCTIONS ====================================
 typedef FirestoreResponse = Map<String, dynamic>;
 typedef FirestorePayload = FirestoreResponse;

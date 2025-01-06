@@ -1,0 +1,60 @@
+// 20250104114514
+// https://app.utrsports.net/api/v1/player/3546642
+// https://blakestevenson.github.io/utr-api-docs/#search-player
+
+{
+  "eventViewModel": null,
+  "id": "3546642",
+  "firstName": "Elihu",
+  "lastName": "Del Valle",
+  "gender": "M",
+  "city": "Ivanhoe East",
+  "state": "Victoria",
+  "hasYobOnly": false,
+  "singlesUtr": 9.0,
+  "singlesUtrDisplay": "9.xx",
+  "ratingStatusSingles": "Projected",
+  "ratingProgressSingles": "4",
+  "ratingStatusImgageSingles": "https://universaltennis.com/azure/images/icons/status-projected.png?h=17",
+  "doublesUtr": 7.0,
+  "doublesUtrDisplay": "7.xx",
+  "ratingStatusDoubles": "Projected",
+  "ratingProgressDoubles": "4",
+  "ratingStatusImgageDoubles": "https://universaltennis.com/azure/images/icons/status-projected.png?h=17",
+  "importSource": null,
+  "nationality": "AUS",
+  "myUtrSingles": 9.0,
+  "myUtrSinglesDisplay": "9.xx",
+  "myUtrStatusSingles": "Projected",
+  "myUtrDoubles": 7.0,
+  "myUtrDoublesDisplay": "7.xx",
+  "myUtrStatusDoubles": "Projected",
+  "finalPbr": null,
+  "profileImage": "284521/images/profile/aca28018-34c8-4c8b-b984-81797e697e51.jpg",
+  "pbrRatingDisplay": null,
+  "doublesPkbRatingDisplay": null,
+  "singlesPkbRatingDisplay": null,
+  "memberId": 352481,
+  "utrRange": {
+    "minUtr": 10.0,
+    "maxUtr": 12.0,
+    "lastReliableRating": null,
+    "lastReliableRatingDate": null,
+    "minUtrDisplay": "10.xx",
+    "maxUtrDisplay": "12.xx",
+    "lastReliableRatingDisplay": "0.xx",
+    "pbrRange": null,
+    "pkbRating": 3.55,
+    "pkbRatingDisplay": "P4"
+  },
+  "historicRatings": {
+    "historicSinglesRating": null,
+    "historicSinglesRatingReliability": null,
+    "historicSinglesRatingDate": null,
+    "historicDoublesRating": 7.0,
+    "historicDoublesRatingReliability": 10.0,
+    "historicDoublesRatingDate": "2023-02-22T00:00:00",
+    "historicSinglesRatingDisplay": "0.xx",
+    "historicDoublesRatingDisplay": "7.xx"
+  }
+}

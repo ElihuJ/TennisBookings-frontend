@@ -22,8 +22,20 @@ class ScheduleScreen extends StatefulHookConsumerWidget {
 class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
   Court? _courtSelected;
   Club? _clubSelected;
-  List<Booking>? _bookings;
   String get paramClubId => widget.clubSelectedQueryParams.clubId;
+  late DateTime _dateInView;
+  void setDateInView(DateTime newDate) {
+    setState(() {
+      _dateInView = newDate;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _dateInView = DateTime.now();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,21 +65,7 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
 
     // ^ ============================== Setting default court ==============================
 
-    if (_courtSelected == null) {
-      _courtSelected = courts.first;
-      clubsNotifier.loadBookings(_clubSelected!, _courtSelected!);
-      return const LoadingScreen(message: 'Loading courts...');
-    }
-
-    _bookings = _courtSelected!.publicBookings;
-
-    // ^ ============================== Loading bookings  ==============================
-
-    if (_bookings == null) {
-      clubsNotifier.loadBookings(_clubSelected!, _courtSelected!);
-      _bookings = _courtSelected!.publicBookings;
-      return const LoadingScreen(message: 'Loading bookings...');
-    }
+    _courtSelected ??= courts.first;
 
     // ^ ==============================  Main View  =======================================
 
@@ -83,10 +81,9 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
               courtSelected: _courtSelected!,
               setState: (newValue) => setState(() {
                 _courtSelected = courts.firstWhere((court) => court.id == newValue);
-                _bookings = null;
               }),
             ),
-            CalendarView(bookings: _bookings!),
+            CalendarView(clubSelected: _clubSelected!, courtSelected: _courtSelected!, dateInView: _dateInView, setDateInView: setDateInView),
           ],
         ),
       ),

@@ -91,7 +91,8 @@ class _CalendarView extends ConsumerState<CalendarView> {
             showLiveTimeLineInAllDays: true, // To display live time line in all pages in day view.
             initialDay: dateInView,
             key: _calendarKey,
-            heightPerMinute: 1, // height occupied by 1 minute time span.
+            heightPerMinute: 2, // height occupied by 1 minute time span.
+            showHalfHours: true,
             eventArranger: SideEventArranger(), // To define how simultaneous events will be arranged.
             onPageChange: (startDate, number) async {
               widget.setDateInView(startDate);

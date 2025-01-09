@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tennisbookings/global_widgets/modals/create_event_modal.dart';
 
 import '../global_types/index.dart';
 
@@ -92,4 +91,39 @@ int timeOfDayToEpochUtc(TimeOfDay time, DateTime date) {
 DateTime epochToLocalDateTime(int epoch) {
   final date = epochToDateTimeUtc(epoch);
   return date.toLocal();
+}
+
+bool validateTime({required int startTimeEpoch, required List<BookedTimeEpoch> bookedTimes, required DateTime date, required int endTimeEpoch}) {
+  bool valid = true;
+
+  for (final bookedTime in bookedTimes) {
+    if (startTimeEpoch >= bookedTime.start && startTimeEpoch < bookedTime.end) {
+      valid = false;
+      break;
+    }
+    if (endTimeEpoch > bookedTime.start && endTimeEpoch <= bookedTime.end) {
+      valid = false;
+      break;
+    }
+    if (startTimeEpoch < bookedTime.start && endTimeEpoch > bookedTime.end) {
+      valid = false;
+      break;
+    }
+  }
+  return valid;
+}
+
+TimeOfDay roundToNearestQuarter(TimeOfDay time) {
+  final minutes = time.minute;
+  int newMinutes = 0;
+  if (minutes < 15) {
+    newMinutes = 0;
+  } else if (minutes < 30) {
+    newMinutes = 15;
+  } else if (minutes < 45) {
+    newMinutes = 30;
+  } else {
+    newMinutes = 45;
+  }
+  return TimeOfDay(hour: time.hour, minute: newMinutes);
 }

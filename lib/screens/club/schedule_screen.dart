@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/assets/index.dart';
-import 'package:tennisbookings/global_widgets/index.dart';
-import 'package:tennisbookings/screens/login/widgets/containers.dart';
 
+import '../../assets/index.dart';
 import '../../global_helpers/index.dart';
 import '../../global_widgets/header/index.dart';
-import '../../global_widgets/loading/loading_screen.dart';
+import '../../global_widgets/index.dart';
 import '../../models/index.dart';
 import '../../routes/index.dart';
 import '../../state/clubs/index.dart';
+import '../login/widgets/containers.dart';
 import 'widgets/calendar_view.dart';
 import 'widgets/schedule_header.dart';
 

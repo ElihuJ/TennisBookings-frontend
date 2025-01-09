@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_types/index.dart';
-import 'package:tennisbookings/global_widgets/modals/widget/buttons.dart';
-import 'package:tennisbookings/theme/index.dart';
 
+import '../../../config/config.dart';
 import '../../../global_helpers/index.dart';
+import '../../../global_types/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
+import '../../../theme/index.dart';
+import 'buttons.dart';
 
 class ClosedBooking extends StatefulHookConsumerWidget {
   const ClosedBooking({
@@ -39,6 +40,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
   String _titleValue = '';
   void Function()? submitFunction;
   bool isValid = false;
+  Config config = Config();
 
   @override
   initState() {
@@ -48,10 +50,6 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     DateTime startDate = DateTime(widget.date.year, widget.date.month, widget.date.day, widget.date.hour, widget.date.minute).toUtc();
     startDateEpoch = dateTimeToEpochUtc(startDate);
     endDateEpoch = dateTimeToEpochUtc(startDate.add(const Duration(hours: 1)));
-    isValid = validateTime(startTimeEpoch: startDateEpoch, bookedTimes: widget.bookedTimes, date: widget.date, endTimeEpoch: endDateEpoch);
-    if (isValid && _titleValue.isNotEmpty) {
-      submitFunction = onSubmit;
-    }
   }
 
   onSubmit() {
@@ -64,6 +62,10 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     if (endDateEpoch <= startDateEpoch) {
       submitFunction = null;
       return 'End time must be after start time';
+    }
+    if ((endDateEpoch - startDateEpoch) > Config.maxBookingDuration) {
+      submitFunction = null;
+      return 'Booking must be less than ${Config.maxBookingHours} hour';
     }
     if (!validateTime(startTimeEpoch: startDateEpoch, bookedTimes: widget.bookedTimes, date: widget.date, endTimeEpoch: endDateEpoch)) {
       submitFunction = null;
@@ -146,9 +148,10 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                 TimeOfDay? picked = await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay.fromDateTime(widget.date),
-                  initialEntryMode: TimePickerEntryMode.dialOnly,
+                  initialEntryMode: TimePickerEntryMode.dial,
                 );
                 if (picked != null && context.mounted) {
+                  picked = roundToNearestQuarter(picked);
                   startDateEpoch = timeOfDayToEpochUtc(picked, widget.date);
                   _startTimeController.text = picked.format(context);
                 }
@@ -161,9 +164,10 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                 TimeOfDay? picked = await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay.fromDateTime(widget.date.add(const Duration(hours: 1))),
-                  initialEntryMode: TimePickerEntryMode.dialOnly,
+                  initialEntryMode: TimePickerEntryMode.dial,
                 );
                 if (picked != null && context.mounted) {
+                  picked = roundToNearestQuarter(picked);
                   endDateEpoch = timeOfDayToEpochUtc(picked, widget.date);
                   _endTimeController.text = picked.format(context);
                 }
@@ -192,24 +196,4 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
       ),
     );
   }
-}
-
-bool validateTime({required int startTimeEpoch, required List<BookedTimeEpoch> bookedTimes, required DateTime date, required int endTimeEpoch}) {
-  bool valid = true;
-
-  for (final bookedTime in bookedTimes) {
-    if (startTimeEpoch >= bookedTime.start && startTimeEpoch < bookedTime.end) {
-      valid = false;
-      break;
-    }
-    if (endTimeEpoch > bookedTime.start && endTimeEpoch <= bookedTime.end) {
-      valid = false;
-      break;
-    }
-    if (startTimeEpoch < bookedTime.start && endTimeEpoch > bookedTime.end) {
-      valid = false;
-      break;
-    }
-  }
-  return valid;
 }

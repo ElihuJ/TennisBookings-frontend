@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_widgets/modals/widget/buttons.dart';
-import 'package:tennisbookings/theme/index.dart';
 
 import '../../../models/index.dart';
 import '../../../state/index.dart';
+import '../../../theme/index.dart';
+import 'buttons.dart';
 
 class OpenBooking extends StatefulHookConsumerWidget {
   const OpenBooking({super.key, required this.clubSelected, required this.courtSelected, required this.date, required this.switchBookingMode});

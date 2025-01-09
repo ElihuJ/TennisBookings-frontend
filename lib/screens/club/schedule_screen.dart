@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tennisbookings/assets/index.dart';
+import 'package:tennisbookings/global_widgets/index.dart';
 import 'package:tennisbookings/screens/login/widgets/containers.dart';
 
 import '../../global_helpers/index.dart';
@@ -74,24 +75,26 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
       appBar: Header(),
       body: ContainerWithBackground(
         imagePath: homeBackgroundPng,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 18.0),
-                child: ScheduleHeader(
-                  clubSelected: _clubSelected!,
-                  courts: courts,
-                  courtSelected: _courtSelected!,
-                  setState: (newValue) => setState(() {
-                    _courtSelected = courts.firstWhere((court) => court.id == newValue);
-                    clubsNotifier.loadBookings(_clubSelected!, _courtSelected!, _dateInView);
-                  }),
+        child: EventfulWidget(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 18.0),
+                  child: ScheduleHeader(
+                    clubSelected: _clubSelected!,
+                    courts: courts,
+                    courtSelected: _courtSelected!,
+                    setState: (newValue) => setState(() {
+                      _courtSelected = courts.firstWhere((court) => court.id == newValue);
+                      clubsNotifier.loadBookings(_clubSelected!, _courtSelected!, _dateInView);
+                    }),
+                  ),
                 ),
-              ),
-              CalendarView(clubSelected: _clubSelected!, courtSelected: _courtSelected!, dateInView: _dateInView, setDateInView: setDateInView),
-            ],
+                CalendarView(clubSelected: _clubSelected!, courtSelected: _courtSelected!, dateInView: _dateInView, setDateInView: setDateInView),
+              ],
+            ),
           ),
         ),
       ),

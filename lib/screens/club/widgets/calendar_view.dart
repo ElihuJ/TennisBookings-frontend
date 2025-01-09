@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../global_helpers/index.dart';
+import '../../../global_types/index.dart';
+import '../../../global_widgets/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
 import '../../../theme/index.dart';
@@ -51,15 +53,16 @@ class _CalendarView extends ConsumerState<CalendarView> {
         title: booking.title,
         titleStyle: const TextStyle(color: Colors.white),
         description: booking.format.name,
-        startTime: fromEpochToDateTime(booking.from),
-        endTime: fromEpochToDateTime(booking.to),
+        startTime: epochToLocalDateTime(booking.from),
+        endTime: epochToLocalDateTime(booking.to),
         color: Colors.red,
-        date: fromEpochToDateTime(booking.from),
+        date: epochToLocalDateTime(booking.from),
         event: booking,
       );
     }).toList();
 
     _eventController.addAll(events);
+    final bookedTimes = getBookedTimes(_bookings!);
 
     return CalendarControllerProvider<Booking>(
       controller: _eventController,
@@ -69,10 +72,6 @@ class _CalendarView extends ConsumerState<CalendarView> {
           margin: const EdgeInsets.only(bottom: 40, left: 20, right: 20),
           height: 500,
           child: WeekView<Booking>(
-            liveTimeIndicatorSettings: LiveTimeIndicatorSettings(
-              color: AppColors.primaryGreen,
-              showTime: true,
-            ),
             startDay: WeekDays.sunday,
             minuteSlotSize: MinuteSlotSize.minutes60,
             hourIndicatorSettings: HourIndicatorSettings(),
@@ -85,6 +84,8 @@ class _CalendarView extends ConsumerState<CalendarView> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
+            onDateTap: (date) => showCreateBookingModal(
+                context: context, clubSelected: widget.clubSelected, courtSelected: widget.courtSelected, date: date, bookedTimes: bookedTimes),
             controller: _eventController,
             eventTileBuilder: (date, events, boundary, start, end) => EventContainer(events: events),
             showLiveTimeLineInAllDays: true, // To display live time line in all pages in day view.
@@ -104,4 +105,14 @@ class _CalendarView extends ConsumerState<CalendarView> {
       ),
     );
   }
+}
+
+List<BookedTimeEpoch> getBookedTimes(List<Booking> bookings) {
+  List<BookedTimeEpoch> bookedTimes = [];
+  for (var booking in bookings) {
+    if (booking.status == BookingStatus.confirmed) {
+      bookedTimes.add(BookedTimeEpoch(booking.from, booking.to));
+    }
+  }
+  return bookedTimes;
 }

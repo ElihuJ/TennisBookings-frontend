@@ -13,7 +13,7 @@ class EventfulWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final eventStatus = ref.watch(eventStatusProvider);
+    final eventStatus = ref.watch(eventsProvider);
 
     return Stack(
       children: [

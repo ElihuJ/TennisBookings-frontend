@@ -52,3 +52,10 @@ class SupportedLocales {
 
   SupportedLocales._();
 }
+
+class BookedTimeEpoch {
+  final int start;
+  final int end;
+
+  BookedTimeEpoch(this.start, this.end);
+}

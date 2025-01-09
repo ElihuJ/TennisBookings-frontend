@@ -20,7 +20,7 @@ class LoginScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final firebaseAuthNotifier = ref.read(firebaseAuthProvider.notifier);
     final userNotifier = ref.read(userProvider.notifier);
-    final eventNotifier = ref.read(eventStatusProvider.notifier);
+    final eventNotifier = ref.read(eventsProvider.notifier);
 
     return EventfulWidget(
       child: PopScope(

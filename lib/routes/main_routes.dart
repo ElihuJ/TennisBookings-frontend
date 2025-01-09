@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../global_helpers/index.dart';
+// import '../global_helpers/index.dart';
 import '../screens/club/schedule_screen.dart';
 import '../screens/find_clubs/find_clubs_screen.dart';
 import '../screens/home_screen.dart';
@@ -15,8 +15,8 @@ Route<dynamic> generateLoginRoutes(RouteSettings settings) {
   final settingUri = Uri.parse(settings.name ?? '');
   final QueryParams queryParams = QueryParams(settingUri.queryParameters);
   final path = settingUri.path;
-  path.tbLogger('PATH');
-  queryParams.toString().tbLogger('QUERY PARAMS');
+  // path.tbLogger('PATH');
+  // queryParams.toString().tbLogger('QUERY PARAMS');
   switch (path) {
     case HomeScreen.route:
       page = const HomeScreen();

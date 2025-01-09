@@ -72,7 +72,7 @@ final ThemeData selectedTheme = ThemeData(
   ),
   inputDecorationTheme: const InputDecorationTheme(
     // * Input fields style for search box
-    floatingLabelStyle: TextStyle(color: AppColors.grey, fontSize: 40),
+    floatingLabelStyle: TextStyle(color: AppColors.grey, fontSize: 12),
     hintStyle: TextStyle(color: AppColors.grey, fontSize: 20),
     border: InputBorder.none,
     contentPadding: EdgeInsets.only(bottom: 14),

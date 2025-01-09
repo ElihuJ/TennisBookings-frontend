@@ -85,8 +85,8 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
 
   Future<void> loadBookings(Club club, Court court, DateTime date) async {
     final (startDate, endDate) = getStartAndEndOfWeek(date);
-    final startDateEpoch = fromDateToEpoch(startDate);
-    final endDateEpoch = fromDateToEpoch(endDate);
+    final startDateEpoch = dateTimeToEpochUtc(startDate);
+    final endDateEpoch = dateTimeToEpochUtc(endDate);
 
     final query = clubsCollection
         .doc(club.id)

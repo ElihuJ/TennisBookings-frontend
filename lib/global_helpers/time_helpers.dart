@@ -1,36 +1,36 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tennisbookings/global_widgets/modals/create_event_modal.dart';
 
 import '../global_types/index.dart';
 
 int nowToEpochUtc() {
-  final now = DateTime.now().toUtc();
-  return fromDateToEpoch(now);
+  return (DateTime.now().toUtc().millisecondsSinceEpoch / 1000).round();
 }
 
-int getNowInEpoch() {
-  return DateTime.now().millisecondsSinceEpoch;
+int dateTimeToEpochUtc(DateTime date) {
+  final utcDate = date.toUtc();
+  return (utcDate.millisecondsSinceEpoch / 1000).round();
 }
 
-int fromDateToEpoch(DateTime date) {
-  return (date.millisecondsSinceEpoch / 1000).round();
-}
-
-DateTime fromEpochToDateTime(int epoch) {
+DateTime epochToDateTimeUtc(int epoch) {
   final milliseconds = epoch * 1000;
-  return DateTime.fromMillisecondsSinceEpoch(milliseconds);
+  return DateTime.fromMillisecondsSinceEpoch(milliseconds).toUtc();
 }
 
 String prettyDateFromEpoch(int epoch) {
   final seconds = (epoch / 1000).round();
-  final date = fromEpochToDateTime(seconds);
-  final formattedDate = DateFormat('dd/MMM/yy').format(date);
+  final date = epochToDateTimeUtc(seconds);
+  final utcDate = date.toUtc();
+  final formattedDate = DateFormat('dd/MMM/yy').format(utcDate);
   return formattedDate.toString();
 }
 
 String getMonthAndYearFromEpoch(int epoch) {
   final seconds = (epoch / 1000).round();
-  final date = fromEpochToDateTime(seconds);
-  final formattedDate = DateFormat('MMM/yy').format(date);
+  final date = epochToDateTimeUtc(seconds);
+  final utcDate = date.toUtc();
+  final formattedDate = DateFormat('MMM/yy').format(utcDate);
   return formattedDate.toString();
 }
 
@@ -75,4 +75,21 @@ StartAndEndOfWeek getStartAndEndOfWeek(DateTime date) {
   startDate = DateTime(startDate.year, startDate.month, startDate.day, 0, 0, 0);
   endDate = DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59);
   return (startDate, endDate);
+}
+
+int localTimeOfDayToUTCEpoch(TimeOfDay time, DateTime date) {
+  DateTime dateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+  dateTime = dateTime.toUtc();
+  return dateTimeToEpochUtc(dateTime);
+}
+
+int timeOfDayToEpochUtc(TimeOfDay time, DateTime date) {
+  print(time);
+  DateTime dateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+  return dateTimeToEpochUtc(dateTime);
+}
+
+DateTime epochToLocalDateTime(int epoch) {
+  final date = epochToDateTimeUtc(epoch);
+  return date.toLocal();
 }

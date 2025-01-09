@@ -43,6 +43,7 @@ class EventContainer extends HookConsumerWidget {
 
     return MouseRegion(
       cursor: isClickable ? SystemMouseCursors.click : SystemMouseCursors.basic,
+      onHover: (event) {},
       child: GestureDetector(
         onTap: () {
           if (isClickable && user.uid.isEmpty) {

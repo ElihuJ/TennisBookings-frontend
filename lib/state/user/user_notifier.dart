@@ -25,7 +25,7 @@ class UserNotifier extends StateNotifier<User> {
   FirestoreActionResult<Success> createUser({String? name, required String uid, required String? email, ResultHandler? resultHandler}) async {
     final errorHandler = resultHandler ?? ResultHandler(success: true);
     try {
-      final dateNowAsInt = getNowInEpoch();
+      final dateNowAsInt = nowToEpochUtc();
       User user = User(
         uid: uid,
         name: name ?? '',

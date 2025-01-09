@@ -75,10 +75,10 @@ class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
   @override
   Widget build(BuildContext context) {
     final isLogin = widget.isLogin;
-    final eventStatusNotifier = ref.read(eventStatusProvider.notifier);
+    final eventStatusNotifier = ref.read(eventsProvider.notifier);
     final firebaseNotifier = ref.read(firebaseAuthProvider.notifier);
     final userNotifier = ref.read(userProvider.notifier);
-    final eventNotifier = ref.read(eventStatusProvider.notifier);
+    final eventNotifier = ref.read(eventsProvider.notifier);
 
     return Form(
       key: formKey,

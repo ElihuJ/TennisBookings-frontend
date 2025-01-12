@@ -63,7 +63,6 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
               onChanged: (value) {
                 _visibilityController.text = value!;
               },
-              validator: (value) {},
             ),
             TextFormField(
               controller: _startTimeController,
@@ -73,7 +72,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
                   context: context,
                   initialTime: TimeOfDay.now(),
                 );
-                if (picked != null) {
+                if (picked != null && context.mounted) {
                   _startTimeController.text = picked.format(context);
                 }
               },
@@ -92,7 +91,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
                   context: context,
                   initialTime: TimeOfDay.now(),
                 );
-                if (picked != null) {
+                if (picked != null && context.mounted) {
                   _endTimeController.text = picked.format(context);
                 }
               },

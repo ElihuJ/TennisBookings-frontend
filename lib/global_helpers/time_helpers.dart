@@ -83,7 +83,6 @@ int localTimeOfDayToUTCEpoch(TimeOfDay time, DateTime date) {
 }
 
 int timeOfDayToEpochUtc(TimeOfDay time, DateTime date) {
-  print(time);
   DateTime dateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
   return dateTimeToEpochUtc(dateTime);
 }

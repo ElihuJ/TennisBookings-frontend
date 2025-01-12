@@ -83,7 +83,7 @@ class EventContainer extends HookConsumerWidget {
                 ),
                 PrettyText('(${booking.format.name})', style: TextStyle(color: computedTextColor, fontSize: fontSize), textAlign: TextAlign.left),
                 SizedBox(height: 20),
-                for (final player in players)
+                for (final _ in players)
                   CircleAvatar(
                     backgroundColor: AppColors.backgroundGreen,
                     child: Icon(

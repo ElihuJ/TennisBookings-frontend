@@ -20,3 +20,7 @@ abstract class FirestoreModel<T> {
   List<String> get allFields;
   T copyWith();
 }
+
+abstract class APIPayload {
+  Map<String, dynamic> toJson();
+}

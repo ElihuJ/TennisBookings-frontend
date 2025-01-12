@@ -43,8 +43,8 @@ class Config {
   // ^ ================== APP CONFIG ==================
   static const appName = "Tennis Bookings";
   static const functionsRegion = "australia-southeast1";
-  static const maxBookingDuration = 3600; // 1 hour
-  static const maxBookingHours = 1;
+  static const maxBookingDuration = 3600 * 1.5; // 1.5 hours
+  static const maxBookingHours = 1.5;
 
   @override
   String toString() => 'Config: $envString environment is running'

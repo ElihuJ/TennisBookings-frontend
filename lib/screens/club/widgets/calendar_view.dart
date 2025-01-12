@@ -69,9 +69,10 @@ class _CalendarView extends ConsumerState<CalendarView> {
       child: Expanded(
         child: Container(
           width: double.infinity,
-          margin: const EdgeInsets.only(bottom: 40, left: 20, right: 20),
+          margin: const EdgeInsets.only(bottom: 25, left: 20, right: 20),
           height: 500,
           child: WeekView<Booking>(
+            startHour: 5,
             startDay: WeekDays.sunday,
             minuteSlotSize: MinuteSlotSize.minutes60,
             hourIndicatorSettings: HourIndicatorSettings(),

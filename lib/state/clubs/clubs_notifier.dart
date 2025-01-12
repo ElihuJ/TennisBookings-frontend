@@ -83,6 +83,11 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     }
   }
 
+  void addBooking(Court court, Booking booking) {
+    court.publicBookings?.add(booking);
+    state = [...state];
+  }
+
   Future<void> loadBookings(Club club, Court court, DateTime date) async {
     final (startDate, endDate) = getStartAndEndOfWeek(date);
     final startDateEpoch = dateTimeToEpochUtc(startDate);

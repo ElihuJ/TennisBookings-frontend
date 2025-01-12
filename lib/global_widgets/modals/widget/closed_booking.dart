@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/cloud_functions/index.dart';
+import 'package:tennisbookings/cloud_functions/types.dart';
 
+import '../../../cloud_functions/dto/index.dart';
 import '../../../config/config.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
@@ -52,10 +55,46 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     endDateEpoch = dateTimeToEpochUtc(startDate.add(const Duration(hours: 1)));
   }
 
-  onSubmit() {
+  Future<CFResult> onSubmit() async {
     final eventsNotifier = ref.read(eventsProvider.notifier);
-    eventsNotifier.showMessage(messageType: MessageType.success, message: 'Booking created');
+    final clubsNotifier = ref.read(clubsProvider.notifier);
+    final cloudFunctionsNotifier = ref.read(cloudFunctionsProvider.notifier);
+    final user = ref.read(userProvider);
+    final isPrivate = _visibilityValue == 'Private';
+    final sampleBooking = Booking(
+      id: 'testBooking',
+      confirmedPlayerIds: [],
+      courtId: widget.courtSelected.id,
+      format: BookingFormat.singles,
+      from: startDateEpoch,
+      to: endDateEpoch,
+      isPrivate: isPrivate,
+      ownerId: user.uid,
+      requests: [],
+      restrictions: [],
+      status: BookingStatus.confirmed,
+      title: _titleValue,
+    );
+
+    final payload = CreateClosedBookingPayload(
+      booking: sampleBooking,
+      clubId: widget.clubSelected.id,
+    );
+
     Navigator.of(context).pop();
+    eventsNotifier.showLoading(title: "Creating booking...");
+    await wait(1500);
+    final result = await cloudFunctionsNotifier.createClosedBooking(payload);
+    eventsNotifier.hideLoading();
+    final success = result.data;
+    if (success != null && success) {
+      clubsNotifier.addBooking(widget.courtSelected, sampleBooking);
+      eventsNotifier.showMessage(messageType: MessageType.success, message: 'Booking created');
+    } else {
+      eventsNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage ?? 'Error creating booking');
+    }
+
+    return result;
   }
 
   String? validateNewTime(String? _) {
@@ -65,7 +104,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     }
     if ((endDateEpoch - startDateEpoch) > Config.maxBookingDuration) {
       submitFunction = null;
-      return 'Booking must be less than ${Config.maxBookingHours} hour';
+      return 'Max duration per booking is ${Config.maxBookingHours} hour';
     }
     if (!validateTime(startTimeEpoch: startDateEpoch, bookedTimes: widget.bookedTimes, date: widget.date, endTimeEpoch: endDateEpoch)) {
       submitFunction = null;
@@ -172,7 +211,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                   _endTimeController.text = picked.format(context);
                 }
               },
-              validator: validateNewTime,
+              // validator: validateNewTime,
             ),
             const SizedBox(height: 10),
             Row(

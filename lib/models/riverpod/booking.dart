@@ -7,7 +7,8 @@ import '../index.dart';
 final defaultId = getUuid();
 final defaultName = 'Problem loading Booking';
 
-class Booking extends MapView<String, dynamic> implements FirestoreModel {
+class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId {
+  @override
   final String id;
   final List<String> confirmedPlayerIds;
   final String courtId;

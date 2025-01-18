@@ -89,22 +89,25 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     state = [...state];
   }
 
-  Future<void> loadBookings(Club club, Court court, DateTime date) async {
+  Future<void> loadPublicBookings(Club club, Court court, DateTime date) async {
     final (startDate, endDate) = getStartAndEndOfWeek(date);
     final startDateEpoch = dateTimeToEpochUtc(startDate);
     final endDateEpoch = dateTimeToEpochUtc(endDate);
 
-    final query = clubsCollection
+    final publicBookingsQuery = clubsCollection
         .doc(club.id)
         .collection(CourtsSubCollections.courts)
         .doc(court.id)
         .collection(BookingsSubCollections.publicBookings)
         .where(BookingFields.from, isGreaterThan: startDateEpoch)
         .where(BookingFields.to, isLessThan: endDateEpoch)
-        .where(BookingFields.status, whereIn: [BookingStatus.confirmed.name, BookingStatus.open.name]);
+        .where(
+      BookingFields.status,
+      whereIn: [BookingStatus.confirmed.name, BookingStatus.open.name],
+    );
 
-    String queryParams = query.parameters.toString();
-    queryParams += 'courtId: ${court.id}, clubId: ${club.id}';
+    String queryParams = publicBookingsQuery.parameters.toString();
+    queryParams += 'Public: courtId: ${court.id}, clubId: ${club.id}';
 
     if (queriesMade.contains(queryParams)) {
       return;
@@ -113,7 +116,7 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     queriesMade.add(queryParams);
 
     court.tbLogger('MAKING QUERY', DebugLevel.warning);
-    final querySnapshot = await query.get();
+    final querySnapshot = await publicBookingsQuery.get();
 
     final bookingsDocs = querySnapshot.docs;
     if (bookingsDocs.isNotEmpty) {
@@ -124,6 +127,62 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     }
     // * If no data is found
     court.loadBookings([]);
+    state = [...state];
+    return;
+  }
+
+  Future<void> loadPrivateBookings(Club club, Court court, DateTime date, String uid) async {
+    if (uid.isEmpty) {
+      return;
+    }
+
+    final (startDate, endDate) = getStartAndEndOfWeek(date);
+    final startDateEpoch = dateTimeToEpochUtc(startDate);
+    final endDateEpoch = dateTimeToEpochUtc(endDate);
+
+    final privateBookingsQuery = clubsCollection
+        .doc(club.id)
+        .collection(CourtsSubCollections.courts)
+        .doc(court.id)
+        .collection(BookingsSubCollections.privateBookings)
+        .where(BookingFields.from, isGreaterThan: startDateEpoch)
+        .where(BookingFields.to, isLessThan: endDateEpoch)
+        .where(
+      BookingFields.status,
+      whereIn: [BookingStatus.confirmed.name, BookingStatus.open.name],
+    ).where(BookingFields.ownerId, isEqualTo: uid);
+
+    String queryParams = privateBookingsQuery.parameters.toString();
+    queryParams += 'Private: courtId: ${court.id}, clubId: ${club.id}';
+
+    if (queriesMade.contains(queryParams)) {
+      return;
+    }
+
+    queriesMade.add(queryParams);
+
+    court.tbLogger('MAKING PRIVATE QUERY', DebugLevel.warning);
+    final querySnapshot = await privateBookingsQuery.get();
+
+    final bookingsDocs = querySnapshot.docs;
+    if (bookingsDocs.isNotEmpty) {
+      final bookings = loadBookingsFromDocs(bookingsDocs);
+      court.privateBookings = bookings;
+      state = [...state];
+      return;
+    }
+    // * If no data is found
+    court.loadBookings([]);
+    state = [...state];
+    return;
+  }
+
+  void clearPrivateBookings() {
+    for (final club in state) {
+      for (final court in club.courts) {
+        court.privateBookings = [];
+      }
+    }
     state = [...state];
     return;
   }

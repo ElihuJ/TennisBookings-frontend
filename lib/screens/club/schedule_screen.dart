@@ -7,7 +7,7 @@ import '../../global_widgets/header/index.dart';
 import '../../global_widgets/index.dart';
 import '../../models/index.dart';
 import '../../routes/index.dart';
-import '../../state/clubs/index.dart';
+import '../../state/index.dart';
 import '../login/widgets/containers.dart';
 import 'widgets/calendar_view.dart';
 import 'widgets/schedule_header.dart';
@@ -42,6 +42,7 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
   Widget build(BuildContext context) {
     final clubs = ref.watch(clubsProvider);
     final clubsNotifier = ref.read(clubsProvider.notifier);
+    final user = ref.watch(userProvider);
 
     // * This will execute when refreshing page or loading specific URL directly
     // ^ ============================== If clubs are not loaded  ==============================
@@ -87,7 +88,8 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
                     courtSelected: _courtSelected!,
                     setState: (newValue) => setState(() {
                       _courtSelected = courts.firstWhere((court) => court.id == newValue);
-                      clubsNotifier.loadBookings(_clubSelected!, _courtSelected!, _dateInView);
+                      clubsNotifier.loadPublicBookings(_clubSelected!, _courtSelected!, _dateInView);
+                      clubsNotifier.loadPrivateBookings(_clubSelected!, _courtSelected!, _dateInView, user.uid);
                     }),
                   ),
                 ),

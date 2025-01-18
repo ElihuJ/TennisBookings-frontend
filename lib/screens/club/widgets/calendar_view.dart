@@ -31,19 +31,26 @@ class _CalendarView extends ConsumerState<CalendarView> {
   @override
   Widget build(BuildContext context) {
     final clubsNotifier = ref.read(clubsProvider.notifier);
+    final user = ref.watch(userProvider);
     final allEvents = [..._eventController.allEvents];
     _eventController.removeAll(allEvents);
 
     _bookings = widget.courtSelected.publicBookings;
+    if (widget.courtSelected.privateBookings != null) {
+      final privateBookings = widget.courtSelected.privateBookings!;
+      _bookings = replacePublicForPrivate(_bookings!, privateBookings);
+    }
 
     // final dateInView = widget.dateInView;
     // ! TODO: MOCKED DATE
     final dateInView = DateTime(2025, 1, 1);
 
-    // ^ ============================== Loading bookings  ==============================
+    // ^ ============================== Loading bookings when accessing page directly ==============================
 
     if (_bookings == null) {
-      clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, dateInView);
+      clubsNotifier
+          .loadPublicBookings(widget.clubSelected, widget.courtSelected, dateInView)
+          .then((_) => clubsNotifier.loadPrivateBookings(widget.clubSelected, widget.courtSelected, dateInView, user.uid));
       _bookings = widget.courtSelected.publicBookings;
       return const CircularProgressIndicator();
     }
@@ -97,7 +104,8 @@ class _CalendarView extends ConsumerState<CalendarView> {
             eventArranger: SideEventArranger(), // To define how simultaneous events will be arranged.
             onPageChange: (startDate, number) async {
               widget.setDateInView(startDate);
-              clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, startDate);
+              clubsNotifier.loadPublicBookings(widget.clubSelected, widget.courtSelected, startDate);
+              clubsNotifier.loadPrivateBookings(widget.clubSelected, widget.courtSelected, startDate, user.uid);
             },
             // startHour: 4, // To set the first hour displayed (ex: 05:00)
             // endHour: 23, // To set the end hour displayed
@@ -117,4 +125,17 @@ List<BookedTimeEpoch> getBookedTimes(List<Booking> bookings) {
     }
   }
   return bookedTimes;
+}
+
+List<Booking> replacePublicForPrivate(List<Booking> publicBookings, List<Booking> privateBookings) {
+  final consolidatedBookings = [...publicBookings];
+  for (final privateBooking in privateBookings) {
+    final bookingToReplace = findByIdOrNull<Booking>(publicBookings, privateBooking.id);
+    if (bookingToReplace != null) {
+      final index = publicBookings.indexOf(bookingToReplace);
+      consolidatedBookings[index] = privateBooking;
+    }
+  }
+
+  return consolidatedBookings;
 }

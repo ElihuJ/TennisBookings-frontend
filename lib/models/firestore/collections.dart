@@ -10,6 +10,7 @@ class CourtsSubCollections {
 
 class BookingsSubCollections {
   static const publicBookings = 'public_bookings';
+  static const privateBookings = 'private_bookings';
 }
 
 class ConfigDocuments {

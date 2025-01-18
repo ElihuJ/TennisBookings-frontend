@@ -28,6 +28,8 @@ class Club extends MapView<String, dynamic> implements HasId {
   final int postcode;
   final String state;
   final List<Court> courts;
+  final bool allowPublicBookings;
+  final List<String> memberIds;
 
   Club({
     required this.id,
@@ -46,6 +48,8 @@ class Club extends MapView<String, dynamic> implements HasId {
     required this.postcode,
     required this.state,
     required this.courts,
+    required this.allowPublicBookings,
+    required this.memberIds,
   }) : super({
           ClubFields.id: id,
           ClubFields.name: name,
@@ -83,6 +87,8 @@ class Club extends MapView<String, dynamic> implements HasId {
           postcode: 0,
           state: '',
           courts: [],
+          allowPublicBookings: false,
+          memberIds: [],
         );
 
   // ^ ================================== Loaders ==================================
@@ -115,6 +121,9 @@ class Club extends MapView<String, dynamic> implements HasId {
     final city = verifyRequiredProp<String>(prop: json[ClubFields.city], propName: ClubFields.city, defaultValue: '');
     final postcode = verifyRequiredProp<int>(prop: json[ClubFields.postcode], propName: ClubFields.postcode, defaultValue: 0);
     final state = verifyRequiredProp<String>(prop: json[ClubFields.state], propName: ClubFields.state, defaultValue: '');
+    final allowPublicBookings =
+        verifyRequiredProp<bool>(prop: json[ClubFields.allowPublicBookings], propName: ClubFields.allowPublicBookings, defaultValue: false);
+    final memberIds = verifyRequiredProp<List>(prop: json[ClubFields.memberIds], propName: ClubFields.memberIds, defaultValue: []);
 
     // * ================================== Verify not required props ==================================
     final casualFee = verifyNotRequiredProp<double>(prop: json[ClubFields.casualFee], propName: ClubFields.casualFee);
@@ -125,22 +134,25 @@ class Club extends MapView<String, dynamic> implements HasId {
     verifyProps(json, ClubFields.allFields);
 
     return Club(
-        id: id,
-        name: name,
-        adminIds: List<String>.from(adminIdsRaw),
-        hardCourts: hardCourts,
-        clayCourts: clayCourts,
-        grassCourts: grassCourts,
-        otherSurfaceCourts: otherSurfaceCourts,
-        annualFee: annualFee,
-        casualFee: casualFee ?? 0.0,
-        onlyMembers: onlyMembers,
-        streetAddress: streetAddress,
-        suburb: suburb,
-        city: city,
-        postcode: postcode,
-        state: state,
-        courts: courts);
+      id: id,
+      name: name,
+      adminIds: List<String>.from(adminIdsRaw),
+      hardCourts: hardCourts,
+      clayCourts: clayCourts,
+      grassCourts: grassCourts,
+      otherSurfaceCourts: otherSurfaceCourts,
+      annualFee: annualFee,
+      casualFee: casualFee ?? 0.0,
+      onlyMembers: onlyMembers,
+      streetAddress: streetAddress,
+      suburb: suburb,
+      city: city,
+      postcode: postcode,
+      state: state,
+      courts: courts,
+      allowPublicBookings: allowPublicBookings,
+      memberIds: List<String>.from(memberIds),
+    );
   }
 
   Club copyWith({
@@ -160,6 +172,8 @@ class Club extends MapView<String, dynamic> implements HasId {
     int? postcode,
     String? state,
     List<Court>? courts,
+    bool? allowPublicBookings,
+    List<String>? memberIds,
   }) {
     return Club(
       id: id ?? this.id,
@@ -178,6 +192,8 @@ class Club extends MapView<String, dynamic> implements HasId {
       postcode: postcode ?? this.postcode,
       state: state ?? this.state,
       courts: courts ?? this.courts,
+      allowPublicBookings: allowPublicBookings ?? this.allowPublicBookings,
+      memberIds: memberIds ?? this.memberIds,
     );
   }
 
@@ -199,6 +215,8 @@ class Club extends MapView<String, dynamic> implements HasId {
         'postcode: $postcode, \n'
         'state: $state, \n'
         'courts: $courts, \n'
+        'allowPublicBookings: $allowPublicBookings, \n'
+        'memberIds: $memberIds, \n'
         '=============================================== \n';
   }
 }

@@ -15,6 +15,8 @@ class ClubFields {
   static const String postcode = 'postcode';
   static const String state = 'state';
   static const String courts = 'courts';
+  static const String allowPublicBookings = 'allowPublicBookings';
+  static const String memberIds = 'memberIds';
 
   static const List<String> allFields = [
     id,
@@ -33,6 +35,8 @@ class ClubFields {
     postcode,
     state,
     courts,
+    allowPublicBookings,
+    memberIds,
   ];
 }
 
@@ -42,6 +46,7 @@ class CourtFields {
   static const String surface = 'surface';
   static const String clubId = 'clubId';
   static const String publicBookings = 'public_bookings';
+  static const String privateBookings = 'private_bookings';
   static const String generalUnavailability = 'generalUnavailability';
 
   static const List<String> allFields = [
@@ -50,6 +55,7 @@ class CourtFields {
     surface,
     clubId,
     publicBookings,
+    privateBookings,
     generalUnavailability,
   ];
 }

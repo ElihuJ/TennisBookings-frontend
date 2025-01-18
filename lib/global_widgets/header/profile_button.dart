@@ -12,12 +12,16 @@ class ProfileButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fbNotifier = ref.read(firebaseAuthProvider.notifier);
+    final clubNotifier = ref.read(clubsProvider.notifier);
 
     return IconButton(
         icon: Icon(
           Icons.person,
           color: AppColors.white,
         ),
-        onPressed: () => fbNotifier.logout());
+        onPressed: () {
+          fbNotifier.logout();
+          clubNotifier.clearPrivateBookings();
+        });
   }
 }

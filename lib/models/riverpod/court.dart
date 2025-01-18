@@ -15,6 +15,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
   @override
   final String name;
   List<Booking>? publicBookings;
+  List<Booking>? privateBookings;
   final List<GeneralUnavailability> generalUnavailability;
   @override
   final List<String> allFields = CourtFields.allFields;
@@ -26,6 +27,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
     required this.clubId,
     required this.surface,
     this.publicBookings,
+    this.privateBookings,
     required this.generalUnavailability,
     required this.name,
   }) : super({
@@ -34,6 +36,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
           CourtFields.surface: surface,
           CourtFields.generalUnavailability: generalUnavailability,
           CourtFields.publicBookings: publicBookings,
+          CourtFields.privateBookings: privateBookings,
           CourtFields.name: name,
         });
 
@@ -51,6 +54,15 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
     }
   }
 
+  void replaceBookings(List<Booking> privateBookings) {
+    for (final booking in privateBookings) {
+      final index = publicBookings?.indexWhere((element) => element.id == booking.id);
+      if (index != null && index >= 0) {
+        publicBookings![index] = booking;
+      }
+    }
+  }
+
   // ^ ================================== BoilerPlate ==================================
 
   factory Court.fromJson(Map<String, dynamic> json) {
@@ -64,11 +76,26 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
           ? List<GeneralUnavailability>.from(json[CourtFields.generalUnavailability].map((x) => GeneralUnavailability.fromJson(x)))
           : [];
 
-      final List<Booking>? publicBookings =
+      final List<Booking>? bookings =
           json[CourtFields.publicBookings] != null ? List<Booking>.from(json[CourtFields.publicBookings].map((x) => Booking.fromJson(x))) : null;
 
+      List<Booking>? publicBookings;
+      List<Booking>? privateBookings;
+
+      if (bookings != null) {
+        publicBookings = bookings.where((booking) => booking.private == false).toList();
+        privateBookings = bookings.where((booking) => booking.private == true).toList();
+      }
+
       return Court(
-          id: id, clubId: clubId, surface: surface, publicBookings: publicBookings, generalUnavailability: generalUnavailability, name: name);
+        id: id,
+        clubId: clubId,
+        surface: surface,
+        publicBookings: publicBookings,
+        generalUnavailability: generalUnavailability,
+        name: name,
+        privateBookings: privateBookings,
+      );
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING COURT', DebugLevel.error);
       return Court.empty();
@@ -82,6 +109,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
     String? surface,
     List<Booking>? publicBookings,
     List<GeneralUnavailability>? generalUnavailability,
+    List<Booking>? privateBookings,
     String? name,
   }) {
     return Court(
@@ -90,6 +118,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
       surface: surface ?? this.surface,
       publicBookings: publicBookings ?? this.publicBookings,
       generalUnavailability: generalUnavailability ?? this.generalUnavailability,
+      privateBookings: privateBookings ?? this.privateBookings,
       name: name ?? this.name,
     );
   }
@@ -101,6 +130,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
         CourtFields.surface: surface,
         CourtFields.publicBookings: publicBookings,
         CourtFields.generalUnavailability: generalUnavailability,
+        CourtFields.privateBookings: privateBookings,
         CourtFields.name: name,
       };
 }

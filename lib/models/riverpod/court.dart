@@ -44,7 +44,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
 
   // ^ ================================== Loaders ==================================
 
-  void loadBookings(List<Booking> publicBookings) {
+  void loadPublicBookings(List<Booking> publicBookings) {
     this.publicBookings ??= [];
     final bookingIds = this.publicBookings?.map((e) => e.id).toList();
     for (final booking in publicBookings) {
@@ -54,15 +54,15 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
     }
   }
 
-  void replaceBookings(List<Booking> privateBookings) {
+  void loadPrivateBookings(List<Booking> privateBookings) {
+    this.privateBookings ??= [];
+    final bookingIds = this.privateBookings?.map((e) => e.id).toList();
     for (final booking in privateBookings) {
-      final index = publicBookings?.indexWhere((element) => element.id == booking.id);
-      if (index != null && index >= 0) {
-        publicBookings![index] = booking;
+      if (bookingIds != null && !bookingIds.contains(booking.id)) {
+        this.privateBookings!.add(booking);
       }
     }
   }
-
   // ^ ================================== BoilerPlate ==================================
 
   factory Court.fromJson(Map<String, dynamic> json) {

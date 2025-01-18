@@ -48,10 +48,12 @@ class _CalendarView extends ConsumerState<CalendarView> {
     // ^ ============================== Loading bookings when accessing page directly ==============================
 
     if (_bookings == null) {
-      clubsNotifier
-          .loadPublicBookings(widget.clubSelected, widget.courtSelected, dateInView)
-          .then((_) => clubsNotifier.loadPrivateBookings(widget.clubSelected, widget.courtSelected, dateInView, user.uid));
-      _bookings = widget.courtSelected.publicBookings;
+      clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, dateInView, user.uid);
+      return const CircularProgressIndicator();
+    }
+
+    if (user.uid.isNotEmpty && widget.courtSelected.privateBookings == null) {
+      clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, dateInView, user.uid);
       return const CircularProgressIndicator();
     }
 
@@ -104,8 +106,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
             eventArranger: SideEventArranger(), // To define how simultaneous events will be arranged.
             onPageChange: (startDate, number) async {
               widget.setDateInView(startDate);
-              clubsNotifier.loadPublicBookings(widget.clubSelected, widget.courtSelected, startDate);
-              clubsNotifier.loadPrivateBookings(widget.clubSelected, widget.courtSelected, startDate, user.uid);
+              clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, startDate, user.uid);
             },
             // startHour: 4, // To set the first hour displayed (ex: 05:00)
             // endHour: 23, // To set the end hour displayed

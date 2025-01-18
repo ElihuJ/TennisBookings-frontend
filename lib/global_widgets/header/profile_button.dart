@@ -19,8 +19,8 @@ class ProfileButton extends HookConsumerWidget {
           Icons.person,
           color: AppColors.white,
         ),
-        onPressed: () {
-          fbNotifier.logout();
+        onPressed: () async {
+          await fbNotifier.logout();
           clubNotifier.clearPrivateBookings();
         });
   }

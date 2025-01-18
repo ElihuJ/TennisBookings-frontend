@@ -88,8 +88,7 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
                     courtSelected: _courtSelected!,
                     setState: (newValue) => setState(() {
                       _courtSelected = courts.firstWhere((court) => court.id == newValue);
-                      clubsNotifier.loadPublicBookings(_clubSelected!, _courtSelected!, _dateInView);
-                      clubsNotifier.loadPrivateBookings(_clubSelected!, _courtSelected!, _dateInView, user.uid);
+                      clubsNotifier.loadBookings(_clubSelected!, _courtSelected!, _dateInView, user.uid);
                     }),
                   ),
                 ),

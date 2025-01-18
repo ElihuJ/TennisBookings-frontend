@@ -575,11 +575,12 @@ class FindClubsScreen extends HookConsumerWidget {
       child: PopScope(
         canPop: false,
         child: Scaffold(
-            appBar: Header(),
-            body: ContainerWithBackground(
-              imagePath: homeBackgroundPng,
-              child: ClubsTable(clubs: clubs),
-            )),
+          appBar: Header(),
+          body: ContainerWithBackground(
+            imagePath: homeBackgroundPng,
+            child: ClubsTable(clubs: clubs),
+          ),
+        ),
       ),
     );
   }

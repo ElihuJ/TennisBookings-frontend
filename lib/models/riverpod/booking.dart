@@ -14,7 +14,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
   final BookingFormat format;
   final int from;
   final int to;
-  final bool isPrivate;
+  final bool private;
   final String ownerId;
   final List<BookingRequest> requests;
   final List<BookingRestrictions> restrictions;
@@ -31,7 +31,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
     required this.format,
     required this.from,
     required this.to,
-    required this.isPrivate,
+    required this.private,
     required this.ownerId,
     required this.requests,
     required this.restrictions,
@@ -44,7 +44,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
           BookingFields.format: format,
           BookingFields.from: from,
           BookingFields.to: to,
-          BookingFields.isPrivate: isPrivate,
+          BookingFields.private: private,
           BookingFields.ownerId: ownerId,
           BookingFields.requests: requests,
           BookingFields.restrictions: restrictions,
@@ -60,7 +60,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
           format: BookingFormat.singles,
           from: 0,
           to: 0,
-          isPrivate: false,
+          private: false,
           ownerId: defaultId,
           requests: [],
           restrictions: [],
@@ -77,7 +77,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
       final courtId = verifyRequiredProp<String>(prop: json[BookingFields.courtId], propName: BookingFields.courtId, defaultValue: defaultId);
       final from = verifyRequiredProp<int>(prop: json[BookingFields.from], propName: BookingFields.from, defaultValue: 0);
       final to = verifyRequiredProp<int>(prop: json[BookingFields.to], propName: BookingFields.to, defaultValue: 0);
-      final isPrivate = verifyRequiredProp<bool>(prop: json[BookingFields.isPrivate], propName: BookingFields.isPrivate, defaultValue: false);
+      final private = verifyRequiredProp<bool>(prop: json[BookingFields.private], propName: BookingFields.private, defaultValue: false);
       final ownerId = verifyRequiredProp<String>(prop: json[BookingFields.ownerId], propName: BookingFields.ownerId, defaultValue: defaultId);
       final title = verifyRequiredProp<String>(prop: json[BookingFields.title], propName: BookingFields.title, defaultValue: defaultName);
 
@@ -100,7 +100,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
         format: format,
         from: from,
         to: to,
-        isPrivate: isPrivate,
+        private: private,
         ownerId: ownerId,
         requests: requests,
         restrictions: restrictions,
@@ -121,7 +121,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
     BookingFormat? format,
     int? from,
     int? to,
-    bool? isPrivate,
+    bool? private,
     String? ownerId,
     List<BookingRequest>? requests,
     List<BookingRestrictions>? restrictions,
@@ -135,7 +135,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
       format: format ?? this.format,
       from: from ?? this.from,
       to: to ?? this.to,
-      isPrivate: isPrivate ?? this.isPrivate,
+      private: private ?? this.private,
       ownerId: ownerId ?? this.ownerId,
       requests: requests ?? this.requests,
       restrictions: restrictions ?? this.restrictions,
@@ -152,7 +152,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel {
         BookingFields.format: format.name,
         BookingFields.from: from,
         BookingFields.to: to,
-        BookingFields.isPrivate: isPrivate,
+        BookingFields.private: private,
         BookingFields.ownerId: ownerId,
         BookingFields.requests: requests.map((x) => x.toJson()).toList(),
         BookingFields.restrictions: restrictions.map((x) => x.toJson()).toList(),

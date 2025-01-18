@@ -1,14 +1,16 @@
 import '../../../global_helpers/index.dart';
 import '../../../models/riverpod/index.dart';
 
-class CreateClosedBookingPayload implements APIPayload {
+class CreateBookingPayload implements APIPayload {
   final Booking booking;
   final String clubId;
-  static final endpoint = 'createClosedBooking';
+  final bool isOpenBooking;
+  static final endpoint = 'createBooking';
 
-  CreateClosedBookingPayload({
+  CreateBookingPayload({
     required this.booking,
     required this.clubId,
+    required this.isOpenBooking,
   });
 
   @override
@@ -16,6 +18,7 @@ class CreateClosedBookingPayload implements APIPayload {
     return {
       'booking': booking.toJson(),
       'clubId': clubId,
+      'isOpenBooking': isOpenBooking,
     };
   }
 }

@@ -60,15 +60,15 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     final clubsNotifier = ref.read(clubsProvider.notifier);
     final cloudFunctionsNotifier = ref.read(cloudFunctionsProvider.notifier);
     final user = ref.read(userProvider);
-    final isPrivate = _visibilityValue == 'Private';
+    final private = _visibilityValue == 'Private';
     final sampleBooking = Booking(
-      id: 'testBooking',
+      id: 'id',
       confirmedPlayerIds: [],
       courtId: widget.courtSelected.id,
       format: BookingFormat.singles,
       from: startDateEpoch,
       to: endDateEpoch,
-      isPrivate: isPrivate,
+      private: private,
       ownerId: user.uid,
       requests: [],
       restrictions: [],
@@ -76,15 +76,17 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
       title: _titleValue,
     );
 
-    final payload = CreateClosedBookingPayload(
+    final payload = CreateBookingPayload(
       booking: sampleBooking,
       clubId: widget.clubSelected.id,
+      isOpenBooking: false,
     );
 
     Navigator.of(context).pop();
     eventsNotifier.showLoading(title: "Creating booking...");
     await wait(1500);
-    final result = await cloudFunctionsNotifier.createClosedBooking(payload);
+    payload.toJson().tbLogger('CreateBookingPayload');
+    final result = await cloudFunctionsNotifier.createBooking(payload);
     eventsNotifier.hideLoading();
     final success = result.data;
     if (success != null && success) {
@@ -211,7 +213,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                   _endTimeController.text = picked.format(context);
                 }
               },
-              // validator: validateNewTime,
+              validator: validateNewTime,
             ),
             const SizedBox(height: 10),
             Row(

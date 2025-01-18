@@ -1,23 +1,23 @@
 import 'index.dart';
 
-class CreateClosedBookingResponse {
-  final CreateClosedBookingResponseData data;
+class CreateBookingResponse {
+  final CreateBookingResponseData data;
   final ResponseStatus responseStatus;
 
-  CreateClosedBookingResponse({
+  CreateBookingResponse({
     required this.data,
     required this.responseStatus,
   }) : super();
 
-  factory CreateClosedBookingResponse.fromMap(Map<String, dynamic> map) {
+  factory CreateBookingResponse.fromMap(Map<String, dynamic> map) {
     try {
       final dataRaw = map[ResponseFields.data.name];
       final responseStatusRaw = map[ResponseFields.responseStatus.name];
 
       ResponseStatus responseStatus = ResponseStatus.fromMap(responseStatusRaw);
-      CreateClosedBookingResponseData data = CreateClosedBookingResponseData.fromMap(dataRaw);
+      CreateBookingResponseData data = CreateBookingResponseData.fromMap(dataRaw);
 
-      return CreateClosedBookingResponse(
+      return CreateBookingResponse(
         data: data,
         responseStatus: responseStatus,
       );
@@ -25,32 +25,32 @@ class CreateClosedBookingResponse {
       if (map.containsKey(ResponseFields.responseStatus.name)) {
         final responseStatusRaw = map[ResponseFields.responseStatus.name];
         ResponseStatus responseStatus = ResponseStatus.fromMap(responseStatusRaw);
-        return CreateClosedBookingResponse(
-          data: CreateClosedBookingResponseData(success: false),
+        return CreateBookingResponse(
+          data: CreateBookingResponseData(success: false),
           responseStatus: responseStatus,
         );
       }
-      throw Exception('Error parsing CreateClosedBookingResponse: $e');
+      throw Exception('Error parsing CreateBookingResponse: $e');
     }
   }
 }
 
 // * ===========  Data  ===========
-class CreateClosedBookingResponseData {
+class CreateBookingResponseData {
   final bool success;
 
-  CreateClosedBookingResponseData({
+  CreateBookingResponseData({
     required this.success,
   }) : super();
 
-  factory CreateClosedBookingResponseData.fromMap(Map<dynamic, dynamic> map) {
-    return CreateClosedBookingResponseData(
-      success: map[CreateClosedBookingResponseDataFields.success.name],
+  factory CreateBookingResponseData.fromMap(Map<dynamic, dynamic> map) {
+    return CreateBookingResponseData(
+      success: map[CreateBookingResponseDataFields.success.name],
     );
   }
 }
 
 // * ===========  Fields  ===========
-enum CreateClosedBookingResponseDataFields {
+enum CreateBookingResponseDataFields {
   success,
 }

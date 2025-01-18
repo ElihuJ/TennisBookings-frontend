@@ -31,7 +31,7 @@ class EventContainer extends HookConsumerWidget {
     Color bookingColor = owned ? AppColors.primaryGreen : AppColors.darkGreen;
     if (!isBooked) {
       // if (true) {
-      bookingColor = AppColors.brightYellow;
+      bookingColor = AppColors.primaryGreen.withOpacity(0.5);
     }
 
     final bookingLengthEpoch = booking.to - booking.from;

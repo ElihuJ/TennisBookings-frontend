@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/global_types/enums.dart';
 
 import '../../global_helpers/index.dart';
 import '../../models/index.dart';
@@ -99,7 +100,8 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
         .doc(court.id)
         .collection(BookingsSubCollections.publicBookings)
         .where(BookingFields.from, isGreaterThan: startDateEpoch)
-        .where(BookingFields.to, isLessThan: endDateEpoch);
+        .where(BookingFields.to, isLessThan: endDateEpoch)
+        .where(BookingFields.status, whereIn: [BookingStatus.confirmed.name, BookingStatus.open.name]);
 
     String queryParams = query.parameters.toString();
     queryParams += 'courtId: ${court.id}, clubId: ${club.id}';

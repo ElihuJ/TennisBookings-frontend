@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tennisbookings/cloud_functions/index.dart';
 import 'package:tennisbookings/cloud_functions/types.dart';
+import 'package:tennisbookings/global_widgets/index.dart';
 
 import '../../../cloud_functions/dto/index.dart';
 import '../../../config/config.dart';
@@ -41,6 +42,8 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
   late int startDateEpoch;
   String _visibilityValue = 'Public';
   String _titleValue = '';
+  BookingFormat _bookingFormat = BookingFormat.singles;
+
   void Function()? submitFunction;
   bool isValid = false;
   Config config = Config();
@@ -61,11 +64,11 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     final cloudFunctionsNotifier = ref.read(cloudFunctionsProvider.notifier);
     final user = ref.read(userProvider);
     final private = _visibilityValue == 'Private';
-    final sampleBooking = Booking(
-      id: 'id',
+    final newBooking = Booking(
+      id: getUuid(),
       confirmedPlayerIds: [],
       courtId: widget.courtSelected.id,
-      format: BookingFormat.singles,
+      format: _bookingFormat,
       from: startDateEpoch,
       to: endDateEpoch,
       private: private,
@@ -77,7 +80,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     );
 
     final payload = CreateBookingPayload(
-      booking: sampleBooking,
+      booking: newBooking,
       clubId: widget.clubSelected.id,
       isOpenBooking: false,
     );
@@ -90,7 +93,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     eventsNotifier.hideLoading();
     final success = result.data;
     if (success != null && success) {
-      clubsNotifier.addBooking(widget.courtSelected, sampleBooking);
+      clubsNotifier.addBooking(court: widget.courtSelected, booking: newBooking, isPrivate: private);
       eventsNotifier.showMessage(messageType: MessageType.success, message: 'Booking created');
     } else {
       eventsNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage ?? 'Error creating booking');
@@ -157,6 +160,27 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                 String? validationError;
                 if (value == null || value.isEmpty) {
                   validationError = '';
+                }
+                return validationError;
+              },
+            ),
+            DropdownButtonFormField<String>(
+              value: _bookingFormat.name,
+              decoration: const InputDecoration(labelText: 'Format'),
+              items: [
+                DropdownMenuItem(value: BookingFormat.singles.name, child: PrettyText(BookingFormat.singles.name)),
+                DropdownMenuItem(value: BookingFormat.doubles.name, child: PrettyText(BookingFormat.doubles.name)),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _bookingFormat = BookingFormat.fromString(value!);
+                });
+              },
+              validator: (value) {
+                String? validationError;
+                if (value == null || value.isEmpty) {
+                  submitFunction = null;
+                  validationError = 'Please enter a format';
                 }
                 return validationError;
               },

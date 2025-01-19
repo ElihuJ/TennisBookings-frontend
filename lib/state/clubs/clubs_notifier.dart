@@ -85,8 +85,18 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     }
   }
 
-  void addBooking(Court court, Booking booking) {
-    court.publicBookings?.add(booking);
+  void addBooking({required Court court, required Booking booking, required bool isPrivate}) {
+    if (isPrivate) {
+      court.privateBookings?.add(booking);
+      final publicBooking = booking.copyWith(
+        title: 'Private Booking',
+        confirmedPlayerIds: [],
+      );
+      court.publicBookings?.add(publicBooking);
+    } else {
+      court.publicBookings?.add(booking);
+    }
+
     state = [...state];
   }
 
@@ -115,7 +125,6 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     if (!publicQueryMade) {
       publicQueriesMade.add(queryParams);
 
-      court.tbLogger('MAKING PUBLIC QUERY', DebugLevel.warning);
       final querySnapshot = await publicBookingsQuery.get();
 
       final bookingsDocs = querySnapshot.docs;
@@ -147,7 +156,6 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
       if (!privateQueryMade) {
         privateQueriesMade.add(queryParams);
 
-        court.tbLogger('MAKING PRIVATE QUERY', DebugLevel.warning);
         final querySnapshot = await privateBookingsQuery.get();
 
         final bookingsDocs = querySnapshot.docs;
@@ -160,11 +168,6 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     }
 
     // ^ ============================== State control ==============================
-
-    // if (reloadState) {
-    //   state = [...state];
-    //   return;
-    // }
 
     // * If no data is found
     if (privateQueriesMade.isNotEmpty) {

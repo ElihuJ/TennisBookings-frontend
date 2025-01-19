@@ -146,6 +146,7 @@ enum DayOfTheWeek implements IsEnum {
 enum BookingFormat implements IsEnum {
   singles,
   doubles,
+  coaching,
   unknown;
 
   @override
@@ -155,6 +156,7 @@ enum BookingFormat implements IsEnum {
         return 'singles';
       case BookingFormat.doubles:
         return 'doubles';
+      case BookingFormat.coaching:
       default:
         ''.tbLogger('BookingFormat.name: $this', DebugLevel.warning);
         return 'unknown';
@@ -168,6 +170,8 @@ enum BookingFormat implements IsEnum {
         return 'singles';
       case BookingFormat.doubles:
         return 'doubles';
+      case BookingFormat.coaching:
+        return 'coaching';
       default:
         ''.tbLogger('BookingFormat.locale: $this', DebugLevel.warning);
         return 'unknown';
@@ -180,6 +184,8 @@ enum BookingFormat implements IsEnum {
         return BookingFormat.singles;
       case 'doubles':
         return BookingFormat.doubles;
+      case 'coaching':
+        return BookingFormat.coaching;
       default:
         ''.tbLogger('BookingFormat.fromString: $day', DebugLevel.warning);
         return BookingFormat.unknown;

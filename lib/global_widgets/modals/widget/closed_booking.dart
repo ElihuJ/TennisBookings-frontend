@@ -111,6 +111,11 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
       submitFunction = null;
       return 'Max duration per booking is ${Config.maxBookingHours} hour';
     }
+
+    if ((endDateEpoch - startDateEpoch) < Config.minDuration) {
+      submitFunction = null;
+      return 'Min duration per booking is ${Config.minDurationMinutes} minutes';
+    }
     if (!validateTime(startTimeEpoch: startDateEpoch, bookedTimes: widget.bookedTimes, date: widget.date, endTimeEpoch: endDateEpoch)) {
       submitFunction = null;
       return 'Time slot is already booked';

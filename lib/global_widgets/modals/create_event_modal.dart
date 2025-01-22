@@ -38,11 +38,17 @@ class _CreateBookingModalState extends ConsumerState<CreateBookingModal> {
             courtSelected: widget.courtSelected,
             date: widget.date,
             switchBookingMode: switchBookingMode,
-            bookedTimes: widget.bookedTimes,
+            confirmedBookedTimes: widget.bookedTimes,
             context: context,
           )
         : OpenBooking(
-            clubSelected: widget.clubSelected, courtSelected: widget.courtSelected, date: widget.date, switchBookingMode: switchBookingMode);
+            clubSelected: widget.clubSelected,
+            courtSelected: widget.courtSelected,
+            date: widget.date,
+            switchBookingMode: switchBookingMode,
+            context: context,
+            confirmedBookedTimes: widget.bookedTimes,
+          );
 
     final dateString = prettyDateFromEpoch(widget.date.millisecondsSinceEpoch);
     final bookingModeString = _bookingMode == BookingMode.open ? 'Open' : 'Closed';

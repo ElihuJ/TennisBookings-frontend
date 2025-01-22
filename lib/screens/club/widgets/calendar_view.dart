@@ -71,7 +71,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
     }).toList();
 
     _eventController.addAll(events);
-    final bookedTimes = getBookedTimes(_bookings!);
+    final bookedTimes = getConfirmedBookedTimes(_bookings!);
 
     return CalendarControllerProvider<Booking>(
       controller: _eventController,
@@ -118,7 +118,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
   }
 }
 
-List<BookedTimeEpoch> getBookedTimes(List<Booking> bookings) {
+List<BookedTimeEpoch> getConfirmedBookedTimes(List<Booking> bookings) {
   List<BookedTimeEpoch> bookedTimes = [];
   for (var booking in bookings) {
     if (booking.status == BookingStatus.confirmed) {

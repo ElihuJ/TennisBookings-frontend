@@ -48,6 +48,9 @@ class Config {
   static const minDuration = 3600 / 2; // 30 minutes // * Keep synced with minDurationMinutes
   static const minDurationMinutes = 30;
 
+  static const utrMaxRating = 16;
+  static const utrMinRating = 0;
+
   @override
   String toString() => 'Config: $envString environment is running'
       '\nappName: $appName'

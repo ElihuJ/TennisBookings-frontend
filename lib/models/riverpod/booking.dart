@@ -18,7 +18,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
   final bool private;
   final String ownerId;
   final List<BookingRequest> requests;
-  final List<BookingRestrictions> restrictions;
+  final BookingRestrictions? restrictions;
   final BookingStatus status;
   final String title;
 
@@ -35,7 +35,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     required this.private,
     required this.ownerId,
     required this.requests,
-    required this.restrictions,
+    this.restrictions,
     required this.status,
     required this.title,
   }) : super({
@@ -64,7 +64,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
           private: false,
           ownerId: defaultId,
           requests: [],
-          restrictions: [],
+          restrictions: null,
           status: BookingStatus.open,
           title: defaultName,
         );
@@ -84,9 +84,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
 
       final List<BookingRequest> requests =
           json[BookingFields.requests] != null ? List<BookingRequest>.from(json[BookingFields.requests].map((x) => BookingRequest.fromJson(x))) : [];
-      final List<BookingRestrictions> restrictions = json[BookingFields.restrictions] != null
-          ? List<BookingRestrictions>.from(json[BookingFields.restrictions].map((x) => BookingRestrictions.fromJson(x)))
-          : [];
+      final BookingRestrictions? restrictions =
+          json[BookingFields.restrictions] != null ? BookingRestrictions.fromJson(json[BookingFields.restrictions]) : null;
       final status = json[BookingFields.status] != null ? BookingStatus.fromString(json[BookingFields.status]) : BookingStatus.unknown;
       final format = json[BookingFields.format] != null ? BookingFormat.fromString(json[BookingFields.format]) : BookingFormat.unknown;
 
@@ -125,7 +124,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     bool? private,
     String? ownerId,
     List<BookingRequest>? requests,
-    List<BookingRestrictions>? restrictions,
+    BookingRestrictions? restrictions,
     BookingStatus? status,
     String? title,
   }) {
@@ -156,7 +155,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         BookingFields.private: private,
         BookingFields.ownerId: ownerId,
         BookingFields.requests: requests.map((x) => x.toJson()).toList(),
-        BookingFields.restrictions: restrictions.map((x) => x.toJson()).toList(),
+        BookingFields.restrictions: restrictions,
         BookingFields.status: status.name,
         BookingFields.title: title,
       };

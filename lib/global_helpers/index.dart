@@ -6,3 +6,4 @@ export 'logs.dart';
 export 'mixins.dart';
 export 'text.dart';
 export 'time_helpers.dart';
+export 'validators.dart';

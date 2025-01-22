@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../global_helpers/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
 import '../../../theme/index.dart';
@@ -51,12 +52,13 @@ class ScheduleHeader extends StatelessWidget {
               }
             },
             items: sortedCourts.map<DropdownMenuItem<String>>((court) {
+              final courtString = textToTitleCase('${court.name} - ${court.surface}');
               return DropdownMenuItem<String>(
                 value: court.id,
                 child: Container(
                   padding: const EdgeInsets.all(5),
                   margin: EdgeInsets.all(5),
-                  child: Text(court.name),
+                  child: Text(courtString),
                 ),
               );
             }).toList(),

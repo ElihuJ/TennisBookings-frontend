@@ -21,14 +21,14 @@ class ClosedBooking extends StatefulHookConsumerWidget {
     required this.date,
     required this.switchBookingMode,
     required this.context,
-    required this.bookedTimes,
+    required this.confirmedBookedTimes,
   });
   final Club clubSelected;
   final Court courtSelected;
   final DateTime date;
   final Function() switchBookingMode;
   final BuildContext context;
-  final List<BookedTimeEpoch> bookedTimes;
+  final List<BookedTimeEpoch> confirmedBookedTimes;
 
   @override
   ConsumerState<ClosedBooking> createState() => _ClosedBookingState();
@@ -74,7 +74,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
       private: private,
       ownerId: user.uid,
       requests: [],
-      restrictions: [],
+      restrictions: null,
       status: BookingStatus.confirmed,
       title: _titleValue,
     );
@@ -100,27 +100,6 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     }
 
     return result;
-  }
-
-  String? validateNewTime(String? _) {
-    if (endDateEpoch <= startDateEpoch) {
-      submitFunction = null;
-      return 'End time must be after start time';
-    }
-    if ((endDateEpoch - startDateEpoch) > Config.maxBookingDuration) {
-      submitFunction = null;
-      return 'Max duration per booking is ${Config.maxBookingHours} hour';
-    }
-
-    if ((endDateEpoch - startDateEpoch) < Config.minDuration) {
-      submitFunction = null;
-      return 'Min duration per booking is ${Config.minDurationMinutes} minutes';
-    }
-    if (!validateTime(startTimeEpoch: startDateEpoch, bookedTimes: widget.bookedTimes, date: widget.date, endTimeEpoch: endDateEpoch)) {
-      submitFunction = null;
-      return 'Time slot is already booked';
-    }
-    return null;
   }
 
   @override
@@ -155,6 +134,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                 ),
               ],
             ),
+            // ^ =============== TITLE FIELD ===============
             TextFormField(
               initialValue: _titleValue,
               decoration: const InputDecoration(
@@ -169,6 +149,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                 return validationError;
               },
             ),
+            // ^ =============== FORMAT FIELD ===============
             DropdownButtonFormField<String>(
               value: _bookingFormat.name,
               decoration: const InputDecoration(labelText: 'Format'),
@@ -190,6 +171,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                 return validationError;
               },
             ),
+            // ^ =============== VISIBILITY FIELD ===============
             DropdownButtonFormField<String>(
               value: _visibilityValue,
               decoration: const InputDecoration(labelText: 'Visibility'),
@@ -211,6 +193,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                 return validationError;
               },
             ),
+            // ^ =============== START TIME FIELD ===============
             TextFormField(
               controller: _startTimeController,
               decoration: const InputDecoration(labelText: 'Start Time'),
@@ -227,6 +210,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                 }
               },
             ),
+            // ^ =============== END TIME FIELD ===============
             TextFormField(
               controller: _endTimeController,
               decoration: const InputDecoration(labelText: 'End Time'),
@@ -242,9 +226,21 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                   _endTimeController.text = picked.format(context);
                 }
               },
-              validator: validateNewTime,
+              validator: (String? _) {
+                final validationError = validateNewTime(
+                  startDateEpoch: startDateEpoch,
+                  endDateEpoch: endDateEpoch,
+                  bookedTimes: widget.confirmedBookedTimes,
+                  date: widget.date,
+                );
+                if (validationError != null) {
+                  submitFunction = null;
+                }
+                return validationError;
+              },
             ),
             const SizedBox(height: 10),
+            // ^ =============== BUTTONS ===============
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[

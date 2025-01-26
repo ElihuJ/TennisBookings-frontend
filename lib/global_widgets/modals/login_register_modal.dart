@@ -34,3 +34,21 @@ void showLoginRegisterModal(BuildContext context) {
     },
   );
 }
+
+void showOnlyMembersModal({required BuildContext context, String? message}) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Members only'),
+        content: Text(message ?? 'This feature is only available to members of this club.'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Close'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      );
+    },
+  );
+}

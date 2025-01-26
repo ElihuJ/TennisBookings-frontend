@@ -10,12 +10,10 @@ import '../../../state/index.dart';
 import '../../../theme/index.dart';
 
 class EventContainer extends HookConsumerWidget {
-  const EventContainer({
-    super.key,
-    required this.events,
-  });
+  const EventContainer({super.key, required this.events, required this.club});
 
   final List<CalendarEventData<Booking>> events;
+  final Club club;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +23,6 @@ class EventContainer extends HookConsumerWidget {
     final players = booking.confirmedPlayerIds;
     final isBooked = booking.status == BookingStatus.confirmed;
     final owned = booking.ownerId == user.uid;
-    final isClickable = owned || !isBooked;
 
     // * Computing colours
     Color bookingColor = owned ? AppColors.primaryGreen : AppColors.darkGreen;
@@ -42,14 +39,15 @@ class EventContainer extends HookConsumerWidget {
     final fontSize = bookingLessThanAnHour ? 10.0 : 14.0;
 
     return BookingContainer(
-        user: user,
-        event: events.first,
-        isClickable: isClickable,
-        bookingColor: bookingColor,
-        computedTextColor: computedTextColor,
-        fontSize: fontSize,
-        booking: booking,
-        players: players);
+      user: user,
+      event: events.first,
+      bookingColor: bookingColor,
+      computedTextColor: computedTextColor,
+      fontSize: fontSize,
+      booking: booking,
+      players: players,
+      club: club,
+    );
   }
 }
 
@@ -58,50 +56,34 @@ class BookingContainer extends StatelessWidget {
     super.key,
     required this.user,
     required this.event,
-    required this.isClickable,
     required this.bookingColor,
     required this.computedTextColor,
     required this.fontSize,
     required this.booking,
     required this.players,
+    required this.club,
   });
 
   final User user;
   final CalendarEventData<Booking> event;
-  final bool isClickable;
   final Color bookingColor;
   final Color computedTextColor;
   final double fontSize;
   final Booking booking;
   final List<String> players;
+  final Club club;
 
   @override
   Widget build(BuildContext context) {
-    final isMerged = event.event!.mergedBookings.isNotEmpty;
-
-    if (isMerged) {
-      final mergedEvent = event.event!;
-      mergedEvent.mergedBookings.tbLogger('mergedEvent.mergedBookings');
-    }
+    final allowsPublicBookings = club.allowPublicBookings;
+    final isUserMember = club.memberIds.contains(user.uid);
+    final (mouseAction, isClickable) = getPermissionToClick(booking, user, allowsPublicBookings, isUserMember);
 
     return MouseRegion(
-      cursor: SystemMouseCursors.click,
+      cursor: mouseAction,
       onHover: (event) {},
       child: GestureDetector(
-        onTap: () {
-          if (user.uid.isEmpty) {
-            showLoginRegisterModal(context);
-            return;
-          }
-          if (event.event!.ownerId == user.uid) {
-            showDialog(context: context, builder: (context) => AlertDialog(content: Text('You are the owner')));
-            return;
-          }
-          if (isClickable) {
-            showDialog(context: context, builder: (context) => AlertDialog(content: Text('You can\'t book this event')));
-            return;
-          }
-        },
+        onTap: () => onTapAction(booking, user, isClickable, isClickable, context),
         child: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -141,4 +123,25 @@ class BookingContainer extends StatelessWidget {
       ),
     );
   }
+}
+
+(MouseCursor, bool) getPermissionToClick(Booking booking, User user, bool allowsPublicBookings, bool isUserMember) {
+  if (user.uid.isEmpty) return (SystemMouseCursors.forbidden, false);
+  if (!allowsPublicBookings && !isUserMember) return (SystemMouseCursors.forbidden, false);
+  if (booking.ownerId == user.uid) return (SystemMouseCursors.click, true);
+  return (SystemMouseCursors.basic, false);
+}
+
+void onTapAction(Booking booking, User user, bool allowsPublicBookings, bool isUserMember, BuildContext context) {
+  if (user.uid.isEmpty) {
+    showLoginRegisterModal(context);
+    return;
+  }
+
+  if (!allowsPublicBookings && !isUserMember) {
+    showOnlyMembersModal(context: context, message: 'Only members can view this booking');
+    return;
+  }
+  if (booking.ownerId == user.uid) return;
+  return;
 }

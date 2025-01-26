@@ -71,11 +71,13 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       final dob = verifyRequiredProp<int>(prop: json[UserFields.dob], propName: UserFields.dob, defaultValue: 0);
       final email = verifyRequiredProp<String>(prop: json[UserFields.email], propName: UserFields.email, defaultValue: defaultEmail);
       final genderRaw = verifyRequiredProp<String>(prop: json[UserFields.gender], propName: UserFields.gender, defaultValue: Gender.male.name);
-      final homeClubId = verifyRequiredProp<String>(prop: json[UserFields.homeClubId], propName: UserFields.homeClubId, defaultValue: '');
       final lastLogin = verifyRequiredProp<int>(prop: json[UserFields.lastLogin], propName: UserFields.lastLogin, defaultValue: 0);
       final name = verifyRequiredProp<String>(prop: json[UserFields.name], propName: UserFields.name, defaultValue: defaultName);
-      final utrRating = verifyRequiredProp<double>(prop: json[UserFields.utrRating], propName: UserFields.utrRating, defaultValue: 0.0);
       final utrVerified = verifyRequiredProp<bool>(prop: json[UserFields.utrVerified], propName: UserFields.utrVerified, defaultValue: false);
+
+      // * ================================== Optional Props ==================================
+      final homeClubId = verifyNotRequiredProp<String?>(prop: json[UserFields.homeClubId], propName: UserFields.homeClubId);
+      final utrRating = verifyNotRequiredProp<double?>(prop: json[UserFields.utrRating], propName: UserFields.utrRating);
 
       final bookings = List<DocumentReference<Map<String, dynamic>>>.from(bookingsRaw);
       final clubIds = List<String>.from(clubIdRaw);

@@ -32,6 +32,8 @@ class _CalendarView extends ConsumerState<CalendarView> {
   Widget build(BuildContext context) {
     final clubsNotifier = ref.read(clubsProvider.notifier);
     final user = ref.watch(userProvider);
+    final allowsPublicBookings = widget.clubSelected.allowPublicBookings;
+    final isUserMember = widget.clubSelected.memberIds.contains(user.uid);
     final allEvents = [..._eventController.allEvents];
     _eventController.removeAll(allEvents);
 
@@ -99,12 +101,16 @@ class _CalendarView extends ConsumerState<CalendarView> {
             ),
             onDateTap: (date) {
               if (user.uid.isEmpty) return;
+              if (!allowsPublicBookings && !isUserMember) {
+                showOnlyMembersModal(context: context, message: 'This is a members only club');
+                return;
+              }
               showCreateBookingModal(
                   context: context, clubSelected: widget.clubSelected, courtSelected: widget.courtSelected, date: date, bookedTimes: bookedTimes);
             },
             controller: _eventController,
             eventTileBuilder: (date, events, boundary, start, end) {
-              return EventContainer(events: events);
+              return EventContainer(events: events, club: widget.clubSelected);
             },
             showLiveTimeLineInAllDays: true, // To display live time line in all pages in day view.
             initialDay: dateInView,

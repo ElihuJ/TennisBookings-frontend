@@ -3,7 +3,6 @@ import 'package:flutter_locales/flutter_locales.dart';
 
 import '../config/config.dart';
 import '../global_types/index.dart';
-import 'index.dart';
 
 String? notEmptyStringValidator(String? value, BuildContext context) {
   if (value == null || value.isEmpty) {
@@ -28,8 +27,7 @@ String? utrValueValidator(String? value, BuildContext context) {
   return null;
 }
 
-String? validateNewTime(
-    {required int startDateEpoch, required int endDateEpoch, required List<BookedTimeEpoch> bookedTimes, required DateTime date}) {
+String? validateNewTime({required int startDateEpoch, required int endDateEpoch, required List<BookedTimeEpoch> bookedTimes}) {
   String? validationError;
   if (endDateEpoch <= startDateEpoch) {
     validationError = 'End time must be after start time';
@@ -41,13 +39,13 @@ String? validateNewTime(
   if ((endDateEpoch - startDateEpoch) < Config.minDuration) {
     validationError = 'Min duration per booking is ${Config.minDurationMinutes} minutes';
   }
-  if (!validateTime(startTimeEpoch: startDateEpoch, bookedTimes: bookedTimes, date: date, endTimeEpoch: endDateEpoch)) {
+  if (!validateTime(startTimeEpoch: startDateEpoch, bookedTimes: bookedTimes, endTimeEpoch: endDateEpoch)) {
     validationError = 'Time slot is already booked';
   }
   return validationError;
 }
 
-bool validateTime({required int startTimeEpoch, required List<BookedTimeEpoch> bookedTimes, required DateTime date, required int endTimeEpoch}) {
+bool validateTime({required int startTimeEpoch, required List<BookedTimeEpoch> bookedTimes, required int endTimeEpoch}) {
   bool valid = true;
 
   for (final bookedTime in bookedTimes) {

@@ -57,7 +57,10 @@ class _CalendarView extends ConsumerState<CalendarView> {
       return const CircularProgressIndicator();
     }
 
-    List<CalendarEventData<Booking>> events = _bookings!.map((booking) {
+    List<Booking> mergedBookings = mergeConflictedBookings(bookings: _bookings!);
+    // final mergedBookings = _bookings!;
+
+    List<CalendarEventData<Booking>> events = mergedBookings.map((booking) {
       return CalendarEventData<Booking>(
         title: booking.title,
         titleStyle: const TextStyle(color: Colors.white),
@@ -94,10 +97,15 @@ class _CalendarView extends ConsumerState<CalendarView> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            onDateTap: (date) => showCreateBookingModal(
-                context: context, clubSelected: widget.clubSelected, courtSelected: widget.courtSelected, date: date, bookedTimes: bookedTimes),
+            onDateTap: (date) {
+              if (user.uid.isEmpty) return;
+              showCreateBookingModal(
+                  context: context, clubSelected: widget.clubSelected, courtSelected: widget.courtSelected, date: date, bookedTimes: bookedTimes);
+            },
             controller: _eventController,
-            eventTileBuilder: (date, events, boundary, start, end) => EventContainer(events: events),
+            eventTileBuilder: (date, events, boundary, start, end) {
+              return EventContainer(events: events);
+            },
             showLiveTimeLineInAllDays: true, // To display live time line in all pages in day view.
             initialDay: dateInView,
             key: _calendarKey,
@@ -139,4 +147,65 @@ List<Booking> replacePublicForPrivate(List<Booking> publicBookings, List<Booking
   }
 
   return consolidatedBookings;
+}
+
+Booking? checkForConflict({required List<Booking> mergedBookings, required Booking bookingToCompare}) {
+  Booking? existingBookingToMerge;
+  for (final existingBooking in mergedBookings) {
+    if (bookingToCompare.from >= existingBooking.from && bookingToCompare.from < existingBooking.to) {
+      existingBookingToMerge = existingBooking;
+      break;
+    }
+    if (bookingToCompare.to > existingBooking.from && bookingToCompare.to <= existingBooking.to) {
+      existingBookingToMerge = existingBooking;
+      break;
+    }
+    if (bookingToCompare.from < existingBooking.from && bookingToCompare.to > existingBooking.to) {
+      existingBookingToMerge = existingBooking;
+      break;
+    }
+  }
+  return existingBookingToMerge;
+}
+
+int getEarliestStart(Booking booking1, Booking booking2) {
+  return booking1.from < booking2.from ? booking1.from : booking2.from;
+}
+
+int getLatestEnd(Booking booking1, Booking booking2) {
+  return booking1.to > booking2.to ? booking1.to : booking2.to;
+}
+
+List<Booking> mergeConflictedBookings({required List<Booking> bookings}) {
+  final mergedBookings = <Booking>[];
+
+  for (final booking in bookings) {
+    final existingBookingToMerge = checkForConflict(mergedBookings: mergedBookings, bookingToCompare: booking);
+    if (existingBookingToMerge != null) {
+      final earliestStart = getEarliestStart(existingBookingToMerge, booking);
+      final latestEnd = getLatestEnd(existingBookingToMerge, booking);
+      final existingMergedBookings = existingBookingToMerge.mergedBookings.isEmpty ? [existingBookingToMerge] : existingBookingToMerge.mergedBookings;
+
+      final mergedBooking = Booking(
+        id: existingBookingToMerge.id,
+        from: earliestStart,
+        to: latestEnd,
+        title: 'Merged booking',
+        ownerId: '',
+        status: BookingStatus.open,
+        confirmedPlayerIds: [],
+        format: BookingFormat.merged,
+        courtId: existingBookingToMerge.courtId,
+        private: false,
+        requests: [],
+        mergedBookings: [...existingMergedBookings, booking],
+      );
+      mergedBookings.removeWhere((element) => element.id == existingBookingToMerge.id);
+      mergedBookings.add(mergedBooking);
+      continue;
+    }
+    mergedBookings.add(booking);
+  }
+
+  return mergedBookings;
 }

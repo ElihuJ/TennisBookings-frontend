@@ -58,4 +58,11 @@ class BookedTimeEpoch {
   final int end;
 
   BookedTimeEpoch(this.start, this.end);
+
+  @override
+  String toString() {
+    final startAsDate = DateTime.fromMillisecondsSinceEpoch(start * 1000);
+    final endAsDate = DateTime.fromMillisecondsSinceEpoch(end * 1000);
+    return 'BookedTimeEpoch{start: $startAsDate, end: $endAsDate}';
+  }
 }

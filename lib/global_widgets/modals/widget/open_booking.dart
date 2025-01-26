@@ -87,7 +87,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
     final payload = CreateBookingPayload(
       booking: newBooking,
       clubId: widget.clubSelected.id,
-      isOpenBooking: false,
+      isOpenBooking: true, // * This is the only difference between open and closed booking
     );
 
     Navigator.of(context).pop();
@@ -245,7 +245,6 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
                   startDateEpoch: startDateEpoch,
                   endDateEpoch: endDateEpoch,
                   bookedTimes: widget.confirmedBookedTimes,
-                  date: widget.date,
                 );
                 if (validationError != null) {
                   submitFunction = null;

@@ -21,6 +21,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
   final BookingRestrictions? restrictions;
   final BookingStatus status;
   final String title;
+  final List<Booking> mergedBookings; // * Used for calendar view ONLY FRONTEND. No DB
 
   @override
   final List<String> allFields = BookingFields.allFields;
@@ -38,6 +39,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     this.restrictions,
     required this.status,
     required this.title,
+    this.mergedBookings = const [],
   }) : super({
           BookingFields.id: id,
           BookingFields.confirmedPlayerIds: confirmedPlayerIds,
@@ -111,6 +113,10 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
       e.tbLogger('1 ERROR CONSTRUCTING BOOKING', DebugLevel.error);
       return Booking.empty();
     }
+  }
+
+  void addBookingToMerged(Booking booking) {
+    mergedBookings.add(booking);
   }
 
   @override

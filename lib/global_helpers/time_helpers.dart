@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tennisbookings/config/config.dart';
 
 import '../global_types/index.dart';
 

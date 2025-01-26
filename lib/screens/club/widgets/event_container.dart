@@ -41,16 +41,59 @@ class EventContainer extends HookConsumerWidget {
     final computedTextColor = getContrastColor(bookingColor);
     final fontSize = bookingLessThanAnHour ? 10.0 : 14.0;
 
+    return BookingContainer(
+        user: user,
+        event: events.first,
+        isClickable: isClickable,
+        bookingColor: bookingColor,
+        computedTextColor: computedTextColor,
+        fontSize: fontSize,
+        booking: booking,
+        players: players);
+  }
+}
+
+class BookingContainer extends StatelessWidget {
+  const BookingContainer({
+    super.key,
+    required this.user,
+    required this.event,
+    required this.isClickable,
+    required this.bookingColor,
+    required this.computedTextColor,
+    required this.fontSize,
+    required this.booking,
+    required this.players,
+  });
+
+  final User user;
+  final CalendarEventData<Booking> event;
+  final bool isClickable;
+  final Color bookingColor;
+  final Color computedTextColor;
+  final double fontSize;
+  final Booking booking;
+  final List<String> players;
+
+  @override
+  Widget build(BuildContext context) {
+    final isMerged = event.event!.mergedBookings.isNotEmpty;
+
+    if (isMerged) {
+      final mergedEvent = event.event!;
+      mergedEvent.mergedBookings.tbLogger('mergedEvent.mergedBookings');
+    }
+
     return MouseRegion(
-      cursor: isClickable ? SystemMouseCursors.click : SystemMouseCursors.basic,
+      cursor: SystemMouseCursors.click,
       onHover: (event) {},
       child: GestureDetector(
         onTap: () {
-          if (isClickable && user.uid.isEmpty) {
+          if (user.uid.isEmpty) {
             showLoginRegisterModal(context);
             return;
           }
-          if (events.first.event!.ownerId == user.uid) {
+          if (event.event!.ownerId == user.uid) {
             showDialog(context: context, builder: (context) => AlertDialog(content: Text('You are the owner')));
             return;
           }
@@ -77,7 +120,7 @@ class EventContainer extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 PrettyText(
-                  '${events.first.title}\n${events.first.description}',
+                  '${event.title}\n${event.description}',
                   style: TextStyle(color: computedTextColor, fontSize: fontSize),
                   textAlign: TextAlign.left,
                 ),
@@ -94,7 +137,6 @@ class EventContainer extends HookConsumerWidget {
               ],
             ),
           ),
-          // child: Text(events.first.title),
         ),
       ),
     );

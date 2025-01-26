@@ -147,7 +147,8 @@ enum BookingFormat implements IsEnum {
   singles,
   doubles,
   coaching,
-  unknown;
+  unknown,
+  merged;
 
   @override
   String get name {
@@ -157,6 +158,12 @@ enum BookingFormat implements IsEnum {
       case BookingFormat.doubles:
         return 'doubles';
       case BookingFormat.coaching:
+        return 'coaching';
+      case BookingFormat.unknown:
+        return 'unknown';
+
+      case BookingFormat.merged: // * ONLY FOR FRONT END
+        return 'merged';
       default:
         ''.tbLogger('BookingFormat.name: $this', DebugLevel.warning);
         return 'unknown';
@@ -172,6 +179,10 @@ enum BookingFormat implements IsEnum {
         return 'doubles';
       case BookingFormat.coaching:
         return 'coaching';
+      case BookingFormat.unknown:
+        return 'unknown';
+      case BookingFormat.merged: // * ONLY FOR FRONT END
+        return 'merged';
       default:
         ''.tbLogger('BookingFormat.locale: $this', DebugLevel.warning);
         return 'unknown';
@@ -186,6 +197,10 @@ enum BookingFormat implements IsEnum {
         return BookingFormat.doubles;
       case 'coaching':
         return BookingFormat.coaching;
+      case 'merged':
+        return BookingFormat.merged;
+      case 'unknown':
+        return BookingFormat.unknown;
       default:
         ''.tbLogger('BookingFormat.fromString: $day', DebugLevel.warning);
         return BookingFormat.unknown;

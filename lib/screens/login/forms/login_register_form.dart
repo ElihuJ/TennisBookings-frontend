@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -80,90 +81,98 @@ class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
     final userNotifier = ref.read(userProvider.notifier);
     final eventNotifier = ref.read(eventsProvider.notifier);
 
-    return Form(
-      key: formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          LoginTextField(
-            controller: emailController,
-            fieldType: FieldType.email,
-            validator: (value) => emailValidator(value, context),
-          ),
-          LoginTextField(
-            controller: passwordController,
-            fieldType: FieldType.password,
-            validator: (value) => passwordValidator(value, context),
-          ),
-          if (!isLogin)
+    void onSubmit() async {
+      bool success = formKey.currentState!.validate();
+      if (!success) {
+        return;
+      }
+      eventStatusNotifier.showLoading(
+          message: isLogin ? context.localeString(EmailLoginScreenStrings.loggingIn) : context.localeString(EmailLoginScreenStrings.creatingAccount));
+
+      // * Login or create account
+      ErrorInfo? errorInfo;
+      fb_auth.User? user;
+
+      if (isLogin) {
+        errorInfo = await firebaseNotifier.login(email: widget.email, password: password);
+      } else {
+        (user, errorInfo) = await firebaseNotifier.createAccount(email: widget.email, password: password);
+      }
+
+      // * Clear fields if no errorInfo
+      if (errorInfo == null) {
+        clearFields();
+        if (!isLogin && user != null) {
+          (success, errorInfo) = await userNotifier.createUser(name: user.displayName, uid: user.uid, email: user.email);
+        }
+      }
+
+      // * Message handling
+
+      final messageType = errorInfo != null ? errorInfo.$1 : MessageType.success;
+      final message = errorInfo != null
+          ? context.localeString(errorInfo.$2)
+          : isLogin
+              ? context.localeString(EmailLoginScreenStrings.loginToYourAccount)
+              : context.localeString(EmailLoginScreenStrings.verificationEmailSent);
+      showToast(
+        context: context,
+        messageType: messageType,
+        message: message,
+      );
+
+      eventStatusNotifier.hideLoading();
+
+      if (isLogin && errorInfo == null && context.mounted) {
+        Navigator.pushNamedAndRemoveUntil(context, HomeScreen.route, (route) => false);
+      }
+    }
+
+    return KeyboardListener(
+      focusNode: FocusNode(),
+      onKeyEvent: (key) {
+        if (key.logicalKey == LogicalKeyboardKey.enter) {
+          FocusScope.of(context).unfocus();
+          onSubmit();
+        }
+      },
+      child: Form(
+        key: formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
             LoginTextField(
-              controller: confirmPasswordController,
-              fieldType: FieldType.confirmPassword,
-              validator: (value) => confirmPasswordValidator(value, password, context),
+              controller: emailController,
+              fieldType: FieldType.email,
+              validator: (value) => emailValidator(value, context),
             ),
-          TbTextButton(
-            text: (isLogin ? context.localeString(EmailLoginScreenStrings.login) : context.localeString(EmailLoginScreenStrings.createAccount)),
-            onPressed: () async {
-              // * Validate form
-              bool success = formKey.currentState!.validate();
-              if (!success) {
-                return;
-              }
-              eventStatusNotifier.showLoading(
-                  message: isLogin
-                      ? context.localeString(EmailLoginScreenStrings.loggingIn)
-                      : context.localeString(EmailLoginScreenStrings.creatingAccount));
-
-              // * Login or create account
-              ErrorInfo? errorInfo;
-              fb_auth.User? user;
-
-              if (isLogin) {
-                errorInfo = await firebaseNotifier.login(email: widget.email, password: password);
-              } else {
-                (user, errorInfo) = await firebaseNotifier.createAccount(email: widget.email, password: password);
-              }
-
-              // * Clear fields if no errorInfo
-              if (errorInfo == null) {
-                clearFields();
-                if (!isLogin && user != null) {
-                  (success, errorInfo) = await userNotifier.createUser(name: user.displayName, uid: user.uid, email: user.email);
-                }
-              }
-
-              // * Message handling
-
-              final messageType = errorInfo != null ? errorInfo.$1 : MessageType.success;
-              final message = errorInfo != null
-                  ? context.localeString(errorInfo.$2)
-                  : isLogin
-                      ? context.localeString(EmailLoginScreenStrings.loginToYourAccount)
-                      : context.localeString(EmailLoginScreenStrings.verificationEmailSent);
-              showToast(
-                context: context,
-                messageType: messageType,
-                message: message,
-              );
-
-              eventStatusNotifier.hideLoading();
-
-              if (isLogin && errorInfo == null && context.mounted) {
-                Navigator.pushNamedAndRemoveUntil(context, HomeScreen.route, (route) => false);
-              }
-            },
-          ),
-          const SizedBox(height: _margin),
-          if (!isLogin)
-            Column(
-              children: [
-                Text(context.localeString(EmailLoginScreenStrings.orContinueWith)),
-                const SizedBox(height: _margin),
-                SocialsRegister(eventNotifier: eventNotifier, firebaseNotifier: firebaseNotifier, userNotifier: userNotifier),
-              ],
-            )
-        ],
+            LoginTextField(
+              controller: passwordController,
+              fieldType: FieldType.password,
+              validator: (value) => passwordValidator(value, context),
+            ),
+            if (!isLogin)
+              LoginTextField(
+                controller: confirmPasswordController,
+                fieldType: FieldType.confirmPassword,
+                validator: (value) => confirmPasswordValidator(value, password, context),
+              ),
+            TbTextButton(
+              text: (isLogin ? context.localeString(EmailLoginScreenStrings.login) : context.localeString(EmailLoginScreenStrings.createAccount)),
+              onPressed: onSubmit,
+            ),
+            const SizedBox(height: _margin),
+            if (!isLogin)
+              Column(
+                children: [
+                  Text(context.localeString(EmailLoginScreenStrings.orContinueWith)),
+                  const SizedBox(height: _margin),
+                  SocialsRegister(eventNotifier: eventNotifier, firebaseNotifier: firebaseNotifier, userNotifier: userNotifier),
+                ],
+              )
+          ],
+        ),
       ),
     );
   }

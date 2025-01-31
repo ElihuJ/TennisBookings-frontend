@@ -1,52 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/cloud_functions/index.dart';
 import 'package:tennisbookings/global_types/enums.dart';
 
+import '../../cloud_functions/dto/index.dart';
+import '../../cloud_functions/types.dart';
 import '../../global_helpers/index.dart';
 import '../../models/index.dart';
 import 'index.dart';
 
 class ClubsNotifier extends StateNotifier<List<Club>> {
-  ClubsNotifier() : super([]);
+  ClubsNotifier(this.cloudFunctionsNotifier) : super([]);
   final clubsCollection = FirebaseFirestore.instance.collection(FirestoreCollection.clubs);
   final storageRef = FirebaseStorage.instance.ref();
   final publicQueriesMade = <String>[];
   final privateQueriesMade = <String>[];
-
-  // ^ Temporarily loading all clubs and courts and bookings
-  // void loadAllClubs() async {
-  //   // * Getting firebase data
-  //   final querySnapshot = await clubsCollection.get();
-  //   final docs = querySnapshot.docs;
-  //   if (docs.isNotEmpty) {
-  //     // * Transform to Clubs class
-  //     final clubs = loadClubsFromDocs(docs);
-
-  //     // * Getting courts data
-  //     for (final doc in docs) {
-  //       final clubId = doc.id;
-  //       final courts = await clubsCollection.doc(clubId).collection(CourtsSubCollections.courts).get();
-  //       final club = findByIdOrNull<Club>(clubs, clubId);
-  //       if (club == null) {
-  //         continue;
-  //       }
-  //       // * Load Courts to club in data class
-  //       club.loadCourts(courts.docs);
-  //     }
-  //     // * Load Bookings to courts in data class
-  //     for (final club in clubs) {
-  //       for (final court in club.courts) {
-  //         await loadBookings(club, court);
-  //       }
-  //     }
-
-  //     state = clubs;
-  //     return;
-  //   }
-  //   // * If no data is found
-  //   state = [];
-  // }
+  final CloudFunctionsNotifier cloudFunctionsNotifier;
 
   Future<void> loadClubs() async {
     // * Getting firebase data
@@ -135,44 +105,25 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     }
 
     // ^ ============================== Loading Private Bookings ==============================
-    if (uid.isNotEmpty) {
-      final privateBookingsQuery = clubsCollection
-          .doc(club.id)
-          .collection(CourtsSubCollections.courts)
-          .doc(court.id)
-          .collection(BookingsSubCollections.privateBookings)
-          .where(BookingFields.from, isGreaterThan: startDateEpoch)
-          .where(BookingFields.to, isLessThan: endDateEpoch)
-          .where(
-        BookingFields.status,
-        whereIn: [BookingStatus.confirmed.name, BookingStatus.open.name],
-      ).where(BookingFields.ownerId, isEqualTo: uid);
+    final privateQuery = 'Private: courtId: ${court.id}, clubId: ${club.id}';
+    if (uid.isNotEmpty && !privateQueriesMade.contains(privateQuery)) {
+      List<Booking> privateBookingsToLoad = [];
+      final getPrivateBookingsPayload = GetPrivateBookingsPayload(getAll: true, clubId: club.id, courtId: court.id);
+      final privateBookings = await cloudFunctionsNotifier.getPrivateBookings(getPrivateBookingsPayload);
 
-      queryParams = privateBookingsQuery.parameters.toString();
-      queryParams += 'Private: courtId: ${court.id}, clubId: ${club.id}';
-
-      final privateQueryMade = privateQueriesMade.contains(queryParams);
-
-      if (!privateQueryMade) {
-        privateQueriesMade.add(queryParams);
-
-        final querySnapshot = await privateBookingsQuery.get();
-
-        final bookingsDocs = querySnapshot.docs;
-
-        if (bookingsDocs.isNotEmpty) {
-          final bookings = loadBookingsFromDocs(bookingsDocs);
-          court.loadPrivateBookings(bookings);
-        }
+      if (privateBookings.responseStatus.code != CFResponseCode.ok) {
+        privateBookings.responseStatus.tbLogger('Failed to get private bookings');
+      } else {
+        privateQueriesMade.add(privateQuery);
+        privateBookingsToLoad = privateBookings.data!;
       }
+
+      court.loadPrivateBookings(privateBookingsToLoad);
     }
 
     // ^ ============================== State control ==============================
-
-    // * If no data is found
-    if (privateQueriesMade.isNotEmpty) {
-      court.loadPrivateBookings([]);
-    }
+    // * Adding empty will make sure they are not null, it doesn't add if something already exists
+    court.loadPrivateBookings([]);
     court.loadPublicBookings([]);
     state = [...state];
     return;

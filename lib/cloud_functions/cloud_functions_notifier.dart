@@ -5,6 +5,7 @@ import '../../config/config.dart';
 import '../../strings/firebase/index.dart';
 import '../global_helpers/index.dart';
 import '../global_types/index.dart';
+import '../models/index.dart';
 import 'dto/index.dart';
 import 'dto/responses/index.dart';
 import 'index.dart';
@@ -32,6 +33,23 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
     } catch (error) {
       error.tbLogger('Error createBooking', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    }
+  }
+
+  Future<CFResult<List<Booking>>> getPrivateBookings(GetPrivateBookingsPayload payload) async {
+    try {
+      final HttpsCallableResult result = await cloudFunctions.httpsCallable(GetPrivateBookingsPayload.endpoint).call(payload.toJson());
+      final response = GetPrivateBookingsResponse.fromMap(result.data);
+      if (response.responseStatus.code != ResponseCodeEnum.success.value) {
+        return CFResult.internalError(errorMessage: response.responseStatus.message);
+      }
+      return CFResult.ok<List<Booking>>(data: response.data.bookings);
+    } on FirebaseFunctionsException catch (error) {
+      error.tbLogger('FirebaseFunctionsException getPrivateBookings', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    } catch (error) {
+      error.tbLogger('Error getPrivateBookings', DebugLevel.error);
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
     }
   }

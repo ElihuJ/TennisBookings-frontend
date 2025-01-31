@@ -1,5 +1,5 @@
-export 'create_closed_booking.dart';
-export 'update_user.dart';
+export 'create_booking.dart';
+export 'get_private_bookings.dart';
 
 class ResponseStatus {
   final ResponseCode code;
@@ -15,6 +15,11 @@ class ResponseStatus {
       code: map[ResponseStatusFields.code.name],
       message: map[ResponseStatusFields.message.name],
     );
+  }
+
+  @override
+  String toString() {
+    return 'ResponseStatus(code: $code, message: $message)';
   }
 }
 
@@ -33,4 +38,20 @@ enum ResponseFields {
 enum ResponseStatusFields {
   code,
   message,
+}
+
+enum ResponseCodeEnum {
+  success,
+  error;
+
+  int get value {
+    switch (this) {
+      case ResponseCodeEnum.success:
+        return 200;
+      case ResponseCodeEnum.error:
+        return 500;
+      default:
+        return 500;
+    }
+  }
 }

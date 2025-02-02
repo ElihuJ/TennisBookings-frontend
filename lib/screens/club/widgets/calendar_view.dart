@@ -1,6 +1,7 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/screens/club/widgets/loading_calendar.dart';
 
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
@@ -51,12 +52,12 @@ class _CalendarView extends ConsumerState<CalendarView> {
 
     if (_bookings == null) {
       clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, dateInView, user.uid);
-      return const CircularProgressIndicator();
+      return LoadingCalendarView(dateInView: dateInView);
     }
 
     if (user.uid.isNotEmpty && widget.courtSelected.privateBookings == null) {
       clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, dateInView, user.uid);
-      return const CircularProgressIndicator();
+      return LoadingCalendarView(dateInView: dateInView);
     }
 
     List<Booking> mergedBookings = mergeConflictedBookings(bookings: _bookings!);
@@ -84,9 +85,9 @@ class _CalendarView extends ConsumerState<CalendarView> {
         child: Container(
           width: double.infinity,
           margin: const EdgeInsets.only(bottom: 25, left: 20, right: 20),
-          height: 500,
+          height: 700,
           child: WeekView<Booking>(
-            startHour: 5,
+            startHour: 6,
             startDay: WeekDays.sunday,
             minuteSlotSize: MinuteSlotSize.minutes60,
             hourIndicatorSettings: HourIndicatorSettings(),
@@ -102,7 +103,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
             onDateTap: (date) {
               if (user.uid.isEmpty) return;
               if (!allowsPublicBookings && !isUserMember) {
-                showOnlyMembersModal(context: context, message: 'This is a members only club');
+                showOnlyMembersModal(context: context, message: 'Only members can book in this club');
                 return;
               }
               showCreateBookingModal(
@@ -122,8 +123,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
               widget.setDateInView(startDate);
               clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, startDate, user.uid);
             },
-            // startHour: 4, // To set the first hour displayed (ex: 05:00)
-            // endHour: 23, // To set the end hour displayed
+            endHour: 23, // To set the end hour displayed
             keepScrollOffset: true, // To maintain scroll offset when the page changes
           ),
         ),

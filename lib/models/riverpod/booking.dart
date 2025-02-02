@@ -151,6 +151,40 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
   }
 
   @override
+  bool operator ==(covariant Booking other) {
+    if (identical(this, other)) return true;
+
+    return other.id == id &&
+        other.confirmedPlayerIds == confirmedPlayerIds &&
+        other.courtId == courtId &&
+        other.format == format &&
+        other.from == from &&
+        other.to == to &&
+        other.private == private &&
+        other.ownerId == ownerId &&
+        other.requests == requests &&
+        other.restrictions == restrictions &&
+        other.status == status &&
+        other.title == title;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        confirmedPlayerIds.hashCode ^
+        courtId.hashCode ^
+        format.hashCode ^
+        from.hashCode ^
+        to.hashCode ^
+        private.hashCode ^
+        ownerId.hashCode ^
+        requests.hashCode ^
+        restrictions.hashCode ^
+        status.hashCode ^
+        title.hashCode;
+  }
+
+  @override
   FirestorePayload toJson() => {
         BookingFields.id: id,
         BookingFields.confirmedPlayerIds: confirmedPlayerIds,

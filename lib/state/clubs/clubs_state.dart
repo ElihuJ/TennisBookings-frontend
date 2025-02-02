@@ -96,7 +96,15 @@ class Club extends MapView<String, dynamic> implements HasId {
   void loadCourtsFromDocs(List<QueryDocumentSnapshot<Map<String, dynamic>>> docs) {
     final List<Court> courts = docs.map((doc) => Court.fromJson(doc.data())).toList();
     for (final court in courts) {
-      if (!this.courts.contains(court)) {
+      bool exist = false;
+      for (final loadedCourt in this.courts) {
+        // * Checking if ID already exist in state
+        if (loadedCourt.id == court.id) {
+          exist = true;
+          break;
+        }
+      }
+      if (!exist) {
         this.courts.add(court);
       }
     }

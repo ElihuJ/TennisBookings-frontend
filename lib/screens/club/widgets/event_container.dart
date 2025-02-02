@@ -27,23 +27,16 @@ class EventContainer extends HookConsumerWidget {
     // * Computing colours
     Color bookingColor = owned ? AppColors.primaryGreen : AppColors.darkGreen;
     if (!isBooked) {
-      // if (true) {
       bookingColor = AppColors.primaryGreen.withOpacity(0.5);
     }
 
-    final bookingLengthEpoch = booking.to - booking.from;
-
-    final bookingLessThanAnHour = bookingLengthEpoch < 3600;
-
     final computedTextColor = getContrastColor(bookingColor);
-    final fontSize = bookingLessThanAnHour ? 10.0 : 14.0;
 
     return BookingContainer(
       user: user,
       event: events.first,
       bookingColor: bookingColor,
       computedTextColor: computedTextColor,
-      fontSize: fontSize,
       booking: booking,
       players: players,
       club: club,
@@ -58,7 +51,6 @@ class BookingContainer extends StatelessWidget {
     required this.event,
     required this.bookingColor,
     required this.computedTextColor,
-    required this.fontSize,
     required this.booking,
     required this.players,
     required this.club,
@@ -68,22 +60,41 @@ class BookingContainer extends StatelessWidget {
   final CalendarEventData<Booking> event;
   final Color bookingColor;
   final Color computedTextColor;
-  final double fontSize;
   final Booking booking;
   final List<String> players;
   final Club club;
 
   @override
   Widget build(BuildContext context) {
+    final bookingLengthEpoch = booking.to - booking.from;
+    final bookingLessThanAnHour = bookingLengthEpoch < 3600;
+    final fontSize = bookingLessThanAnHour ? 10.0 : 14.0;
+
     final allowsPublicBookings = club.allowPublicBookings;
-    final isUserMember = club.memberIds.contains(user.uid);
-    final (mouseAction, isClickable) = getPermissionToClick(booking, user, allowsPublicBookings, isUserMember);
+    final isMemberOfClub = club.memberIds.contains(user.uid);
+
+    final bookingAndUserContext =
+        getBookingAndUserContext(booking: booking, user: user, allowsPublicBookings: allowsPublicBookings, isMemberOfClub: isMemberOfClub);
+    final (mouseAction, isClickable) = getPermissionToClick(bookingAndUserContext: bookingAndUserContext);
+
+    final targetBooking = booking.title == 'Merged booking';
+
+    if (targetBooking) {
+      booking.tbLogger('Merged booking found');
+      mouseAction.tbLogger('Mouse action');
+      isClickable.tbLogger('Is clickable');
+    }
 
     return MouseRegion(
       cursor: mouseAction,
       onHover: (event) {},
       child: GestureDetector(
-        onTap: () => onTapAction(booking, user, isClickable, isClickable, context),
+        onTap: () => onTapAction(
+          booking: booking,
+          user: user,
+          bookingAndUserContext: bookingAndUserContext,
+          context: context,
+        ),
         child: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -125,23 +136,61 @@ class BookingContainer extends StatelessWidget {
   }
 }
 
-(MouseCursor, bool) getPermissionToClick(Booking booking, User user, bool allowsPublicBookings, bool isUserMember) {
-  if (user.uid.isEmpty) return (SystemMouseCursors.forbidden, false);
-  if (!allowsPublicBookings && !isUserMember) return (SystemMouseCursors.forbidden, false);
-  if (booking.ownerId == user.uid) return (SystemMouseCursors.click, true);
-  return (SystemMouseCursors.basic, false);
+enum BookingAndUserContext { isNotLoggedIn, isNotAllowedToBook, isOwner, isParticipant, isMergedBooking, isAllowedToBook }
+
+BookingAndUserContext getBookingAndUserContext(
+    {required Booking booking, required User user, required bool allowsPublicBookings, required bool isMemberOfClub}) {
+  if (user.uid.isEmpty) return BookingAndUserContext.isNotLoggedIn;
+  if (!allowsPublicBookings && !isMemberOfClub) return BookingAndUserContext.isNotAllowedToBook;
+  if (booking.ownerId == user.uid) return BookingAndUserContext.isOwner;
+  if (booking.confirmedPlayerIds.contains(user.uid)) return BookingAndUserContext.isParticipant;
+  if (allowsPublicBookings || isMemberOfClub) return BookingAndUserContext.isAllowedToBook;
+  if (booking.format == BookingFormat.merged) return BookingAndUserContext.isMergedBooking;
+
+  if (allowsPublicBookings) return BookingAndUserContext.isAllowedToBook;
+  return BookingAndUserContext.isNotAllowedToBook;
 }
 
-void onTapAction(Booking booking, User user, bool allowsPublicBookings, bool isUserMember, BuildContext context) {
-  if (user.uid.isEmpty) {
+(MouseCursor, bool) getPermissionToClick({required BookingAndUserContext bookingAndUserContext}) {
+  switch (bookingAndUserContext) {
+    case BookingAndUserContext.isNotLoggedIn || BookingAndUserContext.isNotAllowedToBook:
+      return (SystemMouseCursors.forbidden, false);
+    case BookingAndUserContext.isOwner || BookingAndUserContext.isMergedBooking || BookingAndUserContext.isParticipant:
+      return (SystemMouseCursors.click, true);
+    case BookingAndUserContext.isAllowedToBook:
+      return (SystemMouseCursors.click, true);
+  }
+}
+
+void onTapAction(
+    {required Booking booking, required User user, required BookingAndUserContext bookingAndUserContext, required BuildContext context}) {
+  if (bookingAndUserContext == BookingAndUserContext.isNotLoggedIn) {
     showLoginRegisterModal(context);
     return;
   }
 
-  if (!allowsPublicBookings && !isUserMember) {
+  if (bookingAndUserContext == BookingAndUserContext.isNotAllowedToBook) {
     showOnlyMembersModal(context: context, message: 'Only members can view this booking');
     return;
   }
-  if (booking.ownerId == user.uid) return;
+  if (bookingAndUserContext == BookingAndUserContext.isOwner) {
+    showOwnerBookingDetailsModal(context: context, booking: booking);
+    return;
+  }
+
+  if (bookingAndUserContext == BookingAndUserContext.isParticipant) {
+    showParticipantBookingDetailsModal(context: context, booking: booking);
+    return;
+  }
+
+  if (booking.format == BookingFormat.merged) {
+    showMultipleBookingsModal(context: context, booking: booking);
+    return;
+  }
+
+  if (bookingAndUserContext == BookingAndUserContext.isAllowedToBook) {
+    showAllowedToBookModal(context: context, booking: booking);
+    return;
+  }
   return;
 }

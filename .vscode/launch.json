@@ -20,7 +20,7 @@
       "name": "Release",
       "type": "dart",
       "request": "launch",
-      "flutterMode": "release",
+      "flutterMode": "debug",
       "args": ["-d", "chrome"]
     }
   ]

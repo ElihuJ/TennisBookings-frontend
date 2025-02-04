@@ -9,13 +9,13 @@ class CreateBookingResponse {
     required this.responseStatus,
   }) : super();
 
-  factory CreateBookingResponse.fromMap(Map<String, dynamic> map) {
+  factory CreateBookingResponse.fromJson(Map<String, dynamic> map) {
     try {
       final dataRaw = map[ResponseFields.data.name];
       final responseStatusRaw = map[ResponseFields.responseStatus.name];
 
-      ResponseStatus responseStatus = ResponseStatus.fromMap(responseStatusRaw);
-      CreateBookingResponseData data = CreateBookingResponseData.fromMap(dataRaw);
+      ResponseStatus responseStatus = ResponseStatus.fromJson(responseStatusRaw);
+      CreateBookingResponseData data = CreateBookingResponseData.fromJson(dataRaw);
 
       return CreateBookingResponse(
         data: data,
@@ -24,7 +24,7 @@ class CreateBookingResponse {
     } catch (e) {
       if (map.containsKey(ResponseFields.responseStatus.name)) {
         final responseStatusRaw = map[ResponseFields.responseStatus.name];
-        ResponseStatus responseStatus = ResponseStatus.fromMap(responseStatusRaw);
+        ResponseStatus responseStatus = ResponseStatus.fromJson(responseStatusRaw);
         return CreateBookingResponse(
           data: CreateBookingResponseData(success: false),
           responseStatus: responseStatus,
@@ -43,7 +43,7 @@ class CreateBookingResponseData {
     required this.success,
   }) : super();
 
-  factory CreateBookingResponseData.fromMap(Map<dynamic, dynamic> map) {
+  factory CreateBookingResponseData.fromJson(Map<dynamic, dynamic> map) {
     return CreateBookingResponseData(
       success: map[CreateBookingResponseDataFields.success.name],
     );

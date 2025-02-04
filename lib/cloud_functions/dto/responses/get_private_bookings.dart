@@ -10,13 +10,13 @@ class GetPrivateBookingsResponse {
     required this.responseStatus,
   }) : super();
 
-  factory GetPrivateBookingsResponse.fromMap(Map<String, dynamic> map) {
+  factory GetPrivateBookingsResponse.fromJson(Map<String, dynamic> map) {
     try {
       final dataRaw = map[ResponseFields.data.name];
       final responseStatusRaw = map[ResponseFields.responseStatus.name];
 
-      ResponseStatus responseStatus = ResponseStatus.fromMap(responseStatusRaw);
-      GetPrivateBookingsResponseData data = GetPrivateBookingsResponseData.fromMap(dataRaw);
+      ResponseStatus responseStatus = ResponseStatus.fromJson(responseStatusRaw);
+      GetPrivateBookingsResponseData data = GetPrivateBookingsResponseData.fromJson(dataRaw);
 
       return GetPrivateBookingsResponse(
         data: data,
@@ -25,7 +25,7 @@ class GetPrivateBookingsResponse {
     } catch (e) {
       if (map.containsKey(ResponseFields.responseStatus.name)) {
         final responseStatusRaw = map[ResponseFields.responseStatus.name];
-        ResponseStatus responseStatus = ResponseStatus.fromMap(responseStatusRaw);
+        ResponseStatus responseStatus = ResponseStatus.fromJson(responseStatusRaw);
         return GetPrivateBookingsResponse(
           data: GetPrivateBookingsResponseData(bookings: []),
           responseStatus: responseStatus,
@@ -49,7 +49,7 @@ class GetPrivateBookingsResponseData {
     required this.bookings,
   }) : super();
 
-  factory GetPrivateBookingsResponseData.fromMap(Map<dynamic, dynamic> map) {
+  factory GetPrivateBookingsResponseData.fromJson(Map<dynamic, dynamic> map) {
     final bookingsData = map[GetPrivateBookingsResponseDataFields.bookings.name];
     List<Booking> bookingsList = [];
     if (bookingsData != null) {

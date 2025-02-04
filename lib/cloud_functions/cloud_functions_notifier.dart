@@ -23,7 +23,7 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
   Future<CFResult<Success>> createBooking(CreateBookingPayload payload) async {
     try {
       final HttpsCallableResult result = await cloudFunctions.httpsCallable(CreateBookingPayload.endpoint).call(payload.toJson());
-      final response = CreateBookingResponse.fromMap(result.data);
+      final response = CreateBookingResponse.fromJson(result.data);
       if (!response.data.success) {
         return CFResult.internalError(errorMessage: response.responseStatus.message);
       }
@@ -40,7 +40,7 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
   Future<CFResult<List<Booking>>> getPrivateBookings(GetPrivateBookingsPayload payload) async {
     try {
       final HttpsCallableResult result = await cloudFunctions.httpsCallable(GetPrivateBookingsPayload.endpoint).call(payload.toJson());
-      final response = GetPrivateBookingsResponse.fromMap(result.data);
+      final response = GetPrivateBookingsResponse.fromJson(result.data);
       if (response.responseStatus.code != ResponseCodeEnum.success.value) {
         return CFResult.internalError(errorMessage: response.responseStatus.message);
       }

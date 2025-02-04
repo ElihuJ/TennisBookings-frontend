@@ -71,7 +71,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
     final user = ref.read(userProvider);
     final newBooking = Booking(
       id: getUuid(),
-      confirmedPlayerIds: [user.uid],
+      confirmedPlayerIds: [],
       courtId: widget.courtSelected.id,
       format: _bookingFormat,
       from: startDateEpoch,

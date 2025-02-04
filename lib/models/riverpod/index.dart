@@ -3,3 +3,4 @@ export 'booking_request.dart';
 export 'booking_restrictions.dart';
 export 'court.dart';
 export 'general_unavailability.dart';
+export './confirmed_player_data.dart';

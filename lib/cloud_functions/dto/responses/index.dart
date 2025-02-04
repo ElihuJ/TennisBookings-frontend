@@ -10,7 +10,7 @@ class ResponseStatus {
     required this.message,
   }) : super();
 
-  factory ResponseStatus.fromMap(Map<dynamic, dynamic> map) {
+  factory ResponseStatus.fromJson(Map<dynamic, dynamic> map) {
     return ResponseStatus(
       code: map[ResponseStatusFields.code.name],
       message: map[ResponseStatusFields.message.name],

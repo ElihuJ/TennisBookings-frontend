@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tennisbookings/global_widgets/containers/bordered_box.dart';
+import 'package:tennisbookings/global_widgets/icons/player_icons.dart';
 import 'package:tennisbookings/models/index.dart';
 
 import '../../../screens/login/email_login_screen.dart';
@@ -14,7 +16,18 @@ class OwnerBookingModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(booking.title),
-      content: Text('You are the owner of this booking. What would you like to do?'),
+      content: BorderedBox(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, orientation: IconsOrientation.vertical),
+            const SizedBox(height: 10),
+            Text('What would you like to do?'),
+          ],
+        ),
+      ),
       actions: <Widget>[
         TextButton(
           child: Text('Login'),

@@ -87,8 +87,6 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
 
     Navigator.of(context).pop();
     eventsNotifier.showLoading(title: "Creating booking...");
-    await wait(1500);
-    payload.toJson().tbLogger('CreateBookingPayload');
     final result = await cloudFunctionsNotifier.createBooking(payload);
     eventsNotifier.hideLoading();
     final success = result.data;

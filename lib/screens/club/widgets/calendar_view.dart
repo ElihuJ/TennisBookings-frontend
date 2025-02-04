@@ -82,49 +82,55 @@ class _CalendarView extends ConsumerState<CalendarView> {
     return CalendarControllerProvider<Booking>(
       controller: _eventController,
       child: Expanded(
-        child: Container(
-          width: double.infinity,
-          margin: const EdgeInsets.only(bottom: 25, left: 20, right: 20),
-          height: 700,
-          child: WeekView<Booking>(
-            startHour: 6,
-            startDay: WeekDays.sunday,
-            minuteSlotSize: MinuteSlotSize.minutes60,
-            hourIndicatorSettings: HourIndicatorSettings(),
-            timeLineWidth: 80,
-            headerStringBuilder: (date, {DateTime? secondaryDate}) =>
-                '${prettyDateFromEpoch(date.millisecondsSinceEpoch)}   ---   ${prettyDateFromEpoch(secondaryDate!.millisecondsSinceEpoch)}',
-            headerStyle: HeaderStyle(
-              decoration: BoxDecoration(
-                color: AppColors.primaryGreen,
-                borderRadius: BorderRadius.circular(10),
+        child: MouseRegion(
+          cursor: SystemMouseCursors.contextMenu,
+          child: Container(
+            width: double.infinity,
+            margin: const EdgeInsets.only(bottom: 25, left: 20, right: 20),
+            height: 700,
+            child: WeekView<Booking>(
+              startHour: 6,
+              startDay: WeekDays.sunday,
+              minuteSlotSize: MinuteSlotSize.minutes60,
+              hourIndicatorSettings: HourIndicatorSettings(),
+              timeLineWidth: 80,
+              headerStringBuilder: (date, {DateTime? secondaryDate}) =>
+                  '${prettyDateFromEpoch(date.millisecondsSinceEpoch)}   ---   ${prettyDateFromEpoch(secondaryDate!.millisecondsSinceEpoch)}',
+              headerStyle: HeaderStyle(
+                decoration: BoxDecoration(
+                  color: AppColors.primaryGreen,
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
+              onDateTap: (date) {
+                if (user.uid.isEmpty) {
+                  showLoginRegisterModal(context);
+                  return;
+                }
+                if (!allowsPublicBookings && !isUserMember) {
+                  showOnlyMembersModal(context: context, message: 'Only members can book in this club');
+                  return;
+                }
+                showCreateBookingModal(
+                    context: context, clubSelected: widget.clubSelected, courtSelected: widget.courtSelected, date: date, bookedTimes: bookedTimes);
+              },
+              controller: _eventController,
+              eventTileBuilder: (date, events, boundary, start, end) {
+                return EventContainer(events: events, club: widget.clubSelected);
+              },
+              showLiveTimeLineInAllDays: true, // To display live time line in all pages in day view.
+              initialDay: dateInView,
+              key: _calendarKey,
+              heightPerMinute: 2, // height occupied by 1 minute time span.
+              showHalfHours: true,
+              eventArranger: SideEventArranger(), // To define how simultaneous events will be arranged.
+              onPageChange: (startDate, number) async {
+                widget.setDateInView(startDate);
+                clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, startDate, user.uid);
+              },
+              endHour: 23, // To set the end hour displayed
+              keepScrollOffset: true, // To maintain scroll offset when the page changes
             ),
-            onDateTap: (date) {
-              if (user.uid.isEmpty) return;
-              if (!allowsPublicBookings && !isUserMember) {
-                showOnlyMembersModal(context: context, message: 'Only members can book in this club');
-                return;
-              }
-              showCreateBookingModal(
-                  context: context, clubSelected: widget.clubSelected, courtSelected: widget.courtSelected, date: date, bookedTimes: bookedTimes);
-            },
-            controller: _eventController,
-            eventTileBuilder: (date, events, boundary, start, end) {
-              return EventContainer(events: events, club: widget.clubSelected);
-            },
-            showLiveTimeLineInAllDays: true, // To display live time line in all pages in day view.
-            initialDay: dateInView,
-            key: _calendarKey,
-            heightPerMinute: 2, // height occupied by 1 minute time span.
-            showHalfHours: true,
-            eventArranger: SideEventArranger(), // To define how simultaneous events will be arranged.
-            onPageChange: (startDate, number) async {
-              widget.setDateInView(startDate);
-              clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, startDate, user.uid);
-            },
-            endHour: 23, // To set the end hour displayed
-            keepScrollOffset: true, // To maintain scroll offset when the page changes
           ),
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/global_widgets/icons/player_icons.dart';
 
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
@@ -20,7 +21,7 @@ class EventContainer extends HookConsumerWidget {
     final user = ref.watch(userProvider);
 
     final booking = events.first.event!;
-    final players = booking.confirmedPlayerIds;
+    final confirmedPlayerIds = booking.confirmedPlayerIds;
     final isBooked = booking.status == BookingStatus.confirmed;
     final owned = booking.ownerId == user.uid;
 
@@ -38,7 +39,7 @@ class EventContainer extends HookConsumerWidget {
       bookingColor: bookingColor,
       computedTextColor: computedTextColor,
       booking: booking,
-      players: players,
+      confirmedPlayerIds: confirmedPlayerIds,
       club: club,
     );
   }
@@ -52,7 +53,7 @@ class BookingContainer extends StatelessWidget {
     required this.bookingColor,
     required this.computedTextColor,
     required this.booking,
-    required this.players,
+    required this.confirmedPlayerIds,
     required this.club,
   });
 
@@ -61,7 +62,7 @@ class BookingContainer extends StatelessWidget {
   final Color bookingColor;
   final Color computedTextColor;
   final Booking booking;
-  final List<String> players;
+  final List<String> confirmedPlayerIds;
   final Club club;
 
   @override
@@ -76,15 +77,6 @@ class BookingContainer extends StatelessWidget {
     final bookingAndUserContext =
         getBookingAndUserContext(booking: booking, user: user, allowsPublicBookings: allowsPublicBookings, isMemberOfClub: isMemberOfClub);
     final (mouseAction, isClickable) = getPermissionToClick(bookingAndUserContext: bookingAndUserContext);
-
-    final targetBooking = booking.title == 'Merged booking';
-
-    if (targetBooking) {
-      booking.tbLogger('Merged booking found');
-      mouseAction.tbLogger('Mouse action');
-      isClickable.tbLogger('Is clickable');
-    }
-
     return MouseRegion(
       cursor: mouseAction,
       onHover: (event) {},
@@ -119,14 +111,10 @@ class BookingContainer extends StatelessWidget {
                 ),
                 PrettyText('(${booking.format.name})', style: TextStyle(color: computedTextColor, fontSize: fontSize), textAlign: TextAlign.left),
                 SizedBox(height: 20),
-                for (final _ in players)
-                  CircleAvatar(
-                    backgroundColor: AppColors.backgroundGreen,
-                    child: Icon(
-                      Icons.person,
-                      color: AppColors.primaryGreen,
-                    ),
-                  ),
+                PlayerIcons(
+                  confirmedPlayerIds: confirmedPlayerIds,
+                  orientation: IconsOrientation.horizontal,
+                )
               ],
             ),
           ),

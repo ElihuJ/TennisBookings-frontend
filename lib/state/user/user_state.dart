@@ -25,7 +25,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
   final double? utrRating;
   final bool utrVerified;
   final String? homeClubId;
-  final String profilePhoto;
+  final String photoUrl;
   @override
   final List<String> allFields = UserFields.allFields;
 
@@ -43,7 +43,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
     this.name = '',
     // ignore: avoid_init_to_null
     this.utrRating = null,
-    this.profilePhoto = '',
+    this.photoUrl = '',
     this.utrVerified = false,
   }) : super({
           UserFields.uid: uid,
@@ -76,7 +76,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       final lastLogin = verifyRequiredProp<int>(prop: json[UserFields.lastLogin], propName: UserFields.lastLogin, defaultValue: 0);
       final name = verifyRequiredProp<String>(prop: json[UserFields.name], propName: UserFields.name, defaultValue: defaultName);
       final utrVerified = verifyRequiredProp<bool>(prop: json[UserFields.utrVerified], propName: UserFields.utrVerified, defaultValue: false);
-      final profilePhoto = verifyRequiredProp<String>(prop: json[UserFields.profilePhoto], propName: UserFields.profilePhoto, defaultValue: '');
+      final photoUrl = verifyRequiredProp<String>(prop: json[UserFields.photoUrl], propName: UserFields.photoUrl, defaultValue: '');
 
       // * ================================== Optional Props ==================================
       final homeClubId = verifyNotRequiredProp<String?>(prop: json[UserFields.homeClubId], propName: UserFields.homeClubId);
@@ -104,7 +104,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         name: name,
         utrRating: utrRating,
         utrVerified: utrVerified,
-        profilePhoto: profilePhoto,
+        photoUrl: photoUrl,
       );
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING USER', DebugLevel.error);
@@ -126,7 +126,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         UserFields.name: name,
         UserFields.utrRating: utrRating,
         UserFields.utrVerified: utrVerified,
-        UserFields.profilePhoto: profilePhoto,
+        UserFields.photoUrl: photoUrl,
       };
 
   @override
@@ -143,7 +143,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
     String? name,
     double? utrRating,
     bool? utrVerified,
-    String? profilePhoto,
+    String? photoUrl,
   }) {
     return User(
       uid: uid ?? this.uid,
@@ -158,7 +158,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       name: name ?? this.name,
       utrRating: utrRating ?? this.utrRating,
       utrVerified: utrVerified ?? this.utrVerified,
-      profilePhoto: profilePhoto ?? this.profilePhoto,
+      photoUrl: photoUrl ?? this.photoUrl,
     );
   }
 
@@ -177,7 +177,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         'name: $name \n'
         'utrRating: $utrRating \n'
         'utrVerified: $utrVerified \n'
-        'profilePhoto: $profilePhoto \n'
+        'photoUrl: $photoUrl \n'
         '=============================================== \n';
   }
 }

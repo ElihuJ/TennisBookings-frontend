@@ -22,7 +22,7 @@ class OwnerBookingModal extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, orientation: IconsOrientation.vertical),
+            PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds),
             const SizedBox(height: 10),
             Text('What would you like to do?'),
           ],

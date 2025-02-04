@@ -1,26 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_helpers/logs.dart';
 import 'package:tennisbookings/models/index.dart';
 
 import '../../state/index.dart';
-
-enum IconsOrientation {
-  horizontal,
-  vertical,
-}
 
 class PlayerIcons extends HookConsumerWidget {
   const PlayerIcons({
     super.key,
     required this.confirmedPlayerIds,
-    required this.orientation,
   });
 
   final List<String> confirmedPlayerIds;
-  final IconsOrientation orientation;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -91,32 +82,12 @@ class PlayerIcons extends HookConsumerWidget {
       ),
     ];
 
-    final List<ConfirmedPlayerData> loadingData = [
-      ConfirmedPlayerData(
-        id: 'loading data',
-        name: 'Loading...',
-        email: '',
-        utrRating: 0,
-        utrVerified: false,
-        photoUrl: '',
-      ),
-    ];
-
     final mockReturn = Future.delayed(Duration(seconds: 2)).then((_) => mockData);
 
     return FutureBuilder<List<ConfirmedPlayerData>>(
       future: mockReturn,
-      initialData: loadingData,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          if (orientation == IconsOrientation.vertical) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: allPlayerIds.map((_) {
-                return const CircularProgressIndicator();
-              }).toList(),
-            );
-          }
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: allPlayerIds.map((_) {
@@ -127,37 +98,7 @@ class PlayerIcons extends HookConsumerWidget {
 
         if (snapshot.connectionState == ConnectionState.done) {
           final players = snapshot.data!;
-          if (orientation == IconsOrientation.vertical) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: players.map((player) {
-                return Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: Column(
-                    children: [
-                      CachedNetworkImage(
-                        imageUrl: player.photoUrl,
-                        fit: BoxFit.cover,
-                        cacheKey: player.photoUrl,
-                        height: 30,
-                        width: 30,
-                        imageBuilder: (context, imageProvider) => CircleAvatar(
-                          backgroundImage: imageProvider,
-                          radius: 15,
-                        ),
-                        placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) => const CircleAvatar(
-                          backgroundColor: Colors.white,
-                          child: Icon(Icons.person),
-                        ),
-                      ),
-                      Text(player.name),
-                    ],
-                  ),
-                );
-              }).toList(),
-            );
-          }
+
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: players.map((player) {

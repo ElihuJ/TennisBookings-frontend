@@ -111,10 +111,7 @@ class BookingContainer extends StatelessWidget {
                 ),
                 PrettyText('(${booking.format.name})', style: TextStyle(color: computedTextColor, fontSize: fontSize), textAlign: TextAlign.left),
                 SizedBox(height: 20),
-                PlayerIcons(
-                  confirmedPlayerIds: confirmedPlayerIds,
-                  orientation: IconsOrientation.horizontal,
-                )
+                PlayerIcons(confirmedPlayerIds: confirmedPlayerIds)
               ],
             ),
           ),

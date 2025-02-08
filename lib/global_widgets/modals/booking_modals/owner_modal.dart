@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tennisbookings/global_widgets/containers/bordered_box.dart';
-import 'package:tennisbookings/global_widgets/icons/player_icons.dart';
 import 'package:tennisbookings/models/index.dart';
 
 import '../../../screens/login/email_login_screen.dart';
@@ -22,7 +21,6 @@ class OwnerBookingModal extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds),
             const SizedBox(height: 10),
             Text('What would you like to do?'),
           ],

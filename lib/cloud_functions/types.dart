@@ -80,4 +80,9 @@ class CFResult<T> {
   static CFResult<T> internalError<T>({required String errorMessage}) {
     return CFResult(responseStatus: CFResponseStatus.internalError, errorMessage: errorMessage);
   }
+
+  @override
+  String toString() {
+    return 'CFResult(responseStatus: $responseStatus, data: $data, errorMessage: $errorMessage)';
+  }
 }

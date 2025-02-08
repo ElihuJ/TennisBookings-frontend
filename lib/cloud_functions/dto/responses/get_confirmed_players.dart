@@ -34,6 +34,11 @@ class GetConfirmedPlayersDataResponse {
       throw Exception('Error parsing GetConfirmedPlayersDataResponse: $e');
     }
   }
+
+  @override
+  String toString() {
+    return 'GetConfirmedPlayersDataResponse{data: $data, responseStatus: $responseStatus}';
+  }
 }
 
 // * ===========  Data  ===========
@@ -45,9 +50,15 @@ class GetConfirmedPlayersDataResponseData {
   }) : super();
 
   factory GetConfirmedPlayersDataResponseData.fromJson(Map<dynamic, dynamic> map) {
+    final playersData = map[GetConfirmedPlayersDataResponseDataFields.playersData.name] as List;
     return GetConfirmedPlayersDataResponseData(
-      playersData: map[GetConfirmedPlayersDataResponseDataFields.playersData.name],
+      playersData: playersData.map((e) => ConfirmedPlayerData.fromJson(e)).toList(),
     );
+  }
+
+  @override
+  String toString() {
+    return 'GetConfirmedPlayersDataResponseData{playersData: $playersData}';
   }
 }
 

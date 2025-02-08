@@ -8,7 +8,6 @@ class ConfirmedPlayerData extends MapView<String, dynamic> implements FirestoreM
   @override
   final String id;
   final String name;
-  final String email;
   final double? utrRating;
   final bool utrVerified;
   final String photoUrl;
@@ -16,11 +15,10 @@ class ConfirmedPlayerData extends MapView<String, dynamic> implements FirestoreM
   @override
   final List<String> allFields = ConfirmedPlayerDataFields.values.map((e) => e.name).toList();
 
-  ConfirmedPlayerData({required this.id, required this.name, required this.email, this.utrRating, required this.utrVerified, required this.photoUrl})
+  ConfirmedPlayerData({required this.id, required this.name, this.utrRating, required this.utrVerified, required this.photoUrl})
       : super({
           ConfirmedPlayerDataFields.id.name: id,
           ConfirmedPlayerDataFields.name.name: name,
-          ConfirmedPlayerDataFields.email.name: email,
           ConfirmedPlayerDataFields.utrRating.name: utrRating,
           ConfirmedPlayerDataFields.utrVerified.name: utrVerified,
           ConfirmedPlayerDataFields.photoUrl.name: photoUrl,
@@ -30,7 +28,6 @@ class ConfirmedPlayerData extends MapView<String, dynamic> implements FirestoreM
       : this(
           id: getUuid(),
           name: '',
-          email: '',
           utrRating: 0,
           utrVerified: false,
           photoUrl: '',
@@ -40,7 +37,6 @@ class ConfirmedPlayerData extends MapView<String, dynamic> implements FirestoreM
     return ConfirmedPlayerData(
       id: json[ConfirmedPlayerDataFields.id.name],
       name: json[ConfirmedPlayerDataFields.name.name],
-      email: json[ConfirmedPlayerDataFields.email.name],
       utrRating: json[ConfirmedPlayerDataFields.utrRating.name],
       utrVerified: json[ConfirmedPlayerDataFields.utrVerified.name],
       photoUrl: json[ConfirmedPlayerDataFields.photoUrl.name],
@@ -49,7 +45,7 @@ class ConfirmedPlayerData extends MapView<String, dynamic> implements FirestoreM
 
   @override
   String toString() {
-    return 'ConfirmedPlayerData(id: $id, name: $name, email: $email, utrRating: $utrRating, utrVerified: $utrVerified)';
+    return 'ConfirmedPlayerData(id: $id, name: $name, utrRating: $utrRating, utrVerified: $utrVerified)';
   }
 
   @override
@@ -63,7 +59,6 @@ class ConfirmedPlayerData extends MapView<String, dynamic> implements FirestoreM
     return ConfirmedPlayerData(
       id: id ?? this.id,
       name: name ?? this.name,
-      email: email ?? this.email,
       utrRating: utrRating ?? this.utrRating,
       utrVerified: utrVerified ?? this.utrVerified,
       photoUrl: photoUrl,
@@ -75,7 +70,6 @@ class ConfirmedPlayerData extends MapView<String, dynamic> implements FirestoreM
     return {
       ConfirmedPlayerDataFields.id.name: id,
       ConfirmedPlayerDataFields.name.name: name,
-      ConfirmedPlayerDataFields.email.name: email,
       ConfirmedPlayerDataFields.utrRating.name: utrRating,
       ConfirmedPlayerDataFields.utrVerified.name: utrVerified,
     };

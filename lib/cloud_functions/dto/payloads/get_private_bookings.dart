@@ -13,4 +13,9 @@ class GetPrivateBookingsPayload implements APIPayload {
   Map<String, dynamic> toJson() {
     return {'getAll': getAll, 'clubId': clubId, 'courtId': courtId};
   }
+
+  @override
+  String toString() {
+    return 'GetPrivateBookingsPayload(getAll: $getAll, clubId: $clubId, courtId: $courtId)';
+  }
 }

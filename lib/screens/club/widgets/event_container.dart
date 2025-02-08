@@ -1,7 +1,6 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_widgets/icons/player_icons.dart';
 
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
@@ -9,6 +8,7 @@ import '../../../global_widgets/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
 import '../../../theme/index.dart';
+import 'index.dart';
 
 class EventContainer extends HookConsumerWidget {
   const EventContainer({super.key, required this.events, required this.club});
@@ -75,13 +75,14 @@ class BookingContainer extends StatelessWidget {
     final isMemberOfClub = club.memberIds.contains(user.uid);
 
     final bookingAndUserContext =
-        getBookingAndUserContext(booking: booking, user: user, allowsPublicBookings: allowsPublicBookings, isMemberOfClub: isMemberOfClub);
-    final (mouseAction, isClickable) = getPermissionToClick(bookingAndUserContext: bookingAndUserContext);
+        _getBookingAndUserContext(booking: booking, user: user, allowsPublicBookings: allowsPublicBookings, isMemberOfClub: isMemberOfClub);
+    final (mouseAction, isClickable) = _getPermissionToClick(bookingAndUserContext: bookingAndUserContext);
+
     return MouseRegion(
       cursor: mouseAction,
       onHover: (event) {},
       child: GestureDetector(
-        onTap: () => onTapAction(
+        onTap: () => _onTapAction(
           booking: booking,
           user: user,
           bookingAndUserContext: bookingAndUserContext,
@@ -111,7 +112,11 @@ class BookingContainer extends StatelessWidget {
                 ),
                 PrettyText('(${booking.format.name})', style: TextStyle(color: computedTextColor, fontSize: fontSize), textAlign: TextAlign.left),
                 SizedBox(height: 20),
-                PlayerIcons(confirmedPlayerIds: confirmedPlayerIds)
+                PlayerIcons(
+                  confirmedPlayerIds: confirmedPlayerIds,
+                  booking: booking,
+                  clubId: club.id,
+                ),
               ],
             ),
           ),
@@ -121,49 +126,49 @@ class BookingContainer extends StatelessWidget {
   }
 }
 
-enum BookingAndUserContext { isNotLoggedIn, isNotAllowedToBook, isOwner, isParticipant, isMergedBooking, isAllowedToBook }
+enum _BookingAndUserContext { isNotLoggedIn, isNotAllowedToBook, isOwner, isParticipant, isMergedBooking, isAllowedToBook }
 
-BookingAndUserContext getBookingAndUserContext(
+_BookingAndUserContext _getBookingAndUserContext(
     {required Booking booking, required User user, required bool allowsPublicBookings, required bool isMemberOfClub}) {
-  if (user.uid.isEmpty) return BookingAndUserContext.isNotLoggedIn;
-  if (!allowsPublicBookings && !isMemberOfClub) return BookingAndUserContext.isNotAllowedToBook;
-  if (booking.ownerId == user.uid) return BookingAndUserContext.isOwner;
-  if (booking.confirmedPlayerIds.contains(user.uid)) return BookingAndUserContext.isParticipant;
-  if (allowsPublicBookings || isMemberOfClub) return BookingAndUserContext.isAllowedToBook;
-  if (booking.format == BookingFormat.merged) return BookingAndUserContext.isMergedBooking;
+  if (user.uid.isEmpty) return _BookingAndUserContext.isNotLoggedIn;
+  if (!allowsPublicBookings && !isMemberOfClub) return _BookingAndUserContext.isNotAllowedToBook;
+  if (booking.ownerId == user.uid) return _BookingAndUserContext.isOwner;
+  if (booking.confirmedPlayerIds.contains(user.uid)) return _BookingAndUserContext.isParticipant;
+  if (allowsPublicBookings || isMemberOfClub) return _BookingAndUserContext.isAllowedToBook;
+  if (booking.format == BookingFormat.merged) return _BookingAndUserContext.isMergedBooking;
 
-  if (allowsPublicBookings) return BookingAndUserContext.isAllowedToBook;
-  return BookingAndUserContext.isNotAllowedToBook;
+  if (allowsPublicBookings) return _BookingAndUserContext.isAllowedToBook;
+  return _BookingAndUserContext.isNotAllowedToBook;
 }
 
-(MouseCursor, bool) getPermissionToClick({required BookingAndUserContext bookingAndUserContext}) {
+(MouseCursor, bool) _getPermissionToClick({required _BookingAndUserContext bookingAndUserContext}) {
   switch (bookingAndUserContext) {
-    case BookingAndUserContext.isNotLoggedIn || BookingAndUserContext.isNotAllowedToBook:
+    case _BookingAndUserContext.isNotLoggedIn || _BookingAndUserContext.isNotAllowedToBook:
       return (SystemMouseCursors.forbidden, false);
-    case BookingAndUserContext.isOwner || BookingAndUserContext.isMergedBooking || BookingAndUserContext.isParticipant:
+    case _BookingAndUserContext.isOwner || _BookingAndUserContext.isMergedBooking || _BookingAndUserContext.isParticipant:
       return (SystemMouseCursors.click, true);
-    case BookingAndUserContext.isAllowedToBook:
+    case _BookingAndUserContext.isAllowedToBook:
       return (SystemMouseCursors.click, true);
   }
 }
 
-void onTapAction(
-    {required Booking booking, required User user, required BookingAndUserContext bookingAndUserContext, required BuildContext context}) {
-  if (bookingAndUserContext == BookingAndUserContext.isNotLoggedIn) {
+void _onTapAction(
+    {required Booking booking, required User user, required _BookingAndUserContext bookingAndUserContext, required BuildContext context}) {
+  if (bookingAndUserContext == _BookingAndUserContext.isNotLoggedIn) {
     showLoginRegisterModal(context);
     return;
   }
 
-  if (bookingAndUserContext == BookingAndUserContext.isNotAllowedToBook) {
+  if (bookingAndUserContext == _BookingAndUserContext.isNotAllowedToBook) {
     showOnlyMembersModal(context: context, message: 'Only members can view this booking');
     return;
   }
-  if (bookingAndUserContext == BookingAndUserContext.isOwner) {
+  if (bookingAndUserContext == _BookingAndUserContext.isOwner) {
     showOwnerBookingDetailsModal(context: context, booking: booking);
     return;
   }
 
-  if (bookingAndUserContext == BookingAndUserContext.isParticipant) {
+  if (bookingAndUserContext == _BookingAndUserContext.isParticipant) {
     showParticipantBookingDetailsModal(context: context, booking: booking);
     return;
   }
@@ -173,7 +178,7 @@ void onTapAction(
     return;
   }
 
-  if (bookingAndUserContext == BookingAndUserContext.isAllowedToBook) {
+  if (bookingAndUserContext == _BookingAndUserContext.isAllowedToBook) {
     showAllowedToBookModal(context: context, booking: booking);
     return;
   }

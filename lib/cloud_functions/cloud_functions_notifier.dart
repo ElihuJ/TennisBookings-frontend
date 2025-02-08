@@ -1,5 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/cloud_functions/dto/responses/get_confirmed_players.dart';
 
 import '../../config/config.dart';
 import '../../strings/firebase/index.dart';
@@ -50,6 +51,23 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
     } catch (error) {
       error.tbLogger('Error getPrivateBookings', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    }
+  }
+
+  Future<CFResult<List<ConfirmedPlayerData>>> getConfirmedPlayersData(GetConfirmedPlayersDataPayload payload) async {
+    try {
+      final HttpsCallableResult result = await cloudFunctions.httpsCallable(GetConfirmedPlayersDataPayload.endpoint).call(payload.toJson());
+      final response = GetConfirmedPlayersDataResponse.fromJson(result.data);
+      if (response.responseStatus.code != ResponseCodeEnum.success.value) {
+        return CFResult.internalError(errorMessage: response.responseStatus.message);
+      }
+      return CFResult.ok<List<ConfirmedPlayerData>>(data: response.data.playersData);
+    } on FirebaseFunctionsException catch (error) {
+      error.tbLogger('FirebaseFunctionsException getConfirmedPlayersData', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    } catch (error) {
+      error.tbLogger('Error getConfirmedPlayersData', DebugLevel.error);
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
     }
   }

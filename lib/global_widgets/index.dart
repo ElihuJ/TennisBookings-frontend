@@ -4,3 +4,4 @@ export 'eventful/index.dart';
 export 'loading/loading_screen.dart';
 export 'modals/index.dart';
 export 'text/index.dart';
+export './icons/index.dart';

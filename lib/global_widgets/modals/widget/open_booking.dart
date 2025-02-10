@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/cloud_functions/index.dart';
-import 'package:tennisbookings/cloud_functions/types.dart';
-import 'package:tennisbookings/global_widgets/index.dart';
+import '../../../cloud_functions/index.dart';
+import '../../../cloud_functions/types.dart';
+import '../../index.dart';
 
 import '../../../cloud_functions/dto/index.dart';
 import '../../../config/config.dart';

@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:tennisbookings/global_types/index.dart';
+import '../../global_types/index.dart';
 
 import '../../global_helpers/index.dart';
 

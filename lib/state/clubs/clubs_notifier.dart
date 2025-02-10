@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/cloud_functions/index.dart';
-import 'package:tennisbookings/global_types/enums.dart';
+import '../../cloud_functions/index.dart';
+import '../../global_types/enums.dart';
 
 import '../../cloud_functions/dto/index.dart';
 import '../../cloud_functions/types.dart';
 import '../../global_helpers/index.dart';
 import '../../models/index.dart';
+import '../index.dart';
 import 'index.dart';
 
 class ClubsNotifier extends StateNotifier<List<Club>> {
@@ -127,6 +128,20 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     court.loadPublicBookings([]);
     state = [...state];
     return;
+  }
+
+  // * This function is only used for loading event containers (Main calendar)
+  Future<List<ConfirmedPlayerData>> getPublicPlayerData({required Booking booking, required User user}) async {
+    final ownerId = booking.ownerId;
+    // * If is my own booking do not fetch URL, I already have it
+    if (ownerId == user.uid) {
+      'Owner is me'.tbLogger('', DebugLevel.error);
+      return [ConfirmedPlayerData(id: ownerId, name: user.name, photoUrl: user.photoUrl, utrVerified: user.utrVerified)];
+    }
+    'Loading someone elses image'.tbLogger('', DebugLevel.warning);
+    final url = await storageRef.child('public_profiles/$ownerId/profile.png').getDownloadURL();
+    url.tbLogger('ownerId $ownerId', DebugLevel.info);
+    return [ConfirmedPlayerData(id: ownerId, name: 'N/A', photoUrl: url, utrVerified: false)];
   }
 
   void clearPrivateBookings() {

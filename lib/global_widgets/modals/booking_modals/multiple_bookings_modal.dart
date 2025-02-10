@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/models/index.dart';
+import '../../../models/index.dart';
 
 class MultipleBookingsModal extends StatelessWidget {
   const MultipleBookingsModal({super.key, required this.booking});

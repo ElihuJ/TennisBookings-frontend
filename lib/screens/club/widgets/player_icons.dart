@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_helpers/logs.dart';
-import 'package:tennisbookings/global_types/index.dart';
+import '../../../global_types/index.dart';
 
 import '../../../global_widgets/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
 
 class PlayerIcons extends HookConsumerWidget {
-  const PlayerIcons({super.key, required this.confirmedPlayerIds, required this.booking, required this.clubId});
+  const PlayerIcons({super.key, required this.confirmedPlayerIds, required this.booking, required this.clubId, required this.type});
 
   final List<String> confirmedPlayerIds;
   final Booking booking;
   final String clubId;
+  final PlayerIconsType type;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,15 +26,33 @@ class PlayerIcons extends HookConsumerWidget {
 
     final isPublicBooking = booking.private == false;
 
-    booking.tbLogger('PlayerIcons ownBooking: $ownBooking, isOpenBooking: $isOpenBooking, isPublicBooking: $isPublicBooking');
+    final sourceOfPlayersData = getSourceOfPlayerData(isOpenBooking, ownBooking, isPublicBooking);
 
     if (isOpenBooking || ownBooking || isPublicBooking) {
-      return RowOfPlayerIcons(
-        confirmedPlayerIds: confirmedPlayerIds,
-        booking: booking,
-        clubId: clubId,
-      );
+      if (type == PlayerIconsType.column) {
+        return ColumnOfPlayerIcons(
+            confirmedPlayerIds: confirmedPlayerIds, booking: booking, clubId: clubId, sourceOfPlayersData: sourceOfPlayersData);
+      }
+      if (!isOpenBooking) {
+        // * EVENT CONTAINERS (EXCEPT OPEN BOOKINGS)
+        return RowOfPlayerIcons(confirmedPlayerIds: confirmedPlayerIds, booking: booking, clubId: clubId, sourceOfPlayerData: sourceOfPlayersData);
+      }
     }
     return Container();
   }
+}
+
+SourceOfPlayerData getSourceOfPlayerData(bool isOpenBooking, bool ownBooking, bool isPublicBooking) {
+  if (isOpenBooking) {
+    return SourceOfPlayerData.cloudFunction;
+  }
+  if (ownBooking || isPublicBooking) {
+    return SourceOfPlayerData.firestore;
+  }
+  return SourceOfPlayerData.firestore;
+}
+
+enum PlayerIconsType {
+  row,
+  column,
 }

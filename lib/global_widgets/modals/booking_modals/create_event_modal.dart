@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../global_helpers/index.dart';
-import '../../global_types/index.dart';
-import '../../models/index.dart';
-import '../../state/index.dart';
-import 'widget/closed_booking.dart';
-import 'widget/open_booking.dart';
+import '../../../global_helpers/index.dart';
+import '../../../global_types/index.dart';
+import '../../../models/index.dart';
+import '../../../state/index.dart';
+import '../widget/closed_booking.dart';
+import '../widget/open_booking.dart';
 
 enum BookingMode { closed, open }
 

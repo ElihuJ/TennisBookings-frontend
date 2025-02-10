@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/models/index.dart';
+import '../../../models/index.dart';
 
 import '../../../screens/login/email_login_screen.dart';
 import '../../../screens/login/login_screen.dart';

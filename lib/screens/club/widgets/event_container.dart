@@ -87,6 +87,7 @@ class BookingContainer extends StatelessWidget {
           user: user,
           bookingAndUserContext: bookingAndUserContext,
           context: context,
+          clubId: club.id,
         ),
         child: Container(
           padding: const EdgeInsets.all(10),
@@ -116,6 +117,7 @@ class BookingContainer extends StatelessWidget {
                   confirmedPlayerIds: confirmedPlayerIds,
                   booking: booking,
                   clubId: club.id,
+                  type: PlayerIconsType.row,
                 ),
               ],
             ),
@@ -126,16 +128,19 @@ class BookingContainer extends StatelessWidget {
   }
 }
 
-enum _BookingAndUserContext { isNotLoggedIn, isNotAllowedToBook, isOwner, isParticipant, isMergedBooking, isAllowedToBook }
+enum _BookingAndUserContext { isNotLoggedIn, isNotAllowedToBook, isOwner, isParticipant, isMergedBooking, isAllowedToBook, isSomeoneElsesBooking }
 
 _BookingAndUserContext _getBookingAndUserContext(
     {required Booking booking, required User user, required bool allowsPublicBookings, required bool isMemberOfClub}) {
+  final clubIsPublicOrMemberOfClub = allowsPublicBookings || isMemberOfClub;
+
   if (user.uid.isEmpty) return _BookingAndUserContext.isNotLoggedIn;
   if (!allowsPublicBookings && !isMemberOfClub) return _BookingAndUserContext.isNotAllowedToBook;
   if (booking.ownerId == user.uid) return _BookingAndUserContext.isOwner;
   if (booking.confirmedPlayerIds.contains(user.uid)) return _BookingAndUserContext.isParticipant;
-  if (allowsPublicBookings || isMemberOfClub) return _BookingAndUserContext.isAllowedToBook;
+  if (clubIsPublicOrMemberOfClub && booking.status == BookingStatus.open) return _BookingAndUserContext.isAllowedToBook;
   if (booking.format == BookingFormat.merged) return _BookingAndUserContext.isMergedBooking;
+  if (booking.status == BookingStatus.confirmed && booking.ownerId != user.uid) return _BookingAndUserContext.isSomeoneElsesBooking;
 
   if (allowsPublicBookings) return _BookingAndUserContext.isAllowedToBook;
   return _BookingAndUserContext.isNotAllowedToBook;
@@ -149,27 +154,41 @@ _BookingAndUserContext _getBookingAndUserContext(
       return (SystemMouseCursors.click, true);
     case _BookingAndUserContext.isAllowedToBook:
       return (SystemMouseCursors.click, true);
+    case _BookingAndUserContext.isSomeoneElsesBooking:
+      return (SystemMouseCursors.forbidden, false);
   }
 }
 
 void _onTapAction(
-    {required Booking booking, required User user, required _BookingAndUserContext bookingAndUserContext, required BuildContext context}) {
+    {required Booking booking,
+    required User user,
+    required _BookingAndUserContext bookingAndUserContext,
+    required String clubId,
+    required BuildContext context}) {
+  final notAllowedToBook =
+      bookingAndUserContext == _BookingAndUserContext.isNotLoggedIn || bookingAndUserContext == _BookingAndUserContext.isNotAllowedToBook;
+
   if (bookingAndUserContext == _BookingAndUserContext.isNotLoggedIn) {
     showLoginRegisterModal(context);
     return;
   }
 
-  if (bookingAndUserContext == _BookingAndUserContext.isNotAllowedToBook) {
-    showOnlyMembersModal(context: context, message: 'Only members can view this booking');
+  if (notAllowedToBook && !booking.private) {
+    showOnlyMembersModal(context: context);
+    return;
+  }
+
+  if (notAllowedToBook && booking.private) {
+    showPrivateWallModal(context: context);
     return;
   }
   if (bookingAndUserContext == _BookingAndUserContext.isOwner) {
-    showOwnerBookingDetailsModal(context: context, booking: booking);
+    showOwnerBookingDetailsModal(context: context, booking: booking, clubId: clubId);
     return;
   }
 
   if (bookingAndUserContext == _BookingAndUserContext.isParticipant) {
-    showParticipantBookingDetailsModal(context: context, booking: booking);
+    showParticipantBookingDetailsModal(context: context, booking: booking, clubId: clubId, type: PlayerIconsType.column);
     return;
   }
 

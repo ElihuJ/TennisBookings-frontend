@@ -1,7 +1,7 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/screens/club/widgets/loading_calendar.dart';
+import 'loading_calendar.dart';
 
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';

@@ -1,6 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/cloud_functions/dto/responses/get_confirmed_players.dart';
+import 'dto/responses/get_confirmed_players.dart';
 
 import '../../config/config.dart';
 import '../../strings/firebase/index.dart';
@@ -57,6 +57,7 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
 
   Future<CFResult<List<ConfirmedPlayerData>>> getConfirmedPlayersData(GetConfirmedPlayersDataPayload payload) async {
     try {
+      'Getting data through API'.tbLogger('getConfirmedPlayersData', DebugLevel.info);
       final HttpsCallableResult result = await cloudFunctions.httpsCallable(GetConfirmedPlayersDataPayload.endpoint).call(payload.toJson());
       final response = GetConfirmedPlayersDataResponse.fromJson(result.data);
       if (response.responseStatus.code != ResponseCodeEnum.success.value) {

@@ -1,39 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/models/index.dart';
+import 'package:tennisbookings/screens/club/widgets/index.dart';
 
-import '../../../screens/login/email_login_screen.dart';
-import '../../../screens/login/login_screen.dart';
-import '../../../screens/login/types.dart';
+import '../../../models/index.dart';
 
 class ParticipantModal extends StatelessWidget {
-  const ParticipantModal({super.key, required this.booking});
+  const ParticipantModal({super.key, required this.booking, required this.clubId, required this.type});
 
   final Booking booking;
+  final String clubId;
+  final PlayerIconsType type;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(booking.title),
-      content: Text('You are a participant of this booking. What would you like to do?'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text('You are a participant of this booking. What would you like to do?'),
+          PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, clubId: clubId, type: type)
+        ],
+      ),
       actions: <Widget>[
-        TextButton(
-          child: Text('Login'),
-          onPressed: () => Navigator.of(context).pushNamed(LoginScreen.route),
-        ),
-        TextButton(
-          child: Text('Register'),
-          onPressed: () => Navigator.of(context).pushNamed(EmailLoginScreen.route, arguments: ScreenMode.register),
-        ),
+        // TextButton(
+        //   child: Text('Login'),
+        //   onPressed: () => Navigator.of(context).pushNamed(LoginScreen.route),
+        // ),
+        // TextButton(
+        //   child: Text('Register'),
+        //   onPressed: () => Navigator.of(context).pushNamed(EmailLoginScreen.route, arguments: ScreenMode.register),
+        // ),
       ],
     );
   }
 }
 
-void showParticipantBookingDetailsModal({required BuildContext context, required Booking booking}) {
+void showParticipantBookingDetailsModal(
+    {required BuildContext context, required Booking booking, required String clubId, required PlayerIconsType type}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return ParticipantModal(booking: booking);
+      return ParticipantModal(booking: booking, clubId: clubId, type: type);
     },
   );
 }

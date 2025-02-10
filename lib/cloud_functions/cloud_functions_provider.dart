@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/state/index.dart';
+import '../state/index.dart';
 
 import 'index.dart';
 

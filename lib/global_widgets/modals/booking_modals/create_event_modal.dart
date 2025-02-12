@@ -50,7 +50,7 @@ class _CreateBookingModalState extends ConsumerState<CreateBookingModal> {
             confirmedBookedTimes: widget.bookedTimes,
           );
 
-    final dateString = prettyDateFromEpoch(widget.date.millisecondsSinceEpoch);
+    final dateString = prettyDateUtcFromEpochMilliseconds(widget.date.millisecondsSinceEpoch);
     final bookingModeString = _bookingMode == BookingMode.open ? 'Open' : 'Closed';
 
     return AlertDialog(

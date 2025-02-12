@@ -128,47 +128,51 @@ class BookingContainer extends StatelessWidget {
   }
 }
 
-enum _BookingAndUserContext { isNotLoggedIn, isNotAllowedToBook, isOwner, isParticipant, isMergedBooking, isAllowedToBook, isSomeoneElsesBooking }
-
-_BookingAndUserContext _getBookingAndUserContext(
+BookingAndUserContext _getBookingAndUserContext(
     {required Booking booking, required User user, required bool allowsPublicBookings, required bool isMemberOfClub}) {
   final clubIsPublicOrMemberOfClub = allowsPublicBookings || isMemberOfClub;
 
-  if (user.uid.isEmpty) return _BookingAndUserContext.isNotLoggedIn;
-  if (!allowsPublicBookings && !isMemberOfClub) return _BookingAndUserContext.isNotAllowedToBook;
-  if (booking.ownerId == user.uid) return _BookingAndUserContext.isOwner;
-  if (booking.confirmedPlayerIds.contains(user.uid)) return _BookingAndUserContext.isParticipant;
-  if (clubIsPublicOrMemberOfClub && booking.status == BookingStatus.open) return _BookingAndUserContext.isAllowedToBook;
-  if (booking.format == BookingFormat.merged) return _BookingAndUserContext.isMergedBooking;
-  if (booking.status == BookingStatus.confirmed && booking.ownerId != user.uid) return _BookingAndUserContext.isSomeoneElsesBooking;
+  if (user.uid.isEmpty) return BookingAndUserContext.isNotLoggedIn;
+  if (!allowsPublicBookings && !isMemberOfClub) return BookingAndUserContext.isNotAllowedToBook;
+  if (booking.ownerId == user.uid) return BookingAndUserContext.isOwner;
+  if (booking.confirmedPlayerIds.contains(user.uid)) return BookingAndUserContext.isParticipant;
+  if (booking.format == BookingFormat.merged) return BookingAndUserContext.isMergedBooking; // * This needs to come before open bookings
+  if (clubIsPublicOrMemberOfClub && booking.status == BookingStatus.open) return BookingAndUserContext.isOpenForInvites;
+  if (booking.status == BookingStatus.confirmed && booking.ownerId != user.uid && booking.private) return BookingAndUserContext.isNotMineAndPrivate;
+  if (booking.status == BookingStatus.confirmed && booking.ownerId != user.uid && !booking.private) return BookingAndUserContext.isNotMineAndPublic;
 
-  if (allowsPublicBookings) return _BookingAndUserContext.isAllowedToBook;
-  return _BookingAndUserContext.isNotAllowedToBook;
+  if (allowsPublicBookings) return BookingAndUserContext.isOpenForInvites;
+  return BookingAndUserContext.isNotAllowedToBook;
 }
 
-(MouseCursor, bool) _getPermissionToClick({required _BookingAndUserContext bookingAndUserContext}) {
+typedef CanClick = bool;
+
+(MouseCursor, CanClick) _getPermissionToClick({required BookingAndUserContext bookingAndUserContext}) {
   switch (bookingAndUserContext) {
-    case _BookingAndUserContext.isNotLoggedIn || _BookingAndUserContext.isNotAllowedToBook:
+    case BookingAndUserContext.isNotLoggedIn || BookingAndUserContext.isNotAllowedToBook:
       return (SystemMouseCursors.forbidden, false);
-    case _BookingAndUserContext.isOwner || _BookingAndUserContext.isMergedBooking || _BookingAndUserContext.isParticipant:
+    case BookingAndUserContext.isOwner || BookingAndUserContext.isMergedBooking || BookingAndUserContext.isParticipant:
       return (SystemMouseCursors.click, true);
-    case _BookingAndUserContext.isAllowedToBook:
+    case BookingAndUserContext.isOpenForInvites:
       return (SystemMouseCursors.click, true);
-    case _BookingAndUserContext.isSomeoneElsesBooking:
+    case BookingAndUserContext.isNotMineAndPublic:
+      return (SystemMouseCursors.click, true);
+    case BookingAndUserContext.isNotMineAndPrivate:
       return (SystemMouseCursors.forbidden, false);
   }
 }
 
-void _onTapAction(
-    {required Booking booking,
-    required User user,
-    required _BookingAndUserContext bookingAndUserContext,
-    required String clubId,
-    required BuildContext context}) {
+void _onTapAction({
+  required Booking booking,
+  required User user,
+  required BookingAndUserContext bookingAndUserContext,
+  required String clubId,
+  required BuildContext context,
+}) {
   final notAllowedToBook =
-      bookingAndUserContext == _BookingAndUserContext.isNotLoggedIn || bookingAndUserContext == _BookingAndUserContext.isNotAllowedToBook;
+      bookingAndUserContext == BookingAndUserContext.isNotLoggedIn || bookingAndUserContext == BookingAndUserContext.isNotAllowedToBook;
 
-  if (bookingAndUserContext == _BookingAndUserContext.isNotLoggedIn) {
+  if (bookingAndUserContext == BookingAndUserContext.isNotLoggedIn) {
     showLoginRegisterModal(context);
     return;
   }
@@ -178,28 +182,52 @@ void _onTapAction(
     return;
   }
 
-  if (notAllowedToBook && booking.private) {
+  if (bookingAndUserContext == BookingAndUserContext.isNotMineAndPrivate) {
     showPrivateWallModal(context: context);
     return;
   }
-  if (bookingAndUserContext == _BookingAndUserContext.isOwner) {
-    showOwnerBookingDetailsModal(context: context, booking: booking, clubId: clubId);
+  if (bookingAndUserContext == BookingAndUserContext.isOwner ||
+      bookingAndUserContext == BookingAndUserContext.isParticipant ||
+      bookingAndUserContext == BookingAndUserContext.isOpenForInvites ||
+      bookingAndUserContext == BookingAndUserContext.isNotMineAndPublic) {
+    final bookingDetailsType = getBookingDetailsType(bookingAndUserContext);
+    bookingAndUserContext.tbLogger('bookingAndUserContext');
+    bookingDetailsType.tbLogger('bookingDetailsType');
+    showBookingDetailsModal(context: context, booking: booking, clubId: clubId, bookingDetailsType: bookingDetailsType);
     return;
   }
 
-  if (bookingAndUserContext == _BookingAndUserContext.isParticipant) {
-    showParticipantBookingDetailsModal(context: context, booking: booking, clubId: clubId, type: PlayerIconsType.column);
-    return;
-  }
+  // if (bookingAndUserContext == _BookingAndUserContext.isParticipant) {
+  //   showParticipantBookingDetailsModal(context: context, booking: booking, clubId: clubId, type: PlayerIconsType.column);
+  //   return;
+  // }
+
+  // if (bookingAndUserContext == _BookingAndUserContext.isAllowedToBook) {
+  //   showAllowedToBookModal(context: context, booking: booking);
+  //   return;
+  // }
 
   if (booking.format == BookingFormat.merged) {
     showMultipleBookingsModal(context: context, booking: booking);
     return;
   }
 
-  if (bookingAndUserContext == _BookingAndUserContext.isAllowedToBook) {
-    showAllowedToBookModal(context: context, booking: booking);
-    return;
-  }
+  'Unknown modal'.tbLogger('Unknown modal', DebugLevel.error);
   return;
+}
+
+BookingDetailsType getBookingDetailsType(BookingAndUserContext bookingAndUserContext) {
+  switch (bookingAndUserContext) {
+    case BookingAndUserContext.isOwner:
+      return BookingDetailsType.owner;
+    case BookingAndUserContext.isParticipant:
+      return BookingDetailsType.participant;
+    case BookingAndUserContext.isOpenForInvites:
+      return BookingDetailsType.openForInvites;
+    case BookingAndUserContext.isNotMineAndPublic:
+      return BookingDetailsType.notMineAndPublic;
+    default:
+      'Unknown BookingDetailsType'.tbLogger('Unknown BookingDetailsType', DebugLevel.error);
+      return BookingDetailsType.notMineAndPublic;
+  }
 }

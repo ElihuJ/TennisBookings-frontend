@@ -27,7 +27,7 @@ class LoadingCalendarView extends StatelessWidget {
               hourIndicatorSettings: HourIndicatorSettings(),
               timeLineWidth: 80,
               headerStringBuilder: (date, {DateTime? secondaryDate}) =>
-                  '${prettyDateFromEpoch(date.millisecondsSinceEpoch)}   ---   ${prettyDateFromEpoch(secondaryDate!.millisecondsSinceEpoch)}',
+                  '${prettyDateUtcFromEpochMilliseconds(date.millisecondsSinceEpoch)}   ---   ${prettyDateUtcFromEpochMilliseconds(secondaryDate!.millisecondsSinceEpoch)}',
               headerStyle: HeaderStyle(
                 decoration: BoxDecoration(
                   color: AppColors.primaryGreen,

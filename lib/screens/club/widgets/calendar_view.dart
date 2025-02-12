@@ -68,10 +68,10 @@ class _CalendarView extends ConsumerState<CalendarView> {
         title: booking.title,
         titleStyle: const TextStyle(color: Colors.white),
         description: booking.format.name,
-        startTime: epochToLocalDateTime(booking.from),
-        endTime: epochToLocalDateTime(booking.to),
+        startTime: epochSecondsToLocalDateTime(booking.from),
+        endTime: epochSecondsToLocalDateTime(booking.to),
         color: Colors.red,
-        date: epochToLocalDateTime(booking.from),
+        date: epochSecondsToLocalDateTime(booking.from),
         event: booking,
       );
     }).toList();
@@ -95,7 +95,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
               hourIndicatorSettings: HourIndicatorSettings(),
               timeLineWidth: 80,
               headerStringBuilder: (date, {DateTime? secondaryDate}) =>
-                  '${prettyDateFromEpoch(date.millisecondsSinceEpoch)}   ---   ${prettyDateFromEpoch(secondaryDate!.millisecondsSinceEpoch)}',
+                  '${prettyDateUtcFromEpochMilliseconds(date.millisecondsSinceEpoch)}   ---   ${prettyDateUtcFromEpochMilliseconds(secondaryDate!.millisecondsSinceEpoch)}',
               headerStyle: HeaderStyle(
                 decoration: BoxDecoration(
                   color: AppColors.primaryGreen,

@@ -60,8 +60,8 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
     _startTimeController.text = TimeOfDay(hour: widget.date.hour, minute: widget.date.minute).format(widget.context);
     _endTimeController.text = TimeOfDay(hour: widget.date.hour + 1, minute: widget.date.minute).format(widget.context);
     DateTime startDate = DateTime(widget.date.year, widget.date.month, widget.date.day, widget.date.hour, widget.date.minute).toUtc();
-    startDateEpoch = dateTimeToEpochUtc(startDate);
-    endDateEpoch = dateTimeToEpochUtc(startDate.add(const Duration(hours: 1)));
+    startDateEpoch = dateTimeToEpochSecondsUtc(startDate);
+    endDateEpoch = dateTimeToEpochSecondsUtc(startDate.add(const Duration(hours: 1)));
   }
 
   Future<CFResult> onSubmit() async {
@@ -219,7 +219,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
                 );
                 if (picked != null && context.mounted) {
                   picked = roundToNearestQuarter(picked);
-                  startDateEpoch = timeOfDayToEpochUtc(picked, widget.date);
+                  startDateEpoch = timeOfDayToEpochUtcSeconds(picked, widget.date);
                   _startTimeController.text = picked.format(context);
                 }
               },
@@ -236,7 +236,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
                 );
                 if (picked != null && context.mounted) {
                   picked = roundToNearestQuarter(picked);
-                  endDateEpoch = timeOfDayToEpochUtc(picked, widget.date);
+                  endDateEpoch = timeOfDayToEpochUtcSeconds(picked, widget.date);
                   _endTimeController.text = picked.format(context);
                 }
               },

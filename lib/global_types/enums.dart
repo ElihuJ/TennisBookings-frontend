@@ -317,3 +317,14 @@ enum BookingRequestStatus implements IsEnum {
     }
   }
 }
+
+enum BookingAndUserContext {
+  isNotLoggedIn,
+  isNotAllowedToBook,
+  isOwner,
+  isParticipant,
+  isMergedBooking,
+  isOpenForInvites,
+  isNotMineAndPublic,
+  isNotMineAndPrivate
+}

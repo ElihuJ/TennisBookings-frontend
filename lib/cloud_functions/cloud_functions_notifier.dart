@@ -1,6 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'dto/responses/get_confirmed_players.dart';
 
 import '../../config/config.dart';
 import '../../strings/firebase/index.dart';
@@ -8,6 +7,7 @@ import '../global_helpers/index.dart';
 import '../global_types/index.dart';
 import '../models/index.dart';
 import 'dto/index.dart';
+import 'dto/responses/get_confirmed_players.dart';
 import 'dto/responses/index.dart';
 import 'index.dart';
 import 'types.dart';

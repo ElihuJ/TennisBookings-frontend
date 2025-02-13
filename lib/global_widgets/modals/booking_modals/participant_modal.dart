@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/screens/club/widgets/index.dart';
 
 import '../../../models/index.dart';
+import '../../../screens/club/widgets/index.dart';
 
 class ParticipantModal extends StatelessWidget {
   const ParticipantModal({super.key, required this.booking, required this.clubId, required this.type});

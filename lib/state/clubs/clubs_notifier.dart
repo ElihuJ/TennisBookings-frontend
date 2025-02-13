@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../cloud_functions/index.dart';
-import '../../global_types/enums.dart';
 
 import '../../cloud_functions/dto/index.dart';
+import '../../cloud_functions/index.dart';
 import '../../cloud_functions/types.dart';
 import '../../global_helpers/index.dart';
+import '../../global_types/enums.dart';
 import '../../models/index.dart';
 import '../index.dart';
-import 'index.dart';
 
 class ClubsNotifier extends StateNotifier<List<Club>> {
   ClubsNotifier(this.cloudFunctionsNotifier) : super([]);

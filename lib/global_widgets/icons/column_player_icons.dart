@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/state/index.dart';
 
 import '../../cloud_functions/dto/index.dart';
 import '../../cloud_functions/index.dart';
 import '../../models/index.dart';
+import '../../state/index.dart';
 import '../index.dart';
 import 'helper.dart';
 

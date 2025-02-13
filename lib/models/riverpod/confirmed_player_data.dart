@@ -1,8 +1,7 @@
 import 'dart:collection';
 
-import '../../global_types/index.dart';
-
 import '../../global_helpers/index.dart';
+import '../../global_types/index.dart';
 
 class ConfirmedPlayerData extends MapView<String, dynamic> implements FirestoreModel, HasId {
   @override

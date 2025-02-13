@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../../global_types/index.dart';
 
+import '../../../global_types/index.dart';
 import '../../../global_widgets/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
@@ -20,36 +20,43 @@ class PlayerIcons extends HookConsumerWidget {
     final bookingStatus = booking.status;
 
     final isOwner = booking.ownerId == userId;
-
-    final ownBooking = bookingStatus == BookingStatus.confirmed && isOwner;
+    final confirmedOpenBooking = bookingStatus == BookingStatus.confirmed && booking.confirmedPlayerIds.isNotEmpty;
+    final ownClosedBooking = bookingStatus == BookingStatus.confirmed && isOwner && !confirmedOpenBooking;
     final isOpenBooking = bookingStatus == BookingStatus.open;
-
     final isPublicBooking = booking.private == false;
 
-    final sourceOfPlayersData = getSourceOfPlayerData(isOpenBooking, ownBooking, isPublicBooking);
+    final sourceOfPlayersData = getSourceOfPlayerData(
+      isOpenBooking: isOpenBooking,
+      confirmedOpenBooking: confirmedOpenBooking,
+      type: type,
+    );
 
-    if (isOpenBooking || ownBooking || isPublicBooking) {
-      if (type == PlayerIconsType.column) {
-        return ColumnOfPlayerIcons(
-            confirmedPlayerIds: confirmedPlayerIds, booking: booking, clubId: clubId, sourceOfPlayersData: sourceOfPlayersData);
-      }
-      if (!isOpenBooking) {
-        // * EVENT CONTAINERS (EXCEPT OPEN BOOKINGS)
-        return RowOfPlayerIcons(confirmedPlayerIds: confirmedPlayerIds, booking: booking, clubId: clubId, sourceOfPlayerData: sourceOfPlayersData);
-      }
+    if ((isOpenBooking || ownClosedBooking || isPublicBooking) && type == PlayerIconsType.column) {
+      return ColumnOfPlayerIcons(confirmedPlayerIds: confirmedPlayerIds, booking: booking, clubId: clubId, sourceOfPlayersData: sourceOfPlayersData);
     }
+    if (ownClosedBooking || isPublicBooking) {
+      // * EVENT CONTAINERS
+      return RowOfPlayerIcons(confirmedPlayerIds: confirmedPlayerIds, booking: booking, clubId: clubId, sourceOfPlayerData: sourceOfPlayersData);
+    }
+
     return Container();
   }
 }
 
-SourceOfPlayerData getSourceOfPlayerData(bool isOpenBooking, bool ownBooking, bool isPublicBooking) {
-  if (isOpenBooking) {
-    return SourceOfPlayerData.cloudFunction;
+SourceOfPlayerData getSourceOfPlayerData({
+  required bool isOpenBooking,
+  required bool confirmedOpenBooking,
+  required PlayerIconsType type,
+}) {
+  SourceOfPlayerData source = SourceOfPlayerData.firestore;
+  if (type == PlayerIconsType.row) {
+    return source;
   }
-  if (ownBooking || isPublicBooking) {
-    return SourceOfPlayerData.firestore;
+  // * COLUMN
+  if (isOpenBooking || confirmedOpenBooking) {
+    source = SourceOfPlayerData.cloudFunction;
   }
-  return SourceOfPlayerData.firestore;
+  return source;
 }
 
 enum PlayerIconsType {

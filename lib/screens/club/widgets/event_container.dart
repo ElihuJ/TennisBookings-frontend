@@ -191,8 +191,6 @@ void _onTapAction({
       bookingAndUserContext == BookingAndUserContext.isOpenForInvites ||
       bookingAndUserContext == BookingAndUserContext.isNotMineAndPublic) {
     final bookingDetailsType = getBookingDetailsType(bookingAndUserContext);
-    bookingAndUserContext.tbLogger('bookingAndUserContext');
-    bookingDetailsType.tbLogger('bookingDetailsType');
     showBookingDetailsModal(context: context, booking: booking, clubId: clubId, bookingDetailsType: bookingDetailsType);
     return;
   }

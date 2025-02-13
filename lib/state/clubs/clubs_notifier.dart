@@ -132,16 +132,18 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
 
   // * This function is only used for loading event containers (Main calendar)
   Future<List<ConfirmedPlayerData>> getPublicPlayerData({required Booking booking, required User user}) async {
-    final ownerId = booking.ownerId;
-    // * If is my own booking do not fetch URL, I already have it
-    if (ownerId == user.uid) {
-      'Owner is me'.tbLogger('', DebugLevel.error);
-      return [ConfirmedPlayerData(id: ownerId, name: user.name, photoUrl: user.photoUrl, utrVerified: user.utrVerified)];
+    final confirmedPlayersData = <ConfirmedPlayerData>[];
+    final confirmedPlayerIds = [...booking.confirmedPlayerIds, booking.ownerId];
+    for (final playerId in confirmedPlayerIds) {
+      // * If is my own booking do not fetch URL, I already have it
+      if (playerId == user.uid) {
+        confirmedPlayersData.add(ConfirmedPlayerData(id: playerId, name: user.name, photoUrl: user.photoUrl, utrVerified: user.utrVerified));
+        continue;
+      }
+      final url = await storageRef.child('public_profiles/$playerId/profile.png').getDownloadURL();
+      confirmedPlayersData.add(ConfirmedPlayerData(id: playerId, name: 'N/A', photoUrl: url, utrVerified: false));
     }
-    'Loading someone elses image'.tbLogger('', DebugLevel.warning);
-    final url = await storageRef.child('public_profiles/$ownerId/profile.png').getDownloadURL();
-    url.tbLogger('ownerId $ownerId', DebugLevel.info);
-    return [ConfirmedPlayerData(id: ownerId, name: 'N/A', photoUrl: url, utrVerified: false)];
+    return confirmedPlayersData;
   }
 
   void clearPrivateBookings() {

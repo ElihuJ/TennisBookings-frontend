@@ -211,6 +211,7 @@ List<Booking> mergeConflictedBookings({required List<Booking> bookings}) {
         private: false,
         requests: [],
         mergedBookings: [...existingMergedBookings, booking],
+        clubId: existingBookingToMerge.clubId,
       );
       mergedBookings.removeWhere((element) => element.id == existingBookingToMerge.id);
       mergedBookings.add(mergedBooking);

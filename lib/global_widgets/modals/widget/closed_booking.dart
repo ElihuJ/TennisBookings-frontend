@@ -77,6 +77,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
       restrictions: null,
       status: BookingStatus.confirmed,
       title: _titleValue,
+      clubId: widget.clubSelected.id,
     );
 
     final payload = CreateBookingPayload(

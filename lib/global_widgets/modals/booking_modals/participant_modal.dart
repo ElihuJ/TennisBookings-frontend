@@ -4,10 +4,9 @@ import '../../../models/index.dart';
 import '../../../screens/club/widgets/index.dart';
 
 class ParticipantModal extends StatelessWidget {
-  const ParticipantModal({super.key, required this.booking, required this.clubId, required this.type});
+  const ParticipantModal({super.key, required this.booking, required this.type});
 
   final Booking booking;
-  final String clubId;
   final PlayerIconsType type;
 
   @override
@@ -20,7 +19,7 @@ class ParticipantModal extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text('You are a participant of this booking. What would you like to do?'),
-          PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, clubId: clubId, type: type)
+          PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, type: type)
         ],
       ),
       actions: <Widget>[
@@ -37,12 +36,11 @@ class ParticipantModal extends StatelessWidget {
   }
 }
 
-void showParticipantBookingDetailsModal(
-    {required BuildContext context, required Booking booking, required String clubId, required PlayerIconsType type}) {
+void showParticipantBookingDetailsModal({required BuildContext context, required Booking booking, required PlayerIconsType type}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return ParticipantModal(booking: booking, clubId: clubId, type: type);
+      return ParticipantModal(booking: booking, type: type);
     },
   );
 }

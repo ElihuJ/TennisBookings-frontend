@@ -82,6 +82,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
       restrictions: _bookingRestrictions,
       status: BookingStatus.open,
       title: _titleValue,
+      clubId: widget.clubSelected.id,
     );
 
     final payload = CreateBookingPayload(

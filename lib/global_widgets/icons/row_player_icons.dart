@@ -17,13 +17,11 @@ class RowOfPlayerIcons extends HookConsumerWidget {
     super.key,
     required this.confirmedPlayerIds,
     required this.booking,
-    required this.clubId,
     required this.sourceOfPlayerData,
   });
 
   final List<String> confirmedPlayerIds;
   final Booking booking;
-  final String clubId;
   final SourceOfPlayerData sourceOfPlayerData;
 
   @override
@@ -38,7 +36,6 @@ class RowOfPlayerIcons extends HookConsumerWidget {
         sourceOfPlayersData: sourceOfPlayerData,
         cloudFunctions: cloudFunctions,
         booking: booking,
-        clubId: clubId,
         clubsNotifier: clubsNotifier,
       ),
       builder: (context, snapshot) {

@@ -12,6 +12,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
   final String id;
   final List<String> confirmedPlayerIds;
   final String courtId;
+  final String clubId;
   final BookingFormat format;
   final int from;
   final int to;
@@ -30,6 +31,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     required this.id,
     required this.confirmedPlayerIds,
     required this.courtId,
+    required this.clubId,
     required this.format,
     required this.from,
     required this.to,
@@ -44,6 +46,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
           BookingFields.id: id,
           BookingFields.confirmedPlayerIds: confirmedPlayerIds,
           BookingFields.courtId: courtId,
+          BookingFields.clubId: clubId,
           BookingFields.format: format,
           BookingFields.from: from,
           BookingFields.to: to,
@@ -60,6 +63,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
           id: defaultId,
           confirmedPlayerIds: [],
           courtId: defaultId,
+          clubId: defaultId,
           format: BookingFormat.singles,
           from: 0,
           to: 0,
@@ -78,6 +82,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
       final confirmedPlayerIdsRaw =
           verifyRequiredProp<List>(prop: json[BookingFields.confirmedPlayerIds], propName: BookingFields.confirmedPlayerIds, defaultValue: []);
       final courtId = verifyRequiredProp<String>(prop: json[BookingFields.courtId], propName: BookingFields.courtId, defaultValue: defaultId);
+      final clubId = verifyRequiredProp<String>(prop: json[BookingFields.clubId], propName: BookingFields.clubId, defaultValue: defaultId);
       final from = verifyRequiredProp<int>(prop: json[BookingFields.from], propName: BookingFields.from, defaultValue: 0);
       final to = verifyRequiredProp<int>(prop: json[BookingFields.to], propName: BookingFields.to, defaultValue: 0);
       final private = verifyRequiredProp<bool>(prop: json[BookingFields.private], propName: BookingFields.private, defaultValue: false);
@@ -99,6 +104,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         id: id,
         confirmedPlayerIds: confirmedPlayerIds,
         courtId: courtId,
+        clubId: clubId,
         format: format,
         from: from,
         to: to,
@@ -124,6 +130,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     String? id,
     List<String>? confirmedPlayerIds,
     String? courtId,
+    String? clubId,
     BookingFormat? format,
     int? from,
     int? to,
@@ -138,6 +145,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
       id: id ?? this.id,
       confirmedPlayerIds: confirmedPlayerIds ?? this.confirmedPlayerIds,
       courtId: courtId ?? this.courtId,
+      clubId: clubId ?? this.clubId,
       format: format ?? this.format,
       from: from ?? this.from,
       to: to ?? this.to,
@@ -157,6 +165,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     return other.id == id &&
         other.confirmedPlayerIds == confirmedPlayerIds &&
         other.courtId == courtId &&
+        other.clubId == clubId &&
         other.format == format &&
         other.from == from &&
         other.to == to &&
@@ -173,6 +182,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     return id.hashCode ^
         confirmedPlayerIds.hashCode ^
         courtId.hashCode ^
+        clubId.hashCode ^
         format.hashCode ^
         from.hashCode ^
         to.hashCode ^
@@ -189,6 +199,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         BookingFields.id: id,
         BookingFields.confirmedPlayerIds: confirmedPlayerIds,
         BookingFields.courtId: courtId,
+        BookingFields.clubId: clubId,
         BookingFields.format: format.name,
         BookingFields.from: from,
         BookingFields.to: to,

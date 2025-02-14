@@ -7,11 +7,10 @@ import '../../../models/index.dart';
 import '../../../state/index.dart';
 
 class PlayerIcons extends HookConsumerWidget {
-  const PlayerIcons({super.key, required this.confirmedPlayerIds, required this.booking, required this.clubId, required this.type});
+  const PlayerIcons({super.key, required this.confirmedPlayerIds, required this.booking, required this.type});
 
   final List<String> confirmedPlayerIds;
   final Booking booking;
-  final String clubId;
   final PlayerIconsType type;
 
   @override
@@ -32,11 +31,11 @@ class PlayerIcons extends HookConsumerWidget {
     );
 
     if ((isOpenBooking || ownClosedBooking || isPublicBooking) && type == PlayerIconsType.column) {
-      return ColumnOfPlayerIcons(confirmedPlayerIds: confirmedPlayerIds, booking: booking, clubId: clubId, sourceOfPlayersData: sourceOfPlayersData);
+      return ColumnOfPlayerIcons(confirmedPlayerIds: confirmedPlayerIds, booking: booking, sourceOfPlayersData: sourceOfPlayersData);
     }
     if (ownClosedBooking || isPublicBooking) {
       // * EVENT CONTAINERS
-      return RowOfPlayerIcons(confirmedPlayerIds: confirmedPlayerIds, booking: booking, clubId: clubId, sourceOfPlayerData: sourceOfPlayersData);
+      return RowOfPlayerIcons(confirmedPlayerIds: confirmedPlayerIds, booking: booking, sourceOfPlayerData: sourceOfPlayersData);
     }
 
     return Container();

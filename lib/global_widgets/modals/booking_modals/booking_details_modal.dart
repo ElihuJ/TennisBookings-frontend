@@ -9,10 +9,9 @@ import '../../index.dart';
 enum BookingDetailsType { owner, participant, openForInvites, notMineAndPublic }
 
 class BookingDetailsModal extends HookConsumerWidget {
-  const BookingDetailsModal({super.key, required this.booking, required this.clubId, required this.bookingDetailsType});
+  const BookingDetailsModal({super.key, required this.booking, required this.bookingDetailsType});
 
   final Booking booking;
-  final String clubId;
   final BookingDetailsType bookingDetailsType;
 
   @override
@@ -28,7 +27,7 @@ class BookingDetailsModal extends HookConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 15),
-          PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, clubId: clubId, type: PlayerIconsType.column),
+          PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, type: PlayerIconsType.column),
           const SizedBox(height: 15),
           PrettyText(prettyDateLocalFromEpochMilliseconds(fromInMilliseconds)),
           PrettyText('${getLocalTimeFromEpochMilliseconds(fromInMilliseconds)} - ${getLocalTimeFromEpochMilliseconds(toInMilliseconds)}'),
@@ -87,12 +86,11 @@ _getActions({required BuildContext context, required BookingDetailsType bookingD
   }
 }
 
-void showBookingDetailsModal(
-    {required BuildContext context, required Booking booking, required String clubId, required BookingDetailsType bookingDetailsType}) {
+void showBookingDetailsModal({required BuildContext context, required Booking booking, required BookingDetailsType bookingDetailsType}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return BookingDetailsModal(booking: booking, clubId: clubId, bookingDetailsType: bookingDetailsType);
+      return BookingDetailsModal(booking: booking, bookingDetailsType: bookingDetailsType);
     },
   );
 }

@@ -87,7 +87,6 @@ class BookingContainer extends StatelessWidget {
           user: user,
           bookingAndUserContext: bookingAndUserContext,
           context: context,
-          clubId: club.id,
         ),
         child: Container(
           padding: const EdgeInsets.all(10),
@@ -116,7 +115,6 @@ class BookingContainer extends StatelessWidget {
                 PlayerIcons(
                   confirmedPlayerIds: confirmedPlayerIds,
                   booking: booking,
-                  clubId: club.id,
                   type: PlayerIconsType.row,
                 ),
               ],
@@ -166,7 +164,6 @@ void _onTapAction({
   required Booking booking,
   required User user,
   required BookingAndUserContext bookingAndUserContext,
-  required String clubId,
   required BuildContext context,
 }) {
   final notAllowedToBook =
@@ -191,7 +188,7 @@ void _onTapAction({
       bookingAndUserContext == BookingAndUserContext.isOpenForInvites ||
       bookingAndUserContext == BookingAndUserContext.isNotMineAndPublic) {
     final bookingDetailsType = getBookingDetailsType(bookingAndUserContext);
-    showBookingDetailsModal(context: context, booking: booking, clubId: clubId, bookingDetailsType: bookingDetailsType);
+    showBookingDetailsModal(context: context, booking: booking, bookingDetailsType: bookingDetailsType);
     return;
   }
 

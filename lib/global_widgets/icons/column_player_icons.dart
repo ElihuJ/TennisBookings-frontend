@@ -14,13 +14,11 @@ class ColumnOfPlayerIcons extends HookConsumerWidget {
     super.key,
     required this.confirmedPlayerIds,
     required this.booking,
-    required this.clubId,
     required this.sourceOfPlayersData,
   });
 
   final List<String> confirmedPlayerIds;
   final Booking booking;
-  final String clubId;
   final SourceOfPlayerData sourceOfPlayersData;
 
   @override
@@ -36,7 +34,6 @@ class ColumnOfPlayerIcons extends HookConsumerWidget {
         clubsNotifier: clubsNotifier,
         booking: booking,
         user: user,
-        clubId: clubId,
       ),
       builder: (context, snapshot) {
         final confirmedPlayersPlusOwner = [...confirmedPlayerIds, booking.ownerId]; // * To be used only while loading or no data came back
@@ -73,7 +70,6 @@ Future<List<ConfirmedPlayerData>> getPlayersDataCall({
   required CloudFunctionsNotifier cloudFunctions,
   required ClubsNotifier clubsNotifier,
   required Booking booking,
-  required String clubId,
   required User user,
 }) {
   if (user.uid.isEmpty) {
@@ -82,7 +78,7 @@ Future<List<ConfirmedPlayerData>> getPlayersDataCall({
   if (sourceOfPlayersData == SourceOfPlayerData.cloudFunction) {
     final payload = GetConfirmedPlayersDataPayload(
       bookingId: booking.id,
-      clubId: clubId,
+      clubId: booking.clubId,
       courtId: booking.courtId,
     );
     return cloudFunctions.getConfirmedPlayersData(payload).then((value) => value.data!);

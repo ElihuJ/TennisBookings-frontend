@@ -11,6 +11,7 @@ class BookingFields {
   static const String requests = 'requests';
   static const String private = 'private';
   static const String title = 'title';
+  static const String clubId = 'clubId';
 
   static const List<String> allFields = [id, courtId, ownerId, from, to, status, restrictions, confirmedPlayerIds, format, requests, private, title];
 }

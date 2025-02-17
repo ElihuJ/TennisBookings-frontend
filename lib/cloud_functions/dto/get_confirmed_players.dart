@@ -1,5 +1,21 @@
-import '../../../models/index.dart';
+import '../../models/index.dart';
 import 'index.dart';
+
+class GetConfirmedPlayersDataPayload extends BasicBookingPayload {
+  static final getConfirmedPlayersDataEndpoint = 'getConfirmedPlayersData';
+
+  final BasicBookingPayload payload;
+
+  GetConfirmedPlayersDataPayload({
+    required this.payload,
+  }) : super(
+          bookingId: payload.bookingId,
+          clubId: payload.clubId,
+          courtId: payload.courtId,
+        );
+}
+
+// * ===========  Response  ===========
 
 class GetConfirmedPlayersDataResponse {
   final GetConfirmedPlayersDataResponseData data;

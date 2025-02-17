@@ -1,15 +1,17 @@
-import 'index.dart';
+// * ===========  Response  ===========
 
-class CreateBookingResponse {
+import '../index.dart';
+
+class BasicResponse {
   final CreateBookingResponseData data;
   final ResponseStatus responseStatus;
 
-  CreateBookingResponse({
+  BasicResponse({
     required this.data,
     required this.responseStatus,
   }) : super();
 
-  factory CreateBookingResponse.fromJson(Map<String, dynamic> map) {
+  factory BasicResponse.fromJson(Map<String, dynamic> map) {
     try {
       final dataRaw = map[ResponseFields.data.name];
       final responseStatusRaw = map[ResponseFields.responseStatus.name];
@@ -17,7 +19,7 @@ class CreateBookingResponse {
       ResponseStatus responseStatus = ResponseStatus.fromJson(responseStatusRaw);
       CreateBookingResponseData data = CreateBookingResponseData.fromJson(dataRaw);
 
-      return CreateBookingResponse(
+      return BasicResponse(
         data: data,
         responseStatus: responseStatus,
       );
@@ -25,13 +27,18 @@ class CreateBookingResponse {
       if (map.containsKey(ResponseFields.responseStatus.name)) {
         final responseStatusRaw = map[ResponseFields.responseStatus.name];
         ResponseStatus responseStatus = ResponseStatus.fromJson(responseStatusRaw);
-        return CreateBookingResponse(
+        return BasicResponse(
           data: CreateBookingResponseData(success: false),
           responseStatus: responseStatus,
         );
       }
       throw Exception('Error parsing CreateBookingResponse: $e');
     }
+  }
+
+  @override
+  String toString() {
+    return 'BasicResponse(data: $data, responseStatus: $responseStatus)';
   }
 }
 
@@ -47,6 +54,11 @@ class CreateBookingResponseData {
     return CreateBookingResponseData(
       success: map[CreateBookingResponseDataFields.success.name],
     );
+  }
+
+  @override
+  String toString() {
+    return 'CreateBookingResponseData(success: $success)';
   }
 }
 

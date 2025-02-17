@@ -48,6 +48,11 @@ class CFResponseStatus {
     CFResponseCode.internalError,
     CFResponseMessage.internalError,
   );
+
+  @override
+  String toString() {
+    return 'CFResponseStatus(code: $code, message: $message)';
+  }
 }
 
 class CFResult<T> {

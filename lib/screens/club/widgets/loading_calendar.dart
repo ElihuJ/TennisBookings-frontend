@@ -1,8 +1,8 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
+
 import '../../../global_helpers/index.dart';
 import '../../../global_widgets/containers/index.dart';
-
 import '../../../models/index.dart';
 import '../../../theme/index.dart';
 

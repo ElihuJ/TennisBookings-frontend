@@ -8,6 +8,7 @@ import '../screens/login/email_login_screen.dart';
 import '../screens/login/forgot_password_screen.dart';
 import '../screens/login/login_screen.dart';
 import '../screens/login/types.dart';
+import 'helper.dart';
 import 'index.dart';
 
 Route<dynamic> generateLoginRoutes(RouteSettings settings) {

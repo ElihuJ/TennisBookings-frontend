@@ -6,9 +6,9 @@ import '../../strings/firebase/index.dart';
 import '../global_helpers/index.dart';
 import '../global_types/index.dart';
 import '../models/index.dart';
+import 'dto/delete_booking.dart';
+import 'dto/get_confirmed_players.dart';
 import 'dto/index.dart';
-import 'dto/responses/get_confirmed_players.dart';
-import 'dto/responses/index.dart';
 import 'index.dart';
 import 'types.dart';
 
@@ -55,15 +55,33 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
     }
   }
 
-  Future<CFResult<List<ConfirmedPlayerData>>> getConfirmedPlayersData(GetConfirmedPlayersDataPayload payload) async {
+  Future<CFResult<List<ConfirmedPlayerData>>> getConfirmedPlayersData(BasicBookingPayload payload) async {
     try {
       'Getting data through API'.tbLogger('getConfirmedPlayersData', DebugLevel.info);
-      final HttpsCallableResult result = await cloudFunctions.httpsCallable(GetConfirmedPlayersDataPayload.endpoint).call(payload.toJson());
+      final HttpsCallableResult result =
+          await cloudFunctions.httpsCallable(GetConfirmedPlayersDataPayload.getConfirmedPlayersDataEndpoint).call(payload.toJson());
       final response = GetConfirmedPlayersDataResponse.fromJson(result.data);
       if (response.responseStatus.code != ResponseCodeEnum.success.value) {
         return CFResult.internalError(errorMessage: response.responseStatus.message);
       }
       return CFResult.ok<List<ConfirmedPlayerData>>(data: response.data.playersData);
+    } on FirebaseFunctionsException catch (error) {
+      error.tbLogger('FirebaseFunctionsException getConfirmedPlayersData', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    } catch (error) {
+      error.tbLogger('Error getConfirmedPlayersData', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    }
+  }
+
+  Future<CFResult<Success>> deleteBooking(BasicBookingPayload payload) async {
+    try {
+      final HttpsCallableResult result = await cloudFunctions.httpsCallable(DeleteBookingPayload.endpoint).call(payload.toJson());
+      final response = DeleteBookingResponse.fromJson(result.data);
+      if (response.responseStatus.code != ResponseCodeEnum.success.value) {
+        return CFResult.internalError(errorMessage: response.responseStatus.message);
+      }
+      return CFResult.ok<Success>(data: response.data.success);
     } on FirebaseFunctionsException catch (error) {
       error.tbLogger('FirebaseFunctionsException getConfirmedPlayersData', DebugLevel.error);
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);

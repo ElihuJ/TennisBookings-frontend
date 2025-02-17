@@ -9,6 +9,7 @@ import '../../global_helpers/index.dart';
 import '../../global_types/enums.dart';
 import '../../models/index.dart';
 import '../index.dart';
+import 'helper.dart';
 
 class ClubsNotifier extends StateNotifier<List<Club>> {
   ClubsNotifier(this.cloudFunctionsNotifier) : super([]);
@@ -66,6 +67,16 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     } else {
       court.publicBookings?.add(booking);
     }
+
+    state = [...state];
+  }
+
+  void removeBooking({required Booking booking}) {
+    final court = state.firstWhere((club) => club.id == booking.clubId).courts.firstWhere((court) => court.id == booking.courtId);
+    if (booking.private) {
+      court.privateBookings?.remove(booking);
+    }
+    court.publicBookings?.removeWhere((element) => element.id == booking.id);
 
     state = [...state];
   }

@@ -76,7 +76,7 @@ Future<List<ConfirmedPlayerData>> getPlayersDataCall({
     return Future.value([]);
   }
   if (sourceOfPlayersData == SourceOfPlayerData.cloudFunction) {
-    final payload = GetConfirmedPlayersDataPayload(
+    final payload = BasicBookingPayload(
       bookingId: booking.id,
       clubId: booking.clubId,
       courtId: booking.courtId,

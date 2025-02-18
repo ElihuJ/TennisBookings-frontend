@@ -95,9 +95,11 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
     eventsNotifier.showLoading(title: "Creating booking...");
     final result = await cloudFunctionsNotifier.createBooking(payload);
     eventsNotifier.hideLoading();
-    final success = result.data;
-    if (success != null && success) {
-      clubsNotifier.addBooking(court: widget.courtSelected, booking: newBooking, isPrivate: false);
+    final newBookingId = result.data;
+    final success = result.responseStatus.code == CFResponseCode.ok;
+    if (success) {
+      final updatedBooking = newBooking.copyWith(id: newBookingId);
+      clubsNotifier.addBooking(court: widget.courtSelected, booking: updatedBooking, isPrivate: false);
       eventsNotifier.showMessage(messageType: MessageType.success, message: 'Booking created');
     } else {
       eventsNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage ?? 'Error creating booking');

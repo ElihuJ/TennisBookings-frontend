@@ -1,6 +1,6 @@
 import '../../global_helpers/index.dart';
 import '../../models/riverpod/index.dart';
-import 'shared/basic_response.dart';
+import 'index.dart';
 
 class CreateBookingPayload implements APIPayload {
   final Booking booking;
@@ -26,19 +26,48 @@ class CreateBookingPayload implements APIPayload {
 
 // * ===========  Response  ===========
 
-class CreateBookingResponse extends BasicResponse {
-  final BasicResponse response;
+class CreateBookingResponse {
+  final ResponseStatus responseStatus;
+  final CreateBookingResponseData data;
 
   CreateBookingResponse({
-    required this.response,
-  }) : super(data: response.data, responseStatus: response.responseStatus);
+    required this.data,
+    required this.responseStatus,
+  });
 
   factory CreateBookingResponse.fromJson(Map<String, dynamic> map) {
     try {
-      final response = BasicResponse.fromJson(map);
-      return CreateBookingResponse(response: response);
+      final dataRaw = map[ResponseFields.data.name];
+      final responseStatusRaw = map[ResponseFields.responseStatus.name];
+      return CreateBookingResponse(
+        data: CreateBookingResponseData.fromJson(dataRaw),
+        responseStatus: ResponseStatus.fromJson(responseStatusRaw),
+      );
     } catch (e) {
-      throw Exception('Error parsing CreateBookingResponse: $e');
+      throw Exception('Error parsing CreateBookingResponse: $e \n\n $map');
     }
   }
+}
+
+// * ===========  Data  ===========
+class CreateBookingResponseData {
+  final String newBookingId;
+
+  CreateBookingResponseData({
+    required this.newBookingId,
+  }) : super();
+
+  factory CreateBookingResponseData.fromJson(Map<dynamic, dynamic> map) {
+    return CreateBookingResponseData(newBookingId: map[CreateBookingResponseDataFields.newBookingId.name]);
+  }
+
+  @override
+  String toString() {
+    return 'CreateBookingResponseData{createdBookingId: $newBookingId';
+  }
+}
+
+// * ===========  Fields  ===========
+enum CreateBookingResponseDataFields {
+  newBookingId,
 }

@@ -54,7 +54,7 @@ class GetPrivateBookingsResponse {
           responseStatus: responseStatus,
         );
       }
-      throw Exception('Error parsing GetPrivateBookingsResponse: $e');
+      throw Exception('Error parsing GetPrivateBookingsResponse: $e \n\n $map');
     }
   }
 

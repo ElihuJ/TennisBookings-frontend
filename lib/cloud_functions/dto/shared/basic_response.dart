@@ -3,7 +3,7 @@
 import '../index.dart';
 
 class BasicResponse {
-  final CreateBookingResponseData data;
+  final BasicResponseData data;
   final ResponseStatus responseStatus;
 
   BasicResponse({
@@ -17,7 +17,7 @@ class BasicResponse {
       final responseStatusRaw = map[ResponseFields.responseStatus.name];
 
       ResponseStatus responseStatus = ResponseStatus.fromJson(responseStatusRaw);
-      CreateBookingResponseData data = CreateBookingResponseData.fromJson(dataRaw);
+      BasicResponseData data = BasicResponseData.fromJson(dataRaw);
 
       return BasicResponse(
         data: data,
@@ -28,11 +28,11 @@ class BasicResponse {
         final responseStatusRaw = map[ResponseFields.responseStatus.name];
         ResponseStatus responseStatus = ResponseStatus.fromJson(responseStatusRaw);
         return BasicResponse(
-          data: CreateBookingResponseData(success: false),
+          data: BasicResponseData(success: false),
           responseStatus: responseStatus,
         );
       }
-      throw Exception('Error parsing CreateBookingResponse: $e');
+      throw Exception('Error parsing CreateBookingResponse: $e \n\n $map');
     }
   }
 
@@ -43,16 +43,16 @@ class BasicResponse {
 }
 
 // * ===========  Data  ===========
-class CreateBookingResponseData {
+class BasicResponseData {
   final bool success;
 
-  CreateBookingResponseData({
+  BasicResponseData({
     required this.success,
   }) : super();
 
-  factory CreateBookingResponseData.fromJson(Map<dynamic, dynamic> map) {
-    return CreateBookingResponseData(
-      success: map[CreateBookingResponseDataFields.success.name],
+  factory BasicResponseData.fromJson(Map<dynamic, dynamic> map) {
+    return BasicResponseData(
+      success: map[BasicResponseDataFields.success.name],
     );
   }
 
@@ -63,6 +63,6 @@ class CreateBookingResponseData {
 }
 
 // * ===========  Fields  ===========
-enum CreateBookingResponseDataFields {
+enum BasicResponseDataFields {
   success,
 }

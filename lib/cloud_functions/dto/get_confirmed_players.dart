@@ -47,7 +47,7 @@ class GetConfirmedPlayersDataResponse {
           responseStatus: responseStatus,
         );
       }
-      throw Exception('Error parsing GetConfirmedPlayersDataResponse: $e');
+      throw Exception('Error parsing GetConfirmedPlayersDataResponse: $e \n\n $map');
     }
   }
 

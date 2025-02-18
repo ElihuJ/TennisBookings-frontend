@@ -21,14 +21,14 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
     state = state.copyWith(uid: uid);
   }
 
-  Future<CFResult<Success>> createBooking(CreateBookingPayload payload) async {
+  Future<CFResult<String>> createBooking(CreateBookingPayload payload) async {
     try {
       final HttpsCallableResult result = await cloudFunctions.httpsCallable(CreateBookingPayload.endpoint).call(payload.toJson());
       final response = CreateBookingResponse.fromJson(result.data);
-      if (!response.data.success) {
+      if (response.responseStatus.code != ResponseCodeEnum.success.value) {
         return CFResult.internalError(errorMessage: response.responseStatus.message);
       }
-      return CFResult.ok<Success>(data: response.data.success);
+      return CFResult.ok<String>(data: response.data.newBookingId);
     } on FirebaseFunctionsException catch (error) {
       error.tbLogger('FirebaseFunctionsException createBooking', DebugLevel.error);
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);

@@ -25,7 +25,10 @@ class BookingDetailsModal extends HookConsumerWidget {
 
     return EventfulWidget(
       child: AlertDialog(
-        title: PrettyText(booking.title),
+        title: PrettyText(
+          booking.title,
+          maxLines: 2,
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -62,7 +65,6 @@ _getOwnerActions({
         await wait(1000);
         BasicBookingPayload payload = BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId);
         final result = await cloudFunctions.deleteBooking(payload);
-        result.tbLogger('DeleteBookingResponse');
         eventNotifier.hideLoading();
         if (result.data == true) {
           eventNotifier.showMessage(messageType: MessageType.success, message: "Event deleted");

@@ -16,39 +16,44 @@ import '../../index.dart';
 enum BookingDetailsType { owner, participant, openForInvites, notMineAndPublic }
 
 class BookingDetailsModal extends HookConsumerWidget {
-  const BookingDetailsModal({super.key, required this.booking, required this.bookingDetailsType});
+  const BookingDetailsModal({super.key, required this.booking, required this.bookingDetailsType, required this.multipleBookingsView});
 
   final Booking booking;
   final BookingDetailsType bookingDetailsType;
+  final bool multipleBookingsView;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fromInMilliseconds = booking.from * 1000;
     final toInMilliseconds = booking.to * 1000;
 
-    return EventfulWidget(
-      child: AlertDialog(
-        title: PrettyText(
-          booking.title,
-          maxLines: 3,
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 15),
-            PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, type: PlayerIconsType.column),
-            const SizedBox(height: 15),
-            PrettyText(prettyDateLocalFromEpochMilliseconds(fromInMilliseconds)),
-            PrettyText('${getLocalTimeFromEpochMilliseconds(fromInMilliseconds)} - ${getLocalTimeFromEpochMilliseconds(toInMilliseconds)}'),
-            const SizedBox(height: 15),
-          ],
-        ),
-        actions: _getActions(context: context, bookingDetailsType: bookingDetailsType, widgetRef: ref, booking: booking),
-        actionsAlignment: MainAxisAlignment.center,
+    final alertDialog = AlertDialog(
+      title: PrettyText(
+        booking.title,
+        maxLines: 3,
       ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 15),
+          PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, type: PlayerIconsType.column),
+          const SizedBox(height: 15),
+          PrettyText(prettyDateLocalFromEpochMilliseconds(fromInMilliseconds)),
+          PrettyText('${getLocalTimeFromEpochMilliseconds(fromInMilliseconds)} - ${getLocalTimeFromEpochMilliseconds(toInMilliseconds)}'),
+          const SizedBox(height: 15),
+        ],
+      ),
+      actions: _getActions(context: context, bookingDetailsType: bookingDetailsType, widgetRef: ref, booking: booking),
+      actionsAlignment: MainAxisAlignment.center,
     );
+
+    if (multipleBookingsView) {
+      return alertDialog;
+    }
+
+    return EventfulWidget(child: alertDialog);
   }
 }
 
@@ -178,7 +183,7 @@ void showBookingDetailsModal({required BuildContext context, required Booking bo
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return BookingDetailsModal(booking: booking, bookingDetailsType: bookingDetailsType);
+      return BookingDetailsModal(booking: booking, bookingDetailsType: bookingDetailsType, multipleBookingsView: false);
     },
   );
 }

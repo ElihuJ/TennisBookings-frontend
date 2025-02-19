@@ -1,6 +1,30 @@
 import '../../models/index.dart';
 import 'index.dart';
 
+class GetConfirmedPlayersDataCache {
+  final GetConfirmedPlayersDataPayload payload;
+  final String cacheKey;
+  GetConfirmedPlayersDataResponse? response;
+
+  GetConfirmedPlayersDataCache({
+    required this.payload,
+    required this.cacheKey,
+    this.response,
+  });
+
+  GetConfirmedPlayersDataResponse? loadFromCache(String key) {
+    if (cacheKey == key) {
+      return response;
+    }
+    return null;
+  }
+
+  @override
+  String toString() {
+    return 'GetConfirmedPlayersDataCache{payload: $payload, cacheKey: $cacheKey}';
+  }
+}
+
 class GetConfirmedPlayersDataPayload extends BasicBookingPayload {
   static final getConfirmedPlayersDataEndpoint = 'getConfirmedPlayersData';
 

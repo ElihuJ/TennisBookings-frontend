@@ -19,15 +19,17 @@ class EventContainer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
+    ref.watch(clubsProvider); // * This is to make sure the bookings are refreshing when there are changes
 
     final booking = events.first.event!;
     final confirmedPlayerIds = booking.confirmedPlayerIds;
-    final isBooked = booking.status == BookingStatus.confirmed;
+    final isConfirmed = booking.status == BookingStatus.confirmed;
+    final isMerged = booking.format == BookingFormat.merged;
     final owned = booking.ownerId == user.uid;
 
     // * Computing colours
     Color bookingColor = owned ? AppColors.primaryGreen : AppColors.darkGreen;
-    if (!isBooked) {
+    if (!isConfirmed || isMerged) {
       bookingColor = AppColors.primaryGreen.withOpacity(0.5);
     }
 
@@ -75,7 +77,7 @@ class BookingContainer extends StatelessWidget {
     final isMemberOfClub = club.memberIds.contains(user.uid);
 
     final bookingAndUserContext =
-        _getBookingAndUserContext(booking: booking, user: user, allowsPublicBookings: allowsPublicBookings, isMemberOfClub: isMemberOfClub);
+        getBookingAndUserContext(booking: booking, user: user, allowsPublicBookings: allowsPublicBookings, isMemberOfClub: isMemberOfClub);
     final (mouseAction, isClickable) = _getPermissionToClick(bookingAndUserContext: bookingAndUserContext);
 
     return MouseRegion(
@@ -98,19 +100,38 @@ class BookingContainer extends StatelessWidget {
               style: BorderStyle.solid,
             ),
           ),
-          height: 100,
-          width: 100,
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                PrettyText(
-                  '${event.title}\n${event.description}',
-                  style: TextStyle(color: computedTextColor, fontSize: fontSize),
-                  textAlign: TextAlign.left,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 150,
+                      child: PrettyText(
+                        event.title,
+                        style: TextStyle(color: computedTextColor, fontSize: fontSize),
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                      ),
+                    ),
+                    if (booking.private)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: const Icon(
+                            Icons.lock,
+                            size: 18,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
-                PrettyText('(${booking.format.name})', style: TextStyle(color: computedTextColor, fontSize: fontSize), textAlign: TextAlign.left),
                 SizedBox(height: 20),
                 PlayerIcons(
                   confirmedPlayerIds: confirmedPlayerIds,
@@ -126,7 +147,7 @@ class BookingContainer extends StatelessWidget {
   }
 }
 
-BookingAndUserContext _getBookingAndUserContext(
+BookingAndUserContext getBookingAndUserContext(
     {required Booking booking, required User user, required bool allowsPublicBookings, required bool isMemberOfClub}) {
   final clubIsPublicOrMemberOfClub = allowsPublicBookings || isMemberOfClub;
 
@@ -191,16 +212,6 @@ void _onTapAction({
     showBookingDetailsModal(context: context, booking: booking, bookingDetailsType: bookingDetailsType);
     return;
   }
-
-  // if (bookingAndUserContext == _BookingAndUserContext.isParticipant) {
-  //   showParticipantBookingDetailsModal(context: context, booking: booking, clubId: clubId, type: PlayerIconsType.column);
-  //   return;
-  // }
-
-  // if (bookingAndUserContext == _BookingAndUserContext.isAllowedToBook) {
-  //   showAllowedToBookModal(context: context, booking: booking);
-  //   return;
-  // }
 
   if (booking.format == BookingFormat.merged) {
     showMultipleBookingsModal(context: context, booking: booking);

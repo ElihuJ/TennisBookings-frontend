@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../global_helpers/index.dart';
 
 import '../../assets/index.dart';
 import '../../global_widgets/eventful/eventful.dart';
@@ -18,8 +17,6 @@ class FindClubsScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final clubsNotifier = ref.read(clubsProvider.notifier);
     final clubs = ref.watch(clubsProvider);
-
-    'TEST LOG'.tbLogger('FindClubsScreen');
 
     // * This will execute when refreshing page or loading specific URL directly
     if (clubs.isEmpty) {

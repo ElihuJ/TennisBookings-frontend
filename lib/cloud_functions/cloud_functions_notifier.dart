@@ -1,5 +1,8 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/cloud_functions/dto/action_invite.dart';
+import 'package:tennisbookings/cloud_functions/dto/send_invite.dart';
+import 'package:tennisbookings/cloud_functions/dto/withdraw_from_booking.dart';
 
 import '../../config/config.dart';
 import '../../strings/firebase/index.dart';
@@ -16,6 +19,8 @@ final FirebaseFunctions cloudFunctions = FirebaseFunctions.instanceFor(region: C
 
 class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
   CloudFunctionsNotifier() : super(const CloudFunctions.empty());
+
+  List<GetConfirmedPlayersDataCache> getConfirmedPlayerDataCache = [];
 
   void loadUid({required String uid}) {
     state = state.copyWith(uid: uid);
@@ -55,15 +60,22 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
     }
   }
 
-  Future<CFResult<List<ConfirmedPlayerData>>> getConfirmedPlayersData(BasicBookingPayload payload) async {
+  Future<CFResult<List<ConfirmedPlayerData>>> getConfirmedPlayersData(GetConfirmedPlayersDataPayload payload) async {
     try {
-      'Getting data through API'.tbLogger('getConfirmedPlayersData', DebugLevel.info);
+      final epochInHours = (DateTime.now().millisecondsSinceEpoch / 1000 / 60 / 60).floor(); // 1 hour
+      final cacheKey = '${payload.bookingId}+$epochInHours';
+      final cacheHit = getConfirmedPlayerDataCache.where((element) => element.cacheKey == cacheKey);
+      if (cacheHit.isNotEmpty) {
+        return CFResult.ok<List<ConfirmedPlayerData>>(data: cacheHit.first.response!.data.playersData);
+      }
+
       final HttpsCallableResult result =
           await cloudFunctions.httpsCallable(GetConfirmedPlayersDataPayload.getConfirmedPlayersDataEndpoint).call(payload.toJson());
       final response = GetConfirmedPlayersDataResponse.fromJson(result.data);
       if (response.responseStatus.code != ResponseCodeEnum.success.value) {
         return CFResult.internalError(errorMessage: response.responseStatus.message);
       }
+      getConfirmedPlayerDataCache.add(GetConfirmedPlayersDataCache(payload: payload, cacheKey: cacheKey, response: response));
       return CFResult.ok<List<ConfirmedPlayerData>>(data: response.data.playersData);
     } on FirebaseFunctionsException catch (error) {
       error.tbLogger('FirebaseFunctionsException getConfirmedPlayersData', DebugLevel.error);
@@ -74,7 +86,7 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
     }
   }
 
-  Future<CFResult<Success>> deleteBooking(BasicBookingPayload payload) async {
+  Future<CFResult<Success>> deleteBooking(DeleteBookingPayload payload) async {
     try {
       final HttpsCallableResult result = await cloudFunctions.httpsCallable(DeleteBookingPayload.endpoint).call(payload.toJson());
       final response = DeleteBookingResponse.fromJson(result.data);
@@ -83,10 +95,66 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
       }
       return CFResult.ok<Success>(data: response.data.success);
     } on FirebaseFunctionsException catch (error) {
-      error.tbLogger('FirebaseFunctionsException getConfirmedPlayersData', DebugLevel.error);
+      error.tbLogger('FirebaseFunctionsException deleteBooking', DebugLevel.error);
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
     } catch (error) {
-      error.tbLogger('Error getConfirmedPlayersData', DebugLevel.error);
+      error.tbLogger('Error deleteBooking', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    }
+  }
+
+  Future<CFResult<Success>> actionInvite(ActionInvitePayload payload) async {
+    try {
+      'Inviting player'.tbLogger('actionInvite', DebugLevel.info);
+      final HttpsCallableResult result = await cloudFunctions.httpsCallable(ActionInvitePayload.endpoint).call(payload.toJson());
+      final response = ActionInviteResponse.fromJson(result.data);
+      response.tbLogger('actionInvite', DebugLevel.info);
+      if (response.responseStatus.code != ResponseCodeEnum.success.value) {
+        return CFResult.internalError(errorMessage: response.responseStatus.message);
+      }
+      return CFResult.ok<Success>(data: response.data.success);
+    } on FirebaseFunctionsException catch (error) {
+      error.tbLogger('FirebaseFunctionsException actionInvite', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    } catch (error) {
+      error.tbLogger('Error actionInvite', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    }
+  }
+
+  Future<CFResult<Success>> sendInvite(SendInvitePayload payload) async {
+    try {
+      'Inviting player'.tbLogger('sendInvite', DebugLevel.info);
+      final HttpsCallableResult result = await cloudFunctions.httpsCallable(SendInvitePayload.endpoint).call(payload.toJson());
+      final response = SendInviteResponse.fromJson(result.data);
+      response.tbLogger('sendInvite', DebugLevel.info);
+      if (response.responseStatus.code != ResponseCodeEnum.success.value) {
+        return CFResult.internalError(errorMessage: response.responseStatus.message);
+      }
+      return CFResult.ok<Success>(data: response.data.success);
+    } on FirebaseFunctionsException catch (error) {
+      error.tbLogger('FirebaseFunctionsException sendInvite', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    } catch (error) {
+      error.tbLogger('Error sendInvite', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    }
+  }
+
+  Future<CFResult<Success>> withdrawFromBooking(WithdrawFromBookingPayload payload) async {
+    try {
+      final HttpsCallableResult result = await cloudFunctions.httpsCallable(WithdrawFromBookingPayload.endpoint).call(payload.toJson());
+      final response = WithdrawFromBookingResponse.fromJson(result.data);
+      response.tbLogger('sendInvite', DebugLevel.info);
+      if (response.responseStatus.code != ResponseCodeEnum.success.value) {
+        return CFResult.internalError(errorMessage: response.responseStatus.message);
+      }
+      return CFResult.ok<Success>(data: response.data.success);
+    } on FirebaseFunctionsException catch (error) {
+      error.tbLogger('FirebaseFunctionsException sendInvite', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    } catch (error) {
+      error.tbLogger('Error sendInvite', DebugLevel.error);
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
     }
   }

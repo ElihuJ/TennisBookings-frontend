@@ -2,6 +2,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../global_helpers/bookings.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../global_widgets/index.dart';
@@ -60,8 +61,8 @@ class _CalendarView extends ConsumerState<CalendarView> {
       return LoadingCalendarView(dateInView: dateInView);
     }
 
-    List<Booking> mergedBookings = mergeConflictedBookings(bookings: _bookings!);
-    // final mergedBookings = _bookings!;
+    final filteredBookings = filterRestrictedBookings(bookings: _bookings!, user: user);
+    List<Booking> mergedBookings = mergeConflictedBookings(bookings: filteredBookings, user: user);
 
     List<CalendarEventData<Booking>> events = mergedBookings.map((booking) {
       return CalendarEventData<Booking>(
@@ -188,7 +189,7 @@ int getLatestEnd(Booking booking1, Booking booking2) {
   return booking1.to > booking2.to ? booking1.to : booking2.to;
 }
 
-List<Booking> mergeConflictedBookings({required List<Booking> bookings}) {
+List<Booking> mergeConflictedBookings({required List<Booking> bookings, required User user}) {
   final mergedBookings = <Booking>[];
 
   for (final booking in bookings) {
@@ -202,7 +203,7 @@ List<Booking> mergeConflictedBookings({required List<Booking> bookings}) {
         id: existingBookingToMerge.id,
         from: earliestStart,
         to: latestEnd,
-        title: 'Merged booking',
+        title: 'Multiple Options (Click for more details)',
         ownerId: '',
         status: BookingStatus.open,
         confirmedPlayerIds: [],

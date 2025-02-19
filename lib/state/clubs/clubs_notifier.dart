@@ -156,6 +156,29 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     return confirmedPlayersData;
   }
 
+  void updateBooking({required Booking booking, required String userId}) {
+    final club = state.firstWhere((club) => club.id == booking.clubId);
+    final court = club.courts.firstWhere((court) => court.id == booking.courtId);
+
+    court.publicBookings = court.publicBookings!.map((element) {
+      if (element.id == booking.id) {
+        return booking;
+      }
+      return element;
+    }).toList();
+
+    if (booking.private) {
+      court.privateBookings = court.privateBookings!.map((element) {
+        if (element.id == booking.id) {
+          return booking;
+        }
+        return element;
+      }).toList();
+    }
+
+    state = [...state];
+  }
+
   void clearPrivateBookings() {
     for (final club in state) {
       for (final court in club.courts) {

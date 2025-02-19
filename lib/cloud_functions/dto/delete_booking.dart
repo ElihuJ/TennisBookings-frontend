@@ -28,7 +28,7 @@ class DeleteBookingResponse extends BasicResponse {
       final response = BasicResponse.fromJson(map);
       return DeleteBookingResponse(response: response);
     } catch (e) {
-      throw Exception('Error parsing CreateBookingResponse: $e \n\n $map');
+      throw Exception('Error parsing DeleteBookingResponse: $e \n\n $map');
     }
   }
 }

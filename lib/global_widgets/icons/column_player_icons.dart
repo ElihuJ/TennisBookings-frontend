@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/cloud_functions/dto/get_confirmed_players.dart';
 
 import '../../cloud_functions/dto/index.dart';
 import '../../cloud_functions/index.dart';
@@ -76,10 +77,12 @@ Future<List<ConfirmedPlayerData>> getPlayersDataCall({
     return Future.value([]);
   }
   if (sourceOfPlayersData == SourceOfPlayerData.cloudFunction) {
-    final payload = BasicBookingPayload(
-      bookingId: booking.id,
-      clubId: booking.clubId,
-      courtId: booking.courtId,
+    final payload = GetConfirmedPlayersDataPayload(
+      payload: BasicBookingPayload(
+        bookingId: booking.id,
+        clubId: booking.clubId,
+        courtId: booking.courtId,
+      ),
     );
     return cloudFunctions.getConfirmedPlayersData(payload).then((value) => value.data!);
   } else {

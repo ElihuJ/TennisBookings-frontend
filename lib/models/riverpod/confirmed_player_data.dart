@@ -32,6 +32,15 @@ class ConfirmedPlayerData extends MapView<String, dynamic> implements FirestoreM
           photoUrl: '',
         );
 
+  ConfirmedPlayerData.emptyWithPhoto(String photoUrl)
+      : this(
+          id: getUuid(),
+          name: '',
+          utrRating: 0,
+          utrVerified: false,
+          photoUrl: photoUrl,
+        );
+
   factory ConfirmedPlayerData.fromJson(Map<dynamic, dynamic> json) {
     return ConfirmedPlayerData(
       id: json[ConfirmedPlayerDataFields.id.name],

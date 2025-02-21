@@ -7,9 +7,11 @@ class PlayerIcon extends StatelessWidget {
   const PlayerIcon({
     super.key,
     required this.player,
+    this.size = 30,
   });
 
   final ConfirmedPlayerData player;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +19,8 @@ class PlayerIcon extends StatelessWidget {
       imageUrl: player.photoUrl,
       fit: BoxFit.cover,
       cacheKey: player.photoUrl,
-      height: 30,
-      width: 30,
+      height: size,
+      width: size,
       imageBuilder: (context, imageProvider) => CircleAvatar(
         backgroundImage: imageProvider,
         radius: 15,

@@ -23,38 +23,34 @@ class MyInvitesScreen extends HookConsumerWidget {
         canPop: false,
         child: Scaffold(
           appBar: Header(),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                const CircleAvatar(
-                  radius: 50,
-                  backgroundImage: NetworkImage('https://example.com/profile.jpg'),
+          body: Center(
+            child: Container(
+              margin: const EdgeInsets.only(top: 100.0),
+              height: double.infinity,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const PrettyText(
+                      'My Invites',
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    const PrettyText(
+                      'You have no invites',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 16.0),
-                const Text(
-                  'John Doe',
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                const Text(
-                  'johndoe@example.com',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.grey,
-                  ),
-                ),
-                const SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle edit profile button press
-                  },
-                  child: const Text('Edit Profile'),
-                ),
-              ],
+              ),
             ),
           ),
         ),

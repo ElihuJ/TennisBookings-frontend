@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/global_widgets/header/invites_button.dart';
 
 import '../../assets/index.dart';
 import '../../screens/home_screen.dart';
 import '../../state/index.dart';
 import '../../theme/index.dart';
 import 'index.dart';
-import 'play_button.dart';
+import 'book_a_court_button.dart';
 
 class Header extends HookConsumerWidget implements PreferredSizeWidget {
   const Header({super.key});
@@ -30,7 +31,9 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
       backgroundColor: AppColors.primaryGreen,
       actions: <Widget>[
         Spacer(),
-        PlayHeaderButton(),
+        if (isLoggedIn) InvitesButtonHeader(),
+        if (isLoggedIn) const SizedBox(width: 20),
+        BookACourtButtonHeader(),
         SizedBox(width: 100),
         Container(
           padding: const EdgeInsets.only(right: 30),

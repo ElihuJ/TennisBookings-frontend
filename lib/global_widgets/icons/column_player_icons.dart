@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tennisbookings/cloud_functions/dto/get_confirmed_players.dart';
@@ -102,24 +101,7 @@ class _PlayerDataRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          FieldBox(
-            child: CachedNetworkImage(
-              imageUrl: player.photoUrl,
-              fit: BoxFit.cover,
-              cacheKey: player.photoUrl,
-              height: 30,
-              width: 30,
-              imageBuilder: (context, imageProvider) => CircleAvatar(
-                backgroundImage: imageProvider,
-                radius: 15,
-              ),
-              placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-              errorWidget: (context, url, error) => const CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Icon(Icons.person),
-              ),
-            ),
-          ),
+          FieldBox(child: PlayerIcon(player: player)),
           SizedBox(width: space),
           FieldBox(width: nameWidth, child: Text(player.name)),
           SizedBox(width: space),

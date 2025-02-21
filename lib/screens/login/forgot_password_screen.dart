@@ -23,11 +23,11 @@ class ForgotPasswordScreen extends StatefulWidget {
 class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.almostWhite,
-      appBar: const Header(),
-      body: EventfulWidget(
-        child: BorderedBox(
+    return EventfulWidget(
+      child: Scaffold(
+        backgroundColor: AppColors.almostWhite,
+        appBar: const Header(),
+        body: BorderedBox(
           borderColor: AppColors.secondaryGreen,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

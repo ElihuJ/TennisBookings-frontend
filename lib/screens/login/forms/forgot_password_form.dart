@@ -88,12 +88,13 @@ class _ForgotPasswordForm extends ConsumerState<ForgotPasswordForm> {
               // * Message handling
               final messageType = error != null ? error.$1 : MessageType.success;
               final message = error != null ? error.$2 : context.localeString(ForgotPasswordScreenStrings.passwordResetEmailSent);
-              showToast(
-                context: context,
+              eventStatusNotifier.hideLoading();
+              eventStatusNotifier.showMessage(
                 messageType: messageType,
                 message: message,
+                title: messageType.name,
+                duration: const Duration(seconds: 5),
               );
-              eventStatusNotifier.hideLoading();
 
               // * Clear fields if no error and pop context
               if (error == null) {

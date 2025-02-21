@@ -115,13 +115,13 @@ class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
           : isLogin
               ? context.localeString(EmailLoginScreenStrings.loginToYourAccount)
               : context.localeString(EmailLoginScreenStrings.verificationEmailSent);
-      showToast(
-        context: context,
-        messageType: messageType,
-        message: message,
-      );
-
       eventStatusNotifier.hideLoading();
+      eventNotifier.showMessage(
+        messageType: messageType,
+        title: messageType.name,
+        message: message,
+        duration: Duration(seconds: 5),
+      );
 
       if (isLogin && errorInfo == null && context.mounted) {
         Navigator.pushNamedAndRemoveUntil(context, HomeScreen.route, (route) => false);

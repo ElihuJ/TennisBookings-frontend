@@ -11,7 +11,7 @@ import 'clubs_table.dart';
 
 class FindClubsScreen extends HookConsumerWidget {
   const FindClubsScreen({super.key});
-  static const route = 'FindClubs';
+  static const route = 'SelectClub';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

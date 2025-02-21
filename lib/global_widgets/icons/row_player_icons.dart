@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -61,22 +60,7 @@ class RowOfPlayerIcons extends HookConsumerWidget {
                 padding: const EdgeInsets.all(4),
                 child: Column(
                   children: [
-                    CachedNetworkImage(
-                      imageUrl: player.photoUrl,
-                      fit: BoxFit.cover,
-                      cacheKey: player.photoUrl,
-                      height: 30,
-                      width: 30,
-                      imageBuilder: (context, imageProvider) => CircleAvatar(
-                        backgroundImage: imageProvider,
-                        radius: 15,
-                      ),
-                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) => const CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.person),
-                      ),
-                    ),
+                    PlayerIcon(player: player),
                   ],
                 ),
               );

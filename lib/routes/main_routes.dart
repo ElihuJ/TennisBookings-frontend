@@ -8,6 +8,8 @@ import '../screens/login/email_login_screen.dart';
 import '../screens/login/forgot_password_screen.dart';
 import '../screens/login/login_screen.dart';
 import '../screens/login/types.dart';
+import '../screens/my_invites/my_invites_screen.dart';
+import '../screens/profile/profile_screen.dart';
 import 'helper.dart';
 import 'index.dart';
 
@@ -35,6 +37,12 @@ Route<dynamic> generateLoginRoutes(RouteSettings settings) {
       break;
     case FindClubsScreen.route:
       page = const FindClubsScreen();
+      break;
+    case MyInvitesScreen.route:
+      page = const MyInvitesScreen();
+      break;
+    case ProfileScreen.route:
+      page = const ProfileScreen();
       break;
     case ScheduleScreen.route:
       final clubSelectedQueryParams = ClubSelectedQueryParams(queryParams.queryParams);

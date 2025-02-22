@@ -26,6 +26,13 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     if (docs.isNotEmpty) {
       // * Transform to Clubs class
       final clubs = loadClubsFromDocs(docs);
+      final existingClubs = state;
+      if (existingClubs.isNotEmpty) {
+        // * If clubs already exist, only add new clubs
+        final newClubs = clubs.where((club) => !existingClubs.any((existingClub) => existingClub.id == club.id)).toList();
+        state = [...existingClubs, ...newClubs];
+        return;
+      }
       state = clubs;
       return;
     }

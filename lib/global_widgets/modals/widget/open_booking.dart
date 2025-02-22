@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../cloud_functions/dto/index.dart';
 import '../../../cloud_functions/index.dart';
@@ -124,27 +125,30 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
       },
       child: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                TbButton(
-                  text: 'Closed',
-                  onPressed: widget.switchBookingMode,
-                  color: AppColors.grey,
-                ),
-                TbButton(
-                  text: 'Open',
-                  color: AppColors.blue,
-                ),
-              ],
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  TbButton(
+                    text: 'Booking',
+                    onPressed: widget.switchBookingMode,
+                    color: AppColors.grey,
+                  ),
+                  TbButton(
+                    text: 'Look for a player',
+                    color: AppColors.blue,
+                  ),
+                ],
+              ),
             ),
             // ^ =============== TITLE FIELD ===============
             TextFormField(
               initialValue: _titleValue,
               decoration: const InputDecoration(
-                labelText: 'Booking Title',
+                labelText: 'Title',
               ),
               onChanged: (value) => _titleValue = value,
               validator: (value) {
@@ -297,6 +301,7 @@ class RestrictionsFieldState extends State<RestrictionsField> {
   late bool _utrVerified;
   TextEditingController utrGtController = TextEditingController();
   TextEditingController utrLtController = TextEditingController();
+  MouseCursor cursor = SystemMouseCursors.click;
 
   utrGtListener() {
     final utrGreaterThan = double.tryParse(utrGtController.text);
@@ -329,6 +334,8 @@ class RestrictionsFieldState extends State<RestrictionsField> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DropdownButtonFormField<bool>(
           value: _utrVerified,
@@ -344,6 +351,28 @@ class RestrictionsFieldState extends State<RestrictionsField> {
               widget.setBookingRestrictions(newBookingRestrictions);
             });
           },
+        ),
+        MouseRegion(
+          cursor: cursor,
+          onHover: (_) {
+            setState(() {
+              cursor = SystemMouseCursors.help;
+            });
+          },
+          onExit: (_) {
+            setState(() {
+              cursor = SystemMouseCursors.basic;
+            });
+          },
+          child: Container(
+            alignment: Alignment.center,
+            margin: const EdgeInsets.symmetric(vertical: 15),
+            child: GestureDetector(
+              onTap: () =>
+                  launchUrl(Uri.parse('https://www.utrsports.net/cdn/shop/files/Good-UTR-Rating-V03-1280x990-curve-of-utr-rating.png?v=1740085669')),
+              child: PrettyText('What UTR should I use?', style: TextStyle(color: AppColors.blue), textAlign: TextAlign.center),
+            ),
+          ),
         ),
         TextFormField(
           decoration: const InputDecoration(labelText: 'UTR Lower Than'),

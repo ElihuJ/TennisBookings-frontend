@@ -125,11 +125,11 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 TbButton(
-                  text: 'Closed',
+                  text: 'Booking',
                   color: AppColors.blue,
                 ),
                 TbButton(
-                  text: 'Open',
+                  text: 'Look for a player',
                   onPressed: widget.switchBookingMode,
                   color: AppColors.grey,
                 ),
@@ -139,7 +139,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
             TextFormField(
               initialValue: _titleValue,
               decoration: const InputDecoration(
-                labelText: 'Booking Title',
+                labelText: 'Title',
               ),
               onChanged: (value) => _titleValue = value,
               validator: (value) {

@@ -51,11 +51,11 @@ class _CreateBookingModalState extends ConsumerState<CreateBookingModal> {
           );
 
     final dateString = prettyDateUtcFromEpochMilliseconds(widget.date.millisecondsSinceEpoch);
-    final bookingModeString = _bookingMode == BookingMode.open ? 'Open' : 'Closed';
+    final bookingModeString = _bookingMode == BookingMode.open ? 'Searching for a player' : 'Booking';
 
     return AlertDialog(
       title: Text(
-        '${widget.courtSelected.name} $bookingModeString Booking \n$dateString',
+        '${widget.courtSelected.name} $bookingModeString \n$dateString',
         textAlign: TextAlign.center,
       ),
       content: content,

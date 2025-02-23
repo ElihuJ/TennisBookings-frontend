@@ -43,10 +43,10 @@ class Config {
   // ^ ================== APP CONFIG ==================
   static const appName = "Tennis Bookings";
   static const functionsRegion = "australia-southeast1";
-  static const maxBookingDuration = 3600 * 1.5; // 1.5 hours // * Keep synced with maxBookingHours
-  static const maxBookingHours = 1.5;
-  static const minDuration = 3600 / 2; // 30 minutes // * Keep synced with minDurationMinutes
-  static const minDurationMinutes = 30;
+  static const maxBookingDuration = 3600 * 1.5 * 1000; // 1.5 hours in milliseconds // * Keep synced with maxBookingHours
+  static const maxBookingHoursString = 1.5;
+  static const minDuration = (3600 / 2) * 1000; // 30 minutes // * Keep synced with minDurationMinutes
+  static const minDurationMinutesString = 30;
 
   static const utrMaxRating = 16;
   static const utrMinRating = 0;

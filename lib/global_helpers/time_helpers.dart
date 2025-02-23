@@ -5,33 +5,28 @@ import '../global_types/index.dart';
 
 // * ============== GETTING CURRENT DATE AND TIME ==============
 
-int nowToEpochSecondsUtc() {
-  return (DateTime.now().toUtc().millisecondsSinceEpoch / 1000).round();
+int nowToEpochUtc() {
+  return DateTime.now().toUtc().millisecondsSinceEpoch;
 }
 
-int dateTimeToEpochSecondsUtc(DateTime date) {
+int dateTimeToEpochUtc(DateTime date) {
   final utcDate = date.toUtc();
-  return (utcDate.millisecondsSinceEpoch / 1000).round();
+  return (utcDate.millisecondsSinceEpoch).round();
 }
 
-DateTime epochSecondsToDateTimeUtc(int epoch) {
-  final milliseconds = epoch * 1000;
-  return DateTime.fromMillisecondsSinceEpoch(milliseconds).toUtc();
-}
+DateTime epochToDateTimeUtc(int epoch) => DateTime.fromMillisecondsSinceEpoch(epoch).toUtc();
 
 // * ============== GETTING DATE AS STRING ==============
 
-String prettyDateUtcFromEpochMilliseconds(int epoch) {
-  final seconds = (epoch / 1000).round();
-  final date = epochSecondsToDateTimeUtc(seconds);
+String prettyDateUtcFromEpoch(int milliseconds) {
+  final date = epochToDateTimeUtc(milliseconds);
   final utcDate = date.toUtc();
   final formattedDate = DateFormat('dd/MMM/yy').format(utcDate);
   return formattedDate.toString();
 }
 
-String prettyDateLocalFromEpochMilliseconds(int epoch) {
-  final seconds = (epoch / 1000).round();
-  final date = epochSecondsToDateTimeUtc(seconds);
+String prettyDateLocalFromEpoch(int milliseconds) {
+  final date = epochToDateTimeUtc(milliseconds);
   final localDate = date.toLocal();
   final formattedDate = DateFormat('dd/MMM/yy').format(localDate);
   return formattedDate.toString();
@@ -39,43 +34,27 @@ String prettyDateLocalFromEpochMilliseconds(int epoch) {
 
 // * ============== GETTING TIME AS STRING ==============
 
-String getUtcTimeFromEpochMilliseconds(int epoch) {
-  final seconds = (epoch / 1000).round();
-  final date = epochSecondsToDateTimeUtc(seconds);
+String getUtcTimeFromEpoch(int milliseconds) {
+  final date = epochToDateTimeUtc(milliseconds);
   final utcDate = date.toUtc();
   final formattedDate = DateFormat('HH:mm').format(utcDate);
   return formattedDate.toString();
 }
 
-String getLocalTimeFromEpochMilliseconds(int epoch) {
-  final seconds = (epoch / 1000).round();
-  final date = epochSecondsToDateTimeUtc(seconds);
+String getLocalTimeFromEpoch(int milliseconds) {
+  final date = epochToDateTimeUtc(milliseconds);
   final utcDate = date.toLocal();
   final formattedDate = DateFormat('HH:mm').format(utcDate);
   return formattedDate.toString();
 }
 
-String getMonthAndYearFromEpochSeconds(int epoch) {
-  final seconds = (epoch / 1000).round();
-  final date = epochSecondsToDateTimeUtc(seconds);
-  final utcDate = date.toUtc();
-  final formattedDate = DateFormat('MMM/yy').format(utcDate);
-  return formattedDate.toString();
-}
-
-int localTimeOfDayToUTCEpochSeconds(TimeOfDay time, DateTime date) {
+int timeOfDayToEpochUtc(TimeOfDay time, DateTime date) {
   DateTime dateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
-  dateTime = dateTime.toUtc();
-  return dateTimeToEpochSecondsUtc(dateTime);
+  return dateTimeToEpochUtc(dateTime);
 }
 
-int timeOfDayToEpochUtcSeconds(TimeOfDay time, DateTime date) {
-  DateTime dateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
-  return dateTimeToEpochSecondsUtc(dateTime);
-}
-
-DateTime epochSecondsToLocalDateTime(int epoch) {
-  final date = epochSecondsToDateTimeUtc(epoch);
+DateTime epochSecondsToLocalDateTime(int milliseconds) {
+  final date = epochToDateTimeUtc(milliseconds);
   return date.toLocal();
 }
 
@@ -92,10 +71,6 @@ TimeOfDay roundToNearestQuarter(TimeOfDay time) {
     newMinutes = 45;
   }
   return TimeOfDay(hour: time.hour, minute: newMinutes);
-}
-
-int epochMillisecondsToEpochSeconds(int epoch) {
-  return (epoch / 1000).round();
 }
 
 // * ============== CALCULATING STARTS AND END OF WEEK ==============

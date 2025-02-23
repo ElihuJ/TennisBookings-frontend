@@ -19,7 +19,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
   final int accountCreationDate;
   final List<String> clubIds;
   final List<DocumentReference<Map<String, dynamic>>> bookings;
-  final int dob;
+  final int dob; // date of birth in epoch milliseconds
   final Gender gender;
   final int lastLogin;
   final double? utrRating;

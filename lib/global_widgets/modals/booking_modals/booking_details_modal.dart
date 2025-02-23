@@ -24,8 +24,8 @@ class BookingDetailsModal extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fromInMilliseconds = booking.from * 1000;
-    final toInMilliseconds = booking.to * 1000;
+    final fromInMilliseconds = booking.from;
+    final toInMilliseconds = booking.to;
 
     final alertDialog = AlertDialog(
       title: PrettyText(
@@ -40,8 +40,8 @@ class BookingDetailsModal extends HookConsumerWidget {
           const SizedBox(height: 15),
           PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, type: PlayerIconsType.column),
           const SizedBox(height: 15),
-          PrettyText(prettyDateLocalFromEpochMilliseconds(fromInMilliseconds)),
-          PrettyText('${getLocalTimeFromEpochMilliseconds(fromInMilliseconds)} - ${getLocalTimeFromEpochMilliseconds(toInMilliseconds)}'),
+          PrettyText(prettyDateLocalFromEpoch(fromInMilliseconds)),
+          PrettyText('${getLocalTimeFromEpoch(fromInMilliseconds)} - ${getLocalTimeFromEpoch(toInMilliseconds)}'),
           const SizedBox(height: 15),
         ],
       ),

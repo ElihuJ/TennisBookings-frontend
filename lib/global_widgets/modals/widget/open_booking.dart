@@ -61,8 +61,8 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
     _startTimeController.text = TimeOfDay(hour: widget.date.hour, minute: widget.date.minute).format(widget.context);
     _endTimeController.text = TimeOfDay(hour: widget.date.hour + 1, minute: widget.date.minute).format(widget.context);
     DateTime startDate = DateTime(widget.date.year, widget.date.month, widget.date.day, widget.date.hour, widget.date.minute).toUtc();
-    startDateEpoch = dateTimeToEpochSecondsUtc(startDate);
-    endDateEpoch = dateTimeToEpochSecondsUtc(startDate.add(const Duration(hours: 1)));
+    startDateEpoch = dateTimeToEpochUtc(startDate);
+    endDateEpoch = dateTimeToEpochUtc(startDate.add(const Duration(hours: 1)));
   }
 
   Future<CFResult> onSubmit() async {
@@ -226,7 +226,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
                 );
                 if (picked != null && context.mounted) {
                   picked = roundToNearestQuarter(picked);
-                  startDateEpoch = timeOfDayToEpochUtcSeconds(picked, widget.date);
+                  startDateEpoch = timeOfDayToEpochUtc(picked, widget.date);
                   _startTimeController.text = picked.format(context);
                 }
               },
@@ -243,7 +243,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
                 );
                 if (picked != null && context.mounted) {
                   picked = roundToNearestQuarter(picked);
-                  endDateEpoch = timeOfDayToEpochUtcSeconds(picked, widget.date);
+                  endDateEpoch = timeOfDayToEpochUtc(picked, widget.date);
                   _endTimeController.text = picked.format(context);
                 }
               },
@@ -368,8 +368,8 @@ class RestrictionsFieldState extends State<RestrictionsField> {
             alignment: Alignment.center,
             margin: const EdgeInsets.symmetric(vertical: 15),
             child: GestureDetector(
-              onTap: () =>
-                  launchUrl(Uri.parse('https://www.utrsports.net/cdn/shop/files/Good-UTR-Rating-V03-1280x990-curve-of-utr-rating.png?v=1740085669')),
+              onTap: () => launchUrl(Uri.parse(
+                  'https://www.utrsports.net/cdn/shop/files/Good-UTR-Rating-V03-1280x990-curve-of-utr-rating.png?v=1740085669')), // TODO: Add URL to asset file
               child: PrettyText('What UTR should I use?', style: TextStyle(color: AppColors.blue), textAlign: TextAlign.center),
             ),
           ),

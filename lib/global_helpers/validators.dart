@@ -33,11 +33,11 @@ String? validateNewTime({required int startDateEpoch, required int endDateEpoch,
     validationError = 'End time must be after start time';
   }
   if ((endDateEpoch - startDateEpoch) > Config.maxBookingDuration) {
-    validationError = 'Max duration per booking is ${Config.maxBookingHours} hour';
+    validationError = 'Max duration per booking is ${Config.maxBookingHoursString} hour';
   }
 
   if ((endDateEpoch - startDateEpoch) < Config.minDuration) {
-    validationError = 'Min duration per booking is ${Config.minDurationMinutes} minutes';
+    validationError = 'Min duration per booking is ${Config.minDurationMinutesString} minutes';
   }
   if (!validateTime(startTimeEpoch: startDateEpoch, bookedTimes: bookedTimes, endTimeEpoch: endDateEpoch)) {
     validationError = 'Time slot is already booked';

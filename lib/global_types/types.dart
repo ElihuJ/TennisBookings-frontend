@@ -61,8 +61,8 @@ class BookedTimeEpoch {
 
   @override
   String toString() {
-    final startAsDate = DateTime.fromMillisecondsSinceEpoch(start * 1000);
-    final endAsDate = DateTime.fromMillisecondsSinceEpoch(end * 1000);
+    final startAsDate = DateTime.fromMillisecondsSinceEpoch(start);
+    final endAsDate = DateTime.fromMillisecondsSinceEpoch(end);
     return 'BookedTimeEpoch{start: $startAsDate, end: $endAsDate}';
   }
 }

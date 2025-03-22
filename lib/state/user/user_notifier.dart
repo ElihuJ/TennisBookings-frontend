@@ -43,4 +43,9 @@ class UserNotifier extends StateNotifier<User> {
     }
     return errorHandler.result;
   }
+
+  updateUser({required User user}) async {
+    final dateNowAsInt = nowToEpochUtc();
+    state = user.copyWith(gender: user.gender, dob: user.dob, name: user.name, photoUrl: user.photoUrl, lastLogin: dateNowAsInt);
+  }
 }

@@ -2,6 +2,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tennisbookings/cloud_functions/dto/action_invite.dart';
 import 'package:tennisbookings/cloud_functions/dto/send_invite.dart';
+import 'package:tennisbookings/cloud_functions/dto/update_profile.dart';
 import 'package:tennisbookings/cloud_functions/dto/withdraw_from_booking.dart';
 
 import '../../config/config.dart';
@@ -155,6 +156,24 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
     } catch (error) {
       error.tbLogger('Error sendInvite', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    }
+  }
+
+  Future<CFResult<Success>> updateProfile(UpdateProfilePayload payload) async {
+    try {
+      final HttpsCallableResult result = await cloudFunctions.httpsCallable(UpdateProfilePayload.endpoint).call(payload.toJson());
+      final response = UpdateProfileResponse.fromJson(result.data);
+      response.tbLogger('updateProfile', DebugLevel.info);
+      if (response.responseStatus.code != ResponseCodeEnum.success.value) {
+        return CFResult.internalError(errorMessage: response.responseStatus.message);
+      }
+      return CFResult.ok<Success>(data: response.data.success);
+    } on FirebaseFunctionsException catch (error) {
+      error.tbLogger('FirebaseFunctionsException updateProfile', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    } catch (error) {
+      error.tbLogger('Error updateProfile', DebugLevel.error);
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
     }
   }

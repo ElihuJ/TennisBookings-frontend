@@ -218,7 +218,7 @@ void _onTapAction({
     return;
   }
 
-  'Unknown modal'.tbLogger('Unknown modal', DebugLevel.error);
+  'unknown modal'.tbLogger('unknown modal', DebugLevel.error);
   return;
 }
 
@@ -233,7 +233,7 @@ BookingDetailsType getBookingDetailsType(BookingAndUserContext bookingAndUserCon
     case BookingAndUserContext.isNotMineAndPublic:
       return BookingDetailsType.notMineAndPublic;
     default:
-      'Unknown BookingDetailsType'.tbLogger('Unknown BookingDetailsType', DebugLevel.error);
+      'unknown BookingDetailsType'.tbLogger('unknown BookingDetailsType', DebugLevel.error);
       return BookingDetailsType.notMineAndPublic;
   }
 }

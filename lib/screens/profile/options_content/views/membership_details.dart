@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_helpers/logs.dart';
+import 'package:tennisbookings/global_helpers/index.dart';
+import 'package:tennisbookings/global_widgets/containers/bordered_box.dart';
 
 import '../../../../state/index.dart';
 
@@ -11,30 +12,22 @@ class MembershipDetails extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
-    final clubs = ref.watch(clubsProvider);
-    final spacer = const SizedBox(height: 26.0);
+    final user = ref.read(userProvider);
+    final clubs = ref.read(clubsProvider);
 
-    final homeClub = clubs.where((club) => club.id == user.homeClubId).first;
+    final homeClub = findByIdOrNull<Club>(clubs, user.homeClubId);
 
-    homeClub.tbLogger('Memberships build');
+    if (homeClub == null) {
+      return BorderedBox(
+        width: widthPercent(context, percentage: 80),
+        child: Center(
+            child: const Text(
+          'No home club',
+          textAlign: TextAlign.center,
+        )),
+      );
+    }
 
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        height: double.infinity,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(homeClub.name),
-              spacer,
-            ],
-          ),
-        ),
-      ),
-    );
+    return Text(homeClub.name);
   }
 }

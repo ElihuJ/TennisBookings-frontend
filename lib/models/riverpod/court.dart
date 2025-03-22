@@ -40,7 +40,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
           CourtFields.name: name,
         });
 
-  Court.empty() : this(id: defaultCourtId, clubId: defaultCourtId, surface: 'Unknown', name: defaultCourtName, generalUnavailability: []);
+  Court.empty() : this(id: defaultCourtId, clubId: defaultCourtId, surface: 'unknown', name: defaultCourtName, generalUnavailability: []);
 
   // ^ ================================== Loaders ==================================
 
@@ -70,7 +70,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
       // * Verify required props
       final id = verifyRequiredProp<String>(prop: json[CourtFields.id], propName: CourtFields.id, defaultValue: defaultCourtId);
       final clubId = verifyRequiredProp<String>(prop: json[CourtFields.clubId], propName: CourtFields.clubId, defaultValue: defaultCourtId);
-      final surface = verifyRequiredProp<String>(prop: json[CourtFields.surface], propName: CourtFields.surface, defaultValue: 'Unknown');
+      final surface = verifyRequiredProp<String>(prop: json[CourtFields.surface], propName: CourtFields.surface, defaultValue: 'unknown');
       final name = verifyRequiredProp<String>(prop: json[CourtFields.name], propName: CourtFields.name, defaultValue: defaultCourtName);
       final List<GeneralUnavailability> generalUnavailability = json[CourtFields.generalUnavailability] != null
           ? List<GeneralUnavailability>.from(json[CourtFields.generalUnavailability].map((x) => GeneralUnavailability.fromJson(x)))

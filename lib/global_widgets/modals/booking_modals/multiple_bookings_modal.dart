@@ -38,7 +38,7 @@ class MultipleBookingsModal extends HookConsumerWidget {
                     padding: const EdgeInsets.all(0),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
-                      color: AppColors.blue.withOpacity(0.2),
+                      color: AppColors.blue.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: BookingDetailsModal(

@@ -21,7 +21,7 @@ class OptionsDrawer extends HookConsumerWidget {
       width: 250,
       padding: const EdgeInsets.all(30.0),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.5),
+        color: AppColors.primaryGreen.withValues(alpha: 0.5),
         border: Border(
           right: BorderSide(color: AppColors.primaryGreen, width: 2),
         ),

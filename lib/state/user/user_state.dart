@@ -58,6 +58,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
           UserFields.name: name,
           UserFields.utrRating: utrRating,
           UserFields.utrVerified: utrVerified,
+          UserFields.photoUrl: photoUrl,
         });
 
   User.empty() : this();

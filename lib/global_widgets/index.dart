@@ -2,6 +2,7 @@ export './icons/index.dart';
 export 'buttons/index.dart';
 export 'containers/index.dart';
 export 'eventful/index.dart';
+export 'input_fields/index.dart';
 export 'loading/loading_screen.dart';
 export 'modals/index.dart';
 export 'text/index.dart';

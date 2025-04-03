@@ -15,7 +15,7 @@ class LoadingBox extends StatelessWidget {
     final messageStyle = Theme.of(context).textTheme.bodySmall;
 
     return Container(
-      color: Colors.black.withOpacity(0.5),
+      color: Colors.black.withValues(alpha: 0.5),
       child: Center(
         child: Container(
           padding: const EdgeInsets.all(16.0),
@@ -26,13 +26,9 @@ class LoadingBox extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (title.isNotEmpty)
-                PrettyText(title,
-                    style: titleStyle, textAlign: TextAlign.center),
+              if (title.isNotEmpty) PrettyText(title, style: titleStyle, textAlign: TextAlign.center),
               if (message.isNotEmpty) const SizedBox(height: 20.0),
-              if (message.isNotEmpty)
-                PrettyText(message,
-                    style: messageStyle, textAlign: TextAlign.center),
+              if (message.isNotEmpty) PrettyText(message, style: messageStyle, textAlign: TextAlign.center),
               const SizedBox(height: 20.0),
               const CircularProgressIndicator(
                 color: AppColors.primaryGreen,

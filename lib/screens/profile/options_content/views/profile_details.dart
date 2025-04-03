@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tennisbookings/cloud_functions/dto/update_profile.dart';
 import 'package:tennisbookings/cloud_functions/index.dart';
 import 'package:tennisbookings/cloud_functions/types.dart';
@@ -33,6 +35,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
   late String _initialDob;
   late String _initialSelectedGender;
   int _selectedDob = 0;
+  Uint8List imageBytes = Uint8List(0);
 
   @override
   void initState() {
@@ -79,7 +82,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
     });
   }
 
-  _saveAndSubmit() async {
+  void _saveAndSubmit() async {
     if (_mode == _Mode.edit && _formKey.currentState!.validate()) {
       final eventNotifier = ref.read(eventsProvider.notifier);
       final cloudFunctions = ref.read(cloudFunctionsProvider.notifier);
@@ -92,12 +95,19 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
 
       eventNotifier.showLoading(message: 'Updating profile...');
 
-      final updatedUser = user.copyWith(name: _nameController.text, dob: _selectedDob, gender: gender, photoUrl: user.photoUrl);
+      final newUrl = await uploadImage(userNotifier: userNotifier, imageBytes: imageBytes);
+      if (newUrl == null) {
+        eventNotifier.hideLoading();
+        eventNotifier.showMessage(message: 'Error uploading image', messageType: MessageType.error);
+        return;
+      }
+
+      final updatedUser = user.copyWith(name: _nameController.text, dob: _selectedDob, gender: gender, photoUrl: newUrl);
       final UpdateProfilePayload payload = UpdateProfilePayload(
         name: updatedUser.name,
         dob: updatedUser.dob,
         gender: updatedUser.gender.name,
-        photoUrl: updatedUser.photoUrl,
+        photoUrl: newUrl,
       );
 
       final result = await cloudFunctions.updateProfile(payload);
@@ -119,9 +129,25 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
     }
   }
 
-  _toggleMode() => setState(() {
+  void _toggleMode() => setState(() {
         _mode = _Mode.edit;
       });
+
+  void setImageBytes({required Uint8List? newImageBytes}) {
+    if (newImageBytes == null) return;
+    setState(() {
+      imageBytes = newImageBytes;
+    });
+  }
+
+  Future selectImage({required Uint8List imageBytes}) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 10, requestFullMetadata: false);
+    if (pickedFile != null) {
+      imageBytes = await pickedFile.readAsBytes();
+      return imageBytes;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,156 +166,114 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               spacer,
-              PlayerIcon(
-                player: playerData,
-                size: 100,
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  TbImageField(photoUrl: playerData.photoUrl, imageBytes: imageBytes, selectImage: () async {}),
+                  if (_mode == _Mode.edit)
+                    GestureDetector(
+                      onTap: () async {
+                        Uint8List? newImageBytes = await selectImage(imageBytes: imageBytes);
+                        setImageBytes(newImageBytes: newImageBytes);
+                      },
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: AppColors.white.withValues(alpha: 0.4),
+                          shape: BoxShape.circle,
+                        ),
+                        margin: const EdgeInsets.only(top: 20),
+                        child: Icon(Icons.edit, color: Colors.white, size: 30),
+                      ),
+                    ),
+                ],
               ),
               spacer,
               _FieldWithPencil(
                 mode: _mode,
                 onTap: _toggleMode,
-                child: Container(
-                  width: 200,
-                  padding: const EdgeInsets.all(16),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
-                  ),
-                  child: TextFormField(
-                    controller: _nameController,
-                    enabled: _mode == _Mode.edit,
-                    decoration: InputDecoration(labelText: 'Name', floatingLabelAlignment: FloatingLabelAlignment.center),
+                child: TextFormField(
+                  controller: _nameController,
+                  enabled: _mode == _Mode.edit,
+                  decoration: InputDecoration(labelText: 'Name', floatingLabelAlignment: FloatingLabelAlignment.center),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              spacer,
+              _FieldWithPencil(
+                mode: _mode,
+                onTap: _toggleMode,
+                child: DropdownButtonFormField<String>(
+                    borderRadius: BorderRadius.circular(5.0),
+                    alignment: Alignment.center,
+                    decoration: InputDecoration(
+                      labelText: 'Gender',
+                      floatingLabelAlignment: FloatingLabelAlignment.center,
+                    ),
+                    value: _selectedGender,
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your name';
+                      if (value == null || value == 'unknown') {
+                        return 'Please select';
                       }
                       return null;
                     },
-                  ),
-                ),
-              ),
-              spacer,
-              _FieldWithPencil(
-                mode: _mode,
-                onTap: _toggleMode,
-                child: Container(
-                  width: 200,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
-                  ),
-                  child: DropdownButtonFormField<String>(
-                      borderRadius: BorderRadius.circular(5.0),
-                      alignment: Alignment.center,
-                      decoration: InputDecoration(
-                        labelText: 'Gender',
-                        floatingLabelAlignment: FloatingLabelAlignment.center,
-                        constraints: BoxConstraints.tightFor(width: 200, height: 50),
-                      ),
-                      value: _selectedGender,
-                      padding: const EdgeInsets.all(16),
-                      validator: (value) {
-                        if (value == null || value == 'unknown') {
-                          return 'Please select';
-                        }
-                        return null;
-                      },
-                      items: ['male', 'female', 'unknown']
-                          .map((gender) => DropdownMenuItem(
-                                alignment: Alignment.center,
-                                value: gender,
-                                child: PrettyText(
-                                  gender,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ))
-                          .toList(),
-                      onChanged: onGenderChangeClick),
-                ),
+                    items: ['male', 'female', 'unknown']
+                        .map((gender) => DropdownMenuItem(
+                              alignment: Alignment.bottomCenter,
+                              value: gender,
+                              child: PrettyText(
+                                gender,
+                                textAlign: TextAlign.center,
+                              ),
+                            ))
+                        .toList(),
+                    onChanged: onGenderChangeClick),
               ),
               spacer,
               _FieldWithPencil(
                 mode: _mode,
                 onTap: () => _toggleMode(),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    labelText: 'Date of Birth',
+                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                    hoverColor: Colors.white,
                   ),
-                  width: 200,
-                  padding: const EdgeInsets.all(16),
-                  child: TextFormField(
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      labelText: 'Date of Birth',
-                      floatingLabelAlignment: FloatingLabelAlignment.center,
-                      hoverColor: Colors.white,
-                    ),
-                    controller: _dobController,
-                    enabled: _mode == _Mode.edit,
-                    readOnly: true,
-                    onTap: () => _selectDate(context),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select your date of birth';
-                      }
-                      return null;
-                    },
-                  ),
+                  controller: _dobController,
+                  enabled: _mode == _Mode.edit,
+                  readOnly: true,
+                  onTap: () => _selectDate(context),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select your date of birth';
+                    }
+                    return null;
+                  },
                 ),
               ),
               spacer,
-              Text(
-                user.email,
-                style: TextStyle(
-                  fontSize: 16.0,
-                ),
-              ),
+              Text(user.email, style: TextStyle(fontSize: 16.0)),
               spacer,
               if (_mode == _Mode.edit)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 160,
-                      height: 80,
-                      margin: const EdgeInsets.only(right: 20),
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(AppColors.grey),
-                        ),
-                        onPressed: () => setState(() {
-                          _mode = _Mode.view;
-                          _formKey.currentState!.reset();
-                          _nameController.text = _initialName;
-                          _dobController.text = _initialDob;
-                          _selectedGender = _initialSelectedGender;
-                        }),
-                        child: PrettyText('Discard'),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 160,
-                      height: 80,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(AppColors.primaryGreen),
-                        ),
-                        onPressed: _saveAndSubmit,
-                        child: PrettyText(
-                          'Save\nchanges',
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ],
+                _ActionButtons(
+                  onCancel: () {
+                    setState(() {
+                      _mode = _Mode.view;
+                      _formKey.currentState!.reset();
+                      _nameController.text = _initialName;
+                      _dobController.text = _initialDob;
+                      _selectedGender = _initialSelectedGender;
+                      imageBytes = Uint8List(0);
+                    });
+                  },
+                  onSave: _saveAndSubmit,
                 ),
             ],
           ),
@@ -325,9 +309,81 @@ class _FieldWithPencil extends StatelessWidget {
                   onPressed: onTap,
                 )
               : const SizedBox(width: 40),
-          child
+          Container(
+            width: 200,
+            height: 80,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.white,
+            ),
+            child: child,
+          ),
         ],
       ),
     );
   }
+}
+
+class _ActionButtons extends StatelessWidget {
+  final Function() onCancel;
+  final Function() onSave;
+
+  const _ActionButtons({
+    required this.onCancel,
+    required this.onSave,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: 160,
+          height: 80,
+          margin: const EdgeInsets.only(right: 20),
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(AppColors.grey),
+            ),
+            onPressed: onCancel,
+            child: PrettyText('Discard'),
+          ),
+        ),
+        SizedBox(
+          width: 160,
+          height: 80,
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(AppColors.primaryGreen),
+            ),
+            onPressed: onSave,
+            child: PrettyText(
+              'Save\nchanges',
+              maxLines: 2,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+Future<String?> uploadImage({required UserNotifier userNotifier, required Uint8List? imageBytes}) async {
+  if (imageBytes != null && imageBytes.isNotEmpty) {
+    final (newUrl, uploadErrorInfo) = await userNotifier.uploadProfilePhoto(imageBytes: imageBytes);
+    if (uploadErrorInfo != null) {
+      final messageType = uploadErrorInfo.$1;
+      final message = uploadErrorInfo.$2;
+      messageType.tbLogger('Message Type');
+      message.tbLogger('Message');
+      return newUrl;
+    }
+    return newUrl;
+  }
+  return null;
 }

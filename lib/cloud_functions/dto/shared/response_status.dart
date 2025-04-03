@@ -47,6 +47,7 @@ enum ResponseCodeEnum {
         return 200;
       case ResponseCodeEnum.error:
         return 500;
+      // ignore: unreachable_switch_default
       default:
         return 500;
     }

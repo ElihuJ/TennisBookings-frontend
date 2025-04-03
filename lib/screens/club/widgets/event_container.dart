@@ -30,7 +30,7 @@ class EventContainer extends HookConsumerWidget {
     // * Computing colours
     Color bookingColor = owned ? AppColors.primaryGreen : AppColors.darkGreen;
     if (!isConfirmed || isMerged) {
-      bookingColor = AppColors.primaryGreen.withOpacity(0.5);
+      bookingColor = AppColors.primaryGreen.withValues(alpha: 0.5);
     }
 
     final computedTextColor = getContrastColor(bookingColor);

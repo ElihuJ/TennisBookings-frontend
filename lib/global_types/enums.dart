@@ -15,6 +15,7 @@ enum ListOrder implements IsEnum {
         return 'Ascending';
       case ListOrder.desc:
         return 'Descending';
+      // ignore: unreachable_switch_default
       default:
         ''.tbLogger('ListOrder.name: $this', DebugLevel.warning);
         return '';
@@ -164,6 +165,7 @@ enum BookingFormat implements IsEnum {
 
       case BookingFormat.merged: // * ONLY FOR FRONT END
         return 'merged';
+      // ignore: unreachable_switch_default
       default:
         ''.tbLogger('BookingFormat.name: $this', DebugLevel.warning);
         return 'unknown';
@@ -183,6 +185,7 @@ enum BookingFormat implements IsEnum {
         return 'unknown';
       case BookingFormat.merged: // * ONLY FOR FRONT END
         return 'merged';
+      // ignore: unreachable_switch_default
       default:
         ''.tbLogger('BookingFormat.locale: $this', DebugLevel.warning);
         return 'unknown';

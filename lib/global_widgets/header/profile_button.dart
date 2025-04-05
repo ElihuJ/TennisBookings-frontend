@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_widgets/index.dart';
-import 'package:tennisbookings/models/index.dart';
-import 'package:tennisbookings/screens/profile/profile_screen.dart';
 
+import '../../models/index.dart';
+import '../../screens/profile/profile_screen.dart';
 import '../../state/index.dart';
+import '../index.dart';
 
 class ProfileButton extends HookConsumerWidget {
   const ProfileButton({

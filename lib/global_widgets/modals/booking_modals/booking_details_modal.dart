@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/cloud_functions/dto/delete_booking.dart';
-import 'package:tennisbookings/cloud_functions/dto/send_invite.dart';
-import 'package:tennisbookings/cloud_functions/dto/withdraw_from_booking.dart';
 
+import '../../../cloud_functions/dto/delete_booking.dart';
 import '../../../cloud_functions/dto/index.dart';
+import '../../../cloud_functions/dto/send_invite.dart';
+import '../../../cloud_functions/dto/withdraw_from_booking.dart';
 import '../../../cloud_functions/index.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';

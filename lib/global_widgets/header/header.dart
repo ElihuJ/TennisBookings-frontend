@@ -1,16 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/config/config.dart';
-import 'package:tennisbookings/global_widgets/header/invites_button.dart';
-import 'package:tennisbookings/global_widgets/index.dart';
 
 import '../../assets/index.dart';
+import '../../config/config.dart';
 import '../../screens/home_screen.dart';
 import '../../state/index.dart';
 import '../../theme/index.dart';
-import 'index.dart';
+import '../index.dart';
 import 'book_a_court_button.dart';
+import 'index.dart';
+import 'invites_button.dart';
 
 class Header extends HookConsumerWidget implements PreferredSizeWidget {
   const Header({super.key});

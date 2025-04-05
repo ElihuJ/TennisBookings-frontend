@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/global_helpers/index.dart';
 
-import '../../global_helpers/mixins.dart' show HasPhotoUrl;
+import '../../global_helpers/index.dart';
 import '../../theme/index.dart';
 
 class TbImageField<T extends HasPhotoUrl> extends StatelessWidget {

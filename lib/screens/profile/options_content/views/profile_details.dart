@@ -2,17 +2,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tennisbookings/cloud_functions/dto/update_profile.dart';
-import 'package:tennisbookings/cloud_functions/index.dart';
-import 'package:tennisbookings/cloud_functions/types.dart';
-import 'package:tennisbookings/global_types/index.dart';
-import 'package:tennisbookings/global_widgets/containers/bordered_box.dart';
-import 'package:tennisbookings/theme/index.dart';
 
+import '../../../../cloud_functions/dto/update_profile.dart';
+import '../../../../cloud_functions/index.dart';
+import '../../../../cloud_functions/types.dart';
 import '../../../../global_helpers/index.dart';
+import '../../../../global_types/index.dart';
+import '../../../../global_widgets/containers/bordered_box.dart';
 import '../../../../global_widgets/index.dart';
 import '../../../../models/index.dart';
 import '../../../../state/index.dart';
+import '../../../../theme/index.dart';
 
 enum _Mode { view, edit }
 
@@ -184,7 +184,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                           shape: BoxShape.circle,
                         ),
                         margin: const EdgeInsets.only(top: 20),
-                        child: Icon(Icons.edit, color: Colors.white, size: 30),
+                        child: Icon(Icons.add_a_photo_outlined, color: Colors.white, size: 30),
                       ),
                     ),
                 ],

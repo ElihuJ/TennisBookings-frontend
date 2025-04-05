@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_widgets/header/index.dart';
-import 'package:tennisbookings/global_widgets/index.dart';
 
+import '../../global_widgets/header/index.dart';
+import '../../global_widgets/index.dart';
 import '../../state/index.dart';
 import 'options_content/options_content.dart';
 import 'options_drawer.dart';

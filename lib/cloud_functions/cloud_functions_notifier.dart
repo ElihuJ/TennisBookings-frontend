@@ -1,18 +1,18 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/cloud_functions/dto/action_invite.dart';
-import 'package:tennisbookings/cloud_functions/dto/send_invite.dart';
-import 'package:tennisbookings/cloud_functions/dto/update_profile.dart';
-import 'package:tennisbookings/cloud_functions/dto/withdraw_from_booking.dart';
 
 import '../../config/config.dart';
 import '../../strings/firebase/index.dart';
 import '../global_helpers/index.dart';
 import '../global_types/index.dart';
 import '../models/index.dart';
+import 'dto/action_invite.dart';
 import 'dto/delete_booking.dart';
 import 'dto/get_confirmed_players.dart';
 import 'dto/index.dart';
+import 'dto/send_invite.dart';
+import 'dto/update_profile.dart';
+import 'dto/withdraw_from_booking.dart';
 import 'index.dart';
 import 'types.dart';
 

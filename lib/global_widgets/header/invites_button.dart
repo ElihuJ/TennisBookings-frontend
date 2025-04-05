@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/screens/my_invites/my_invites_screen.dart';
 
+import '../../screens/my_invites/my_invites_screen.dart';
 import '../index.dart';
 
 class InvitesButtonHeader extends StatelessWidget {

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/screens/home_screen.dart';
-import 'package:tennisbookings/screens/profile/profile_screen.dart';
-import 'package:tennisbookings/state/index.dart';
-import 'package:tennisbookings/theme/index.dart';
+
+import '../../state/index.dart';
+import '../../theme/index.dart';
+import '../home_screen.dart';
+import 'profile_screen.dart';
 
 class OptionsDrawer extends HookConsumerWidget {
   const OptionsDrawer({

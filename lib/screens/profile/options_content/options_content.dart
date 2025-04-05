@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/screens/profile/options_content/views/membership_details.dart';
-import 'package:tennisbookings/screens/profile/options_content/views/profile_details.dart';
-import 'package:tennisbookings/screens/profile/options_content/views/settings.dart';
 
 import '../../../global_widgets/index.dart';
 import '../profile_screen.dart';
+import 'views/membership_details.dart';
+import 'views/profile_details.dart';
+import 'views/settings.dart';
 
 class OptionsContent extends StatefulHookConsumerWidget {
   const OptionsContent({

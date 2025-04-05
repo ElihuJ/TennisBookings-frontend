@@ -1,11 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/theme/index.dart';
 
 import '../../../models/index.dart';
 import '../../../screens/club/widgets/index.dart';
 import '../../../state/index.dart';
+import '../../../theme/index.dart';
 import '../../index.dart';
 
 class MultipleBookingsModal extends HookConsumerWidget {

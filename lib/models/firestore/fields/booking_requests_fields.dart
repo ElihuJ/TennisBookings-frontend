@@ -40,6 +40,24 @@ class BookingRequestFields {
   ];
 }
 
+class BookingPopulatedRequestFields {
+  // Populated fields
+  static const String playerId = BookingRequestFields.playerId;
+  static const String status = BookingRequestFields.status;
+  static const String playerName = 'playerName';
+  static const String playerUtrRating = 'playerUtrRating';
+  static const String playerUtrVerified = 'playerUtrVerified';
+  static const String playerGender = 'playerGender';
+
+  static const List<String> allFields = [
+    playerName,
+    playerUtrRating,
+    playerUtrVerified,
+    playerGender,
+    ...BookingRequestFields.allFields,
+  ];
+}
+
 class BookingRestrictionsFields {
   static const utrVerified = 'utrVerified';
   static const utrGt = 'utrGt';

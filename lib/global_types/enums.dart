@@ -46,7 +46,6 @@ enum Gender implements IsEnum {
       case Gender.male:
         return 'male';
       case Gender.unknown:
-        ''.tbLogger('Gender.name: $this', DebugLevel.warning);
         return 'unknown';
     }
   }

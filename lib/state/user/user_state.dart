@@ -73,7 +73,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       final clubIdRaw = verifyRequiredProp<List>(prop: json[UserFields.clubIds], propName: UserFields.clubIds, defaultValue: []);
       final dob = verifyRequiredProp<int>(prop: json[UserFields.dob], propName: UserFields.dob, defaultValue: 0);
       final email = verifyRequiredProp<String>(prop: json[UserFields.email], propName: UserFields.email, defaultValue: defaultEmail);
-      final genderRaw = verifyRequiredProp<String>(prop: json[UserFields.gender], propName: UserFields.gender, defaultValue: Gender.male.name);
+      final genderRaw = verifyRequiredProp<String>(prop: json[UserFields.gender], propName: UserFields.gender, defaultValue: Gender.unknown.name);
       final lastLogin = verifyRequiredProp<int>(prop: json[UserFields.lastLogin], propName: UserFields.lastLogin, defaultValue: 0);
       final name = verifyRequiredProp<String>(prop: json[UserFields.name], propName: UserFields.name, defaultValue: defaultName);
       final utrVerified = verifyRequiredProp<bool>(prop: json[UserFields.utrVerified], propName: UserFields.utrVerified, defaultValue: false);

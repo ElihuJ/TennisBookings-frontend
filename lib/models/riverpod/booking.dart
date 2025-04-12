@@ -116,7 +116,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         title: title,
       );
     } catch (e) {
-      e.tbLogger('1 ERROR CONSTRUCTING BOOKING', DebugLevel.error);
+      e.tbLogger('ERROR CONSTRUCTING BOOKING', DebugLevel.error);
       return Booking.empty();
     }
   }

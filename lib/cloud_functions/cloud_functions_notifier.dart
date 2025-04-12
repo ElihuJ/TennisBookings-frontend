@@ -177,4 +177,21 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
     }
   }
+
+  Future<CFResult<List<BookingWithPopulatedRequest>>> getActiveOpenBookings() async {
+    try {
+      final HttpsCallableResult result = await cloudFunctions.httpsCallable(GetActiveOpenBookingsPayload.endpoint).call();
+      final response = GetActiveOpenBookingsResponse.fromJson(result.data);
+      if (response.responseStatus.code != ResponseCodeEnum.success.value) {
+        return CFResult.internalError(errorMessage: response.responseStatus.message);
+      }
+      return CFResult.ok<List<BookingWithPopulatedRequest>>(data: response.data.bookings);
+    } on FirebaseFunctionsException catch (error) {
+      error.tbLogger('FirebaseFunctionsException getActiveOpenBookings', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    } catch (error) {
+      error.tbLogger('Error getActiveOpenBookings', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    }
+  }
 }

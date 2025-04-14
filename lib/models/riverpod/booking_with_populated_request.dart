@@ -11,6 +11,10 @@ final _defaultName = 'Problem loading Populated Booking';
 */
 class BookingWithPopulatedRequest extends Booking {
   // The constructor takes the extended list type.
+
+  @override
+  final List<BookingPopulatedRequest> requests;
+
   BookingWithPopulatedRequest({
     required super.id,
     required super.confirmedPlayerIds,
@@ -23,10 +27,10 @@ class BookingWithPopulatedRequest extends Booking {
     required super.ownerId,
     super.restrictions,
     required super.status,
-    required super.requests,
+    required this.requests,
     required super.title,
     super.mergedBookings = const [],
-  }) : super() {
+  }) : super(requests: requests) {
     // Initialize the requests property with an empty list.
     // This is necessary because the parent class requires it.
   }

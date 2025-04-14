@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -131,9 +132,10 @@ _getOpenForInvitesActions({
   final eventNotifier = widgetRef.read(eventsProvider.notifier);
   final cloudFunctions = widgetRef.read(cloudFunctionsProvider.notifier);
   final userId = widgetRef.watch(userProvider).uid;
-  final requestAlreadySent = booking.requests.map((element) => element.playerId == userId);
 
-  final onTapAction = requestAlreadySent.isNotEmpty
+  final requestAlreadySent = booking.requests.firstWhereOrNull((request) => request.playerId == userId) != null;
+
+  final onTapAction = requestAlreadySent
       ? null
       : () async {
           eventNotifier.showLoading(message: "Sending request to join...");
@@ -155,7 +157,7 @@ _getOpenForInvitesActions({
     TbTextButton(
       onPressed: onTapAction,
       color: Colors.green,
-      text: requestAlreadySent.contains(true) ? 'Request sent' : 'Request to join',
+      text: requestAlreadySent ? 'Request sent' : 'Request to join',
       height: 40,
     ),
   ];

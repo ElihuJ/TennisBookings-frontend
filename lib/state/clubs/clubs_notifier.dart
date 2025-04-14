@@ -158,7 +158,7 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
         continue;
       }
       final url = await storageRef.child('public_profiles/$playerId/profile.png').getDownloadURL();
-      confirmedPlayersData.add(ConfirmedPlayerData(id: playerId, name: 'N/A', photoUrl: url, utrVerified: false));
+      confirmedPlayersData.add(ConfirmedPlayerData(id: playerId, name: '', photoUrl: url, utrVerified: false));
     }
     return confirmedPlayersData;
   }
@@ -184,6 +184,26 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     }
 
     state = [...state];
+  }
+
+  Future<String> getPlayerPhotoUrl({required String playerId}) async => storageRef.child('public_profiles/$playerId/profile.png').getDownloadURL();
+
+  Future<String> getClubName({required String clubId}) async {
+    final clubData = await clubsCollection.doc(clubId).get();
+    if (clubData.exists) {
+      final club = loadClubFromDoc(clubData);
+      return club?.name ?? '';
+    }
+    return '';
+  }
+
+  Future<String> getCourtName({required String clubId, required String courtId}) async {
+    final courtData = await clubsCollection.doc(clubId).collection(CourtsSubCollections.courts).doc(courtId).get();
+    if (courtData.exists) {
+      final court = loadCourtFromDoc(courtData);
+      return court?.name ?? '';
+    }
+    return '';
   }
 
   void clearPrivateBookings() {

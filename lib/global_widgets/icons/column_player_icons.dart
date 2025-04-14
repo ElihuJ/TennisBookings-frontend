@@ -6,6 +6,8 @@ import '../../cloud_functions/dto/index.dart';
 import '../../cloud_functions/index.dart';
 import '../../models/index.dart';
 import '../../state/index.dart';
+import '../../theme/index.dart';
+import '../containers/bordered_box.dart';
 import '../index.dart';
 import 'helper.dart';
 
@@ -96,16 +98,32 @@ class _PlayerDataRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return BorderedBox(
+      margin: const EdgeInsets.symmetric(vertical: 5),
+      borderColor: Colors.transparent,
+      backgroundColor: AppColors.white,
       padding: const EdgeInsets.symmetric(vertical: 5),
+      height: 100,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        spacing: space,
         children: [
-          FieldBox(child: PlayerIcon(player: player)),
-          SizedBox(width: space),
-          FieldBox(width: nameWidth, child: Text(player.name)),
-          SizedBox(width: space),
-          FieldBox(width: utrWidth, child: UtrBox(utrRating: player.utrRating, verified: player.utrVerified)),
+          FieldBox(
+            width: 70,
+            child: PlayerIcon(
+              player: player,
+              size: 70,
+            ),
+          ),
+          if (player.name.isNotEmpty)
+            FieldBox(
+                width: nameWidth,
+                child: Text(
+                  player.name,
+                  style: TextStyle(fontSize: 16),
+                )),
+          if (player.utrRating != null) FieldBox(width: utrWidth, child: UtrBox(utrRating: player.utrRating, verified: player.utrVerified)),
         ],
       ),
     );

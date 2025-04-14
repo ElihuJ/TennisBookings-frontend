@@ -4,7 +4,8 @@ import '../../theme/index.dart';
 
 class BorderedBox extends StatelessWidget {
   final Widget child;
-  final Color? borderColor;
+  final Color borderColor;
+  final Color backgroundColor;
   final double? width;
   final double? height;
   final EdgeInsets? margin;
@@ -16,8 +17,9 @@ class BorderedBox extends StatelessWidget {
     this.width,
     this.height,
     this.margin,
-    this.borderColor,
+    this.borderColor = AppColors.primaryGreen,
     this.padding,
+    this.backgroundColor = AppColors.almostWhite,
   });
 
   @override
@@ -26,10 +28,7 @@ class BorderedBox extends StatelessWidget {
       width: width,
       height: height,
       margin: margin,
-      decoration: BoxDecoration(
-          border: Border.all(color: borderColor ?? AppColors.primaryGreen, width: 1),
-          borderRadius: BorderRadius.circular(15),
-          color: AppColors.almostWhite),
+      decoration: BoxDecoration(border: Border.all(color: borderColor, width: 1), borderRadius: BorderRadius.circular(15), color: backgroundColor),
       padding: padding,
       child: child,
     );

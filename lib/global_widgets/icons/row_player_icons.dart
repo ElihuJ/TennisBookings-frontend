@@ -69,15 +69,14 @@ class RowOfPlayerIcons extends HookConsumerWidget {
         }
 
         // * This block should never happen
-        return DefaultRowOfPlayerIcons(confirmedPlayerIds: confirmedPlayersPlusOwner);
+        return _DefaultRowOfPlayerIcons(confirmedPlayerIds: confirmedPlayersPlusOwner);
       },
     );
   }
 }
 
-class DefaultRowOfPlayerIcons extends StatelessWidget {
-  const DefaultRowOfPlayerIcons({
-    super.key,
+class _DefaultRowOfPlayerIcons extends StatelessWidget {
+  const _DefaultRowOfPlayerIcons({
     required this.confirmedPlayerIds,
   });
 

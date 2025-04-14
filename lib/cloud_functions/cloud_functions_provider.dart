@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../state/index.dart';
 
+import '../state/index.dart';
 import 'index.dart';
 
 final cloudFunctionsProvider = StateNotifierProvider<CloudFunctionsNotifier, CloudFunctions>((ref) {

@@ -32,6 +32,13 @@ String prettyDateLocalFromEpoch(int milliseconds) {
   return formattedDate.toString();
 }
 
+String prettyDateLocalWithTimeFromEpoch(int milliseconds) {
+  final date = epochToDateTimeUtc(milliseconds);
+  final localDate = date.toLocal();
+  final formattedDate = DateFormat('dd/MMM/yy HH:mm').format(localDate);
+  return formattedDate.toString();
+}
+
 // * ============== GETTING TIME AS STRING ==============
 
 String getUtcTimeFromEpoch(int milliseconds) {

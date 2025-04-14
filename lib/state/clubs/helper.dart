@@ -20,6 +20,15 @@ Club? loadClubFromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
   return club;
 }
 
+Court? loadCourtFromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
+  final data = doc.data();
+  if (data == null) {
+    return null;
+  }
+  final court = Court.fromJson(data);
+  return court;
+}
+
 List<Booking> loadBookingsFromDocs(List<QueryDocumentSnapshot<Map<String, dynamic>>> documents) {
   return documents.map((doc) {
     final data = doc.data();

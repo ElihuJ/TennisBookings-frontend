@@ -2,24 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../theme/index.dart';
+import '../index.dart';
 
 final space = 10.0;
 final utrWidth = 120.0;
 final nameWidth = 150.0;
 
 class UtrBox extends StatelessWidget {
-  const UtrBox({super.key, required this.utrRating, required this.verified});
+  const UtrBox({
+    super.key,
+    required this.utrRating,
+    required this.verified,
+    this.textStyle = const TextStyle(fontSize: 16),
+  });
 
   final double? utrRating;
   final bool verified;
+  final TextStyle textStyle;
 
   @override
   Widget build(BuildContext context) {
+    final utrNull = utrRating == null;
     return Row(
       children: [
-        utrRating != null ? Text('UTR: $utrRating') : const SizedBox(),
+        utrNull ? const SizedBox() : Text('UTR: $utrRating', style: textStyle),
         const SizedBox(width: 5),
-        verified ? const Icon(Icons.verified, color: AppColors.blue) : const SizedBox(),
+        utrNull ? const SizedBox() : VerifiedBadge(verified: verified),
       ],
     );
   }

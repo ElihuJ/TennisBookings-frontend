@@ -49,9 +49,9 @@ class VerifiedBadge extends StatelessWidget {
             size: 25,
           )
         : const Icon(
-            Icons.question_mark,
+            Icons.question_mark_rounded,
             color: AppColors.grey,
-            size: 25,
+            size: 20,
           );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/cloud_functions/cloud_functions_provider.dart';
 
+import '../../../cloud_functions/dto/index.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../global_widgets/icons/helper.dart';
@@ -10,9 +12,10 @@ import '../../../state/index.dart';
 import '../../../theme/colors.dart';
 
 class RequestContainer extends HookConsumerWidget {
-  const RequestContainer({super.key, required this.request});
+  const RequestContainer({super.key, required this.request, required this.booking});
 
   final BookingPopulatedRequest request;
+  final BookingWithPopulatedRequest booking;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,7 +47,7 @@ class RequestContainer extends HookConsumerWidget {
                   return const SizedBox.shrink();
                 }
 
-                return _PlayerData(playerData: playerData, request: request);
+                return _PlayerData(playerData: playerData, request: request, booking: booking);
               },
             ),
           ),
@@ -58,10 +61,12 @@ class _PlayerData extends StatelessWidget {
   const _PlayerData({
     required this.playerData,
     required this.request,
+    required this.booking,
   });
 
   final ConfirmedPlayerData playerData;
   final BookingPopulatedRequest request;
+  final BookingWithPopulatedRequest booking;
 
   @override
   Widget build(BuildContext context) {
@@ -98,23 +103,41 @@ class _PlayerData extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16.0),
-        _ActionButtons(),
+        _ActionButtons(booking: booking, request: request),
       ],
     );
   }
 }
 
-class _ActionButtons extends StatelessWidget {
-  const _ActionButtons();
+class _ActionButtons extends HookConsumerWidget {
+  const _ActionButtons({required this.booking, required this.request});
+
+  final BookingWithPopulatedRequest booking;
+  final BookingPopulatedRequest request;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cloudFunctions = ref.read(cloudFunctionsProvider.notifier);
+    final eventNotifier = ref.read(eventsProvider.notifier);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         ElevatedButton.icon(
-          onPressed: () {
-            // Handle accept request
+          onPressed: () async {
+            eventNotifier.showLoading(message: "Accepting Invite...");
+            final actionInvitePayload = ActionInvitePayload(
+              basicBookingPayload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId),
+              inviteAction: InviteAction.accept,
+              targetPlayerId: request.playerId,
+            );
+            final result = await cloudFunctions.actionInvite(actionInvitePayload);
+            eventNotifier.hideLoading();
+
+            if (result.data == true) {
+              eventNotifier.showMessage(messageType: MessageType.success, message: "Invite accepted!");
+            } else {
+              eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
+            }
           },
           icon: const Icon(Icons.check),
           label: const Text('Accept'),
@@ -126,8 +149,21 @@ class _ActionButtons extends StatelessWidget {
           ),
         ),
         ElevatedButton.icon(
-          onPressed: () {
-            // Handle decline request
+          onPressed: () async {
+            eventNotifier.showLoading(message: "Declining Invite...");
+            final actionInvitePayload = ActionInvitePayload(
+              basicBookingPayload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId),
+              inviteAction: InviteAction.reject,
+              targetPlayerId: request.playerId,
+            );
+            final result = await cloudFunctions.actionInvite(actionInvitePayload);
+            eventNotifier.hideLoading();
+
+            if (result.data == true) {
+              eventNotifier.showMessage(messageType: MessageType.success, message: "Invite declined!");
+            } else {
+              eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
+            }
           },
           icon: const Icon(Icons.close),
           label: const Text('Decline'),

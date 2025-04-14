@@ -103,7 +103,6 @@ _getParticipantActions({
     TbTextButton(
       onPressed: () async {
         eventNotifier.showLoading(message: "Withdrawing from booking...");
-        await wait(1000);
         WithdrawFromBookingPayload payload =
             WithdrawFromBookingPayload(payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
         final result = await cloudFunctions.withdrawFromBooking(payload);

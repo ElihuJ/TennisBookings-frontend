@@ -63,7 +63,7 @@ class BookingWithInvites extends HookConsumerWidget {
                   courtName: courtName,
                   booking: booking,
                 ),
-                ...booking.requests.map((request) => RequestContainer(request: request)),
+                ...booking.requests.map((request) => RequestContainer(request: request, booking: booking)),
               ],
             ),
           ),

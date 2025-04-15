@@ -12,10 +12,11 @@ import '../../../state/index.dart';
 import '../../../theme/colors.dart';
 
 class RequestContainer extends HookConsumerWidget {
-  const RequestContainer({super.key, required this.request, required this.booking});
+  const RequestContainer({super.key, required this.request, required this.booking, required this.removeInviteFromState});
 
   final BookingPopulatedRequest request;
   final BookingWithPopulatedRequest booking;
+  final Function removeInviteFromState;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -47,7 +48,7 @@ class RequestContainer extends HookConsumerWidget {
                   return const SizedBox.shrink();
                 }
 
-                return _PlayerData(playerData: playerData, request: request, booking: booking);
+                return _PlayerData(playerData: playerData, request: request, booking: booking, removeInviteFromState: removeInviteFromState);
               },
             ),
           ),
@@ -62,11 +63,13 @@ class _PlayerData extends StatelessWidget {
     required this.playerData,
     required this.request,
     required this.booking,
+    required this.removeInviteFromState,
   });
 
   final ConfirmedPlayerData playerData;
   final BookingPopulatedRequest request;
   final BookingWithPopulatedRequest booking;
+  final Function removeInviteFromState;
 
   @override
   Widget build(BuildContext context) {
@@ -103,17 +106,18 @@ class _PlayerData extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16.0),
-        _ActionButtons(booking: booking, request: request),
+        _ActionButtons(booking: booking, request: request, removeInviteFromState: removeInviteFromState),
       ],
     );
   }
 }
 
 class _ActionButtons extends HookConsumerWidget {
-  const _ActionButtons({required this.booking, required this.request});
+  const _ActionButtons({required this.booking, required this.request, required this.removeInviteFromState});
 
   final BookingWithPopulatedRequest booking;
   final BookingPopulatedRequest request;
+  final Function removeInviteFromState;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -131,6 +135,7 @@ class _ActionButtons extends HookConsumerWidget {
               targetPlayerId: request.playerId,
             );
             final result = await cloudFunctions.actionInvite(actionInvitePayload);
+            removeInviteFromState(booking, request);
             eventNotifier.hideLoading();
 
             if (result.data == true) {
@@ -157,6 +162,7 @@ class _ActionButtons extends HookConsumerWidget {
               targetPlayerId: request.playerId,
             );
             final result = await cloudFunctions.actionInvite(actionInvitePayload);
+            removeInviteFromState(booking, request);
             eventNotifier.hideLoading();
 
             if (result.data == true) {

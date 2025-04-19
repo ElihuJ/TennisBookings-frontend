@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/cloud_functions/cloud_functions_provider.dart';
 
+import '../../../cloud_functions/cloud_functions_provider.dart';
 import '../../../cloud_functions/dto/index.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';

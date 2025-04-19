@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/screens/profile/options_content/views/profile_details/profile_details.dart';
 
 import '../../../../../../global_widgets/index.dart';
 import '../../../../../../theme/index.dart';
+import '../profile_details.dart';
 
 class FieldWithPencil extends StatelessWidget {
   final Function() onTap;

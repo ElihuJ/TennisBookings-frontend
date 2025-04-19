@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:tennisbookings/global_helpers/index.dart';
 
+import '../../../../../global_helpers/index.dart';
 import '../../../../../state/index.dart';
 
 Future<String?> uploadImage({required UserNotifier userNotifier, required Uint8List? imageBytes}) async {

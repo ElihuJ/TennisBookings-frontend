@@ -62,10 +62,12 @@ class BookingRestrictionsFields {
   static const utrVerified = 'utrVerified';
   static const utrGt = 'utrGt';
   static const utrLt = 'utrLt';
+  static const gender = 'gender';
 
   static const List<String> allFields = [
     utrVerified,
     utrGt,
     utrLt,
+    gender,
   ];
 }

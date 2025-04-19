@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../cloud_functions/dto/update_profile.dart';
-import '../../../../cloud_functions/index.dart';
-import '../../../../cloud_functions/types.dart';
-import '../../../../global_helpers/index.dart';
-import '../../../../global_types/index.dart';
-import '../../../../global_widgets/containers/bordered_box.dart';
-import '../../../../global_widgets/index.dart';
-import '../../../../models/index.dart';
-import '../../../../state/index.dart';
-import '../../../../theme/index.dart';
+import '../../../../../cloud_functions/dto/update_profile.dart';
+import '../../../../../cloud_functions/index.dart';
+import '../../../../../cloud_functions/types.dart';
+import '../../../../../global_helpers/index.dart';
+import '../../../../../global_types/index.dart';
+import '../../../../../global_widgets/containers/bordered_box.dart';
+import '../../../../../global_widgets/index.dart';
+import '../../../../../models/index.dart';
+import '../../../../../state/index.dart';
+import '../../../../../theme/index.dart';
+import 'helper.dart';
+import 'widgets/index.dart';
 
-enum _Mode { view, edit }
+enum ProfileDetailsMode { view, edit }
 
 class ProfileDetails extends StatefulHookConsumerWidget {
   const ProfileDetails({
@@ -27,7 +29,7 @@ class ProfileDetails extends StatefulHookConsumerWidget {
 
 class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
   final _formKey = GlobalKey<FormState>();
-  _Mode _mode = _Mode.view;
+  ProfileDetailsMode _mode = ProfileDetailsMode.view;
   late TextEditingController _nameController;
   late TextEditingController _dobController;
   late String _selectedGender;
@@ -83,7 +85,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
   }
 
   void _saveAndSubmit() async {
-    if (_mode == _Mode.edit && _formKey.currentState!.validate()) {
+    if (_mode == ProfileDetailsMode.edit && _formKey.currentState!.validate()) {
       final eventNotifier = ref.read(eventsProvider.notifier);
       final cloudFunctions = ref.read(cloudFunctionsProvider.notifier);
       final user = ref.read(userProvider);
@@ -96,11 +98,11 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
       eventNotifier.showLoading(message: 'Updating profile...');
 
       final newUrl = await uploadImage(userNotifier: userNotifier, imageBytes: imageBytes);
-      if (newUrl == null) {
-        eventNotifier.hideLoading();
-        eventNotifier.showMessage(message: 'Error uploading image', messageType: MessageType.error);
-        return;
-      }
+      // if (newUrl == null) {
+      //   eventNotifier.hideLoading();
+      //   eventNotifier.showMessage(message: 'Error uploading image', messageType: MessageType.error);
+      //   return;
+      // }
 
       final updatedUser = user.copyWith(name: _nameController.text, dob: _selectedDob, gender: gender, photoUrl: newUrl);
       final UpdateProfilePayload payload = UpdateProfilePayload(
@@ -120,17 +122,17 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
       }
 
       setState(() {
-        _mode = _Mode.view;
+        _mode = ProfileDetailsMode.view;
       });
     } else {
       setState(() {
-        _mode = _Mode.edit;
+        _mode = ProfileDetailsMode.edit;
       });
     }
   }
 
   void _toggleMode() => setState(() {
-        _mode = _Mode.edit;
+        _mode = ProfileDetailsMode.edit;
       });
 
   void setImageBytes({required Uint8List? newImageBytes}) {
@@ -155,7 +157,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
     final playerData = ConfirmedPlayerData.emptyWithPhoto(user.photoUrl);
     final spacer = const SizedBox(height: 50.0);
 
-    final onGenderChangeClick = _mode == _Mode.edit ? _onGenderChange : null;
+    final onGenderChangeClick = _mode == ProfileDetailsMode.edit ? _onGenderChange : null;
 
     return Form(
       key: _formKey,
@@ -170,7 +172,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                 alignment: Alignment.center,
                 children: [
                   TbImageField(photoUrl: playerData.photoUrl, imageBytes: imageBytes, selectImage: () async {}),
-                  if (_mode == _Mode.edit)
+                  if (_mode == ProfileDetailsMode.edit)
                     GestureDetector(
                       onTap: () async {
                         Uint8List? newImageBytes = await selectImage(imageBytes: imageBytes);
@@ -190,12 +192,12 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                 ],
               ),
               spacer,
-              _FieldWithPencil(
+              FieldWithPencil(
                 mode: _mode,
                 onTap: _toggleMode,
                 child: TextFormField(
                   controller: _nameController,
-                  enabled: _mode == _Mode.edit,
+                  enabled: _mode == ProfileDetailsMode.edit,
                   decoration: InputDecoration(labelText: 'Name', floatingLabelAlignment: FloatingLabelAlignment.center),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -206,7 +208,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                 ),
               ),
               spacer,
-              _FieldWithPencil(
+              FieldWithPencil(
                 mode: _mode,
                 onTap: _toggleMode,
                 child: DropdownButtonFormField<String>(
@@ -236,7 +238,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                     onChanged: onGenderChangeClick),
               ),
               spacer,
-              _FieldWithPencil(
+              FieldWithPencil(
                 mode: _mode,
                 onTap: () => _toggleMode(),
                 child: TextFormField(
@@ -247,7 +249,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                     hoverColor: Colors.white,
                   ),
                   controller: _dobController,
-                  enabled: _mode == _Mode.edit,
+                  enabled: _mode == ProfileDetailsMode.edit,
                   readOnly: true,
                   onTap: () => _selectDate(context),
                   validator: (value) {
@@ -261,11 +263,11 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
               spacer,
               Text(user.email, style: TextStyle(fontSize: 16.0)),
               spacer,
-              if (_mode == _Mode.edit)
-                _ActionButtons(
+              if (_mode == ProfileDetailsMode.edit)
+                ActionButtons(
                   onCancel: () {
                     setState(() {
-                      _mode = _Mode.view;
+                      _mode = ProfileDetailsMode.view;
                       _formKey.currentState!.reset();
                       _nameController.text = _initialName;
                       _dobController.text = _initialDob;
@@ -281,109 +283,4 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
       ),
     );
   }
-}
-
-class _FieldWithPencil extends StatelessWidget {
-  final Function() onTap;
-  final Widget child;
-  final _Mode mode;
-
-  const _FieldWithPencil({
-    required this.child,
-    required this.onTap,
-    required this.mode,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 40),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          mode != _Mode.edit
-              ? IconButton(
-                  color: AppColors.grey,
-                  icon: const Icon(Icons.edit),
-                  onPressed: onTap,
-                )
-              : const SizedBox(width: 40),
-          Container(
-            width: 200,
-            height: 80,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(10.0),
-              color: Colors.white,
-            ),
-            child: child,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ActionButtons extends StatelessWidget {
-  final Function() onCancel;
-  final Function() onSave;
-
-  const _ActionButtons({
-    required this.onCancel,
-    required this.onSave,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          width: 160,
-          height: 80,
-          margin: const EdgeInsets.only(right: 20),
-          child: ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(AppColors.grey),
-            ),
-            onPressed: onCancel,
-            child: PrettyText('Discard'),
-          ),
-        ),
-        SizedBox(
-          width: 160,
-          height: 80,
-          child: ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(AppColors.primaryGreen),
-            ),
-            onPressed: onSave,
-            child: PrettyText(
-              'Save\nchanges',
-              maxLines: 2,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-Future<String?> uploadImage({required UserNotifier userNotifier, required Uint8List? imageBytes}) async {
-  if (imageBytes != null && imageBytes.isNotEmpty) {
-    final (newUrl, uploadErrorInfo) = await userNotifier.uploadProfilePhoto(imageBytes: imageBytes);
-    if (uploadErrorInfo != null) {
-      final messageType = uploadErrorInfo.$1;
-      final message = uploadErrorInfo.$2;
-      messageType.tbLogger('Message Type');
-      message.tbLogger('Message');
-      return newUrl;
-    }
-    return newUrl;
-  }
-  return null;
 }

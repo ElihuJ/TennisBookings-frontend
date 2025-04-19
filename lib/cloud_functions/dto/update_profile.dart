@@ -6,7 +6,7 @@ class UpdateProfilePayload implements APIPayload {
 
   final int dob;
   final String name;
-  final String photoUrl;
+  final String? photoUrl;
   final String gender;
 
   UpdateProfilePayload({required this.dob, required this.name, required this.photoUrl, required this.gender}) : super();

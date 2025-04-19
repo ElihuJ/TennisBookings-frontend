@@ -22,6 +22,11 @@ class CreateBookingPayload implements APIPayload {
       'isOpenBooking': isOpenBooking,
     };
   }
+
+  @override
+  String toString() {
+    return 'CreateBookingPayload{booking: $booking, clubId: $clubId, isOpenBooking: $isOpenBooking}';
+  }
 }
 
 // * ===========  Response  ===========

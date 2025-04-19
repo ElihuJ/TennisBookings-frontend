@@ -206,7 +206,7 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         BookingFields.private: private,
         BookingFields.ownerId: ownerId,
         BookingFields.requests: requests.map((x) => x.toJson()).toList(),
-        BookingFields.restrictions: restrictions,
+        BookingFields.restrictions: restrictions?.toJson(),
         BookingFields.status: status.name,
         BookingFields.title: title,
       };

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../global_helpers/index.dart';
-import '../../../../global_widgets/containers/bordered_box.dart';
-import '../../../../state/index.dart';
+import '../../../../../global_helpers/index.dart';
+import '../../../../../global_widgets/containers/bordered_box.dart';
+import '../../../../../state/index.dart';
 
 class MembershipDetails extends HookConsumerWidget {
   const MembershipDetails({

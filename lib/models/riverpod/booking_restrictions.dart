@@ -6,27 +6,31 @@ import '../index.dart';
 
 class BookingRestrictions extends MapView<String, dynamic> implements FirestoreModel {
   final bool utrVerified;
-  final double utrGt;
-  final double utrLt;
+  final double? utrGt;
+  final double? utrLt;
+  final Gender? gender;
 
   @override
   final List<String> allFields = BookingRestrictionsFields.allFields;
 
   BookingRestrictions({
     required this.utrVerified,
-    required this.utrGt,
-    required this.utrLt,
+    this.utrGt,
+    this.utrLt,
+    this.gender,
   }) : super({
           BookingRestrictionsFields.utrVerified: utrVerified,
           BookingRestrictionsFields.utrGt: utrGt,
           BookingRestrictionsFields.utrLt: utrLt,
+          BookingRestrictionsFields.gender: gender,
         });
 
   BookingRestrictions.empty()
       : this(
           utrVerified: false,
-          utrGt: 0,
-          utrLt: 0,
+          utrGt: null,
+          utrLt: null,
+          gender: null,
         );
 
   @override
@@ -34,11 +38,13 @@ class BookingRestrictions extends MapView<String, dynamic> implements FirestoreM
     bool? utrVerified,
     double? utrGt,
     double? utrLt,
+    Gender? gender,
   }) {
     return BookingRestrictions(
       utrVerified: utrVerified ?? this.utrVerified,
       utrGt: utrGt ?? this.utrGt,
       utrLt: utrLt ?? this.utrLt,
+      gender: gender ?? this.gender,
     );
   }
 
@@ -48,6 +54,7 @@ class BookingRestrictions extends MapView<String, dynamic> implements FirestoreM
       BookingRestrictionsFields.utrVerified: utrVerified,
       BookingRestrictionsFields.utrGt: utrGt,
       BookingRestrictionsFields.utrLt: utrLt,
+      BookingRestrictionsFields.gender: gender?.name,
     };
   }
 
@@ -56,10 +63,14 @@ class BookingRestrictions extends MapView<String, dynamic> implements FirestoreM
       // * Verify required props
       final utrVerified = verifyRequiredProp<bool>(
           prop: json[BookingRestrictionsFields.utrVerified], propName: BookingRestrictionsFields.utrVerified, defaultValue: false);
-      final utrGt =
-          verifyRequiredProp<double>(prop: json[BookingRestrictionsFields.utrGt], propName: BookingRestrictionsFields.utrGt, defaultValue: 0);
-      final utrLt =
-          verifyRequiredProp<double>(prop: json[BookingRestrictionsFields.utrLt], propName: BookingRestrictionsFields.utrLt, defaultValue: 0);
+      final utrGt = verifyNotRequiredProp<double>(prop: json[BookingRestrictionsFields.utrGt], propName: BookingRestrictionsFields.utrGt);
+      final utrLt = verifyNotRequiredProp<double>(prop: json[BookingRestrictionsFields.utrLt], propName: BookingRestrictionsFields.utrLt);
+      final genderRaw = verifyNotRequiredProp<String?>(prop: json[BookingRestrictionsFields.gender], propName: BookingRestrictionsFields.gender);
+
+      final gender = Gender.values.firstWhere(
+        (g) => g.name == genderRaw,
+        orElse: () => Gender.unknown,
+      );
 
       verifyProps(json, BookingRestrictionsFields.allFields);
 
@@ -67,6 +78,7 @@ class BookingRestrictions extends MapView<String, dynamic> implements FirestoreM
         utrVerified: utrVerified,
         utrGt: utrGt,
         utrLt: utrLt,
+        gender: gender,
       );
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING BOOKING RESTRICTION', DebugLevel.error);

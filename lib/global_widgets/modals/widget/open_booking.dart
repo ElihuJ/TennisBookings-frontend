@@ -299,6 +299,7 @@ class RestrictionsField extends StatefulWidget {
 
 class RestrictionsFieldState extends State<RestrictionsField> {
   late bool _utrVerified;
+  late Gender? _genderFilter; // Added gender filter
   TextEditingController utrGtController = TextEditingController();
   TextEditingController utrLtController = TextEditingController();
   MouseCursor cursor = SystemMouseCursors.click;
@@ -325,8 +326,16 @@ class RestrictionsFieldState extends State<RestrictionsField> {
   void initState() {
     super.initState();
     _utrVerified = widget.bookingRestrictions.utrVerified;
-    utrGtController.text = widget.bookingRestrictions.utrGt.toString();
-    utrLtController.text = widget.bookingRestrictions.utrLt.toString();
+    _genderFilter = widget.bookingRestrictions.gender; // Initialize gender filter
+
+    if (widget.bookingRestrictions.utrGt != null) {
+      utrGtController.text = widget.bookingRestrictions.utrGt.toString();
+    }
+
+    if (widget.bookingRestrictions.utrLt != null) {
+      utrLtController.text = widget.bookingRestrictions.utrLt.toString();
+    }
+
     utrGtController.addListener(utrGtListener);
     utrLtController.addListener(utrLtListener);
   }
@@ -348,6 +357,23 @@ class RestrictionsFieldState extends State<RestrictionsField> {
             setState(() {
               _utrVerified = value!;
               final newBookingRestrictions = widget.bookingRestrictions.copyWith(utrVerified: _utrVerified);
+              widget.setBookingRestrictions(newBookingRestrictions);
+            });
+          },
+        ),
+        // Gender filter dropdown
+        DropdownButtonFormField<Gender?>(
+          value: _genderFilter,
+          decoration: const InputDecoration(labelText: 'Gender'),
+          items: [
+            DropdownMenuItem(value: null, child: PrettyText('Any')),
+            DropdownMenuItem(value: Gender.male, child: PrettyText('Male')),
+            DropdownMenuItem(value: Gender.female, child: PrettyText('Female')),
+          ],
+          onChanged: (value) {
+            setState(() {
+              _genderFilter = value;
+              final newBookingRestrictions = widget.bookingRestrictions.copyWith(gender: _genderFilter);
               widget.setBookingRestrictions(newBookingRestrictions);
             });
           },
@@ -378,6 +404,8 @@ class RestrictionsFieldState extends State<RestrictionsField> {
           decoration: const InputDecoration(labelText: 'UTR Lower Than'),
           keyboardType: TextInputType.number,
           validator: (value) {
+            if (value == null) return null;
+
             String? error;
             error = utrValueValidator(value, context);
             if (error != null) {
@@ -391,7 +419,10 @@ class RestrictionsFieldState extends State<RestrictionsField> {
         TextFormField(
           decoration: const InputDecoration(labelText: 'UTR Greater Than'),
           keyboardType: TextInputType.number,
-          validator: (value) => utrValueValidator(value, context),
+          validator: (value) {
+            if (value == null) return null;
+            return utrValueValidator(value, context);
+          },
           controller: utrGtController,
         ),
       ],

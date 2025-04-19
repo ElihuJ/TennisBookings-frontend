@@ -53,7 +53,9 @@ class OptionsDrawer extends HookConsumerWidget {
             onTap: () async {
               await fbNotifier.logout();
               clubNotifier.clearPrivateBookings();
-              if (context.mounted) Navigator.of(context).pushNamed(HomeScreen.route);
+              if (context.mounted) {
+                Navigator.of(context).pushNamed(HomeScreen.route);
+              }
             },
           ),
         ],

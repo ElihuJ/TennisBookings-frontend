@@ -3,8 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../global_widgets/index.dart';
 import '../profile_screen.dart';
-import 'views/membership_details.dart';
-import 'views/profile_details.dart';
+import 'views/membership_details/membership_details.dart';
+import 'views/profile_details/profile_details.dart';
 import 'views/settings.dart';
 
 class OptionsContent extends StatefulHookConsumerWidget {

@@ -16,7 +16,7 @@ String? notEmptyStringValidator(String? value, BuildContext context) {
 
 String? utrValueValidator(String? value, BuildContext context) {
   if (value == null || value.isEmpty) {
-    return 'Required field';
+    return null;
   }
   if (double.tryParse(value) == null) {
     return '${Config.utrMinRating}-${Config.utrMaxRating}';
@@ -24,6 +24,7 @@ String? utrValueValidator(String? value, BuildContext context) {
   if (double.parse(value) < Config.utrMinRating || double.parse(value) > Config.utrMaxRating) {
     return '${Config.utrMinRating}-${Config.utrMaxRating}';
   }
+
   return null;
 }
 
@@ -67,7 +68,7 @@ bool validateTime({required int startTimeEpoch, required List<BookedTimeEpoch> b
 
 String? validateUtrComparison({required String utrGt, required String utrLt, required BuildContext context}) {
   if (utrGt.isEmpty || utrLt.isEmpty) {
-    return 'Required field';
+    return null;
   }
   final double? utrGtDouble = double.tryParse(utrGt);
   final double? utrLtDouble = double.tryParse(utrLt);

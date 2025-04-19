@@ -6,7 +6,6 @@ import '../../strings/firebase/index.dart';
 import '../global_helpers/index.dart';
 import '../global_types/index.dart';
 import '../models/index.dart';
-import 'dto/action_invite.dart';
 import 'dto/delete_booking.dart';
 import 'dto/get_confirmed_players.dart';
 import 'dto/index.dart';

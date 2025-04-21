@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../config/config.dart';
 import '../global_types/index.dart';
 
 // * ============== GETTING CURRENT DATE AND TIME ==============
@@ -124,3 +125,6 @@ StartAndEndOfWeek getStartAndEndOfWeek(DateTime date) {
   endDate = DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59);
   return (startDate, endDate);
 }
+
+bool isAboveFutureLimit(int bookingStartTime) => bookingStartTime > DateTime.now().millisecondsSinceEpoch + Config.bookingFutureLimit;
+bool isInThePast(int bookingStartTime) => bookingStartTime < nowToEpochUtc();

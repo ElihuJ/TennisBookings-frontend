@@ -8,7 +8,6 @@ import '../../../../../cloud_functions/index.dart';
 import '../../../../../cloud_functions/types.dart';
 import '../../../../../global_helpers/index.dart';
 import '../../../../../global_types/index.dart';
-import '../../../../../global_widgets/containers/bordered_box.dart';
 import '../../../../../global_widgets/index.dart';
 import '../../../../../models/index.dart';
 import '../../../../../state/index.dart';
@@ -97,19 +96,17 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
 
       eventNotifier.showLoading(message: 'Updating profile...');
 
-      final newUrl = await uploadImage(userNotifier: userNotifier, imageBytes: imageBytes);
-      // if (newUrl == null) {
-      //   eventNotifier.hideLoading();
-      //   eventNotifier.showMessage(message: 'Error uploading image', messageType: MessageType.error);
-      //   return;
-      // }
+      String? newUrl = await uploadImage(userNotifier: userNotifier, imageBytes: imageBytes);
+      if (newUrl == null && user.photoUrl.isNotEmpty) {
+        newUrl = user.photoUrl;
+      }
 
       final updatedUser = user.copyWith(name: _nameController.text, dob: _selectedDob, gender: gender, photoUrl: newUrl);
       final UpdateProfilePayload payload = UpdateProfilePayload(
         name: updatedUser.name,
         dob: updatedUser.dob,
         gender: updatedUser.gender.name,
-        photoUrl: newUrl,
+        photoUrl: newUrl ?? '', // * photoUrl prop should not be null
       );
 
       final result = await cloudFunctions.updateProfile(payload);
@@ -161,125 +158,129 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
 
     return Form(
       key: _formKey,
-      child: Expanded(
-        child: BorderedBox(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          spacer,
+          Stack(
+            alignment: Alignment.center,
             children: [
-              spacer,
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  TbImageField(photoUrl: playerData.photoUrl, imageBytes: imageBytes, selectImage: () async {}),
-                  if (_mode == ProfileDetailsMode.edit)
-                    GestureDetector(
-                      onTap: () async {
-                        Uint8List? newImageBytes = await selectImage(imageBytes: imageBytes);
-                        setImageBytes(newImageBytes: newImageBytes);
-                      },
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: AppColors.white.withValues(alpha: 0.4),
-                          shape: BoxShape.circle,
-                        ),
-                        margin: const EdgeInsets.only(top: 20),
-                        child: Icon(Icons.add_a_photo_outlined, color: Colors.white, size: 30),
-                      ),
-                    ),
-                ],
-              ),
-              spacer,
-              FieldWithPencil(
-                mode: _mode,
-                onTap: _toggleMode,
-                child: TextFormField(
-                  controller: _nameController,
-                  enabled: _mode == ProfileDetailsMode.edit,
-                  decoration: InputDecoration(labelText: 'Name', floatingLabelAlignment: FloatingLabelAlignment.center),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your name';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              spacer,
-              FieldWithPencil(
-                mode: _mode,
-                onTap: _toggleMode,
-                child: DropdownButtonFormField<String>(
-                    borderRadius: BorderRadius.circular(5.0),
-                    alignment: Alignment.center,
-                    decoration: InputDecoration(
-                      labelText: 'Gender',
-                      floatingLabelAlignment: FloatingLabelAlignment.center,
-                    ),
-                    value: _selectedGender,
-                    validator: (value) {
-                      if (value == null || value == 'unknown') {
-                        return 'Please select';
-                      }
-                      return null;
-                    },
-                    items: ['male', 'female', 'unknown']
-                        .map((gender) => DropdownMenuItem(
-                              alignment: Alignment.bottomCenter,
-                              value: gender,
-                              child: PrettyText(
-                                gender,
-                                textAlign: TextAlign.center,
-                              ),
-                            ))
-                        .toList(),
-                    onChanged: onGenderChangeClick),
-              ),
-              spacer,
-              FieldWithPencil(
-                mode: _mode,
-                onTap: () => _toggleMode(),
-                child: TextFormField(
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    labelText: 'Date of Birth',
-                    floatingLabelAlignment: FloatingLabelAlignment.center,
-                    hoverColor: Colors.white,
-                  ),
-                  controller: _dobController,
-                  enabled: _mode == ProfileDetailsMode.edit,
-                  readOnly: true,
-                  onTap: () => _selectDate(context),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select your date of birth';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              spacer,
-              Text(user.email, style: TextStyle(fontSize: 16.0)),
-              spacer,
+              TbImageField(photoUrl: playerData.photoUrl, imageBytes: imageBytes, selectImage: () async {}),
               if (_mode == ProfileDetailsMode.edit)
-                ActionButtons(
-                  onCancel: () {
-                    setState(() {
-                      _mode = ProfileDetailsMode.view;
-                      _formKey.currentState!.reset();
-                      _nameController.text = _initialName;
-                      _dobController.text = _initialDob;
-                      _selectedGender = _initialSelectedGender;
-                      imageBytes = Uint8List(0);
-                    });
+                GestureDetector(
+                  onTap: () async {
+                    Uint8List? newImageBytes = await selectImage(imageBytes: imageBytes);
+                    setImageBytes(newImageBytes: newImageBytes);
                   },
-                  onSave: _saveAndSubmit,
+                  child: Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: AppColors.white.withValues(alpha: 0.4),
+                      shape: BoxShape.circle,
+                    ),
+                    margin: const EdgeInsets.only(top: 20),
+                    child: Icon(Icons.add_a_photo_outlined, color: Colors.white, size: 30),
+                  ),
                 ),
             ],
           ),
-        ),
+          spacer,
+          FieldWithPencil(
+            mode: _mode,
+            onTap: _toggleMode,
+            child: TextFormField(
+              controller: _nameController,
+              enabled: _mode == ProfileDetailsMode.edit,
+              decoration: InputDecoration(labelText: 'Name', floatingLabelAlignment: FloatingLabelAlignment.center),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your name';
+                }
+                return null;
+              },
+            ),
+          ),
+          spacer,
+          FieldWithPencil(
+            mode: _mode,
+            onTap: _toggleMode,
+            child: DropdownButtonFormField<String>(
+                borderRadius: BorderRadius.circular(5.0),
+                alignment: Alignment.center,
+                decoration: InputDecoration(
+                  labelText: 'Gender',
+                  floatingLabelAlignment: FloatingLabelAlignment.center,
+                ),
+                value: _selectedGender,
+                validator: (value) {
+                  if (value == null || value == 'unknown') {
+                    return 'Please select';
+                  }
+                  return null;
+                },
+                items: ['male', 'female', 'unknown']
+                    .map((gender) => DropdownMenuItem(
+                          alignment: Alignment.bottomCenter,
+                          value: gender,
+                          child: PrettyText(
+                            gender,
+                            textAlign: TextAlign.center,
+                          ),
+                        ))
+                    .toList(),
+                onChanged: onGenderChangeClick),
+          ),
+          spacer,
+          FieldWithPencil(
+            mode: _mode,
+            onTap: () => _toggleMode(),
+            child: TextFormField(
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
+                labelText: 'Date of Birth',
+                floatingLabelAlignment: FloatingLabelAlignment.center,
+                hoverColor: Colors.white,
+              ),
+              controller: _dobController,
+              enabled: _mode == ProfileDetailsMode.edit,
+              readOnly: true,
+              onTap: () => _selectDate(context),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select your date of birth';
+                }
+                return null;
+              },
+            ),
+          ),
+          spacer,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(Icons.email, color: AppColors.black),
+              const SizedBox(width: 10),
+              Text(user.email, style: TextStyle(fontSize: 16.0)),
+            ],
+          ),
+          spacer,
+          if (_mode == ProfileDetailsMode.edit)
+            ActionButtons(
+              onCancel: () {
+                setState(() {
+                  _mode = ProfileDetailsMode.view;
+                  _formKey.currentState!.reset();
+                  _nameController.text = _initialName;
+                  _dobController.text = _initialDob;
+                  _selectedGender = _initialSelectedGender;
+                  imageBytes = Uint8List(0);
+                });
+              },
+              onSave: _saveAndSubmit,
+            ),
+        ],
       ),
     );
   }

@@ -35,12 +35,12 @@ class OptionsDrawer extends HookConsumerWidget {
             onTap: () => toggleSelectedOption(ProfileOptions.profileDetails),
           ),
           Divider(color: AppColors.primaryGreen),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: const Text('Settings'),
-            onTap: () => toggleSelectedOption(ProfileOptions.settings),
-          ),
-          Divider(color: AppColors.primaryGreen),
+          // ListTile(
+          //   leading: Icon(Icons.settings),
+          //   title: const Text('Settings'),
+          //   onTap: () => toggleSelectedOption(ProfileOptions.settings),
+          // ),
+          // Divider(color: AppColors.primaryGreen),
           ListTile(
             leading: Icon(Icons.card_membership),
             title: const Text('Memberships'),

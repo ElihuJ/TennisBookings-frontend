@@ -112,6 +112,17 @@ class _CalendarView extends ConsumerState<CalendarView> {
                   showOnlyMembersModal(context: context, message: 'Only members can book in this club');
                   return;
                 }
+                if (isInThePast(date.millisecondsSinceEpoch)) {
+                  showGeneralForbiddenModal(context, title: 'Booking in the past', message: 'You cannot book a time in the past.');
+                  return;
+                }
+
+                if (isAboveFutureLimit(date.millisecondsSinceEpoch)) {
+                  showGeneralForbiddenModal(context,
+                      title: 'Booking too far in the future', message: 'You cannot book a time more than 8 weeks in the future.');
+                  return;
+                }
+
                 showCreateBookingModal(
                     context: context, clubSelected: widget.clubSelected, courtSelected: widget.courtSelected, date: date, bookedTimes: bookedTimes);
               },

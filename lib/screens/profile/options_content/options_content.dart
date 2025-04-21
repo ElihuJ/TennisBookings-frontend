@@ -22,15 +22,17 @@ class OptionsContent extends StatefulHookConsumerWidget {
 class _OptionsContentState extends ConsumerState<OptionsContent> {
   @override
   Widget build(BuildContext context) {
+    Widget widgetInDisplay = const NotFoundScreen();
+
     if (widget.selectedOption == ProfileOptions.profileDetails) {
-      return const ProfileDetails();
+      widgetInDisplay = const ProfileDetails();
+    } else if (widget.selectedOption == ProfileOptions.settings) {
+      widgetInDisplay = const SettingsContent();
+    } else if (widget.selectedOption == ProfileOptions.memberships) {
+      widgetInDisplay = const MembershipDetails();
+    } else {
+      widgetInDisplay = const NotFoundScreen();
     }
-    if (widget.selectedOption == ProfileOptions.settings) {
-      return const SettingsContent();
-    }
-    if (widget.selectedOption == ProfileOptions.memberships) {
-      return const MembershipDetails();
-    }
-    return const NotFoundScreen();
+    return Flexible(child: widgetInDisplay);
   }
 }

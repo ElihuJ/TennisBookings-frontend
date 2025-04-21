@@ -29,8 +29,8 @@ class Config {
   // * VERSIONING
   static const majorVersion = 0;
   static const minorVersion = 0;
-  static const patchVersion = 2;
-  static const buildNumber = 2;
+  static const patchVersion = 3;
+  static const buildNumber = 3;
 
   static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';
 
@@ -45,6 +45,7 @@ class Config {
   static const functionsRegion = "australia-southeast1";
   static const maxBookingDuration = 3600 * 1.5 * 1000; // 1.5 hours in milliseconds // * Keep synced with maxBookingHours
   static const maxBookingHoursString = 1.5;
+  static const bookingFutureLimit = 2 * 4 * 7 * 24 * 60 * 60 * 1000; // * 2 months in milliseconds// * Keep synced with BOOKING_FUTURE_LIMIT
   static const minDuration = (3600 / 2) * 1000; // 30 minutes // * Keep synced with minDurationMinutes
   static const minDurationMinutesString = 30;
 

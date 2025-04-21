@@ -25,6 +25,7 @@ class EventContainer extends HookConsumerWidget {
     final confirmedPlayerIds = booking.confirmedPlayerIds;
     final isConfirmed = booking.status == BookingStatus.confirmed;
     final isMerged = booking.format == BookingFormat.merged;
+    final isCoaching = booking.format == BookingFormat.coaching;
     final owned = booking.ownerId == user.uid;
 
     // * Computing colours
@@ -32,6 +33,8 @@ class EventContainer extends HookConsumerWidget {
     if (!isConfirmed || isMerged) {
       bookingColor = AppColors.primaryGreen.withValues(alpha: 0.5);
     }
+
+    if (isCoaching) bookingColor = AppColors.blue;
 
     final computedTextColor = getContrastColor(bookingColor);
 
@@ -80,6 +83,8 @@ class BookingContainer extends StatelessWidget {
         getBookingAndUserContext(booking: booking, user: user, allowsPublicBookings: allowsPublicBookings, isMemberOfClub: isMemberOfClub);
     final (mouseAction, isClickable) = _getPermissionToClick(bookingAndUserContext: bookingAndUserContext);
 
+    final isCoaching = booking.format == BookingFormat.coaching;
+
     return MouseRegion(
       cursor: mouseAction,
       onHover: (event) {},
@@ -125,6 +130,18 @@ class BookingContainer extends StatelessWidget {
                           alignment: Alignment.center,
                           child: const Icon(
                             Icons.lock,
+                            size: 18,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
+                    if (isCoaching)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: const Icon(
+                            Icons.sports_tennis,
                             size: 18,
                             color: AppColors.white,
                           ),

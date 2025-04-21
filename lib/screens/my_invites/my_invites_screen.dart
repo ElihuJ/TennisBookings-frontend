@@ -69,53 +69,61 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
         child: Scaffold(
           appBar: Header(),
           body: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
-                width: sectionWidth,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const PrettyText(
-                        'My Invites',
-                        style: TextStyle(
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+            child: SizedBox(
+              width: sectionWidth,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 40),
+                  const PrettyText(
+                    'My Invites',
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 8.0),
-                    if (hasInvites == false)
-                      const PrettyText(
-                        'You have no invites',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.grey,
-                        ),
-                      )
-                    else
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: _bookings!.length,
-                        itemBuilder: (context, index) {
-                          final booking = _bookings![index];
-                          // * This scenario should happen when removing an invite from state
-                          if (booking.requests.isEmpty) {
-                            return const SizedBox.shrink();
-                          }
-                          return BookingWithInvites(booking: booking, removeInviteFromState: removeInviteFromState);
-                        },
-                      ),
-                    const SizedBox(height: 16.0),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 40),
+                  if (hasInvites == false)
+                    Flexible(child: _NoInvitesView())
+                  else
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _bookings!.length,
+                      itemBuilder: (context, index) {
+                        final booking = _bookings![index];
+                        // * This scenario should happen when removing an invite from state
+                        if (booking.requests.isEmpty) {
+                          return const SizedBox.shrink();
+                        }
+                        return BookingWithInvites(booking: booking, removeInviteFromState: removeInviteFromState);
+                      },
+                    ),
+                  const SizedBox(height: 16.0),
+                ],
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _NoInvitesView extends StatelessWidget {
+  const _NoInvitesView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: MessageCard(
+        icon: Icon(
+          Icons.mail_outline,
+          size: 48.0,
+          color: Colors.blueGrey[300],
+        ),
+        title: 'No Invites Available',
+        description: 'You have no invites at the moment.',
       ),
     );
   }

@@ -23,3 +23,19 @@ class PrettyText extends StatelessWidget {
     );
   }
 }
+
+class TitleText extends StatelessWidget {
+  const TitleText(this.title, {super.key});
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return PrettyText(
+      title,
+      style: const TextStyle(
+        fontSize: 24.0,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+}

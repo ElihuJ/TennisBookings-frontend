@@ -133,8 +133,9 @@ _getOpenForInvitesActions({
   final userId = widgetRef.watch(userProvider).uid;
 
   final requestAlreadySent = booking.requests.firstWhereOrNull((request) => request.playerId == userId) != null;
+  final inThePast = isInThePast(booking.from);
 
-  final onTapAction = requestAlreadySent
+  final onTapAction = requestAlreadySent || inThePast
       ? null
       : () async {
           eventNotifier.showLoading(message: "Sending request to join...");
@@ -152,11 +153,21 @@ _getOpenForInvitesActions({
           eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
         };
 
+  String buttonText = '';
+
+  if (inThePast) {
+    buttonText = 'Booking closed';
+  } else if (requestAlreadySent) {
+    buttonText = 'Request sent';
+  } else {
+    buttonText = 'Request to join';
+  }
+
   return [
     TbTextButton(
       onPressed: onTapAction,
       color: Colors.green,
-      text: requestAlreadySent ? 'Request sent' : 'Request to join',
+      text: buttonText,
       height: 40,
     ),
   ];

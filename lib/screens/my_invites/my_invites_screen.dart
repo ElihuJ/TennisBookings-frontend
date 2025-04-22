@@ -122,7 +122,7 @@ class _NoInvitesView extends StatelessWidget {
           size: 48.0,
           color: Colors.blueGrey[300],
         ),
-        title: 'No Invites Available',
+        title: 'No Invites',
         description: 'You have no invites at the moment.',
       ),
     );

@@ -25,6 +25,7 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
   Court? _courtSelected;
   Club? _clubSelected;
   String get paramClubId => widget.clubSelectedQueryParams.clubId;
+  String? get paramCourtId => widget.clubSelectedQueryParams.courtId;
   late DateTime _dateInView;
   void setDateInView(DateTime newDate) {
     setState(() {
@@ -67,7 +68,7 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
 
     // ^ ============================== Setting default court ==============================
 
-    _courtSelected ??= courts.first;
+    _courtSelected ??= courts.firstWhere((court) => court.id == paramCourtId, orElse: () => courts.first);
 
     // ^ ==============================  Main View  =======================================
 

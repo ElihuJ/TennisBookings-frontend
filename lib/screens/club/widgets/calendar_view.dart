@@ -45,10 +45,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
       _bookings = replacePublicForPrivate(_bookings!, privateBookings);
     }
 
-    // final dateInView = widget.dateInView;
-    // ! TODO: MOCKED DATE
-    final dateInView = DateTime(2025, 1, 1);
-
+    final dateInView = widget.dateInView;
     // ^ ============================== Loading bookings when accessing page directly ==============================
 
     if (_bookings == null) {

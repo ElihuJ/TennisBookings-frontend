@@ -30,6 +30,7 @@ class Club extends MapView<String, dynamic> implements HasId {
   final List<Court> courts;
   final bool allowPublicBookings;
   final List<String> memberIds;
+  final String clubLogoUrl;
 
   Club({
     required this.id,
@@ -50,6 +51,7 @@ class Club extends MapView<String, dynamic> implements HasId {
     required this.courts,
     required this.allowPublicBookings,
     required this.memberIds,
+    required this.clubLogoUrl,
   }) : super({
           ClubFields.id: id,
           ClubFields.name: name,
@@ -66,7 +68,8 @@ class Club extends MapView<String, dynamic> implements HasId {
           ClubFields.city: city,
           ClubFields.postcode: postcode,
           ClubFields.state: state,
-          ClubFields.courts: courts
+          ClubFields.courts: courts,
+          ClubFields.clubLogoUrl: clubLogoUrl,
         });
 
   Club.empty()
@@ -89,6 +92,7 @@ class Club extends MapView<String, dynamic> implements HasId {
           courts: [],
           allowPublicBookings: false,
           memberIds: [],
+          clubLogoUrl: '',
         );
 
   // ^ ================================== Loaders ==================================
@@ -132,6 +136,7 @@ class Club extends MapView<String, dynamic> implements HasId {
     final allowPublicBookings =
         verifyRequiredProp<bool>(prop: json[ClubFields.allowPublicBookings], propName: ClubFields.allowPublicBookings, defaultValue: false);
     final memberIds = verifyRequiredProp<List>(prop: json[ClubFields.memberIds], propName: ClubFields.memberIds, defaultValue: []);
+    final clubLogoUrl = verifyRequiredProp<String>(prop: json[ClubFields.clubLogoUrl], propName: ClubFields.clubLogoUrl, defaultValue: '');
 
     // * ================================== Verify not required props ==================================
     final casualFee = verifyNotRequiredProp<double>(prop: json[ClubFields.casualFee], propName: ClubFields.casualFee);
@@ -160,6 +165,7 @@ class Club extends MapView<String, dynamic> implements HasId {
       courts: courts,
       allowPublicBookings: allowPublicBookings,
       memberIds: List<String>.from(memberIds),
+      clubLogoUrl: clubLogoUrl,
     );
   }
 
@@ -182,6 +188,7 @@ class Club extends MapView<String, dynamic> implements HasId {
     List<Court>? courts,
     bool? allowPublicBookings,
     List<String>? memberIds,
+    String? clubLogoUrl,
   }) {
     return Club(
       id: id ?? this.id,
@@ -202,6 +209,7 @@ class Club extends MapView<String, dynamic> implements HasId {
       courts: courts ?? this.courts,
       allowPublicBookings: allowPublicBookings ?? this.allowPublicBookings,
       memberIds: memberIds ?? this.memberIds,
+      clubLogoUrl: clubLogoUrl ?? this.clubLogoUrl,
     );
   }
 
@@ -225,6 +233,7 @@ class Club extends MapView<String, dynamic> implements HasId {
         'courts: $courts, \n'
         'allowPublicBookings: $allowPublicBookings, \n'
         'memberIds: $memberIds, \n'
+        'clubLogoUrl: $clubLogoUrl, \n'
         '=============================================== \n';
   }
 }

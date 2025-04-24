@@ -13,7 +13,7 @@ class BookACourtButtonHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(left: 0),
       child: TbTextPlainButton(
-        text: 'BOOK A COURT', // TODO : TRANSLATE
+        text: 'BOOK A COURT',
         onPressed: () => Navigator.of(context).pushNamed(FindClubsScreen.route),
       ),
     );

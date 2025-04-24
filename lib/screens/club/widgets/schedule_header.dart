@@ -4,7 +4,7 @@ import '../../../global_helpers/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
 import '../../../theme/index.dart';
-import '../../find_clubs/find_clubs_screen.dart';
+import '../club_details_screen.dart';
 
 class ScheduleHeader extends StatelessWidget {
   const ScheduleHeader({super.key, required this.clubSelected, required this.courts, required this.courtSelected, required this.setState});
@@ -24,7 +24,9 @@ class ScheduleHeader extends StatelessWidget {
         MouseRegion(
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
-            onTap: () => Navigator.of(context).pushNamed(FindClubsScreen.route),
+            onTap: () {
+              Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${clubSelected.id}');
+            },
             child: Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(

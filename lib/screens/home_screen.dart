@@ -54,7 +54,7 @@ class HomeScreen extends HookConsumerWidget {
                   child: Container(
                     margin: EdgeInsets.all(40),
                     child: Text(
-                      'GET A COURT \nFIND A PARTNER\nPLAY', // TODO : TRANSLATE
+                      'GET A COURT \nFIND A PARTNER\nPLAY',
                       style: TextStyle(
                         fontSize: 80,
                         color: AppColors.almostWhite,

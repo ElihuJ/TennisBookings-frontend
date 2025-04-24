@@ -12,7 +12,6 @@ import '../../../models/index.dart';
 import '../../../state/index.dart';
 import '../../../theme/index.dart';
 import '../../index.dart';
-import 'buttons.dart';
 
 class OpenBooking extends StatefulHookConsumerWidget {
   const OpenBooking({
@@ -23,6 +22,8 @@ class OpenBooking extends StatefulHookConsumerWidget {
     required this.switchBookingMode,
     required this.context,
     required this.confirmedBookedTimes,
+    required this.setTitleValue,
+    required this.titleValue,
   });
   final Club clubSelected;
   final Court courtSelected;
@@ -30,6 +31,8 @@ class OpenBooking extends StatefulHookConsumerWidget {
   final Function() switchBookingMode;
   final BuildContext context;
   final List<BookedTimeEpoch> confirmedBookedTimes;
+  final Function(String value) setTitleValue;
+  final String titleValue;
 
   @override
   ConsumerState<OpenBooking> createState() => _OpenBookingState();
@@ -41,7 +44,6 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
   final TextEditingController _startTimeController = TextEditingController();
   late int endDateEpoch;
   late int startDateEpoch;
-  String _titleValue = '';
   BookingFormat _bookingFormat = BookingFormat.singles;
   BookingRestrictions? _bookingRestrictions;
   bool _withRestrictions = false;
@@ -82,7 +84,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
       requests: [],
       restrictions: _bookingRestrictions,
       status: BookingStatus.open,
-      title: _titleValue,
+      title: widget.titleValue,
       clubId: widget.clubSelected.id,
     );
 
@@ -123,34 +125,36 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
         }
         setState(() {});
       },
-      child: SingleChildScrollView(
+      child: SizedBox(
+        width: 500,
         child: Column(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  TbButton(
+                  TbTextButton(
                     text: 'Booking',
                     onPressed: widget.switchBookingMode,
                     color: AppColors.grey,
                   ),
-                  TbButton(
+                  TbTextButton(
                     text: 'Look for a player',
-                    color: AppColors.blue,
+                    color: AppColors.primaryGreen,
+                    onPressed: () {},
                   ),
                 ],
               ),
             ),
             // ^ =============== TITLE FIELD ===============
             TextFormField(
-              initialValue: _titleValue,
+              initialValue: widget.titleValue,
               decoration: const InputDecoration(
                 labelText: 'Title',
               ),
-              onChanged: (value) => _titleValue = value,
+              onChanged: (value) => widget.setTitleValue(value),
               validator: (value) {
                 String? validationError;
                 if (value == null || value.isEmpty) {
@@ -264,16 +268,15 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.red),
-                  ),
-                  child: const Text('Cancel'),
+                TbTextButton(
+                  color: AppColors.red,
+                  text: 'Cancel',
                   onPressed: () => Navigator.of(context).pop(),
                 ),
-                ElevatedButton(
+                TbTextButton(
+                  text: 'Create Booking',
                   onPressed: submitFunction,
-                  child: const Text('Create Booking'),
+                  color: AppColors.primaryGreen,
                 ),
               ],
             ),

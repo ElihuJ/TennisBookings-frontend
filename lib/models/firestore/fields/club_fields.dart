@@ -12,6 +12,7 @@ class ClubFields {
   static const String streetAddress = 'streetAddress';
   static const String suburb = 'suburb';
   static const String city = 'city';
+  static const String clubLogoUrl = 'clubLogoUrl';
   static const String postcode = 'postcode';
   static const String state = 'state';
   static const String courts = 'courts';
@@ -37,6 +38,7 @@ class ClubFields {
     courts,
     allowPublicBookings,
     memberIds,
+    clubLogoUrl
   ];
 }
 

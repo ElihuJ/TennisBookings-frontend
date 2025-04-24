@@ -13,6 +13,8 @@ class BookingWithPopulatedRequest extends Booking {
   // The constructor takes the extended list type.
 
   @override
+  // * Overriding the requests property to be of type List<BookingPopulatedRequest>
+  // ignore: overridden_fields
   final List<BookingPopulatedRequest> requests;
 
   BookingWithPopulatedRequest({

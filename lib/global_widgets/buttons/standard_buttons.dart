@@ -13,7 +13,7 @@ class TbTextButton extends StatelessWidget {
 
   const TbTextButton({
     super.key,
-    required this.onPressed,
+    this.onPressed,
     required this.text,
     this.color = AppColors.primaryGreen,
     this.textColor = AppColors.white,

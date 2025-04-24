@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../../global_widgets/text/index.dart';
 import '../../../../../state/index.dart';
 import '../../../../../theme/index.dart';
+import '../../../../club/club_details_screen.dart';
 
 class MembershipDetails extends HookConsumerWidget {
   const MembershipDetails({
@@ -87,7 +88,7 @@ class MembershipDetails extends HookConsumerWidget {
                               alignment: Alignment.centerRight,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  // TODO: Implement view club details functionality
+                                  Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}');
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.secondaryGreen,

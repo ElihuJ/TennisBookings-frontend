@@ -23,10 +23,17 @@ class CreateBookingModal extends StatefulHookConsumerWidget {
 
 class _CreateBookingModalState extends ConsumerState<CreateBookingModal> {
   BookingMode _bookingMode = BookingMode.closed;
+  String _titleValue = '';
 
   void switchBookingMode() {
     setState(() {
       _bookingMode = _bookingMode == BookingMode.open ? BookingMode.closed : BookingMode.open;
+    });
+  }
+
+  void setTitleValue(String value) {
+    setState(() {
+      _titleValue = value;
     });
   }
 
@@ -40,6 +47,8 @@ class _CreateBookingModalState extends ConsumerState<CreateBookingModal> {
             switchBookingMode: switchBookingMode,
             confirmedBookedTimes: widget.bookedTimes,
             context: context,
+            setTitleValue: setTitleValue,
+            titleValue: _titleValue,
           )
         : OpenBooking(
             clubSelected: widget.clubSelected,
@@ -48,6 +57,8 @@ class _CreateBookingModalState extends ConsumerState<CreateBookingModal> {
             switchBookingMode: switchBookingMode,
             context: context,
             confirmedBookedTimes: widget.bookedTimes,
+            setTitleValue: setTitleValue,
+            titleValue: _titleValue,
           );
 
     final dateString = prettyDateUtcFromEpoch(widget.date.millisecondsSinceEpoch);

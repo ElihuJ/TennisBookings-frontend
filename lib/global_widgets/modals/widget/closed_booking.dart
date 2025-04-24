@@ -11,7 +11,6 @@ import '../../../models/index.dart';
 import '../../../state/index.dart';
 import '../../../theme/index.dart';
 import '../../index.dart';
-import 'buttons.dart';
 
 class ClosedBooking extends StatefulHookConsumerWidget {
   const ClosedBooking({
@@ -22,6 +21,8 @@ class ClosedBooking extends StatefulHookConsumerWidget {
     required this.switchBookingMode,
     required this.context,
     required this.confirmedBookedTimes,
+    required this.titleValue,
+    required this.setTitleValue,
   });
   final Club clubSelected;
   final Court courtSelected;
@@ -29,6 +30,8 @@ class ClosedBooking extends StatefulHookConsumerWidget {
   final Function() switchBookingMode;
   final BuildContext context;
   final List<BookedTimeEpoch> confirmedBookedTimes;
+  final String titleValue;
+  final Function(String) setTitleValue;
 
   @override
   ConsumerState<ClosedBooking> createState() => _ClosedBookingState();
@@ -41,7 +44,6 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
   late int endDateEpoch;
   late int startDateEpoch;
   String _visibilityValue = 'Public';
-  String _titleValue = '';
   BookingFormat _bookingFormat = BookingFormat.singles;
 
   void Function()? submitFunction;
@@ -76,7 +78,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
       requests: [],
       restrictions: null,
       status: BookingStatus.confirmed,
-      title: _titleValue,
+      title: widget.titleValue,
       clubId: widget.clubSelected.id,
     );
 
@@ -97,7 +99,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
       clubsNotifier.addBooking(court: widget.courtSelected, booking: updatedBooking, isPrivate: private);
       eventsNotifier.showMessage(messageType: MessageType.success, message: 'Booking created');
     } else {
-      eventsNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage ?? 'Error creating booking');
+      eventsNotifier.showMessage(messageType: MessageType.error, message: result.responseStatus.message.name);
     }
 
     return result;
@@ -117,35 +119,36 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
         }
         setState(() {});
       },
-      child: SingleChildScrollView(
+      child: SizedBox(
+        width: 500,
         child: Column(
+          spacing: 15,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                TbButton(
+                TbTextButton(
                   text: 'Booking',
-                  color: AppColors.blue,
+                  color: AppColors.primaryGreen,
+                  onPressed: () {},
                 ),
-                TbButton(
-                  text: 'Look for a player',
-                  onPressed: widget.switchBookingMode,
-                  color: AppColors.grey,
-                ),
+                TbTextButton(text: 'Look for a player', onPressed: widget.switchBookingMode, color: AppColors.grey),
               ],
             ),
             // ^ =============== TITLE FIELD ===============
             TextFormField(
-              initialValue: _titleValue,
+              initialValue: widget.titleValue,
               decoration: const InputDecoration(
                 labelText: 'Title',
               ),
-              onChanged: (value) => _titleValue = value,
+              onChanged: (value) => widget.setTitleValue(value),
               validator: (value) {
                 String? validationError;
                 if (value == null || value.isEmpty) {
-                  validationError = '';
+                  validationError = 'Please enter a title';
                 }
                 return validationError;
               },
@@ -244,16 +247,15 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.red),
-                  ),
-                  child: const Text('Cancel'),
+                TbTextButton(
+                  color: AppColors.red,
+                  text: 'Cancel',
                   onPressed: () => Navigator.of(context).pop(),
                 ),
-                ElevatedButton(
+                TbTextButton(
+                  text: 'Create Booking',
                   onPressed: submitFunction,
-                  child: const Text('Create Booking'),
+                  color: AppColors.primaryGreen,
                 ),
               ],
             ),

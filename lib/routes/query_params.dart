@@ -25,4 +25,9 @@ class ClubSelectedQueryParams extends QueryParams {
 
   String get clubId => _clubId;
   String? get courtId => _courtId;
+
+  @override
+  String toString() {
+    return 'ClubSelectedQueryParams{clubId: $_clubId, courtId: $_courtId}';
+  }
 }

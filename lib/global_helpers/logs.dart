@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 import '../config/config.dart';
+import '../global_types/index.dart';
 
 var logger = Logger();
 
@@ -14,27 +16,27 @@ extension Log on Object {
     myLog += title != null ? title.toUpperCase() : 'DEBUG';
     myLog += '  ===============\n';
     myLog += toString();
-    // if (config.environment != Environment.prod && kDebugMode) {
-    switch (debugLevel) {
-      case DebugLevel.trace:
-        logger.t(myLog);
-        break;
-      case DebugLevel.debug:
-        logger.d(myLog);
-        break;
-      case DebugLevel.info:
-        logger.i(myLog);
-        break;
-      case DebugLevel.warning:
-        logger.w(myLog);
-        break;
-      case DebugLevel.error:
-        logger.e(myLog);
-        break;
-      case DebugLevel.fatal:
-        logger.f(myLog);
-        break;
+    if (config.environment != Environment.prod && kDebugMode) {
+      switch (debugLevel) {
+        case DebugLevel.trace:
+          logger.t(myLog);
+          break;
+        case DebugLevel.debug:
+          logger.d(myLog);
+          break;
+        case DebugLevel.info:
+          logger.i(myLog);
+          break;
+        case DebugLevel.warning:
+          logger.w(myLog);
+          break;
+        case DebugLevel.error:
+          logger.e(myLog);
+          break;
+        case DebugLevel.fatal:
+          logger.f(myLog);
+          break;
+      }
     }
-    // }
   }
 }

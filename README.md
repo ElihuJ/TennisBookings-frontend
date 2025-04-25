@@ -19,3 +19,8 @@ samples, guidance on mobile development, and a full API reference.
 
 1. run `yarn build-web`
 2. run `publish-web` from firebase project directory
+
+# UPDATING INDEXES
+
+1. run `firebase firestore:indexes > firestore.indexes.json` from firebase project
+This will update the indexes json file

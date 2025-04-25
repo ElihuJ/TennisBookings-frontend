@@ -71,7 +71,6 @@ _getOwnerActions({
     TbTextButton(
       onPressed: () async {
         eventNotifier.showLoading(message: "Deleting event...");
-        await wait(1000);
         BasicBookingPayload payload = BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId);
         final result = await cloudFunctions.deleteBooking(DeleteBookingPayload(payload: payload));
         eventNotifier.hideLoading();
@@ -139,7 +138,6 @@ _getOpenForInvitesActions({
       ? null
       : () async {
           eventNotifier.showLoading(message: "Sending request to join...");
-          await wait(1000);
           SendInvitePayload payload =
               SendInvitePayload(payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
           final result = await cloudFunctions.sendInvite(payload);

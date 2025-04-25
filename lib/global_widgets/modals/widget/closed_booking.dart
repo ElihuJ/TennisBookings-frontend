@@ -23,6 +23,12 @@ class ClosedBooking extends StatefulHookConsumerWidget {
     required this.confirmedBookedTimes,
     required this.titleValue,
     required this.setTitleValue,
+    required this.startTimeController,
+    required this.endTimeController,
+    required this.startDateEpoch,
+    required this.endDateEpoch,
+    required this.setStartDateEpoch,
+    required this.setEndDateEpoch,
   });
   final Club clubSelected;
   final Court courtSelected;
@@ -32,6 +38,12 @@ class ClosedBooking extends StatefulHookConsumerWidget {
   final List<BookedTimeEpoch> confirmedBookedTimes;
   final String titleValue;
   final Function(String) setTitleValue;
+  final TextEditingController startTimeController;
+  final TextEditingController endTimeController;
+  final Function(int) setStartDateEpoch;
+  final Function(int) setEndDateEpoch;
+  final int startDateEpoch;
+  final int endDateEpoch;
 
   @override
   ConsumerState<ClosedBooking> createState() => _ClosedBookingState();
@@ -39,26 +51,13 @@ class ClosedBooking extends StatefulHookConsumerWidget {
 
 class _ClosedBookingState extends ConsumerState<ClosedBooking> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _endTimeController = TextEditingController();
-  final TextEditingController _startTimeController = TextEditingController();
-  late int endDateEpoch;
-  late int startDateEpoch;
+
   String _visibilityValue = 'Public';
   BookingFormat _bookingFormat = BookingFormat.singles;
 
   void Function()? submitFunction;
   bool isValid = false;
   Config config = Config();
-
-  @override
-  initState() {
-    super.initState();
-    _startTimeController.text = TimeOfDay(hour: widget.date.hour, minute: widget.date.minute).format(widget.context);
-    _endTimeController.text = TimeOfDay(hour: widget.date.hour + 1, minute: widget.date.minute).format(widget.context);
-    DateTime startDate = DateTime(widget.date.year, widget.date.month, widget.date.day, widget.date.hour, widget.date.minute).toUtc();
-    startDateEpoch = dateTimeToEpochUtc(startDate);
-    endDateEpoch = dateTimeToEpochUtc(startDate.add(const Duration(hours: 1)));
-  }
 
   Future<CFResult> onSubmit() async {
     final eventsNotifier = ref.read(eventsProvider.notifier);
@@ -71,8 +70,8 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
       confirmedPlayerIds: [],
       courtId: widget.courtSelected.id,
       format: _bookingFormat,
-      from: startDateEpoch,
-      to: endDateEpoch,
+      from: widget.startDateEpoch,
+      to: widget.endDateEpoch,
       private: private,
       ownerId: user.uid,
       requests: [],
@@ -103,6 +102,18 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     }
 
     return result;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_formKey.currentState?.validate() ?? false) {
+        setState(() {
+          submitFunction = onSubmit;
+        });
+      }
+    });
   }
 
   @override
@@ -199,7 +210,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
             ),
             // ^ =============== START TIME FIELD ===============
             TextFormField(
-              controller: _startTimeController,
+              controller: widget.startTimeController,
               decoration: const InputDecoration(labelText: 'Start Time'),
               onTap: () async {
                 TimeOfDay? picked = await showTimePicker(
@@ -209,14 +220,14 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                 );
                 if (picked != null && context.mounted) {
                   picked = roundToNearestQuarter(picked);
-                  startDateEpoch = timeOfDayToEpochUtc(picked, widget.date);
-                  _startTimeController.text = picked.format(context);
+                  widget.setStartDateEpoch(timeOfDayToEpochUtc(picked, widget.date));
+                  widget.startTimeController.text = picked.format(context);
                 }
               },
             ),
             // ^ =============== END TIME FIELD ===============
             TextFormField(
-              controller: _endTimeController,
+              controller: widget.endTimeController,
               decoration: const InputDecoration(labelText: 'End Time'),
               onTap: () async {
                 TimeOfDay? picked = await showTimePicker(
@@ -226,14 +237,14 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                 );
                 if (picked != null && context.mounted) {
                   picked = roundToNearestQuarter(picked);
-                  endDateEpoch = timeOfDayToEpochUtc(picked, widget.date);
-                  _endTimeController.text = picked.format(context);
+                  widget.setEndDateEpoch(timeOfDayToEpochUtc(picked, widget.date));
+                  widget.endTimeController.text = picked.format(context);
                 }
               },
               validator: (String? _) {
                 final validationError = validateNewTime(
-                  startDateEpoch: startDateEpoch,
-                  endDateEpoch: endDateEpoch,
+                  startDateEpoch: widget.startDateEpoch,
+                  endDateEpoch: widget.endDateEpoch,
                   bookedTimes: widget.confirmedBookedTimes,
                 );
                 if (validationError != null) {

@@ -28,6 +28,9 @@ class FindClubsScreen extends HookConsumerWidget {
       );
     }
 
+    // * remove duplicates from clubs
+    final uniqueClubs = clubs.toSet().toList();
+
     return EventfulWidget(
       child: PopScope(
         canPop: false,
@@ -35,7 +38,7 @@ class FindClubsScreen extends HookConsumerWidget {
           appBar: Header(),
           body: ContainerWithBackground(
             imagePath: homeBackgroundPng,
-            child: ClubsTable(clubs: clubs),
+            child: ClubsTable(clubs: uniqueClubs),
           ),
         ),
       ),

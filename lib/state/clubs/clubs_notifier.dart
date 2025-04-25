@@ -157,7 +157,10 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
         confirmedPlayersData.add(ConfirmedPlayerData(id: playerId, name: user.name, photoUrl: user.photoUrl, utrVerified: user.utrVerified));
         continue;
       }
-      final url = await storageRef.child('public_profiles/$playerId/profile.png').getDownloadURL();
+      // * If user has no photo URL it will fail, replace with empty string
+      final url = await storageRef.child('public_profiles/$playerId/profile.png').getDownloadURL().catchError((_) {
+        return '';
+      });
       confirmedPlayersData.add(ConfirmedPlayerData(id: playerId, name: '', photoUrl: url, utrVerified: false));
     }
     return confirmedPlayersData;

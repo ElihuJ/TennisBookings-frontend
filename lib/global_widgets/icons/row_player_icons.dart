@@ -25,8 +25,8 @@ class RowOfPlayerIcons extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cloudFunctions = ref.watch(cloudFunctionsProvider.notifier);
-    final clubsNotifier = ref.watch(clubsProvider.notifier);
+    final cloudFunctions = ref.read(cloudFunctionsProvider.notifier);
+    final clubsNotifier = ref.read(clubsProvider.notifier);
     final user = ref.watch(userProvider);
 
     return FutureBuilder<List<ConfirmedPlayerData>>(

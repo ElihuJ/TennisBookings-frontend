@@ -6,10 +6,11 @@ class UpdateProfilePayload implements APIPayload {
 
   final int dob;
   final String name;
-  final String? photoUrl;
+  final String photoUrl;
   final String gender;
+  final double? utrRating;
 
-  UpdateProfilePayload({required this.dob, required this.name, required this.photoUrl, required this.gender}) : super();
+  UpdateProfilePayload({required this.dob, required this.name, required this.photoUrl, required this.gender, required this.utrRating}) : super();
 
   @override
   Map<String, dynamic> toJson() {
@@ -18,12 +19,13 @@ class UpdateProfilePayload implements APIPayload {
       'name': name,
       'photoUrl': photoUrl,
       'gender': gender,
+      'utrRating': utrRating,
     };
   }
 
   @override
   String toString() {
-    return 'UpdateProfilePayload(dob: $dob, name: $name, photoUrl: $photoUrl, gender: $gender)';
+    return 'UpdateProfilePayload(dob: $dob, name: $name, photoUrl: $photoUrl, gender: $gender , utrRating: $utrRating)';
   }
 }
 

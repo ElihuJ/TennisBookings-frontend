@@ -50,7 +50,7 @@ class FieldWithPencil extends StatelessWidget {
 
 class ActionButtons extends StatelessWidget {
   final Function() onCancel;
-  final Function() onSave;
+  final void Function()? onSave;
 
   const ActionButtons({
     super.key,
@@ -68,27 +68,18 @@ class ActionButtons extends StatelessWidget {
           width: 160,
           height: 80,
           margin: const EdgeInsets.only(right: 20),
-          child: ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(AppColors.grey),
-            ),
+          child: TbTextButton(
             onPressed: onCancel,
-            child: PrettyText('Discard'),
+            color: AppColors.grey,
+            text: 'Discard',
           ),
         ),
         SizedBox(
           width: 160,
           height: 80,
-          child: ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(AppColors.primaryGreen),
-            ),
+          child: TbTextButton(
             onPressed: onSave,
-            child: PrettyText(
-              'Save\nchanges',
-              maxLines: 2,
-              textAlign: TextAlign.center,
-            ),
+            text: 'Save\nchanges',
           ),
         ),
       ],

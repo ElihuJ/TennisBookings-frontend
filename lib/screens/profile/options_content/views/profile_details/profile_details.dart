@@ -31,11 +31,14 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
   ProfileDetailsMode _mode = ProfileDetailsMode.view;
   late TextEditingController _nameController;
   late TextEditingController _dobController;
+  late TextEditingController _utrController;
   late String _selectedGender;
   late String _initialName;
   late String _initialDob;
   late String _initialSelectedGender;
   int _selectedDob = 0;
+
+  void Function()? submitFunction;
   Uint8List imageBytes = Uint8List(0);
 
   @override
@@ -49,13 +52,22 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
     _initialName = user.name;
     _initialDob = prettyDateUtcFromEpoch(user.dob);
     _initialSelectedGender = _selectedGender;
+    _utrController = TextEditingController(text: user.utrRating?.toString() ?? '');
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_formKey.currentState?.validate() ?? false) {
+        setState(() {
+          submitFunction = _saveAndSubmit;
+        });
+      }
+    });
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _dobController.dispose();
-
+    _utrController.dispose();
     super.dispose();
   }
 
@@ -107,7 +119,10 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
         dob: updatedUser.dob,
         gender: updatedUser.gender.name,
         photoUrl: newUrl ?? '', // * photoUrl prop should not be null
+        utrRating: double.tryParse(_utrController.text),
       );
+
+      payload.tbLogger('UpdateProfilePayload');
 
       final result = await cloudFunctions.updateProfile(payload);
       eventNotifier.hideLoading();
@@ -158,129 +173,150 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
 
     return Form(
       key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          spacer,
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              TbImageField(photoUrl: playerData.photoUrl, imageBytes: imageBytes, selectImage: () async {}),
-              if (_mode == ProfileDetailsMode.edit)
-                GestureDetector(
-                  onTap: () async {
-                    Uint8List? newImageBytes = await selectImage(imageBytes: imageBytes);
-                    setImageBytes(newImageBytes: newImageBytes);
-                  },
-                  child: Container(
-                    height: 100,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      color: AppColors.white.withValues(alpha: 0.4),
-                      shape: BoxShape.circle,
+      onChanged: () {
+        _formKey.currentState!.save();
+        if (_formKey.currentState!.validate()) {
+          submitFunction = _saveAndSubmit;
+        } else {
+          submitFunction = null;
+        }
+        setState(() {});
+      },
+      autovalidateMode: AutovalidateMode.always,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            spacer,
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                TbImageField(photoUrl: playerData.photoUrl, imageBytes: imageBytes, selectImage: () async {}),
+                if (_mode == ProfileDetailsMode.edit)
+                  GestureDetector(
+                    onTap: () async {
+                      Uint8List? newImageBytes = await selectImage(imageBytes: imageBytes);
+                      setImageBytes(newImageBytes: newImageBytes);
+                    },
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: AppColors.white.withValues(alpha: 0.4),
+                        shape: BoxShape.circle,
+                      ),
+                      margin: const EdgeInsets.only(top: 20),
+                      child: Icon(Icons.add_a_photo_outlined, color: Colors.white, size: 30),
                     ),
-                    margin: const EdgeInsets.only(top: 20),
-                    child: Icon(Icons.add_a_photo_outlined, color: Colors.white, size: 30),
                   ),
-                ),
-            ],
-          ),
-          spacer,
-          FieldWithPencil(
-            mode: _mode,
-            onTap: _toggleMode,
-            child: TextFormField(
-              controller: _nameController,
-              enabled: _mode == ProfileDetailsMode.edit,
-              decoration: InputDecoration(labelText: 'Name', floatingLabelAlignment: FloatingLabelAlignment.center),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your name';
-                }
-                return null;
-              },
+              ],
             ),
-          ),
-          spacer,
-          FieldWithPencil(
-            mode: _mode,
-            onTap: _toggleMode,
-            child: DropdownButtonFormField<String>(
-                borderRadius: BorderRadius.circular(5.0),
-                alignment: Alignment.center,
-                decoration: InputDecoration(
-                  labelText: 'Gender',
-                  floatingLabelAlignment: FloatingLabelAlignment.center,
-                ),
-                value: _selectedGender,
+            spacer,
+            FieldWithPencil(
+              mode: _mode,
+              onTap: _toggleMode,
+              child: TextFormField(
+                controller: _nameController,
+                enabled: _mode == ProfileDetailsMode.edit,
+                decoration: InputDecoration(labelText: 'Name', floatingLabelAlignment: FloatingLabelAlignment.center),
                 validator: (value) {
-                  if (value == null || value == 'unknown') {
-                    return 'Please select';
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your name';
                   }
                   return null;
                 },
-                items: ['male', 'female', 'unknown']
-                    .map((gender) => DropdownMenuItem(
-                          alignment: Alignment.bottomCenter,
-                          value: gender,
-                          child: PrettyText(
-                            gender,
-                            textAlign: TextAlign.center,
-                          ),
-                        ))
-                    .toList(),
-                onChanged: onGenderChangeClick),
-          ),
-          spacer,
-          FieldWithPencil(
-            mode: _mode,
-            onTap: () => _toggleMode(),
-            child: TextFormField(
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                labelText: 'Date of Birth',
-                floatingLabelAlignment: FloatingLabelAlignment.center,
-                hoverColor: Colors.white,
               ),
-              controller: _dobController,
-              enabled: _mode == ProfileDetailsMode.edit,
-              readOnly: true,
-              onTap: () => _selectDate(context),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please select your date of birth';
-                }
-                return null;
-              },
             ),
-          ),
-          spacer,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(Icons.email, color: AppColors.black),
-              const SizedBox(width: 10),
-              Text(user.email, style: TextStyle(fontSize: 16.0)),
-            ],
-          ),
-          spacer,
-          if (_mode == ProfileDetailsMode.edit)
-            ActionButtons(
-              onCancel: () {
-                setState(() {
-                  _mode = ProfileDetailsMode.view;
-                  _formKey.currentState!.reset();
-                  _nameController.text = _initialName;
-                  _dobController.text = _initialDob;
-                  _selectedGender = _initialSelectedGender;
-                  imageBytes = Uint8List(0);
-                });
-              },
-              onSave: _saveAndSubmit,
+            spacer,
+            FieldWithPencil(
+              mode: _mode,
+              onTap: _toggleMode,
+              child: DropdownButtonFormField<String>(
+                  borderRadius: BorderRadius.circular(5.0),
+                  alignment: Alignment.center,
+                  decoration: InputDecoration(labelText: 'Gender', floatingLabelAlignment: FloatingLabelAlignment.center),
+                  value: _selectedGender,
+                  validator: (value) {
+                    if (value == null || value == 'unknown') {
+                      return 'Please select';
+                    }
+                    return null;
+                  },
+                  items: ['male', 'female', 'unknown']
+                      .map((gender) => DropdownMenuItem(
+                            alignment: Alignment.bottomCenter,
+                            value: gender,
+                            child: PrettyText(
+                              gender,
+                              textAlign: TextAlign.center,
+                            ),
+                          ))
+                      .toList(),
+                  onChanged: onGenderChangeClick),
             ),
-        ],
+            spacer,
+            FieldWithPencil(
+              mode: _mode,
+              onTap: _toggleMode,
+              child: TextFormField(
+                  controller: _utrController,
+                  enabled: _mode == ProfileDetailsMode.edit,
+                  decoration: InputDecoration(labelText: 'UTR Rating', floatingLabelAlignment: FloatingLabelAlignment.center),
+                  validator: (value) => utrValueValidator(value, context)),
+            ),
+            spacer,
+            FieldWithPencil(
+              mode: _mode,
+              onTap: () => _toggleMode(),
+              child: TextFormField(
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  labelText: 'Date of Birth',
+                  floatingLabelAlignment: FloatingLabelAlignment.center,
+                  hoverColor: Colors.white,
+                ),
+                controller: _dobController,
+                enabled: _mode == ProfileDetailsMode.edit,
+                readOnly: true,
+                onTap: () => _selectDate(context),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select your date of birth';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            spacer,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.email, color: AppColors.black),
+                const SizedBox(width: 10),
+                Text(user.email, style: TextStyle(fontSize: 16.0)),
+              ],
+            ),
+            spacer,
+            if (_mode == ProfileDetailsMode.edit)
+              ActionButtons(
+                onCancel: () {
+                  setState(() {
+                    _mode = ProfileDetailsMode.view;
+                    _formKey.currentState!.reset();
+                    _nameController.text = _initialName;
+                    _dobController.text = _initialDob;
+                    _selectedGender = _initialSelectedGender;
+                    _utrController.text = user.utrRating.toString();
+                    imageBytes = Uint8List(0);
+                  });
+                },
+                onSave: submitFunction,
+              ),
+            spacer,
+          ],
+        ),
       ),
     );
   }

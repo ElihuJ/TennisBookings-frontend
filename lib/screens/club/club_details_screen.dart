@@ -151,7 +151,7 @@ class ClubDetailsScreen extends HookConsumerWidget {
                       ),
                       const Divider(color: Colors.white), // White divider for contrast
                       Text(
-                        'Total Members: ${clubSelected.memberIds.length}',
+                        'Total Members: ${clubSelected.totalMembers}',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                               fontSize: 18, // Larger font size for readability
                               color: Colors.white, // White text for contrast

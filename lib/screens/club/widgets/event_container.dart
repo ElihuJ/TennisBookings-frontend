@@ -77,7 +77,8 @@ class BookingContainer extends StatelessWidget {
     final fontSize = bookingLessThanAnHour ? 10.0 : 14.0;
 
     final allowsPublicBookings = club.allowPublicBookings;
-    final isMemberOfClub = club.memberIds.contains(user.uid);
+
+    final isMemberOfClub = user.memberships.any((membership) => membership.clubId == club.id);
 
     final bookingAndUserContext =
         getBookingAndUserContext(booking: booking, user: user, allowsPublicBookings: allowsPublicBookings, isMemberOfClub: isMemberOfClub);

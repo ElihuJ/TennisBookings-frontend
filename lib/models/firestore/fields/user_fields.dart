@@ -12,6 +12,7 @@ class UserFields {
   static const String utrRating = 'utrRating';
   static const String utrVerified = 'utrVerified';
   static const String photoUrl = 'photoUrl';
+  static const String memberships = 'memberships';
 
   static const List<String> allFields = [
     uid,
@@ -27,5 +28,16 @@ class UserFields {
     utrRating,
     utrVerified,
     photoUrl,
+    memberships,
+  ];
+}
+
+class UserMembershipFields {
+  static const String clubId = 'clubId';
+  static const String expiry = 'expiry';
+
+  static const List<String> allFields = [
+    clubId,
+    expiry,
   ];
 }

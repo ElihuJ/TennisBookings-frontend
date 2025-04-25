@@ -35,7 +35,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
     final clubsNotifier = ref.read(clubsProvider.notifier);
     final user = ref.watch(userProvider);
     final allowsPublicBookings = widget.clubSelected.allowPublicBookings;
-    final isUserMember = widget.clubSelected.memberIds.contains(user.uid);
+    final isUserMember = user.memberships.any((membership) => membership.clubId == widget.clubSelected.id);
     final allEvents = [..._eventController.allEvents];
     _eventController.removeAll(allEvents);
 

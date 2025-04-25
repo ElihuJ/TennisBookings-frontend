@@ -17,7 +17,7 @@ class MultipleBookingsModal extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     final club = ref.watch(clubsProvider).firstWhere((club) => club.id == booking.clubId);
-    final isMemberOfClub = club.memberIds.contains(user.uid);
+    final isMemberOfClub = user.memberships.any((membership) => membership.clubId == booking.clubId);
     return EventfulWidget(
       child: AlertDialog(
         title: const Text('Multiple Open bookings (Swipe across)', textAlign: TextAlign.center),

@@ -6,10 +6,10 @@ import 'package:flutter/foundation.dart';
 import '../../global_helpers/index.dart';
 import '../../global_types/index.dart';
 import '../../models/index.dart';
+import './index.dart';
 
-final defaultId = getUuid();
-const defaultName = 'Problem loading user';
-const defaultEmail = 'email';
+const _defaultName = 'Problem loading user';
+const _defaultEmail = 'email';
 
 @immutable
 class User extends MapView<String, dynamic> implements FirestoreModel {
@@ -17,39 +17,36 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
   final String name;
   final String email;
   final int accountCreationDate;
-  final List<String> clubIds;
   final List<DocumentReference<Map<String, dynamic>>> bookings;
   final int dob; // date of birth in epoch milliseconds
   final Gender gender;
   final int lastLogin;
-  final double? utrRating;
   final bool utrVerified;
-  final String? homeClubId;
   final String photoUrl;
+  final List<UserMembership> memberships;
+  final String? homeClubId;
+  final double? utrRating;
   @override
   final List<String> allFields = UserFields.allFields;
 
   User({
-    this.uid = '',
-    this.accountCreationDate = 0,
-    this.bookings = const [],
-    this.clubIds = const [],
-    this.dob = 0,
-    this.email = '',
-    this.gender = Gender.unknown,
-    // ignore: avoid_init_to_null
-    this.homeClubId = null,
-    this.lastLogin = 0,
-    this.name = '',
-    // ignore: avoid_init_to_null
-    this.utrRating = null,
-    this.photoUrl = '',
-    this.utrVerified = false,
+    required this.uid,
+    required this.accountCreationDate,
+    required this.bookings,
+    required this.dob,
+    required this.email,
+    required this.gender,
+    required this.lastLogin,
+    required this.name,
+    required this.photoUrl,
+    required this.utrVerified,
+    required this.memberships,
+    this.utrRating,
+    this.homeClubId,
   }) : super({
           UserFields.uid: uid,
           UserFields.accountCreationDate: accountCreationDate,
           UserFields.bookings: bookings,
-          UserFields.clubIds: clubIds,
           UserFields.dob: dob,
           UserFields.email: email,
           UserFields.gender: gender,
@@ -61,7 +58,20 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
           UserFields.photoUrl: photoUrl,
         });
 
-  User.empty() : this();
+  User.empty()
+      : this(
+          uid: '',
+          accountCreationDate: 0,
+          memberships: [],
+          gender: Gender.unknown,
+          lastLogin: 0,
+          name: _defaultName,
+          photoUrl: '',
+          utrVerified: false,
+          bookings: [],
+          dob: 0,
+          email: _defaultEmail,
+        );
 
   factory User.fromJson(FirestoreResponse json) {
     try {
@@ -70,25 +80,26 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       final accountCreationDate =
           verifyRequiredProp<int>(prop: json[UserFields.accountCreationDate], propName: UserFields.accountCreationDate, defaultValue: 0);
       final bookingsRaw = verifyRequiredProp<List>(prop: json[UserFields.bookings], propName: UserFields.bookings, defaultValue: []);
-      final clubIdRaw = verifyRequiredProp<List>(prop: json[UserFields.clubIds], propName: UserFields.clubIds, defaultValue: []);
       final dob = verifyRequiredProp<int>(prop: json[UserFields.dob], propName: UserFields.dob, defaultValue: 0);
-      final email = verifyRequiredProp<String>(prop: json[UserFields.email], propName: UserFields.email, defaultValue: defaultEmail);
+      final email = verifyRequiredProp<String>(prop: json[UserFields.email], propName: UserFields.email, defaultValue: _defaultEmail);
       final genderRaw = verifyRequiredProp<String>(prop: json[UserFields.gender], propName: UserFields.gender, defaultValue: Gender.unknown.name);
       final lastLogin = verifyRequiredProp<int>(prop: json[UserFields.lastLogin], propName: UserFields.lastLogin, defaultValue: 0);
       final name = verifyRequiredProp<String>(prop: json[UserFields.name], propName: UserFields.name, defaultValue: defaultName);
       final utrVerified = verifyRequiredProp<bool>(prop: json[UserFields.utrVerified], propName: UserFields.utrVerified, defaultValue: false);
       final photoUrl = verifyRequiredProp<String>(prop: json[UserFields.photoUrl], propName: UserFields.photoUrl, defaultValue: '');
+      final membershipsRaw = verifyRequiredProp<List>(prop: json[UserFields.memberships], propName: UserFields.memberships, defaultValue: []);
 
       // * ================================== Optional Props ==================================
       final homeClubId = verifyNotRequiredProp<String?>(prop: json[UserFields.homeClubId], propName: UserFields.homeClubId);
       final utrRating = verifyNotRequiredProp<double?>(prop: json[UserFields.utrRating], propName: UserFields.utrRating);
 
+      // * Transformations
       final bookings = List<DocumentReference<Map<String, dynamic>>>.from(bookingsRaw);
-      final clubIds = List<String>.from(clubIdRaw);
       final gender = Gender.values.firstWhere(
         (g) => g.name == genderRaw,
         orElse: () => Gender.unknown,
       );
+      final memberships = List<UserMembership>.from(membershipsRaw.map((x) => UserMembership.fromJson(x)));
 
       verifyProps(json, UserFields.allFields);
 
@@ -96,7 +107,6 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         uid: uid,
         accountCreationDate: accountCreationDate,
         bookings: bookings,
-        clubIds: clubIds,
         dob: dob,
         email: email,
         gender: gender,
@@ -106,6 +116,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         utrRating: utrRating,
         utrVerified: utrVerified,
         photoUrl: photoUrl,
+        memberships: memberships,
       );
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING USER', DebugLevel.error);
@@ -118,7 +129,6 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         UserFields.uid: uid,
         UserFields.accountCreationDate: accountCreationDate,
         UserFields.bookings: bookings,
-        UserFields.clubIds: clubIds,
         UserFields.dob: dob,
         UserFields.email: email,
         UserFields.gender: gender.name,
@@ -128,6 +138,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         UserFields.utrRating: utrRating,
         UserFields.utrVerified: utrVerified,
         UserFields.photoUrl: photoUrl,
+        UserFields.memberships: memberships.map((e) => e.toJson()).toList(),
       };
 
   @override
@@ -145,12 +156,12 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
     double? utrRating,
     bool? utrVerified,
     String? photoUrl,
+    List<UserMembership>? memberships,
   }) {
     return User(
       uid: uid ?? this.uid,
       accountCreationDate: accountCreationDate ?? this.accountCreationDate,
       bookings: bookings ?? this.bookings,
-      clubIds: clubIds ?? this.clubIds,
       dob: dob ?? this.dob,
       email: email ?? this.email,
       gender: gender ?? this.gender,
@@ -160,6 +171,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       utrRating: utrRating ?? this.utrRating,
       utrVerified: utrVerified ?? this.utrVerified,
       photoUrl: photoUrl ?? this.photoUrl,
+      memberships: memberships ?? this.memberships,
     );
   }
 
@@ -169,7 +181,6 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         'uid: $uid \n'
         'accountCreationDate: $accountCreationDate \n'
         'bookings: $bookings \n'
-        'clubIds: $clubIds \n'
         'dob: $dob \n'
         'email: $email \n'
         'gender: $gender \n'
@@ -179,6 +190,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         'utrRating: $utrRating \n'
         'utrVerified: $utrVerified \n'
         'photoUrl: $photoUrl \n'
+        'memberships: $memberships \n'
         '=============================================== \n';
   }
 }

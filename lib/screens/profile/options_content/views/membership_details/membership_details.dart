@@ -28,7 +28,7 @@ class MembershipDetails extends HookConsumerWidget {
       );
     }
 
-    final clubsWithMembership = clubs.where((club) => club.memberIds.contains(user.uid));
+    final clubsWithMembership = user.memberships.map((membership) => membership.clubId).toList();
 
     if (clubsWithMembership.isEmpty) {
       return _NoMembershipView();
@@ -50,7 +50,7 @@ class MembershipDetails extends HookConsumerWidget {
               shrinkWrap: true,
               itemCount: clubsWithMembership.length,
               itemBuilder: (context, index) {
-                final club = clubsWithMembership.elementAt(index);
+                final club = clubs.firstWhere((club) => club.id == clubsWithMembership[index]);
 
                 return Center(
                   child: SizedBox(

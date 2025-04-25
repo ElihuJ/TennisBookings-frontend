@@ -35,6 +35,12 @@ class UserNotifier extends StateNotifier<User> {
         email: email ?? '',
         accountCreationDate: dateNowAsInt,
         lastLogin: dateNowAsInt,
+        bookings: [],
+        dob: 0,
+        gender: Gender.unknown,
+        photoUrl: '',
+        utrVerified: false,
+        memberships: [],
       );
       final FirestorePayload userPayload = user.toJson();
       await usersCollection.doc(uid).set(userPayload);

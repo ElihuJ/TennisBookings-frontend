@@ -41,13 +41,12 @@ class _ClubsTableState extends State<ClubsTable> {
   Widget build(BuildContext context) {
     final filteredClubs = widget.clubs.where((club) => club.name.toLowerCase().contains(searchQuery.toLowerCase())).toList();
 
-    return Container(
-      margin: const EdgeInsets.all(20),
+    return SizedBox(
       height: double.infinity,
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 30),
             width: 700,
             child: TextField(
               decoration: InputDecoration(
@@ -102,7 +101,13 @@ class _ClubsTableState extends State<ClubsTable> {
                         color: Colors.white,
                         borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
                       ),
-                      children: columnTitles.map((title) => _HeaderCell(text: title)).toList(growable: false),
+                      children: columnTitles
+                          .asMap()
+                          .map((index, title) {
+                            return MapEntry(index, _HeaderCell(text: title, first: index == 0, last: index == columnTitles.length - 1));
+                          })
+                          .values
+                          .toList(growable: false),
                     ),
                     ...filteredClubs.map((club) {
                       return TableRow(
@@ -185,7 +190,7 @@ class _RowCellText extends StatelessWidget {
                   child: PrettyText(
                     text,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.black),
+                    fontSize: 14,
                   ),
                 ),
             ],
@@ -196,19 +201,30 @@ class _RowCellText extends StatelessWidget {
 
 class _HeaderCell extends StatelessWidget {
   final String text;
+  final bool first;
+  final bool last;
 
-  const _HeaderCell({required this.text});
+  const _HeaderCell({required this.text, this.first = false, this.last = false});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(20.0),
-      child: Text(
+      decoration: BoxDecoration(
+        color: AppColors.secondaryGreen,
+        borderRadius: BorderRadius.only(
+          topLeft: first ? Radius.circular(10) : Radius.zero,
+          topRight: last ? Radius.circular(10) : Radius.zero,
+        ),
+      ),
+      child: PrettyText(
         text,
         textAlign: TextAlign.center,
+        maxLines: 2,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.black,
+          fontSize: 16,
         ),
       ),
     );

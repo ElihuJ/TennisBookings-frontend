@@ -10,6 +10,7 @@ class BorderedBox extends StatelessWidget {
   final double? height;
   final EdgeInsets? margin;
   final EdgeInsets? padding;
+  final AlignmentGeometry? alignment;
 
   const BorderedBox({
     super.key,
@@ -20,11 +21,13 @@ class BorderedBox extends StatelessWidget {
     this.borderColor = AppColors.primaryGreen,
     this.padding,
     this.backgroundColor = AppColors.almostWhite,
+    this.alignment,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: alignment,
       width: width,
       height: height,
       margin: margin,

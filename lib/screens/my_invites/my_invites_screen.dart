@@ -71,36 +71,38 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
           body: Center(
             child: SizedBox(
               width: sectionWidth,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: 40),
-                  const PrettyText(
-                    'My Invites',
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 40),
+                    const PrettyText(
+                      'My Invites',
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 40),
-                  if (hasInvites == false)
-                    Flexible(child: _NoInvitesView())
-                  else
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _bookings!.length,
-                      itemBuilder: (context, index) {
-                        final booking = _bookings![index];
-                        // * This scenario should happen when removing an invite from state
-                        if (booking.requests.isEmpty) {
-                          return const SizedBox.shrink();
-                        }
-                        return BookingWithInvites(booking: booking, removeInviteFromState: removeInviteFromState);
-                      },
-                    ),
-                  const SizedBox(height: 16.0),
-                ],
+                    SizedBox(height: 40),
+                    if (hasInvites == false)
+                      Flexible(child: _NoInvitesView())
+                    else
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _bookings!.length,
+                        itemBuilder: (context, index) {
+                          final booking = _bookings![index];
+                          // * This scenario should happen when removing an invite from state
+                          if (booking.requests.isEmpty) {
+                            return const SizedBox.shrink();
+                          }
+                          return BookingWithInvites(booking: booking, removeInviteFromState: removeInviteFromState);
+                        },
+                      ),
+                    const SizedBox(height: 16.0),
+                  ],
+                ),
               ),
             ),
           ),

@@ -217,6 +217,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
               mode: _mode,
               onTap: _toggleMode,
               child: TextFormField(
+                textAlign: TextAlign.center,
                 controller: _nameController,
                 enabled: _mode == ProfileDetailsMode.edit,
                 decoration: InputDecoration(labelText: 'Name', floatingLabelAlignment: FloatingLabelAlignment.center),
@@ -233,36 +234,43 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
               mode: _mode,
               onTap: _toggleMode,
               child: DropdownButtonFormField<String>(
-                  borderRadius: BorderRadius.circular(5.0),
-                  alignment: Alignment.center,
-                  decoration: InputDecoration(labelText: 'Gender', floatingLabelAlignment: FloatingLabelAlignment.center),
-                  value: _selectedGender,
-                  validator: (value) {
-                    if (value == null || value == 'unknown') {
-                      return 'Please select';
-                    }
-                    return null;
-                  },
-                  items: ['male', 'female', 'unknown']
-                      .map((gender) => DropdownMenuItem(
-                            alignment: Alignment.bottomCenter,
-                            value: gender,
-                            child: PrettyText(
-                              gender,
+                borderRadius: BorderRadius.circular(5.0),
+                alignment: Alignment.center,
+                decoration: InputDecoration(labelText: 'Gender', floatingLabelAlignment: FloatingLabelAlignment.center),
+                value: _selectedGender,
+                validator: (value) {
+                  if (value == null || value == 'unknown') {
+                    return 'Please select';
+                  }
+                  return null;
+                },
+                items: ['male', 'female', 'unknown']
+                    .map((gender) => DropdownMenuItem(
+                          alignment: Alignment.bottomCenter,
+                          enabled: _mode == ProfileDetailsMode.edit,
+                          value: gender,
+                          child: PrettyText(gender,
                               textAlign: TextAlign.center,
-                            ),
-                          ))
-                      .toList(),
-                  onChanged: onGenderChangeClick),
+                              style: TextStyle(
+                                color: _mode == ProfileDetailsMode.edit ? AppColors.black : AppColors.grey,
+                              )),
+                        ))
+                    .toList(),
+                onChanged: onGenderChangeClick,
+              ),
             ),
             spacer,
             FieldWithPencil(
               mode: _mode,
               onTap: _toggleMode,
               child: TextFormField(
+                  textAlign: TextAlign.center,
                   controller: _utrController,
                   enabled: _mode == ProfileDetailsMode.edit,
-                  decoration: InputDecoration(labelText: 'UTR Rating', floatingLabelAlignment: FloatingLabelAlignment.center),
+                  decoration: InputDecoration(
+                    labelText: 'UTR Rating',
+                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                  ),
                   validator: (value) => utrValueValidator(value, context)),
             ),
             spacer,

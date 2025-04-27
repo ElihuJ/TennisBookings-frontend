@@ -191,8 +191,8 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
               value: _visibilityValue,
               decoration: const InputDecoration(labelText: 'Visibility'),
               items: const [
-                DropdownMenuItem(value: 'Public', child: Text('Public')),
-                DropdownMenuItem(value: 'Private', child: Text('Private')),
+                DropdownMenuItem(value: 'Public', child: PrettyText('Public')),
+                DropdownMenuItem(value: 'Private', child: PrettyText('Private')),
               ],
               onChanged: (value) {
                 setState(() {
@@ -203,7 +203,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                 String? validationError;
                 if (value == null || value.isEmpty) {
                   submitFunction = null;
-                  validationError = 'Please enter a visibility';
+                  validationError = 'Please select a visibility';
                 }
                 return validationError;
               },

@@ -10,7 +10,7 @@ class PrettyText extends StatelessWidget {
     this.textAlign,
     this.overflow,
     this.maxLines = 1,
-    this.fontSize = 20.0,
+    this.fontSize = 16,
   });
 
   final String text;

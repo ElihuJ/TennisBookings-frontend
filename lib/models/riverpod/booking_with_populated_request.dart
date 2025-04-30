@@ -4,10 +4,12 @@ import '../index.dart';
 
 final _defaultId = getUuid();
 final _defaultName = 'Problem loading Populated Booking';
+final _defaultClubName = 'Problem loading Club Name';
+final _defaultCourtName = 'Problem loading Court Name';
 
 /*
 * This class extends standard booking using populated requests rather than normal one
-* which will contain additional user data
+* which will contain additional user data which is used when displaying the booking request
 */
 class BookingWithPopulatedRequest extends Booking {
   // The constructor takes the extended list type.
@@ -31,11 +33,10 @@ class BookingWithPopulatedRequest extends Booking {
     required super.status,
     required this.requests,
     required super.title,
+    required super.clubName,
+    required super.courtName,
     super.mergedBookings = const [],
-  }) : super(requests: requests) {
-    // Initialize the requests property with an empty list.
-    // This is necessary because the parent class requires it.
-  }
+  }) : super(requests: requests);
 
   BookingWithPopulatedRequest.empty()
       : this(
@@ -47,26 +48,32 @@ class BookingWithPopulatedRequest extends Booking {
           startTime: 0,
           endTime: 0,
           private: false,
-          ownerId: defaultId,
+          ownerId: _defaultId,
           restrictions: null,
           status: BookingStatus.open,
           title: _defaultName,
           requests: [],
+          clubName: _defaultClubName,
+          courtName: _defaultCourtName,
         );
 
   factory BookingWithPopulatedRequest.fromJson(Map<String, dynamic> json) {
     try {
       // * Verify required props
-      final id = verifyRequiredProp<String>(prop: json[BookingFields.id], propName: BookingFields.id, defaultValue: defaultId);
+      final id = verifyRequiredProp<String>(prop: json[BookingFields.id], propName: BookingFields.id, defaultValue: _defaultId);
       final confirmedPlayerIdsRaw =
           verifyRequiredProp<List>(prop: json[BookingFields.confirmedPlayerIds], propName: BookingFields.confirmedPlayerIds, defaultValue: []);
-      final courtId = verifyRequiredProp<String>(prop: json[BookingFields.courtId], propName: BookingFields.courtId, defaultValue: defaultId);
-      final clubId = verifyRequiredProp<String>(prop: json[BookingFields.clubId], propName: BookingFields.clubId, defaultValue: defaultId);
+      final courtId = verifyRequiredProp<String>(prop: json[BookingFields.courtId], propName: BookingFields.courtId, defaultValue: _defaultId);
+      final clubId = verifyRequiredProp<String>(prop: json[BookingFields.clubId], propName: BookingFields.clubId, defaultValue: _defaultId);
       final startTime = verifyRequiredProp<int>(prop: json[BookingFields.startTime], propName: BookingFields.startTime, defaultValue: 0);
       final endTime = verifyRequiredProp<int>(prop: json[BookingFields.endTime], propName: BookingFields.endTime, defaultValue: 0);
       final private = verifyRequiredProp<bool>(prop: json[BookingFields.private], propName: BookingFields.private, defaultValue: false);
-      final ownerId = verifyRequiredProp<String>(prop: json[BookingFields.ownerId], propName: BookingFields.ownerId, defaultValue: defaultId);
+      final ownerId = verifyRequiredProp<String>(prop: json[BookingFields.ownerId], propName: BookingFields.ownerId, defaultValue: _defaultId);
       final title = verifyRequiredProp<String>(prop: json[BookingFields.title], propName: BookingFields.title, defaultValue: _defaultName);
+      final clubName =
+          verifyRequiredProp<String>(prop: json[BookingFields.clubName], propName: BookingFields.clubName, defaultValue: _defaultClubName);
+      final courtName =
+          verifyRequiredProp<String>(prop: json[BookingFields.courtName], propName: BookingFields.courtName, defaultValue: _defaultCourtName);
 
       // * Structure is different from regular booking request but property is named same
       final List<BookingPopulatedRequest> populatedRequests = json[BookingFields.requests] != null
@@ -95,6 +102,8 @@ class BookingWithPopulatedRequest extends Booking {
         restrictions: restrictions,
         status: status,
         title: title,
+        clubName: clubName,
+        courtName: courtName,
       );
 
       return booking;
@@ -120,6 +129,8 @@ class BookingWithPopulatedRequest extends Booking {
         other.requests == requests &&
         other.restrictions == restrictions &&
         other.status == status &&
+        other.clubName == clubName &&
+        other.courtName == courtName &&
         other.title == title;
   }
 
@@ -137,6 +148,8 @@ class BookingWithPopulatedRequest extends Booking {
         requests.hashCode ^
         restrictions.hashCode ^
         status.hashCode ^
+        clubName.hashCode ^
+        courtName.hashCode ^
         title.hashCode;
   }
 
@@ -154,6 +167,8 @@ class BookingWithPopulatedRequest extends Booking {
         BookingFields.requests: requests.map((x) => x.toJson()).toList(),
         BookingFields.restrictions: restrictions,
         BookingFields.status: status.name,
+        BookingFields.clubName: clubName,
+        BookingFields.courtName: courtName,
         BookingFields.title: title,
       };
 
@@ -166,6 +181,8 @@ class BookingWithPopulatedRequest extends Booking {
         courtId: $courtId,
         clubId: $clubId,
         format: $format,
+        clubName: $clubName,
+        courtName: $courtName,
         startTime: $startTime,
         endTime: $endTime,
         private: $private,

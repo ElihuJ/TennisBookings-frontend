@@ -220,6 +220,8 @@ List<Booking> mergeConflictedBookings({required List<Booking> bookings, required
         private: false,
         requests: [],
         mergedBookings: [...existingMergedBookings, booking],
+        clubName: existingBookingToMerge.clubName,
+        courtName: existingBookingToMerge.courtName,
         clubId: existingBookingToMerge.clubId,
       );
       mergedBookings.removeWhere((element) => element.id == existingBookingToMerge.id);

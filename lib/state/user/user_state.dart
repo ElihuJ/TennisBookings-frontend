@@ -8,6 +8,7 @@ import '../../global_types/index.dart';
 import '../../models/index.dart';
 import './index.dart';
 
+final _defaultId = getUuid();
 const _defaultName = 'Problem loading user';
 const _defaultEmail = 'email';
 
@@ -76,7 +77,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
   factory User.fromJson(FirestoreResponse json) {
     try {
       // * ================================== Required Props ==================================
-      final uid = verifyRequiredProp<String>(prop: json[UserFields.uid], propName: UserFields.uid, defaultValue: defaultId);
+      final uid = verifyRequiredProp<String>(prop: json[UserFields.uid], propName: UserFields.uid, defaultValue: _defaultId);
       final accountCreationDate =
           verifyRequiredProp<int>(prop: json[UserFields.accountCreationDate], propName: UserFields.accountCreationDate, defaultValue: 0);
       final bookingsRaw = verifyRequiredProp<List>(prop: json[UserFields.bookings], propName: UserFields.bookings, defaultValue: []);
@@ -84,7 +85,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       final email = verifyRequiredProp<String>(prop: json[UserFields.email], propName: UserFields.email, defaultValue: _defaultEmail);
       final genderRaw = verifyRequiredProp<String>(prop: json[UserFields.gender], propName: UserFields.gender, defaultValue: Gender.unknown.name);
       final lastLogin = verifyRequiredProp<int>(prop: json[UserFields.lastLogin], propName: UserFields.lastLogin, defaultValue: 0);
-      final name = verifyRequiredProp<String>(prop: json[UserFields.name], propName: UserFields.name, defaultValue: defaultName);
+      final name = verifyRequiredProp<String>(prop: json[UserFields.name], propName: UserFields.name, defaultValue: _defaultName);
       final utrVerified = verifyRequiredProp<bool>(prop: json[UserFields.utrVerified], propName: UserFields.utrVerified, defaultValue: false);
       final photoUrl = verifyRequiredProp<String>(prop: json[UserFields.photoUrl], propName: UserFields.photoUrl, defaultValue: '');
       final membershipsRaw = verifyRequiredProp<List>(prop: json[UserFields.memberships], propName: UserFields.memberships, defaultValue: []);

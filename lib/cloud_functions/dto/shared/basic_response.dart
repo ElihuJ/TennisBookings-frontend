@@ -32,7 +32,7 @@ class BasicResponse {
           responseStatus: responseStatus,
         );
       }
-      throw Exception('Error parsing CreateBookingResponse: $e \n\n $map');
+      throw Exception('Error parsing BasicResponse: $e \n\n $map');
     }
   }
 

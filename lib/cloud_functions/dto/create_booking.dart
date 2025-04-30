@@ -4,13 +4,11 @@ import 'index.dart';
 
 class CreateBookingPayload implements APIPayload {
   final Booking booking;
-  final String clubId;
   final bool isOpenBooking;
   static final endpoint = 'createBooking';
 
   CreateBookingPayload({
     required this.booking,
-    required this.clubId,
     required this.isOpenBooking,
   });
 
@@ -18,14 +16,13 @@ class CreateBookingPayload implements APIPayload {
   Map<String, dynamic> toJson() {
     return {
       'booking': booking.toJson(),
-      'clubId': clubId,
       'isOpenBooking': isOpenBooking,
     };
   }
 
   @override
   String toString() {
-    return 'CreateBookingPayload{booking: $booking, clubId: $clubId, isOpenBooking: $isOpenBooking}';
+    return 'CreateBookingPayload{booking: $booking, isOpenBooking: $isOpenBooking}';
   }
 }
 

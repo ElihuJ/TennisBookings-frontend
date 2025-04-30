@@ -53,7 +53,7 @@ class ActionInviteResponse extends BasicResponse {
       final response = BasicResponse.fromJson(map);
       return ActionInviteResponse(response: response);
     } catch (e) {
-      throw Exception('Error parsing CreateBookingResponse: $e \n\n $map');
+      throw Exception('Error parsing ActionInviteResponse: $e \n\n $map');
     }
   }
 }

@@ -4,8 +4,10 @@ import '../../global_helpers/index.dart';
 import '../../global_types/index.dart';
 import '../index.dart';
 
-final defaultId = getUuid();
-final defaultName = 'Problem loading Booking';
+final _defaultId = getUuid();
+final _defaultName = 'Problem loading Booking';
+final _defaultClubName = 'Problem loading Club Name';
+final _defaultCourtName = 'Problem loading Court Name';
 
 class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId {
   @override
@@ -20,6 +22,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
   final String ownerId;
   final List<BookingRequest> requests;
   final BookingRestrictions? restrictions;
+  final String clubName;
+  final String courtName;
   final BookingStatus status;
   final String title;
   final List<Booking> mergedBookings; // * Used for calendar view ONLY FRONTEND. No DB
@@ -40,6 +44,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     required this.requests,
     this.restrictions,
     required this.status,
+    required this.clubName,
+    required this.courtName,
     required this.title,
     this.mergedBookings = const [],
   }) : super({
@@ -56,38 +62,46 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
           BookingFields.restrictions: restrictions,
           BookingFields.status: status,
           BookingFields.title: title,
+          BookingFields.clubName: clubName,
+          BookingFields.courtName: courtName,
         });
 
   Booking.empty()
       : this(
-          id: defaultId,
+          id: _defaultId,
           confirmedPlayerIds: [],
-          courtId: defaultId,
-          clubId: defaultId,
+          courtId: _defaultId,
+          clubId: _defaultId,
           format: BookingFormat.singles,
           startTime: 0,
           endTime: 0,
           private: false,
-          ownerId: defaultId,
+          ownerId: _defaultId,
           requests: [],
           restrictions: null,
           status: BookingStatus.open,
-          title: defaultName,
+          title: _defaultName,
+          clubName: _defaultClubName,
+          courtName: _defaultCourtName,
         );
 
   factory Booking.fromJson(Map<String, dynamic> json) {
     try {
       // * Verify required props
-      final id = verifyRequiredProp<String>(prop: json[BookingFields.id], propName: BookingFields.id, defaultValue: defaultId);
+      final id = verifyRequiredProp<String>(prop: json[BookingFields.id], propName: BookingFields.id, defaultValue: _defaultId);
       final confirmedPlayerIdsRaw =
           verifyRequiredProp<List>(prop: json[BookingFields.confirmedPlayerIds], propName: BookingFields.confirmedPlayerIds, defaultValue: []);
-      final courtId = verifyRequiredProp<String>(prop: json[BookingFields.courtId], propName: BookingFields.courtId, defaultValue: defaultId);
-      final clubId = verifyRequiredProp<String>(prop: json[BookingFields.clubId], propName: BookingFields.clubId, defaultValue: defaultId);
+      final courtId = verifyRequiredProp<String>(prop: json[BookingFields.courtId], propName: BookingFields.courtId, defaultValue: _defaultId);
+      final clubId = verifyRequiredProp<String>(prop: json[BookingFields.clubId], propName: BookingFields.clubId, defaultValue: _defaultId);
       final startTime = verifyRequiredProp<int>(prop: json[BookingFields.startTime], propName: BookingFields.startTime, defaultValue: 0);
       final endTime = verifyRequiredProp<int>(prop: json[BookingFields.endTime], propName: BookingFields.endTime, defaultValue: 0);
       final private = verifyRequiredProp<bool>(prop: json[BookingFields.private], propName: BookingFields.private, defaultValue: false);
-      final ownerId = verifyRequiredProp<String>(prop: json[BookingFields.ownerId], propName: BookingFields.ownerId, defaultValue: defaultId);
-      final title = verifyRequiredProp<String>(prop: json[BookingFields.title], propName: BookingFields.title, defaultValue: defaultName);
+      final ownerId = verifyRequiredProp<String>(prop: json[BookingFields.ownerId], propName: BookingFields.ownerId, defaultValue: _defaultId);
+      final title = verifyRequiredProp<String>(prop: json[BookingFields.title], propName: BookingFields.title, defaultValue: _defaultName);
+      final clubName =
+          verifyRequiredProp<String>(prop: json[BookingFields.clubName], propName: BookingFields.clubName, defaultValue: _defaultClubName);
+      final courtName =
+          verifyRequiredProp<String>(prop: json[BookingFields.courtName], propName: BookingFields.courtName, defaultValue: _defaultCourtName);
 
       final List<BookingRequest> requests =
           json[BookingFields.requests] != null ? List<BookingRequest>.from(json[BookingFields.requests].map((x) => BookingRequest.fromJson(x))) : [];
@@ -114,6 +128,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         restrictions: restrictions,
         status: status,
         title: title,
+        clubName: clubName,
+        courtName: courtName,
       );
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING BOOKING', DebugLevel.error);
@@ -140,6 +156,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     BookingRestrictions? restrictions,
     BookingStatus? status,
     String? title,
+    String? clubName,
+    String? courtName,
   }) {
     return Booking(
       id: id ?? this.id,
@@ -155,6 +173,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
       restrictions: restrictions ?? this.restrictions,
       status: status ?? this.status,
       title: title ?? this.title,
+      clubName: clubName ?? this.clubName,
+      courtName: courtName ?? this.courtName,
     );
   }
 
@@ -208,6 +228,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         BookingFields.requests: requests.map((x) => x.toJson()).toList(),
         BookingFields.restrictions: restrictions?.toJson(),
         BookingFields.status: status.name,
+        BookingFields.clubName: clubName,
+        BookingFields.courtName: courtName,
         BookingFields.title: title,
       };
 }

@@ -111,11 +111,11 @@ class _BookingDetails extends StatelessWidget {
           ),
           _DetailRow(
             label: 'From',
-            value: prettyDateLocalWithTimeFromEpoch(booking.from),
+            value: prettyDateLocalWithTimeFromEpoch(booking.startTime),
           ),
           _DetailRow(
             label: 'To',
-            value: prettyDateLocalWithTimeFromEpoch(booking.to),
+            value: prettyDateLocalWithTimeFromEpoch(booking.endTime),
           ),
         ],
       ),

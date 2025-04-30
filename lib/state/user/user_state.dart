@@ -94,7 +94,13 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       final utrRating = verifyNotRequiredProp<double?>(prop: json[UserFields.utrRating], propName: UserFields.utrRating);
 
       // * Transformations
-      final bookings = List<DocumentReference<Map<String, dynamic>>>.from(bookingsRaw);
+      List<DocumentReference<Map<String, dynamic>>> bookings;
+      try {
+        bookings = List<DocumentReference<Map<String, dynamic>>>.from(bookingsRaw);
+      } catch (e) {
+        e.tbLogger('ERROR CONVERTING BOOKINGS', DebugLevel.warning);
+        bookings = [];
+      }
       final gender = Gender.values.firstWhere(
         (g) => g.name == genderRaw,
         orElse: () => Gender.unknown,

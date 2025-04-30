@@ -6,38 +6,38 @@ import '../index.dart';
 
 class GeneralUnavailability extends MapView<String, dynamic> implements FirestoreModel {
   final DayOfTheWeek dayOfTheWeek;
-  final int from;
-  final int to;
+  final int startTime;
+  final int endTime;
   @override
   final List<String> allFields = GeneralUnavailabilityFields.allFields;
 
   GeneralUnavailability({
     required this.dayOfTheWeek,
-    required this.from,
-    required this.to,
+    required this.startTime,
+    required this.endTime,
   }) : super({
           GeneralUnavailabilityFields.dayOfTheWeek: dayOfTheWeek,
-          GeneralUnavailabilityFields.from: from,
-          GeneralUnavailabilityFields.to: to,
+          GeneralUnavailabilityFields.startTime: startTime,
+          GeneralUnavailabilityFields.endTime: endTime,
         });
 
   GeneralUnavailability.empty()
       : this(
           dayOfTheWeek: DayOfTheWeek.monday,
-          from: 0,
-          to: 0,
+          startTime: 0,
+          endTime: 0,
         );
 
   @override
   GeneralUnavailability copyWith({
     DayOfTheWeek? dayOfTheWeek,
-    int? from,
-    int? to,
+    int? startTime,
+    int? endTime,
   }) {
     return GeneralUnavailability(
       dayOfTheWeek: dayOfTheWeek ?? this.dayOfTheWeek,
-      from: from ?? this.from,
-      to: to ?? this.to,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
     );
   }
 
@@ -45,8 +45,8 @@ class GeneralUnavailability extends MapView<String, dynamic> implements Firestor
   FirestorePayload toJson() {
     return {
       GeneralUnavailabilityFields.dayOfTheWeek: dayOfTheWeek.toString(),
-      GeneralUnavailabilityFields.from: from,
-      GeneralUnavailabilityFields.to: to,
+      GeneralUnavailabilityFields.startTime: startTime,
+      GeneralUnavailabilityFields.endTime: endTime,
     };
   }
 
@@ -54,13 +54,15 @@ class GeneralUnavailability extends MapView<String, dynamic> implements Firestor
     try {
       // * Verify required props
 
-      final from = verifyRequiredProp<int>(prop: json[GeneralUnavailabilityFields.from], propName: GeneralUnavailabilityFields.from, defaultValue: 0);
-      final to = verifyRequiredProp<int>(prop: json[GeneralUnavailabilityFields.to], propName: GeneralUnavailabilityFields.to, defaultValue: 0);
+      final startTime = verifyRequiredProp<int>(
+          prop: json[GeneralUnavailabilityFields.startTime], propName: GeneralUnavailabilityFields.startTime, defaultValue: 0);
+      final endTime =
+          verifyRequiredProp<int>(prop: json[GeneralUnavailabilityFields.endTime], propName: GeneralUnavailabilityFields.endTime, defaultValue: 0);
       final dayOfTheWeek = DayOfTheWeek.fromString(json[GeneralUnavailabilityFields.dayOfTheWeek]);
 
       verifyProps(json, GeneralUnavailabilityFields.allFields);
 
-      return GeneralUnavailability(dayOfTheWeek: dayOfTheWeek, from: from, to: to);
+      return GeneralUnavailability(dayOfTheWeek: dayOfTheWeek, startTime: startTime, endTime: endTime);
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING GENERAL UNAVAILABILITY', DebugLevel.error);
       return GeneralUnavailability.empty();

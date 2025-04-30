@@ -72,7 +72,7 @@ class BookingContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bookingLengthEpoch = booking.to - booking.from;
+    final bookingLengthEpoch = booking.endTime - booking.startTime;
     final bookingLessThanAnHour = bookingLengthEpoch < 3600;
     final fontSize = bookingLessThanAnHour ? 10.0 : 14.0;
 

@@ -23,8 +23,8 @@ class BookingWithPopulatedRequest extends Booking {
     required super.courtId,
     required super.clubId,
     required super.format,
-    required super.from,
-    required super.to,
+    required super.startTime,
+    required super.endTime,
     required super.private,
     required super.ownerId,
     super.restrictions,
@@ -44,8 +44,8 @@ class BookingWithPopulatedRequest extends Booking {
           courtId: _defaultId,
           clubId: _defaultId,
           format: BookingFormat.singles,
-          from: 0,
-          to: 0,
+          startTime: 0,
+          endTime: 0,
           private: false,
           ownerId: defaultId,
           restrictions: null,
@@ -62,8 +62,8 @@ class BookingWithPopulatedRequest extends Booking {
           verifyRequiredProp<List>(prop: json[BookingFields.confirmedPlayerIds], propName: BookingFields.confirmedPlayerIds, defaultValue: []);
       final courtId = verifyRequiredProp<String>(prop: json[BookingFields.courtId], propName: BookingFields.courtId, defaultValue: defaultId);
       final clubId = verifyRequiredProp<String>(prop: json[BookingFields.clubId], propName: BookingFields.clubId, defaultValue: defaultId);
-      final from = verifyRequiredProp<int>(prop: json[BookingFields.from], propName: BookingFields.from, defaultValue: 0);
-      final to = verifyRequiredProp<int>(prop: json[BookingFields.to], propName: BookingFields.to, defaultValue: 0);
+      final startTime = verifyRequiredProp<int>(prop: json[BookingFields.startTime], propName: BookingFields.startTime, defaultValue: 0);
+      final endTime = verifyRequiredProp<int>(prop: json[BookingFields.endTime], propName: BookingFields.endTime, defaultValue: 0);
       final private = verifyRequiredProp<bool>(prop: json[BookingFields.private], propName: BookingFields.private, defaultValue: false);
       final ownerId = verifyRequiredProp<String>(prop: json[BookingFields.ownerId], propName: BookingFields.ownerId, defaultValue: defaultId);
       final title = verifyRequiredProp<String>(prop: json[BookingFields.title], propName: BookingFields.title, defaultValue: _defaultName);
@@ -87,8 +87,8 @@ class BookingWithPopulatedRequest extends Booking {
         courtId: courtId,
         clubId: clubId,
         format: format,
-        from: from,
-        to: to,
+        startTime: startTime,
+        endTime: endTime,
         private: private,
         ownerId: ownerId,
         requests: populatedRequests, // Use the extended list type
@@ -113,8 +113,8 @@ class BookingWithPopulatedRequest extends Booking {
         other.courtId == courtId &&
         other.clubId == clubId &&
         other.format == format &&
-        other.from == from &&
-        other.to == to &&
+        other.startTime == startTime &&
+        other.endTime == endTime &&
         other.private == private &&
         other.ownerId == ownerId &&
         other.requests == requests &&
@@ -130,8 +130,8 @@ class BookingWithPopulatedRequest extends Booking {
         courtId.hashCode ^
         clubId.hashCode ^
         format.hashCode ^
-        from.hashCode ^
-        to.hashCode ^
+        startTime.hashCode ^
+        endTime.hashCode ^
         private.hashCode ^
         ownerId.hashCode ^
         requests.hashCode ^
@@ -147,8 +147,8 @@ class BookingWithPopulatedRequest extends Booking {
         BookingFields.courtId: courtId,
         BookingFields.clubId: clubId,
         BookingFields.format: format.name,
-        BookingFields.from: from,
-        BookingFields.to: to,
+        BookingFields.startTime: startTime,
+        BookingFields.endTime: endTime,
         BookingFields.private: private,
         BookingFields.ownerId: ownerId,
         BookingFields.requests: requests.map((x) => x.toJson()).toList(),
@@ -166,8 +166,8 @@ class BookingWithPopulatedRequest extends Booking {
         courtId: $courtId,
         clubId: $clubId,
         format: $format,
-        from: $from,
-        to: $to,
+        startTime: $startTime,
+        endTime: $endTime,
         private: $private,
         ownerId: $ownerId,
         requests: $requests,

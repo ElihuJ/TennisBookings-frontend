@@ -14,8 +14,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
   final String courtId;
   final String clubId;
   final BookingFormat format;
-  final int from;
-  final int to;
+  final int startTime;
+  final int endTime;
   final bool private;
   final String ownerId;
   final List<BookingRequest> requests;
@@ -33,8 +33,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     required this.courtId,
     required this.clubId,
     required this.format,
-    required this.from,
-    required this.to,
+    required this.startTime,
+    required this.endTime,
     required this.private,
     required this.ownerId,
     required this.requests,
@@ -48,8 +48,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
           BookingFields.courtId: courtId,
           BookingFields.clubId: clubId,
           BookingFields.format: format,
-          BookingFields.from: from,
-          BookingFields.to: to,
+          BookingFields.startTime: startTime,
+          BookingFields.endTime: endTime,
           BookingFields.private: private,
           BookingFields.ownerId: ownerId,
           BookingFields.requests: requests,
@@ -65,8 +65,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
           courtId: defaultId,
           clubId: defaultId,
           format: BookingFormat.singles,
-          from: 0,
-          to: 0,
+          startTime: 0,
+          endTime: 0,
           private: false,
           ownerId: defaultId,
           requests: [],
@@ -83,8 +83,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
           verifyRequiredProp<List>(prop: json[BookingFields.confirmedPlayerIds], propName: BookingFields.confirmedPlayerIds, defaultValue: []);
       final courtId = verifyRequiredProp<String>(prop: json[BookingFields.courtId], propName: BookingFields.courtId, defaultValue: defaultId);
       final clubId = verifyRequiredProp<String>(prop: json[BookingFields.clubId], propName: BookingFields.clubId, defaultValue: defaultId);
-      final from = verifyRequiredProp<int>(prop: json[BookingFields.from], propName: BookingFields.from, defaultValue: 0);
-      final to = verifyRequiredProp<int>(prop: json[BookingFields.to], propName: BookingFields.to, defaultValue: 0);
+      final startTime = verifyRequiredProp<int>(prop: json[BookingFields.startTime], propName: BookingFields.startTime, defaultValue: 0);
+      final endTime = verifyRequiredProp<int>(prop: json[BookingFields.endTime], propName: BookingFields.endTime, defaultValue: 0);
       final private = verifyRequiredProp<bool>(prop: json[BookingFields.private], propName: BookingFields.private, defaultValue: false);
       final ownerId = verifyRequiredProp<String>(prop: json[BookingFields.ownerId], propName: BookingFields.ownerId, defaultValue: defaultId);
       final title = verifyRequiredProp<String>(prop: json[BookingFields.title], propName: BookingFields.title, defaultValue: defaultName);
@@ -106,8 +106,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         courtId: courtId,
         clubId: clubId,
         format: format,
-        from: from,
-        to: to,
+        startTime: startTime,
+        endTime: endTime,
         private: private,
         ownerId: ownerId,
         requests: requests,
@@ -132,8 +132,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     String? courtId,
     String? clubId,
     BookingFormat? format,
-    int? from,
-    int? to,
+    int? startTime,
+    int? endTime,
     bool? private,
     String? ownerId,
     List<BookingRequest>? requests,
@@ -147,8 +147,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
       courtId: courtId ?? this.courtId,
       clubId: clubId ?? this.clubId,
       format: format ?? this.format,
-      from: from ?? this.from,
-      to: to ?? this.to,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
       private: private ?? this.private,
       ownerId: ownerId ?? this.ownerId,
       requests: requests ?? this.requests,
@@ -167,8 +167,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         other.courtId == courtId &&
         other.clubId == clubId &&
         other.format == format &&
-        other.from == from &&
-        other.to == to &&
+        other.startTime == startTime &&
+        other.endTime == endTime &&
         other.private == private &&
         other.ownerId == ownerId &&
         other.requests == requests &&
@@ -184,8 +184,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         courtId.hashCode ^
         clubId.hashCode ^
         format.hashCode ^
-        from.hashCode ^
-        to.hashCode ^
+        startTime.hashCode ^
+        endTime.hashCode ^
         private.hashCode ^
         ownerId.hashCode ^
         requests.hashCode ^
@@ -201,8 +201,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         BookingFields.courtId: courtId,
         BookingFields.clubId: clubId,
         BookingFields.format: format.name,
-        BookingFields.from: from,
-        BookingFields.to: to,
+        BookingFields.startTime: startTime,
+        BookingFields.endTime: endTime,
         BookingFields.private: private,
         BookingFields.ownerId: ownerId,
         BookingFields.requests: requests.map((x) => x.toJson()).toList(),

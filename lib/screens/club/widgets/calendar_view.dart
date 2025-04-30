@@ -66,10 +66,10 @@ class _CalendarView extends ConsumerState<CalendarView> {
         title: booking.title,
         titleStyle: const TextStyle(color: Colors.white),
         description: booking.format.name,
-        startTime: epochSecondsToLocalDateTime(booking.from),
-        endTime: epochSecondsToLocalDateTime(booking.to),
+        startTime: epochSecondsToLocalDateTime(booking.startTime),
+        endTime: epochSecondsToLocalDateTime(booking.endTime),
         color: Colors.red,
-        date: epochSecondsToLocalDateTime(booking.from),
+        date: epochSecondsToLocalDateTime(booking.startTime),
         event: booking,
       );
     }).toList();
@@ -151,7 +151,7 @@ List<BookedTimeEpoch> getConfirmedBookedTimes(List<Booking> bookings) {
   List<BookedTimeEpoch> bookedTimes = [];
   for (var booking in bookings) {
     if (booking.status == BookingStatus.confirmed) {
-      bookedTimes.add(BookedTimeEpoch(booking.from, booking.to));
+      bookedTimes.add(BookedTimeEpoch(booking.startTime, booking.endTime));
     }
   }
   return bookedTimes;
@@ -173,15 +173,15 @@ List<Booking> replacePublicForPrivate(List<Booking> publicBookings, List<Booking
 Booking? checkForConflict({required List<Booking> mergedBookings, required Booking bookingToCompare}) {
   Booking? existingBookingToMerge;
   for (final existingBooking in mergedBookings) {
-    if (bookingToCompare.from >= existingBooking.from && bookingToCompare.from < existingBooking.to) {
+    if (bookingToCompare.startTime >= existingBooking.startTime && bookingToCompare.startTime < existingBooking.endTime) {
       existingBookingToMerge = existingBooking;
       break;
     }
-    if (bookingToCompare.to > existingBooking.from && bookingToCompare.to <= existingBooking.to) {
+    if (bookingToCompare.endTime > existingBooking.startTime && bookingToCompare.endTime <= existingBooking.endTime) {
       existingBookingToMerge = existingBooking;
       break;
     }
-    if (bookingToCompare.from < existingBooking.from && bookingToCompare.to > existingBooking.to) {
+    if (bookingToCompare.startTime < existingBooking.startTime && bookingToCompare.endTime > existingBooking.endTime) {
       existingBookingToMerge = existingBooking;
       break;
     }
@@ -190,11 +190,11 @@ Booking? checkForConflict({required List<Booking> mergedBookings, required Booki
 }
 
 int getEarliestStart(Booking booking1, Booking booking2) {
-  return booking1.from < booking2.from ? booking1.from : booking2.from;
+  return booking1.startTime < booking2.startTime ? booking1.startTime : booking2.startTime;
 }
 
 int getLatestEnd(Booking booking1, Booking booking2) {
-  return booking1.to > booking2.to ? booking1.to : booking2.to;
+  return booking1.endTime > booking2.endTime ? booking1.endTime : booking2.endTime;
 }
 
 List<Booking> mergeConflictedBookings({required List<Booking> bookings, required User user}) {
@@ -209,8 +209,8 @@ List<Booking> mergeConflictedBookings({required List<Booking> bookings, required
 
       final mergedBooking = Booking(
         id: existingBookingToMerge.id,
-        from: earliestStart,
-        to: latestEnd,
+        startTime: earliestStart,
+        endTime: latestEnd,
         title: 'Multiple Options (Click for more details)',
         ownerId: '',
         status: BookingStatus.open,

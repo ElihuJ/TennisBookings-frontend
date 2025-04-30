@@ -68,12 +68,12 @@ class CourtFields {
 
 class GeneralUnavailabilityFields {
   static const String dayOfTheWeek = 'dayOfTheWeek';
-  static const String from = 'from';
-  static const String to = 'to';
+  static const String startTime = 'startTime';
+  static const String endTime = 'endTime';
 
   static const List<String> allFields = [
     dayOfTheWeek,
-    from,
-    to,
+    startTime,
+    endTime,
   ];
 }

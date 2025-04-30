@@ -2,8 +2,8 @@ class BookingFields {
   static const String id = 'id';
   static const String courtId = 'courtId';
   static const String ownerId = 'ownerId';
-  static const String from = 'from';
-  static const String to = 'to';
+  static const String startTime = 'startTime';
+  static const String endTime = 'endTime';
   static const String status = 'status';
   static const String restrictions = 'restrictions';
   static const String confirmedPlayerIds = 'confirmedPlayerIds';
@@ -17,8 +17,8 @@ class BookingFields {
     id,
     courtId,
     ownerId,
-    from,
-    to,
+    startTime,
+    endTime,
     status,
     restrictions,
     confirmedPlayerIds,

@@ -99,8 +99,8 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
         .collection(CourtsSubCollections.courts)
         .doc(court.id)
         .collection(BookingsSubCollections.publicBookings)
-        .where(BookingFields.from, isGreaterThan: startDateEpoch)
-        .where(BookingFields.to, isLessThan: endDateEpoch)
+        .where(BookingFields.startTime, isGreaterThan: startDateEpoch)
+        .where(BookingFields.endTime, isLessThan: endDateEpoch)
         .where(
       BookingFields.status,
       whereIn: [BookingStatus.confirmed.name, BookingStatus.open.name],

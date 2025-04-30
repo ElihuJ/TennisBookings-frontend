@@ -25,8 +25,8 @@ class BookingDetailsModal extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fromInMilliseconds = booking.from;
-    final toInMilliseconds = booking.to;
+    final fromInMilliseconds = booking.startTime;
+    final toInMilliseconds = booking.endTime;
 
     final alertDialog = AlertDialog(
       title: PrettyText(
@@ -132,7 +132,7 @@ _getOpenForInvitesActions({
   final userId = widgetRef.watch(userProvider).uid;
 
   final requestAlreadySent = booking.requests.firstWhereOrNull((request) => request.playerId == userId) != null;
-  final inThePast = isInThePast(booking.from);
+  final inThePast = isInThePast(booking.startTime);
 
   final onTapAction = requestAlreadySent || inThePast
       ? null

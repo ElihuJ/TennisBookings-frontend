@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/global_helpers/logs.dart';
 
 import '../../cloud_functions/index.dart';
 import '../../cloud_functions/types.dart';
@@ -61,7 +62,7 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
     }
 
     _bookings ??= [];
-    final hasInvites = _bookings?.any((booking) => booking.requests.isNotEmpty);
+    final hasInvites = _bookings!.any((booking) => booking.requests.isNotEmpty);
 
     return EventfulWidget(
       child: PopScope(
@@ -76,7 +77,7 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     const PrettyText(
                       'My Invites',
                       style: TextStyle(
@@ -84,9 +85,9 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     if (hasInvites == false)
-                      Flexible(child: _NoInvitesView())
+                      _NoInvitesView()
                     else
                       ListView.builder(
                         shrinkWrap: true,

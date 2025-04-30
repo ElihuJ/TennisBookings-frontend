@@ -1,9 +1,8 @@
 import 'dart:collection';
 
-import 'package:tennisbookings/models/index.dart';
-
 import '../../global_helpers/index.dart';
 import '../../global_types/index.dart';
+import '../../models/index.dart';
 
 final _defaultId = getUuid();
 

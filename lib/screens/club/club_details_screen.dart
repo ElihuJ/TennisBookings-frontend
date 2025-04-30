@@ -1,14 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_widgets/containers/bordered_box.dart';
-import 'package:tennisbookings/global_widgets/header/header.dart';
-import 'package:tennisbookings/state/clubs/clubs_provider.dart';
-import 'package:tennisbookings/state/clubs/clubs_state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../global_widgets/containers/bordered_box.dart';
+import '../../global_widgets/header/header.dart';
 import '../../global_widgets/index.dart';
 import '../../routes/index.dart';
+import '../../state/clubs/clubs_provider.dart';
+import '../../state/clubs/clubs_state.dart';
 
 class ClubDetailsScreen extends HookConsumerWidget {
   const ClubDetailsScreen({super.key, required this.clubSelectedQueryParams});

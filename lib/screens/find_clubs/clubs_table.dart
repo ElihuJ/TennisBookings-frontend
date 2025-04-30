@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/global_widgets/index.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../global_widgets/index.dart';
 import '../../state/index.dart';
 import '../../theme/colors.dart';
 import '../club/club_details_screen.dart';

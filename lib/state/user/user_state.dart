@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import '../../global_helpers/index.dart';
 import '../../global_types/index.dart';
 import '../../models/index.dart';
-import './index.dart';
+import 'index.dart';
 
 final _defaultId = getUuid();
 const _defaultName = 'Problem loading user';

@@ -15,7 +15,8 @@ class HomeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final List<String> imgList = [amanda1Png, elihu1jpeg, anthony1Png, elihu2jpg, elihu3jpeg, matt1jpg];
+    final screenWidth = MediaQuery.of(context).size.width;
+    final smallScreen = screenWidth < 600;
 
     return EventfulWidget(
       child: PopScope(
@@ -29,20 +30,6 @@ class HomeScreen extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
-                // SizedBox(
-                //   height: MediaQuery.of(context).size.height * 0.5,
-                //   child: CarouselSlider(
-                //     options: CarouselOptions(
-                //       autoPlay: true,
-                //       enlargeCenterPage: true,
-                //     ),
-                //     items: imgList
-                //         .map((item) => Center(
-                //               child: Image.asset(item, fit: BoxFit.cover, width: 500),
-                //             ))
-                //         .toList(),
-                //   ),
-                // ),
                 SizedBox(height: 20),
                 DecoratedBox(
                   decoration: BoxDecoration(
@@ -56,7 +43,7 @@ class HomeScreen extends HookConsumerWidget {
                     child: Text(
                       'GET A COURT \nFIND A PARTNER\nPLAY',
                       style: TextStyle(
-                        fontSize: 80,
+                        fontSize: smallScreen ? 20 : 60,
                         color: AppColors.almostWhite,
                       ),
                       textAlign: TextAlign.center,

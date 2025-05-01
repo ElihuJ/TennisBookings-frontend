@@ -18,8 +18,11 @@ class OptionsDrawer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final fbNotifier = ref.read(firebaseAuthProvider.notifier);
     final clubNotifier = ref.read(clubsProvider.notifier);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final smallScreen = screenWidth < 600;
+
     return Container(
-      width: 250,
+      width: smallScreen ? 100 : 300,
       padding: const EdgeInsets.all(30.0),
       decoration: BoxDecoration(
         color: AppColors.primaryGreen.withValues(alpha: 0.5),
@@ -31,7 +34,7 @@ class OptionsDrawer extends HookConsumerWidget {
         children: [
           ListTile(
             leading: Icon(Icons.person),
-            title: const Text('Profile Details'),
+            title: smallScreen ? null : const Text('Profile Details'),
             onTap: () => toggleSelectedOption(ProfileOptions.profileDetails),
           ),
           Divider(color: AppColors.primaryGreen),
@@ -43,13 +46,13 @@ class OptionsDrawer extends HookConsumerWidget {
           // Divider(color: AppColors.primaryGreen),
           ListTile(
             leading: Icon(Icons.card_membership),
-            title: const Text('Memberships'),
+            title: smallScreen ? null : const Text('Memberships'),
             onTap: () => toggleSelectedOption(ProfileOptions.memberships),
           ),
           Divider(color: AppColors.primaryGreen),
           ListTile(
             leading: Icon(Icons.exit_to_app),
-            title: const Text('Logout'),
+            title: smallScreen ? null : const Text('Logout'),
             onTap: () async {
               await fbNotifier.logout();
               clubNotifier.clearPrivateBookings();

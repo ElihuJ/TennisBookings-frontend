@@ -15,3 +15,7 @@ double scaleText(BuildContext context, {double maxTextScaleFactor = 3}) {
   double val = (width / 1400) * maxTextScaleFactor;
   return max(1, min(val, maxTextScaleFactor));
 }
+
+bool isMobile(BuildContext context) {
+  return MediaQuery.of(context).size.width < 600;
+}

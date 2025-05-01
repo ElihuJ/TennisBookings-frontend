@@ -51,7 +51,7 @@ class EmailLoginScreenState extends State<EmailLoginScreen> {
       body: EventfulWidget(
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: widthPercent(percentage: 30, context), vertical: heightPercent(percentage: 1, context)),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

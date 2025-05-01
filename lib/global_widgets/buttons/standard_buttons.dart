@@ -98,6 +98,7 @@ class TbTextPlainButton extends StatelessWidget {
   final Color textColor;
   final double height;
   final double width;
+  final double fontSize;
 
   const TbTextPlainButton({
     super.key,
@@ -106,6 +107,7 @@ class TbTextPlainButton extends StatelessWidget {
     this.textColor = AppColors.white,
     this.height = 60,
     this.width = 140,
+    this.fontSize = 14,
   });
 
   @override
@@ -121,7 +123,7 @@ class TbTextPlainButton extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
-        style: TextStyle(color: textColor),
+        style: TextStyle(color: textColor, fontSize: fontSize),
       ),
     );
   }

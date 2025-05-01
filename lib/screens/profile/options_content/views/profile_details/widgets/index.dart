@@ -18,8 +18,11 @@ class FieldWithPencil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final smallScreen = screenWidth < 600;
+
     return Padding(
-      padding: const EdgeInsets.only(right: 40),
+      padding: smallScreen ? const EdgeInsets.only(right: 20) : const EdgeInsets.only(right: 40),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,23 +67,15 @@ class ActionButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          width: 160,
-          height: 80,
-          margin: const EdgeInsets.only(right: 20),
-          child: TbTextButton(
-            onPressed: onCancel,
-            color: AppColors.grey,
-            text: 'Discard',
-          ),
+        TbTextButton(
+          onPressed: onCancel,
+          color: AppColors.grey,
+          text: 'Discard',
         ),
-        SizedBox(
-          width: 160,
-          height: 80,
-          child: TbTextButton(
-            onPressed: onSave,
-            text: 'Save\nchanges',
-          ),
+        SizedBox(width: 20),
+        TbTextButton(
+          onPressed: onSave,
+          text: 'Save\nchanges',
         ),
       ],
     );

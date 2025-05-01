@@ -122,8 +122,6 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
         utrRating: double.tryParse(_utrController.text),
       );
 
-      payload.tbLogger('UpdateProfilePayload');
-
       final result = await cloudFunctions.updateProfile(payload);
       eventNotifier.hideLoading();
       if (result.responseStatus == CFResponseStatus.ok) {

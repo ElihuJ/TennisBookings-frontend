@@ -40,6 +40,14 @@ class _ClubsTableState extends State<ClubsTable> {
   @override
   Widget build(BuildContext context) {
     final filteredClubs = widget.clubs.where((club) => club.name.toLowerCase().contains(searchQuery.toLowerCase())).toList();
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+    final isTablet = screenWidth >= 600 && screenWidth < 1200;
+    final fontSize = isMobile
+        ? 12.0
+        : isTablet
+            ? 14.0
+            : 16.0;
 
     return SizedBox(
       height: double.infinity,
@@ -47,7 +55,6 @@ class _ClubsTableState extends State<ClubsTable> {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 30),
-            width: 700,
             child: TextField(
               decoration: InputDecoration(
                 filled: true,
@@ -73,7 +80,7 @@ class _ClubsTableState extends State<ClubsTable> {
                 ),
                 floatingLabelStyle: TextStyle(
                   color: AppColors.primaryGreen, // * Change color when focused
-                  fontSize: 16,
+                  fontSize: fontSize,
                 ),
               ),
               onChanged: (value) {
@@ -167,10 +174,13 @@ class _RowCellText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final smallScreen = screenWidth < 600;
+    final fontSize = smallScreen ? 12.0 : 16.0;
     return MouseRegion(
       cursor: isAddress ? SystemMouseCursors.click : SystemMouseCursors.basic,
       child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: smallScreen ? const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0) : const EdgeInsets.all(20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -190,7 +200,7 @@ class _RowCellText extends StatelessWidget {
                   child: PrettyText(
                     text,
                     textAlign: TextAlign.center,
-                    fontSize: 14,
+                    fontSize: fontSize,
                   ),
                 ),
             ],
@@ -208,8 +218,11 @@ class _HeaderCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final smallScreen = screenWidth < 600;
+    final fontSize = smallScreen ? 12.0 : 16.0;
     return Container(
-      padding: const EdgeInsets.all(20.0),
+      padding: smallScreen ? const EdgeInsets.all(12.0) : const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
         color: AppColors.secondaryGreen,
         borderRadius: BorderRadius.only(
@@ -221,10 +234,10 @@ class _HeaderCell extends StatelessWidget {
         text,
         textAlign: TextAlign.center,
         maxLines: 2,
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.black,
-          fontSize: 16,
+          fontSize: fontSize,
         ),
       ),
     );

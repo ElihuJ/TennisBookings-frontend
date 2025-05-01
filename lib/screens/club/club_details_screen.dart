@@ -46,32 +46,34 @@ class ClubDetailsScreen extends HookConsumerWidget {
         padding: const EdgeInsets.all(20.0),
         width: double.infinity,
         height: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            CircleAvatar(
-              radius: 60,
-              backgroundImage: NetworkImage(clubSelected.clubLogoUrl),
-              backgroundColor: Colors.grey[200],
-            ),
-            const SizedBox(height: 20),
-            Text(
-              clubSelected.name,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87, // Improved contrast for better visibility
-                  ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10),
-            _AddressSection(clubSelected: clubSelected),
-            const SizedBox(height: 40),
-            _ClubDetailsCard(clubSelected: clubSelected),
-            const SizedBox(height: 20),
-            _ContactCard(clubSelected: clubSelected),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              CircleAvatar(
+                radius: 60,
+                backgroundImage: NetworkImage(clubSelected.clubLogoUrl),
+                backgroundColor: Colors.grey[200],
+              ),
+              const SizedBox(height: 20),
+              Text(
+                clubSelected.name,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87, // Improved contrast for better visibility
+                    ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              _AddressSection(clubSelected: clubSelected),
+              const SizedBox(height: 40),
+              _ClubDetailsCard(clubSelected: clubSelected),
+              const SizedBox(height: 20),
+              _ContactCard(clubSelected: clubSelected),
+            ],
+          ),
         ),
       ),
     );

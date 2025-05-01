@@ -87,81 +87,97 @@ class BookingContainer extends StatelessWidget {
 
     final isCoaching = booking.format == BookingFormat.coaching;
 
-    return MouseRegion(
-      cursor: mouseAction,
-      onHover: (event) {},
-      child: GestureDetector(
-        onTap: () => _onTapAction(
-          booking: booking,
-          user: user,
-          bookingAndUserContext: bookingAndUserContext,
-          context: context,
-        ),
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: bookingColor,
-            border: Border.all(
-              color: Colors.black,
-              style: BorderStyle.solid,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxWidth = constraints.maxWidth;
+
+        // ! TODO: This is a bit of a hack, but it works for now. We need to find a better way to do this.
+        final isPhone = maxWidth < 80;
+        final isTablet = maxWidth >= 80 && maxWidth < 120;
+
+        final maxWidthToUse = isPhone
+            ? constraints.maxWidth - 20
+            : isTablet
+                ? constraints.maxWidth - 40
+                : constraints.maxWidth - 60;
+
+        return MouseRegion(
+          cursor: mouseAction,
+          onHover: (event) {},
+          child: GestureDetector(
+            onTap: () => _onTapAction(
+              booking: booking,
+              user: user,
+              bookingAndUserContext: bookingAndUserContext,
+              context: context,
             ),
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: bookingColor,
+                border: Border.all(
+                  color: Colors.black,
+                  style: BorderStyle.solid,
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(
-                      width: 150,
-                      child: PrettyText(
-                        event.title,
-                        style: TextStyle(color: computedTextColor, fontSize: fontSize),
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: maxWidthToUse,
+                          child: PrettyText(
+                            event.title,
+                            style: TextStyle(color: computedTextColor, fontSize: fontSize),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 3,
+                          ),
+                        ),
+                        if (booking.private)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: const Icon(
+                                Icons.lock,
+                                size: 18,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ),
+                        if (isCoaching)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: const Icon(
+                                Icons.sports_tennis,
+                                size: 18,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
-                    if (booking.private)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: const Icon(
-                            Icons.lock,
-                            size: 18,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ),
-                    if (isCoaching)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: const Icon(
-                            Icons.sports_tennis,
-                            size: 18,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ),
+                    const SizedBox(height: 20),
+                    PlayerIcons(
+                      confirmedPlayerIds: confirmedPlayerIds,
+                      booking: booking,
+                      type: PlayerIconsType.row,
+                    ),
                   ],
                 ),
-                SizedBox(height: 20),
-                PlayerIcons(
-                  confirmedPlayerIds: confirmedPlayerIds,
-                  booking: booking,
-                  type: PlayerIconsType.row,
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

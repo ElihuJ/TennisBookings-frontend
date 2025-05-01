@@ -20,34 +20,37 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
     ref.watch(firebaseAuthProvider);
     final currentUser = fb_auth.FirebaseAuth.instance.currentUser;
     final isLoggedIn = currentUser != null && currentUser.emailVerified;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final smallScreen = screenWidth < 600;
 
     return AppBar(
-      leadingWidth: 250,
+      leadingWidth: smallScreen ? 150 : 250,
       toolbarHeight: 80,
       leading: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Spacer(),
+          if (!smallScreen) Spacer(),
           IconButton(
             highlightColor: Colors.transparent,
             hoverColor: Colors.transparent,
             onPressed: () => Navigator.of(context).pushNamed(HomeScreen.route),
-            icon: Image.asset(logoPgn),
+            icon: Image.asset(logoPgn, width: smallScreen ? 90 : 130),
           ),
-          Spacer(),
-          PrettyText(
-            Config.versionString,
-            style: TextStyle(color: Colors.white),
-          ),
+          if (!smallScreen) Spacer(),
+          if (!smallScreen)
+            PrettyText(
+              Config.versionString,
+              style: TextStyle(color: Colors.white),
+            ),
         ],
       ),
       backgroundColor: AppColors.primaryGreen,
       actions: <Widget>[
-        Spacer(),
+        if (!smallScreen) Spacer(),
         if (isLoggedIn) InvitesButtonHeader(),
-        if (isLoggedIn) const SizedBox(width: 20),
+        if (isLoggedIn && !smallScreen) const SizedBox(width: 20),
         BookACourtButtonHeader(),
-        SizedBox(width: 100),
+        SizedBox(width: smallScreen ? 20 : 100),
         Container(
           padding: const EdgeInsets.only(right: 30),
           child: isLoggedIn ? ProfileButton() : LoginRegisterButton(),

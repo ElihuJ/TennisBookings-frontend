@@ -81,17 +81,14 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 18.0),
-                  child: ScheduleHeader(
-                    clubSelected: _clubSelected!,
-                    courts: courts,
-                    courtSelected: _courtSelected!,
-                    setState: (newValue) => setState(() {
-                      _courtSelected = courts.firstWhere((court) => court.id == newValue);
-                      clubsNotifier.loadBookings(_clubSelected!, _courtSelected!, _dateInView, user.uid);
-                    }),
-                  ),
+                ScheduleHeader(
+                  clubSelected: _clubSelected!,
+                  courts: courts,
+                  courtSelected: _courtSelected!,
+                  setState: (newValue) => setState(() {
+                    _courtSelected = courts.firstWhere((court) => court.id == newValue);
+                    clubsNotifier.loadBookings(_clubSelected!, _courtSelected!, _dateInView, user.uid);
+                  }),
                 ),
                 CalendarView(clubSelected: _clubSelected!, courtSelected: _courtSelected!, dateInView: _dateInView, setDateInView: setDateInView),
               ],

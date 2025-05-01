@@ -16,3 +16,9 @@ class AppColors {
   static const Color blueGrey = Color(0xFF607d8b);
   static const Color disabled = Color(0xFFd3cdd7);
 }
+
+class SurfaceColors {
+  static const Color clay = Color(0xFFe8dbc6);
+  static const Color grass = Color(0xFF73DEA5);
+  static const Color hard = Color(0xFF64b1fd);
+}

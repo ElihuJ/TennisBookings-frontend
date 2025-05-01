@@ -10,6 +10,7 @@ import '../../../state/index.dart';
 import '../../../theme/index.dart';
 import 'index.dart';
 
+// * This is the container that is displayed while in the main calendar view
 class EventContainer extends HookConsumerWidget {
   const EventContainer({super.key, required this.events, required this.club});
 

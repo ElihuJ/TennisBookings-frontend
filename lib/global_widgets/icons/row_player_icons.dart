@@ -11,7 +11,7 @@ enum SourceOfPlayerData {
   firestore,
 }
 
-class RowOfPlayerIcons extends HookConsumerWidget {
+class RowOfPlayerIcons extends StatefulHookConsumerWidget {
   const RowOfPlayerIcons({
     super.key,
     required this.confirmedPlayerIds,
@@ -24,24 +24,36 @@ class RowOfPlayerIcons extends HookConsumerWidget {
   final SourceOfPlayerData sourceOfPlayerData;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _RowOfPlayerIconsState();
+}
+
+class _RowOfPlayerIconsState extends ConsumerState<RowOfPlayerIcons> {
+  late Future<List<ConfirmedPlayerData>> playersDataFuture;
+
+  @override
+  void initState() {
+    super.initState();
     final cloudFunctions = ref.read(cloudFunctionsProvider.notifier);
     final clubsNotifier = ref.read(clubsProvider.notifier);
-    final user = ref.watch(userProvider);
+    final user = ref.read(userProvider);
+
+    playersDataFuture = getPlayersDataCall(
+      user: user,
+      sourceOfPlayersData: widget.sourceOfPlayerData,
+      cloudFunctions: cloudFunctions,
+      booking: widget.booking,
+      clubsNotifier: clubsNotifier,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final confirmedPlayersPlusOwner = [...widget.confirmedPlayerIds, widget.booking.ownerId];
 
     return FutureBuilder<List<ConfirmedPlayerData>>(
-      future: getPlayersDataCall(
-        user: user,
-        sourceOfPlayersData: sourceOfPlayerData,
-        cloudFunctions: cloudFunctions,
-        booking: booking,
-        clubsNotifier: clubsNotifier,
-      ),
+      future: playersDataFuture,
       builder: (context, snapshot) {
-        final confirmedPlayersPlusOwner = [...confirmedPlayerIds, booking.ownerId]; // * To be used only while loading or no data came back
-
         if (snapshot.connectionState == ConnectionState.waiting) {
-          final confirmedPlayersPlusOwner = [...confirmedPlayerIds, booking.ownerId];
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: confirmedPlayersPlusOwner.map((_) {

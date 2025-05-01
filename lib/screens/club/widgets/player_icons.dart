@@ -6,7 +6,7 @@ import '../../../global_widgets/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
 
-class PlayerIcons extends HookConsumerWidget {
+class PlayerIcons extends StatefulHookConsumerWidget {
   const PlayerIcons({super.key, required this.confirmedPlayerIds, required this.booking, required this.type});
 
   final List<String> confirmedPlayerIds;
@@ -14,28 +14,39 @@ class PlayerIcons extends HookConsumerWidget {
   final PlayerIconsType type;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userId = ref.watch(userProvider).uid;
-    final bookingStatus = booking.status;
+  ConsumerState createState() => PlayerIconsState();
+}
 
-    final isOwner = booking.ownerId == userId;
-    final confirmedOpenBooking = bookingStatus == BookingStatus.confirmed && booking.confirmedPlayerIds.isNotEmpty;
+class PlayerIconsState extends ConsumerState<PlayerIcons> {
+  late SourceOfPlayerData sourceOfPlayerData;
+
+  @override
+  void initState() {
+    super.initState();
+    sourceOfPlayerData = getSourceOfPlayerData(
+      isOpenBooking: widget.booking.status == BookingStatus.open,
+      confirmedOpenBooking: widget.booking.status == BookingStatus.confirmed && widget.booking.confirmedPlayerIds.isNotEmpty,
+      type: widget.type,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final userId = ref.watch(userProvider).uid;
+    final bookingStatus = widget.booking.status;
+
+    final isOwner = widget.booking.ownerId == userId;
+    final confirmedOpenBooking = bookingStatus == BookingStatus.confirmed && widget.booking.confirmedPlayerIds.isNotEmpty;
     final ownClosedBooking = bookingStatus == BookingStatus.confirmed && isOwner && !confirmedOpenBooking;
     final isOpenBooking = bookingStatus == BookingStatus.open;
-    final isPublicBooking = booking.private == false;
+    final isPublicBooking = widget.booking.private == false;
 
-    final sourceOfPlayersData = getSourceOfPlayerData(
-      isOpenBooking: isOpenBooking,
-      confirmedOpenBooking: confirmedOpenBooking,
-      type: type,
-    );
-
-    if ((isOpenBooking || ownClosedBooking || isPublicBooking) && type == PlayerIconsType.column) {
-      return ColumnOfPlayerIcons(confirmedPlayerIds: confirmedPlayerIds, booking: booking, sourceOfPlayersData: sourceOfPlayersData);
+    if ((isOpenBooking || ownClosedBooking || isPublicBooking) && widget.type == PlayerIconsType.column) {
+      return ColumnOfPlayerIcons(confirmedPlayerIds: widget.confirmedPlayerIds, booking: widget.booking, sourceOfPlayersData: sourceOfPlayerData);
     }
     if (ownClosedBooking || isPublicBooking) {
-      // * EVENT CONTAINERS
-      return RowOfPlayerIcons(confirmedPlayerIds: confirmedPlayerIds, booking: booking, sourceOfPlayerData: sourceOfPlayersData);
+      // * EVENT CONTAINERS (MAIN CALENDAR VIEW)
+      return RowOfPlayerIcons(confirmedPlayerIds: widget.confirmedPlayerIds, booking: widget.booking, sourceOfPlayerData: sourceOfPlayerData);
     }
 
     return Container();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennisbookings/global_helpers/index.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../global_widgets/index.dart';
@@ -21,7 +22,7 @@ class ClubsTable extends StatefulWidget {
 class _ClubsTableState extends State<ClubsTable> {
   final rowSelected = ValueNotifier<int>(-1);
 
-  final columnTitles = [
+  final wideColumnTitles = [
     'Club Name',
     'Hard Courts',
     'Clay Courts',
@@ -35,19 +36,30 @@ class _ClubsTableState extends State<ClubsTable> {
     'Club details',
   ];
 
+  final narrowColumnTitles = [
+    'Club Name',
+    'Book a court',
+  ];
+
   String searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
     final filteredClubs = widget.clubs.where((club) => club.name.toLowerCase().contains(searchQuery.toLowerCase())).toList();
     final screenWidth = MediaQuery.of(context).size.width;
+
+    final wideScreen = screenWidth > 1800;
+    final mediumScreen = screenWidth > 1200 && screenWidth <= 1800;
     final isMobile = screenWidth < 600;
-    final isTablet = screenWidth >= 600 && screenWidth < 1200;
     final fontSize = isMobile
         ? 12.0
-        : isTablet
-            ? 14.0
-            : 16.0;
+        : wideScreen
+            ? 16.0
+            : mediumScreen
+                ? 14.0
+                : 12.0;
+
+    final titlesToDisplay = isMobile ? narrowColumnTitles : wideColumnTitles;
 
     return SizedBox(
       height: double.infinity,
@@ -108,10 +120,10 @@ class _ClubsTableState extends State<ClubsTable> {
                         color: Colors.white,
                         borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
                       ),
-                      children: columnTitles
+                      children: titlesToDisplay
                           .asMap()
                           .map((index, title) {
-                            return MapEntry(index, _HeaderCell(text: title, first: index == 0, last: index == columnTitles.length - 1));
+                            return MapEntry(index, _HeaderCell(text: title, first: index == 0, last: index == titlesToDisplay.length - 1));
                           })
                           .values
                           .toList(growable: false),
@@ -123,33 +135,40 @@ class _ClubsTableState extends State<ClubsTable> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         children: [
-                          _RowCellText(text: club.name),
-                          _RowCellText(text: club.hardCourts.toString()),
-                          _RowCellText(text: club.clayCourts.toString()),
-                          _RowCellText(text: club.grassCourts.toString()),
-                          _RowCellText(text: club.otherSurfaceCourts.toString()),
-                          _RowCellText(
-                            text: '${club.streetAddress} ${club.suburb} ${club.postcode} ${club.state}',
-                            isAddress: true,
-                            onPressed: () {
-                              final url =
-                                  '$googleUrl${Uri.encodeComponent('${club.streetAddress}, ${club.suburb}, ${club.state}, ${club.postcode}')}';
-                              launchUrl(Uri.parse(url));
-                            },
-                          ),
-                          _RowCellText(text: club.suburb),
-                          _RowCellText(text: '\$ ${club.annualFee.toString()}'),
-                          _RowCellText(text: '\$ ${club.casualFee.toString()}'),
+                          if (!isMobile) _RowCellText(text: club.name),
+                          if (isMobile)
+                            _RowCellText(
+                                text: club.name,
+                                isButton: true,
+                                onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}', arguments: club)),
+                          if (!isMobile) _RowCellText(text: club.hardCourts.toString()),
+                          if (!isMobile) _RowCellText(text: club.clayCourts.toString()),
+                          if (!isMobile) _RowCellText(text: club.grassCourts.toString()),
+                          if (!isMobile) _RowCellText(text: club.otherSurfaceCourts.toString()),
+                          if (!isMobile)
+                            _RowCellText(
+                              text: '${club.streetAddress} ${club.suburb} ${club.postcode} ${club.state}',
+                              isAddress: true,
+                              onPressed: () {
+                                final url =
+                                    '$googleUrl${Uri.encodeComponent('${club.streetAddress}, ${club.suburb}, ${club.state}, ${club.postcode}')}';
+                                launchUrl(Uri.parse(url));
+                              },
+                            ),
+                          if (!isMobile) _RowCellText(text: club.suburb),
+                          if (!isMobile) _RowCellText(text: '\$ ${club.annualFee.toString()}'),
+                          if (!isMobile) _RowCellText(text: '\$ ${club.casualFee.toString()}'),
                           _RowCellText(
                             text: 'Book a court',
                             isButton: true,
                             onPressed: () => Navigator.of(context).pushNamed('${ScheduleScreen.route}?clubId=${club.id}', arguments: club),
                           ),
-                          _RowCellText(
-                            text: 'Club details',
-                            isButton: true,
-                            onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}', arguments: club),
-                          ),
+                          if (!isMobile)
+                            _RowCellText(
+                              text: 'Club details',
+                              isButton: true,
+                              onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}', arguments: club),
+                            ),
                         ],
                       );
                     }),

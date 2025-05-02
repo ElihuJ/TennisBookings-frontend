@@ -17,10 +17,10 @@ class Config {
   Config._({this.environment}) : envString = environment.toString() {
     WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
     ]);
   }
 
@@ -31,8 +31,8 @@ class Config {
   // * VERSIONING
   static const majorVersion = 0;
   static const minorVersion = 1;
-  static const patchVersion = 4;
-  static const buildNumber = 17;
+  static const patchVersion = 6;
+  static const buildNumber = 24;
 
   static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';
 

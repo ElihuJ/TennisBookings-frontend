@@ -67,21 +67,12 @@ class _ColumnOfPlayerIconsState extends ConsumerState<ColumnOfPlayerIcons> {
 
         if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
           var players = snapshot.data!;
-          players = [
-            ...players,
-            ...players,
-            ...players,
-            ...players,
-          ];
 
-          final screenHeight = MediaQuery.of(context).size.height;
-          final containerHeight = screenHeight < 600 ? 0.3 * screenHeight : 0.5 * screenHeight;
-
-          return SizedBox(
-            height: containerHeight,
+          return Flexible(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.min,
                 children: players.map((player) {
                   return _PlayerDataRow(player: player);
                 }).toList(),

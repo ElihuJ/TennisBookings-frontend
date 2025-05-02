@@ -66,3 +66,55 @@ class Message extends StatelessWidget {
     );
   }
 }
+
+class MessageWithAction extends StatelessWidget {
+  final String title;
+  final String message;
+  final VoidCallback? onPressed;
+  final String buttonText;
+
+  const MessageWithAction({super.key, this.title = '', this.message = '', this.onPressed, this.buttonText = 'OK'});
+
+  @override
+  Widget build(BuildContext context) {
+    final titleStyle = Theme.of(context).textTheme.bodyLarge;
+    final messageStyle = Theme.of(context).textTheme.bodySmall;
+
+    return Container(
+      color: Colors.black.withValues(alpha: 0.5),
+      child: Center(
+        child: Container(
+          width: 200.0,
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (title.isNotEmpty)
+                PrettyText(
+                  title,
+                  style: titleStyle,
+                  textAlign: TextAlign.center,
+                  maxLines: 4,
+                ),
+              if (message.isNotEmpty) const SizedBox(height: 20.0),
+              if (message.isNotEmpty)
+                PrettyText(
+                  message,
+                  style: messageStyle,
+                  textAlign: TextAlign.center,
+                  maxLines: 10,
+                ),
+              const SizedBox(height: 20.0),
+              TbTextButton(text: buttonText, onPressed: onPressed),
+              const SizedBox(height: 20.0),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

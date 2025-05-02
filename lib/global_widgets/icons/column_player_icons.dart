@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../cloud_functions/dto/get_confirmed_players.dart';
 import '../../cloud_functions/dto/index.dart';
 import '../../cloud_functions/index.dart';
+import '../../global_helpers/index.dart';
 import '../../models/index.dart';
 import '../../state/index.dart';
 import '../../theme/index.dart';
@@ -11,7 +12,7 @@ import '../containers/bordered_box.dart';
 import '../index.dart';
 import 'helper.dart';
 
-class ColumnOfPlayerIcons extends HookConsumerWidget {
+class ColumnOfPlayerIcons extends StatefulHookConsumerWidget {
   const ColumnOfPlayerIcons({
     super.key,
     required this.confirmedPlayerIds,
@@ -24,21 +25,36 @@ class ColumnOfPlayerIcons extends HookConsumerWidget {
   final SourceOfPlayerData sourceOfPlayersData;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final cloudFunctions = ref.watch(cloudFunctionsProvider.notifier);
-    final clubsNotifier = ref.watch(clubsProvider.notifier);
-    final user = ref.watch(userProvider);
+  ConsumerState createState() => _ColumnOfPlayerIconsState();
+}
 
+class _ColumnOfPlayerIconsState extends ConsumerState<ColumnOfPlayerIcons> {
+  late Future<List<ConfirmedPlayerData>> playersDataFuture;
+  @override
+  void initState() {
+    super.initState();
+    final cloudFunctions = ref.read(cloudFunctionsProvider.notifier);
+    final clubsNotifier = ref.read(clubsProvider.notifier);
+    final user = ref.read(userProvider);
+
+    playersDataFuture = getPlayersDataCall(
+      user: user,
+      sourceOfPlayersData: widget.sourceOfPlayersData,
+      cloudFunctions: cloudFunctions,
+      booking: widget.booking,
+      clubsNotifier: clubsNotifier,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return FutureBuilder<List<ConfirmedPlayerData>>(
-      future: getPlayersDataCall(
-        sourceOfPlayersData: sourceOfPlayersData,
-        cloudFunctions: cloudFunctions,
-        clubsNotifier: clubsNotifier,
-        booking: booking,
-        user: user,
-      ),
+      future: playersDataFuture,
       builder: (context, snapshot) {
-        final confirmedPlayersPlusOwner = [...confirmedPlayerIds, booking.ownerId]; // * To be used only while loading or no data came back
+        final confirmedPlayersPlusOwner = [
+          ...widget.confirmedPlayerIds,
+          widget.booking.ownerId
+        ]; // * To be used only while loading or no data came back
 
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Column(
@@ -50,13 +66,27 @@ class ColumnOfPlayerIcons extends HookConsumerWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-          final players = snapshot.data!;
+          var players = snapshot.data!;
+          players = [
+            ...players,
+            ...players,
+            ...players,
+            ...players,
+          ];
 
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: players.map((player) {
-              return _PlayerDataRow(player: player);
-            }).toList(),
+          final screenHeight = MediaQuery.of(context).size.height;
+          final containerHeight = screenHeight < 600 ? 0.3 * screenHeight : 0.5 * screenHeight;
+
+          return SizedBox(
+            height: containerHeight,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: players.map((player) {
+                  return _PlayerDataRow(player: player);
+                }).toList(),
+              ),
+            ),
           );
         }
 
@@ -98,34 +128,96 @@ class _PlayerDataRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mobile = isMobile(context);
     return BorderedBox(
       margin: const EdgeInsets.symmetric(vertical: 5),
       borderColor: Colors.transparent,
       backgroundColor: AppColors.white,
       padding: const EdgeInsets.symmetric(vertical: 5),
       height: 100,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        spacing: space,
-        children: [
+      child: mobile ? _MobileView(player: player) : _DesktopView(player: player),
+    );
+  }
+}
+
+class _DesktopView extends StatelessWidget {
+  const _DesktopView({required this.player});
+
+  final ConfirmedPlayerData player;
+  final double iconSize = 70;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: space,
+      children: [
+        FieldBox(
+          width: iconSize,
+          child: PlayerIcon(player: player, size: iconSize),
+        ),
+        if (player.name.isNotEmpty)
           FieldBox(
-            width: 70,
-            child: PlayerIcon(
-              player: player,
-              size: 70,
-            ),
+              width: nameWidth,
+              child: Text(
+                player.name,
+                style: TextStyle(fontSize: 16),
+              )),
+        if (player.utrRating != null) FieldBox(width: utrWidth, child: UtrBox(utrRating: player.utrRating, verified: player.utrVerified))
+      ],
+    );
+  }
+}
+
+class _MobileView extends StatelessWidget {
+  const _MobileView({required this.player});
+
+  final ConfirmedPlayerData player;
+  final double iconSize = 40;
+  final double fontSize = 14;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: space,
+      children: [
+        FieldBox(
+          width: iconSize,
+          child: PlayerIcon(
+            player: player,
+            size: iconSize,
           ),
-          if (player.name.isNotEmpty)
-            FieldBox(
-                width: nameWidth,
-                child: Text(
-                  player.name,
-                  style: TextStyle(fontSize: 16),
-                )),
-          if (player.utrRating != null) FieldBox(width: utrWidth, child: UtrBox(utrRating: player.utrRating, verified: player.utrVerified)),
-        ],
-      ),
+        ),
+        if (player.name.isNotEmpty)
+          Column(
+            children: [
+              FieldBox(
+                  width: nameWidth,
+                  child: Text(
+                    player.name,
+                    style: TextStyle(
+                      fontSize: fontSize,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )),
+              if (player.utrRating != null)
+                FieldBox(
+                  width: utrWidth,
+                  child: UtrBox(
+                    utrRating: player.utrRating,
+                    verified: player.utrVerified,
+                    textStyle: TextStyle(
+                      fontSize: fontSize,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                )
+            ],
+          ),
+      ],
     );
   }
 }

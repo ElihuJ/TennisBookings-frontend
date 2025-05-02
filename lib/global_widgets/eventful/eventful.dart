@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_helpers/index.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../../state/config/index.dart';
@@ -22,8 +21,6 @@ class EventfulWidget extends HookConsumerWidget {
     ref.watch(firebaseConfigProvider);
 
     final requireUpdate = configNotifier.requireUpdate(eventStatusNotifier: eventStatusNotifier);
-
-    requireUpdate.tbLogger('REQUIRED', DebugLevel.warning);
 
     return Stack(
       children: [

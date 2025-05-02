@@ -19,7 +19,7 @@ class LoadingCalendarView extends StatelessWidget {
           controller: EventController(),
           child: Container(
             margin: const EdgeInsets.only(bottom: 25, left: 20, right: 20),
-            height: heightPercent(context, percentage: 80),
+            height: heightPercent(context, percentage: 70),
             child: WeekView<Booking>(
               startHour: 5,
               startDay: WeekDays.sunday,

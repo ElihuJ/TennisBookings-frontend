@@ -50,6 +50,13 @@ class _RowOfPlayerIconsState extends ConsumerState<RowOfPlayerIcons> {
   Widget build(BuildContext context) {
     final confirmedPlayersPlusOwner = [...widget.confirmedPlayerIds, widget.booking.ownerId];
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+
+    if (isMobile) {
+      return Container();
+    }
+
     return FutureBuilder<List<ConfirmedPlayerData>>(
       future: playersDataFuture,
       builder: (context, snapshot) {

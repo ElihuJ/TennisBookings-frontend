@@ -1,7 +1,6 @@
-import 'package:tennisbookings/state/config/index.dart';
-import 'package:tennisbookings/state/index.dart';
-
 import '../config/config.dart';
+import '../state/config/index.dart';
+import '../state/index.dart';
 
 /// Determines whether the app requires an update.
 ///

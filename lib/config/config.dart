@@ -19,6 +19,8 @@ class Config {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
     ]);
   }
 
@@ -29,8 +31,8 @@ class Config {
   // * VERSIONING
   static const majorVersion = 0;
   static const minorVersion = 1;
-  static const patchVersion = 3;
-  static const buildNumber = 16;
+  static const patchVersion = 4;
+  static const buildNumber = 17;
 
   static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';
 

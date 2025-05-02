@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../global_helpers/index.dart';
 import '../../global_widgets/eventful/eventful.dart';
 import '../../global_widgets/header/index.dart';
 import '../../theme/colors.dart';

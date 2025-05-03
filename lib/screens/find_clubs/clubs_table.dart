@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/global_helpers/index.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../global_widgets/index.dart';
@@ -8,7 +7,7 @@ import '../../theme/colors.dart';
 import '../club/club_details_screen.dart';
 import '../club/schedule_screen.dart';
 
-const googleUrl = 'https://www.google.com/maps/search/?api=1&query=';
+const _googleUrl = 'https://www.google.com/maps/search/?api=1&query=';
 
 class ClubsTable extends StatefulWidget {
   final List<Club> clubs;
@@ -24,21 +23,21 @@ class _ClubsTableState extends State<ClubsTable> {
 
   final wideColumnTitles = [
     'Club Name',
-    'Hard Courts',
-    'Clay Courts',
-    'Grass Courts',
-    'Other Courts',
+    'Hard\nCourts',
+    'Clay\nCourts',
+    'Grass\nCourts',
+    'Other\nCourts',
     'Address',
     'Suburb',
-    'Annual Fee',
-    'Casual Fee',
-    'Book a court',
-    'Club details',
+    'Annua\nFee',
+    'Casual\nFee',
+    'Club Schedule',
+    'More Info',
   ];
 
   final narrowColumnTitles = [
-    'Club Name',
-    'Book a court',
+    'Club\nDetails',
+    'Club\nSchedule',
   ];
 
   String searchQuery = '';
@@ -66,7 +65,8 @@ class _ClubsTableState extends State<ClubsTable> {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 30),
+            width: isMobile ? 300 : 500,
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
             child: TextField(
               decoration: InputDecoration(
                 filled: true,
@@ -147,11 +147,11 @@ class _ClubsTableState extends State<ClubsTable> {
                           if (!isMobile) _RowCellText(text: club.otherSurfaceCourts.toString()),
                           if (!isMobile)
                             _RowCellText(
-                              text: '${club.streetAddress} ${club.suburb} ${club.postcode} ${club.state}',
-                              isAddress: true,
+                              text: 'See in Maps',
+                              isButton: true,
                               onPressed: () {
                                 final url =
-                                    '$googleUrl${Uri.encodeComponent('${club.streetAddress}, ${club.suburb}, ${club.state}, ${club.postcode}')}';
+                                    '$_googleUrl${Uri.encodeComponent('${club.streetAddress}, ${club.suburb}, ${club.state}, ${club.postcode}')}';
                                 launchUrl(Uri.parse(url));
                               },
                             ),
@@ -184,10 +184,9 @@ class _ClubsTableState extends State<ClubsTable> {
 }
 
 class _RowCellText extends StatelessWidget {
-  const _RowCellText({required this.text, this.isAddress = false, this.isButton = false, this.onPressed});
+  const _RowCellText({required this.text, this.isButton = false, this.onPressed});
 
   final String text;
-  final bool isAddress;
   final bool isButton;
   final void Function()? onPressed;
 
@@ -197,33 +196,28 @@ class _RowCellText extends StatelessWidget {
     final smallScreen = screenWidth < 600;
     final fontSize = smallScreen ? 12.0 : 16.0;
     return MouseRegion(
-      cursor: isAddress ? SystemMouseCursors.click : SystemMouseCursors.basic,
+      cursor: SystemMouseCursors.click,
       child: Padding(
-          padding: smallScreen ? const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0) : const EdgeInsets.all(20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (isAddress)
-                const Icon(
-                  Icons.location_on,
-                  color: AppColors.secondaryGreen,
-                ),
-              if (isButton)
-                TbTextButton(
-                  onPressed: () => onPressed?.call(),
-                  text: text,
-                ),
-              if (!isButton)
-                GestureDetector(
-                  onTap: onPressed,
-                  child: PrettyText(
-                    text,
-                    textAlign: TextAlign.center,
-                    fontSize: fontSize,
+        padding: smallScreen ? const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0) : const EdgeInsets.all(20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            isButton
+                ? TbTextButton(
+                    onPressed: () => onPressed?.call(),
+                    text: text,
+                  )
+                : GestureDetector(
+                    onTap: onPressed,
+                    child: PrettyText(
+                      text,
+                      textAlign: TextAlign.center,
+                      fontSize: fontSize,
+                    ),
                   ),
-                ),
-            ],
-          )),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -239,8 +233,10 @@ class _HeaderCell extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final smallScreen = screenWidth < 600;
-    final fontSize = smallScreen ? 12.0 : 16.0;
+    final fontSize = smallScreen ? 14.0 : 18.0;
     return Container(
+      alignment: Alignment.center,
+      height: smallScreen ? 70 : 80,
       padding: smallScreen ? const EdgeInsets.all(12.0) : const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
         color: AppColors.secondaryGreen,
@@ -254,7 +250,6 @@ class _HeaderCell extends StatelessWidget {
         textAlign: TextAlign.center,
         maxLines: 2,
         style: TextStyle(
-          fontWeight: FontWeight.bold,
           color: Colors.black,
           fontSize: fontSize,
         ),

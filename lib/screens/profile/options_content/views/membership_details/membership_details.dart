@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../../global_widgets/text/index.dart';
 import '../../../../../state/index.dart';
 import '../../../../../theme/index.dart';
-import '../../../../club/club_details_screen.dart';
+import '../../../../club_details/club_details_screen.dart';
 
 class MembershipDetails extends HookConsumerWidget {
   const MembershipDetails({

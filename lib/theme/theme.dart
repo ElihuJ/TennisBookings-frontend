@@ -80,6 +80,7 @@ final ThemeData selectedTheme = ThemeData(
   textSelectionTheme: const TextSelectionThemeData(
     // * Cursor color
     cursorColor: AppColors.primaryGreen,
+    selectionColor: AppColors.brightYellow,
   ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 57),

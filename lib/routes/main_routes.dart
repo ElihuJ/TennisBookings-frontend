@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../screens/club/club_details_screen.dart';
-import '../screens/club/schedule_screen.dart';
+import '../screens/calendar/calendar_screen.dart';
+import '../screens/club_details/club_details_screen.dart';
+import '../screens/club_membership/club_membership_screen.dart';
 import '../screens/find_clubs/find_clubs_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/login/email_login_screen.dart';
@@ -51,6 +52,10 @@ Route<dynamic> generateLoginRoutes(RouteSettings settings) {
     case ClubDetailsScreen.route:
       final clubSelectedQueryParams = ClubSelectedQueryParams(queryParams.queryParams);
       page = ClubDetailsScreen(clubSelectedQueryParams: clubSelectedQueryParams);
+      break;
+    case ClubMembershipScreen.route:
+      final clubSelectedQueryParams = ClubSelectedQueryParams(queryParams.queryParams);
+      page = ClubMembershipScreen(clubSelectedQueryParams: clubSelectedQueryParams);
       break;
   }
   return MyEsRoute(

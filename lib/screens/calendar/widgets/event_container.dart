@@ -8,7 +8,7 @@ import '../../../global_widgets/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
 import '../../../theme/index.dart';
-import 'index.dart';
+import '../../calendar/widgets/index.dart';
 
 // * This is the container that is displayed while in the main calendar view
 class EventContainer extends HookConsumerWidget {
@@ -91,7 +91,6 @@ class BookingContainer extends StatelessWidget {
       builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
 
-        // ! TODO: This is a bit of a hack, but it works for now. We need to find a better way to do this.
         final isPhone = maxWidth < 80;
         final isTablet = maxWidth >= 80 && maxWidth < 120;
 

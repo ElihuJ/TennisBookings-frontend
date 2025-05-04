@@ -20,6 +20,8 @@ class ClubSelectedQueryParams extends QueryParams {
       _courtId = queryParams[courtIdParam];
     } catch (e) {
       e.tbLogger('Error in ClubSelectedQueryParams', DebugLevel.error);
+      _clubId = '';
+      _courtId = null;
     }
   }
 

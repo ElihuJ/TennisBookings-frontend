@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../models/index.dart';
-import '../../../screens/club/widgets/index.dart';
+import '../../../screens/calendar/widgets/index.dart';
 import '../../../state/index.dart';
 import '../../../theme/index.dart';
 import '../../index.dart';

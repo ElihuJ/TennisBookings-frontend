@@ -11,6 +11,7 @@ class PrettyText extends StatelessWidget {
     this.overflow,
     this.maxLines = 1,
     this.fontSize = 16,
+    this.color,
   });
 
   final String text;
@@ -19,6 +20,7 @@ class PrettyText extends StatelessWidget {
   final TextOverflow? overflow;
   final int maxLines;
   final double fontSize;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class PrettyText extends StatelessWidget {
       style: style ??
           TextStyle(
             fontSize: fontSize,
-            color: Theme.of(context).textTheme.bodyLarge?.color,
+            color: color ?? Theme.of(context).textTheme.bodyLarge?.color,
           ),
       textAlign: textAlign,
       overflow: overflow ?? TextOverflow.visible,

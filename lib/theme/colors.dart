@@ -15,6 +15,7 @@ class AppColors {
   static const Color blue = Color(0xFF64b1fd);
   static const Color blueGrey = Color(0xFF607d8b);
   static const Color disabled = Color(0xFFd3cdd7);
+  static const Color gold = Color(0xFFFFD700);
 }
 
 class SurfaceColors {

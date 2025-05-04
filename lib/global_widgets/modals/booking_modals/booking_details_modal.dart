@@ -10,7 +10,7 @@ import '../../../cloud_functions/index.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../models/index.dart';
-import '../../../screens/club/widgets/index.dart';
+import '../../../screens/calendar/widgets/index.dart';
 import '../../../state/index.dart';
 import '../../index.dart';
 

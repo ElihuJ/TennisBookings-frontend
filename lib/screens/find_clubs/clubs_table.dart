@@ -4,8 +4,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../global_widgets/index.dart';
 import '../../state/index.dart';
 import '../../theme/colors.dart';
-import '../club/club_details_screen.dart';
-import '../club/schedule_screen.dart';
+import '../club_details/club_details_screen.dart';
+import '../calendar/calendar_screen.dart';
 
 const _googleUrl = 'https://www.google.com/maps/search/?api=1&query=';
 
@@ -140,7 +140,7 @@ class _ClubsTableState extends State<ClubsTable> {
                             _RowCellText(
                                 text: club.name,
                                 isButton: true,
-                                onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}', arguments: club)),
+                                onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}')),
                           if (!isMobile) _RowCellText(text: club.hardCourts.toString()),
                           if (!isMobile) _RowCellText(text: club.clayCourts.toString()),
                           if (!isMobile) _RowCellText(text: club.grassCourts.toString()),
@@ -161,13 +161,13 @@ class _ClubsTableState extends State<ClubsTable> {
                           _RowCellText(
                             text: 'Book a court',
                             isButton: true,
-                            onPressed: () => Navigator.of(context).pushNamed('${ScheduleScreen.route}?clubId=${club.id}', arguments: club),
+                            onPressed: () => Navigator.of(context).pushNamed('${ScheduleScreen.route}?clubId=${club.id}'),
                           ),
                           if (!isMobile)
                             _RowCellText(
                               text: 'Club details',
                               isButton: true,
-                              onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}', arguments: club),
+                              onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}'),
                             ),
                         ],
                       );
@@ -196,7 +196,7 @@ class _RowCellText extends StatelessWidget {
     final smallScreen = screenWidth < 600;
     final fontSize = smallScreen ? 12.0 : 16.0;
     return MouseRegion(
-      cursor: SystemMouseCursors.click,
+      cursor: isButton ? SystemMouseCursors.click : MouseCursor.defer,
       child: Padding(
         padding: smallScreen ? const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0) : const EdgeInsets.all(20.0),
         child: Row(

@@ -19,3 +19,7 @@ double scaleText(BuildContext context, {double maxTextScaleFactor = 3}) {
 bool isMobile(BuildContext context) {
   return MediaQuery.of(context).size.width < 600;
 }
+
+double getFontSize(bool isMobile) {
+  return isMobile ? 12 : 16;
+}

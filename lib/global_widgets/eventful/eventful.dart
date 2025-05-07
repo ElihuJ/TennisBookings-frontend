@@ -15,8 +15,8 @@ class EventfulWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final eventStatus = ref.watch(eventsProvider);
-    final eventStatusNotifier = ref.read(eventsProvider.notifier);
+    final eventStatus = ref.watch(eventProvider);
+    final eventStatusNotifier = ref.read(eventProvider.notifier);
     final configNotifier = ref.read(firebaseConfigProvider.notifier);
     ref.watch(firebaseConfigProvider);
 

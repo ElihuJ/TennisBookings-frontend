@@ -7,7 +7,7 @@ import '../../../state/index.dart';
 import '../../../strings/index.dart';
 
 signInWithGoogle({
-  required EventStatusNotifier eventNotifier,
+  required EventNotifier eventNotifier,
   required FirebaseAuthNotifier firebaseAuthNotifier,
   required UserNotifier userNotifier,
   required ResultHandler resultHandler,
@@ -32,7 +32,7 @@ signInWithGoogle({
 }
 
 signInWithApple({
-  required EventStatusNotifier eventNotifier,
+  required EventNotifier eventNotifier,
   required FirebaseAuthNotifier firebaseAuthNotifier,
   required UserNotifier userNotifier,
   required ResultHandler resultHandler,

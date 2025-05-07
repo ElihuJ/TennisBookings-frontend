@@ -6,6 +6,11 @@ class QueryParams {
   QueryParams(this.queryParams);
 
   String? operator [](String key) => queryParams[key];
+
+  @override
+  String toString() {
+    return 'QueryParams{queryParams: $queryParams}';
+  }
 }
 
 class ClubSelectedQueryParams extends QueryParams {
@@ -32,4 +37,45 @@ class ClubSelectedQueryParams extends QueryParams {
   String toString() {
     return 'ClubSelectedQueryParams{clubId: $_clubId, courtId: $_courtId}';
   }
+}
+
+class StripePaymentQueryParams extends QueryParams {
+  static const paymentIntentParam = 'payment_intent';
+  late String _paymentIntent;
+  static const paymentIntentClientSecretParam = 'payment_intent_client_secret';
+  late String _paymentIntentClientSecret;
+  static const redirectStatusParam = 'redirect_status';
+  late StripePaymentRedirectStatus _redirectStatus;
+
+  StripePaymentQueryParams(Map<String, String> queryParams) : super(queryParams) {
+    try {
+      _paymentIntentClientSecret = queryParams[paymentIntentClientSecretParam] ?? '';
+      _paymentIntent = queryParams[paymentIntentParam] ?? '';
+      _redirectStatus = queryParams[redirectStatusParam] == 'succeeded'
+          ? StripePaymentRedirectStatus.succeeded
+          : queryParams[redirectStatusParam] == 'requires_action'
+              ? StripePaymentRedirectStatus.requiresAction
+              : StripePaymentRedirectStatus.requiresPaymentMethod;
+    } catch (e) {
+      e.tbLogger('Error in StripePaymentQueryParams', DebugLevel.error);
+      _paymentIntentClientSecret = '';
+      _paymentIntent = '';
+      _redirectStatus = StripePaymentRedirectStatus.requiresPaymentMethod;
+    }
+  }
+
+  String get paymentIntentClientSecret => _paymentIntentClientSecret;
+  String get paymentIntent => _paymentIntent;
+  StripePaymentRedirectStatus get redirectStatus => _redirectStatus;
+
+  @override
+  String toString() {
+    return 'StripePaymentQueryParams{paymentIntentClientSecret: $_paymentIntentClientSecret, paymentIntent: $_paymentIntent}';
+  }
+}
+
+enum StripePaymentRedirectStatus {
+  requiresAction,
+  succeeded,
+  requiresPaymentMethod,
 }

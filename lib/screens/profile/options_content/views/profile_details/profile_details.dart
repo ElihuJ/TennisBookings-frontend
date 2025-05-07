@@ -97,7 +97,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
 
   void _saveAndSubmit() async {
     if (_mode == ProfileDetailsMode.edit && _formKey.currentState!.validate()) {
-      final eventNotifier = ref.read(eventsProvider.notifier);
+      final eventNotifier = ref.read(eventProvider.notifier);
       final cloudFunctions = ref.read(cloudFunctionsProvider.notifier);
       final user = ref.read(userProvider);
       final userNotifier = ref.read(userProvider.notifier);

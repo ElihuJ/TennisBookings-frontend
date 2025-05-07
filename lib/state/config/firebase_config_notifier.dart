@@ -25,7 +25,7 @@ class FirebaseConfigNotifier extends StateNotifier<FirebaseConfig> {
     }
   }
 
-  bool requireUpdate({required EventStatusNotifier eventStatusNotifier}) {
+  bool requireUpdate({required EventNotifier eventStatusNotifier}) {
     return versionCheck(config: state, eventStatusNotifier: eventStatusNotifier);
   }
 }

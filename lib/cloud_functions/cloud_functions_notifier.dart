@@ -8,6 +8,7 @@ import '../global_types/index.dart';
 import '../models/index.dart';
 import 'dto/delete_booking.dart';
 import 'dto/get_confirmed_players.dart';
+import 'dto/get_payment_intent.dart';
 import 'dto/index.dart';
 import 'dto/send_invite.dart';
 import 'dto/update_profile.dart';
@@ -190,6 +191,24 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
     } catch (error) {
       error.tbLogger('Error getActiveOpenBookings', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    }
+  }
+
+  Future<CFResult<String>> getPaymentIntent(String clubId) async {
+    try {
+      final payload = GetPaymentIntentPayload(clubId: clubId);
+      final HttpsCallableResult result = await cloudFunctions.httpsCallable(GetPaymentIntentPayload.endpoint).call(payload.toJson());
+      final response = GetPaymentIntentResponse.fromJson(result.data);
+      if (response.responseStatus.code != ResponseCodeEnum.success.value) {
+        return CFResult.internalError(errorMessage: response.responseStatus.message);
+      }
+      return CFResult.ok<String>(data: response.data.clientSecret);
+    } on FirebaseFunctionsException catch (error) {
+      error.tbLogger('FirebaseFunctionsException getPaymentIntent', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    } catch (error) {
+      error.tbLogger('Error getPaymentIntent', DebugLevel.error);
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
     }
   }

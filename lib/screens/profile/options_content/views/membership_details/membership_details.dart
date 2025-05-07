@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/global_widgets/index.dart';
+import 'package:tennisbookings/theme/index.dart';
 
-import '../../../../../global_widgets/text/index.dart';
+import '../../../../../global_helpers/index.dart';
 import '../../../../../state/index.dart';
-import '../../../../../theme/index.dart';
 import '../../../../club_details/club_details_screen.dart';
 
 class MembershipDetails extends HookConsumerWidget {
@@ -17,6 +18,8 @@ class MembershipDetails extends HookConsumerWidget {
     final clubsNotifier = ref.read(clubsProvider.notifier);
 
     final clubs = ref.watch(clubsProvider);
+
+    final fontSize = getFontSize(isMobile(context));
 
     // * This will execute when refreshing page or loading specific URL directly
     if (clubs.isEmpty) {
@@ -51,9 +54,11 @@ class MembershipDetails extends HookConsumerWidget {
               itemCount: clubsWithMembership.length,
               itemBuilder: (context, index) {
                 final club = clubs.firstWhere((club) => club.id == clubsWithMembership[index]);
+                final membership = user.memberships.firstWhere((m) => m.clubId == club.id);
 
                 return Center(
-                  child: SizedBox(
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
                     width: 500,
                     child: Card(
                       elevation: 4,
@@ -67,35 +72,36 @@ class MembershipDetails extends HookConsumerWidget {
                               children: [
                                 Icon(Icons.sports_tennis, color: Theme.of(context).primaryColor, size: 40),
                                 const SizedBox(width: 12),
-                                Text(
+                                PrettyText(
                                   club.name,
-                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                  fontSize: fontSize + 4,
                                 ),
                               ],
                             ),
                             const SizedBox(height: 8),
-                            Text(
+                            PrettyText(
                               'Address: ${club.streetAddress}, ${club.suburb}, ${club.city}, ${club.state}',
-                              style: const TextStyle(color: Colors.grey),
+                              style: TextStyle(color: AppColors.grey, fontSize: fontSize + 2),
                             ),
                             const SizedBox(height: 4),
-                            Text(
+                            PrettyText(
                               'Annual Fee: \$${club.annualFee.toStringAsFixed(2)}',
-                              style: const TextStyle(fontWeight: FontWeight.w500),
+                              style: TextStyle(fontSize: fontSize + 2, color: AppColors.grey),
+                            ),
+                            const SizedBox(height: 4),
+                            PrettyText(
+                              'Membership Expiry: ${prettyDateLocalFromEpoch(membership.expiry)}',
+                              style:
+                                  TextStyle(color: AppColors.grey, fontWeight: FontWeight.w500, fontSize: fontSize - 2, fontStyle: FontStyle.italic),
                             ),
                             const SizedBox(height: 12),
                             Align(
                               alignment: Alignment.centerRight,
-                              child: ElevatedButton(
+                              child: TbTextButton(
                                 onPressed: () {
                                   Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}');
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.secondaryGreen,
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                ),
-                                child: const Text('View Club Details'),
+                                text: 'View Club Details',
                               ),
                             ),
                           ],

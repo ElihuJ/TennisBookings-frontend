@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/global_helpers/index.dart';
 
 import '../../../global_widgets/index.dart';
 import '../../../state/index.dart';
@@ -7,7 +9,6 @@ import '../../club_membership/club_membership_screen.dart';
 import 'card.dart';
 
 double _fontTitleSize = 24.0;
-double _fontSize = 16.0;
 
 void _navigateToMembershipScreen({required BuildContext context, required Club clubSelected}) {
   Navigator.of(context).pushNamed('${ClubMembershipScreen.route}?clubId=${clubSelected.id}');
@@ -21,17 +22,15 @@ class MembershipCard extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    // ! TODO: Uncomment this when userProvider is implemented
-    // final isMember = user.memberships.any((membership) => membership.clubId == clubSelected.id);
+    final isMember = user.memberships.any((membership) => membership.clubId == clubSelected.id);
+    final membershipExpiryDate = user.memberships.firstWhereOrNull((membership) => membership.clubId == clubSelected.id)?.expiry;
     final isLoggedIn = user.uid.isNotEmpty;
-    final isMember = false;
-    // final isLoggedIn = false;
 
     return SizedBox(
       width: CardTemplate.cardsWidth,
       child: isLoggedIn
           ? isMember
-              ? _MemberContainer(clubSelected: clubSelected)
+              ? _MemberContainer(clubSelected: clubSelected, membershipExpiryDate: membershipExpiryDate)
               : _NotMemberContainer(clubSelected: clubSelected)
           : _NotLoggedInContainer(),
     );
@@ -39,9 +38,10 @@ class MembershipCard extends HookConsumerWidget {
 }
 
 class _MemberContainer extends StatelessWidget {
-  const _MemberContainer({required this.clubSelected});
+  const _MemberContainer({required this.clubSelected, required this.membershipExpiryDate});
 
   final Club clubSelected;
+  final int? membershipExpiryDate;
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +54,11 @@ class _MemberContainer extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const Divider(),
-        TbTextButton(
-          text: 'Manage Membership',
-          fontSize: _fontSize,
-          onPressed: () {
-            _navigateToMembershipScreen(context: context, clubSelected: clubSelected);
-          },
-        ),
+        if (membershipExpiryDate != null)
+          PrettyText(
+            'Expiry Date: ${prettyDateLocalFromEpoch(membershipExpiryDate!)}',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
       ],
     );
   }
@@ -109,7 +107,6 @@ class _NotLoggedInContainer extends StatelessWidget {
         const Divider(),
         PrettyText(
           'You need to login to see membership details',
-          fontSize: _fontSize,
         ),
       ],
     );

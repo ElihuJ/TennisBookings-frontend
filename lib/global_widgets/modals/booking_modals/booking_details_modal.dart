@@ -63,7 +63,7 @@ _getOwnerActions({
   required Booking booking,
   required WidgetRef widgetRef,
 }) {
-  final eventNotifier = widgetRef.read(eventsProvider.notifier);
+  final eventNotifier = widgetRef.read(eventProvider.notifier);
   final cloudFunctions = widgetRef.read(cloudFunctionsProvider.notifier);
   final clubsNotifier = widgetRef.read(clubsProvider.notifier);
 
@@ -94,7 +94,7 @@ _getParticipantActions({
   required Booking booking,
   required WidgetRef widgetRef,
 }) {
-  final eventNotifier = widgetRef.read(eventsProvider.notifier);
+  final eventNotifier = widgetRef.read(eventProvider.notifier);
   final cloudFunctions = widgetRef.read(cloudFunctionsProvider.notifier);
   final clubsNotifier = widgetRef.read(clubsProvider.notifier);
   final userId = widgetRef.read(userProvider).uid;
@@ -127,7 +127,7 @@ _getOpenForInvitesActions({
   required Booking booking,
   required WidgetRef widgetRef,
 }) {
-  final eventNotifier = widgetRef.read(eventsProvider.notifier);
+  final eventNotifier = widgetRef.read(eventProvider.notifier);
   final cloudFunctions = widgetRef.read(cloudFunctionsProvider.notifier);
   final userId = widgetRef.watch(userProvider).uid;
 

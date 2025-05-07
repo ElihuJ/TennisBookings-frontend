@@ -4,8 +4,8 @@ import '../../config/config.dart';
 import '../../global_types/index.dart';
 import 'index.dart';
 
-class EventStatusNotifier extends StateNotifier<EventStatus> {
-  EventStatusNotifier() : super(const EventStatus.empty());
+class EventNotifier extends StateNotifier<EventStatus> {
+  EventNotifier() : super(const EventStatus.empty());
 
   void showLoading({String? title, String? message}) {
     state = state.copyWith(title: title ?? '', message: message ?? '', isLoading: true, eventType: EventType.loadingBox);

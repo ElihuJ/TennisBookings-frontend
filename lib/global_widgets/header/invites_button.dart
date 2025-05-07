@@ -12,11 +12,12 @@ class InvitesButtonHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mobile = isMobile(context);
+    final fontSize = getFontSize(mobile);
     return Container(
       padding: const EdgeInsets.only(left: 0),
       child: TbTextPlainButton(
         text: 'MY INVITES',
-        fontSize: mobile ? 12 : 16,
+        fontSize: fontSize,
         onPressed: () => Navigator.of(context).pushNamed(MyInvitesScreen.route),
       ),
     );

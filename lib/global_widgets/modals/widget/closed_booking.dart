@@ -60,7 +60,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
   Config config = Config();
 
   Future<CFResult> onSubmit() async {
-    final eventsNotifier = ref.read(eventsProvider.notifier);
+    final eventsNotifier = ref.read(eventProvider.notifier);
     final clubsNotifier = ref.read(clubsProvider.notifier);
     final cloudFunctionsNotifier = ref.read(cloudFunctionsProvider.notifier);
     final user = ref.read(userProvider);

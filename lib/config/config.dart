@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../global_types/index.dart';
-// import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../theme/index.dart';
 
 // * SINGLETON
 class Config {
   static Config? _instance;
+  late final String _publishableKey;
+  final Environment? environment;
+  final String envString;
+  static ThemeData theme = selectedTheme;
 
   factory Config({Environment environment = Environment.dev}) {
     return _instance ??= Config._(environment: environment);
@@ -22,17 +25,18 @@ class Config {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    if (environment != Environment.prod) {
+      _publishableKey = _devPublishableKey;
+    } else if (environment == Environment.prod) {
+      _publishableKey = "";
+    }
   }
-
-  final Environment? environment;
-  final String envString;
-  static ThemeData theme = selectedTheme;
 
   // * VERSIONING
   static const majorVersion = 0;
-  static const minorVersion = 1;
-  static const patchVersion = 6;
-  static const buildNumber = 25;
+  static const minorVersion = 2;
+  static const patchVersion = 0;
+  static const buildNumber = 26;
 
   static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';
 
@@ -53,6 +57,11 @@ class Config {
 
   static const utrMaxRating = 16;
   static const utrMinRating = 0;
+
+  // ^ ================== STRIPE CONFIG ==================
+  // cspell: disable
+  static const _devPublishableKey = "pk_test_51RKduZPBFN3dQsNnbymgLQB6Tpu02JbAge53xoOAmV7WRj0bD5bHid0PXSJ2Ic5l93oLAVpv1W7MwxSKBssaCcGA00GBLL9eHf";
+  get publishableKey => _publishableKey;
 
   @override
   String toString() => 'Config: $envString environment is running'

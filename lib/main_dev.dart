@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'config/config.dart';
 import 'config/firebase_options.dart';
@@ -30,6 +31,8 @@ Future<void> main() async {
   FirebaseFunctions.instanceFor(region: Config.functionsRegion).useFunctionsEmulator(host, 5001);
 
   // await FirebaseAppCheck.instance.activate(webProvider: ReCaptchaV3Provider(reCaptchaKey));
+
+  Stripe.publishableKey = Config().publishableKey;
 
   await Locales.init(SupportedLocales.all);
 

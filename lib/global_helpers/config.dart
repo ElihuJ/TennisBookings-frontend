@@ -12,7 +12,7 @@ import '../state/index.dart';
 /// - `false` if the app is up-to-date.
 bool versionCheck({
   required FirebaseConfig config,
-  required EventStatusNotifier eventStatusNotifier,
+  required EventNotifier eventStatusNotifier,
 }) {
   bool requireUpdate = false;
   final configMajorVersion = config.majorVersion;

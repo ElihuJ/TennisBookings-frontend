@@ -38,6 +38,7 @@ class ClubsNotifier extends StateNotifier<List<Club>> {
     }
     // * If no data is found
     state = [];
+    return;
   }
 
   Future<void> loadClub(String clubId) async {

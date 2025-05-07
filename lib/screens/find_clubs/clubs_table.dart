@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../global_helpers/index.dart';
 import '../../global_widgets/index.dart';
 import '../../state/index.dart';
 import '../../theme/colors.dart';
@@ -49,23 +50,17 @@ class _ClubsTableState extends State<ClubsTable> {
 
     final wideScreen = screenWidth > 1800;
     final mediumScreen = screenWidth > 1200 && screenWidth <= 1800;
-    final isMobile = screenWidth < 600;
-    final fontSize = isMobile
-        ? 12.0
-        : wideScreen
-            ? 16.0
-            : mediumScreen
-                ? 14.0
-                : 12.0;
+    final mobileView = isMobile(context);
+    final fontSize = getFontSize(mobileView);
 
-    final titlesToDisplay = isMobile ? narrowColumnTitles : wideColumnTitles;
+    final titlesToDisplay = mobileView ? narrowColumnTitles : wideColumnTitles;
 
     return SizedBox(
       height: double.infinity,
       child: Column(
         children: [
           Container(
-            width: isMobile ? 300 : 500,
+            width: mobileView ? 300 : 500,
             padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
             child: TextField(
               decoration: InputDecoration(
@@ -135,17 +130,17 @@ class _ClubsTableState extends State<ClubsTable> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         children: [
-                          if (!isMobile) _RowCellText(text: club.name),
-                          if (isMobile)
+                          if (!mobileView) _RowCellText(text: club.name),
+                          if (mobileView)
                             _RowCellText(
                                 text: club.name,
                                 isButton: true,
                                 onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}')),
-                          if (!isMobile) _RowCellText(text: club.hardCourts.toString()),
-                          if (!isMobile) _RowCellText(text: club.clayCourts.toString()),
-                          if (!isMobile) _RowCellText(text: club.grassCourts.toString()),
-                          if (!isMobile) _RowCellText(text: club.otherSurfaceCourts.toString()),
-                          if (!isMobile)
+                          if (!mobileView) _RowCellText(text: club.hardCourts.toString()),
+                          if (!mobileView) _RowCellText(text: club.clayCourts.toString()),
+                          if (!mobileView) _RowCellText(text: club.grassCourts.toString()),
+                          if (!mobileView) _RowCellText(text: club.otherSurfaceCourts.toString()),
+                          if (!mobileView)
                             _RowCellText(
                               text: 'See in Maps',
                               isButton: true,
@@ -155,15 +150,15 @@ class _ClubsTableState extends State<ClubsTable> {
                                 launchUrl(Uri.parse(url));
                               },
                             ),
-                          if (!isMobile) _RowCellText(text: club.suburb),
-                          if (!isMobile) _RowCellText(text: '\$ ${club.annualFee.toString()}'),
-                          if (!isMobile) _RowCellText(text: '\$ ${club.casualFee.toString()}'),
+                          if (!mobileView) _RowCellText(text: club.suburb),
+                          if (!mobileView) _RowCellText(text: '\$ ${club.annualFee.toString()}'),
+                          if (!mobileView) _RowCellText(text: '\$ ${club.casualFee.toString()}'),
                           _RowCellText(
                             text: 'Book a court',
                             isButton: true,
                             onPressed: () => Navigator.of(context).pushNamed('${ScheduleScreen.route}?clubId=${club.id}'),
                           ),
-                          if (!isMobile)
+                          if (!mobileView)
                             _RowCellText(
                               text: 'Club details',
                               isButton: true,
@@ -231,13 +226,12 @@ class _HeaderCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final smallScreen = screenWidth < 600;
-    final fontSize = smallScreen ? 14.0 : 18.0;
+    final mobileView = isMobile(context);
+    final fontSize = getFontSize(mobileView);
     return Container(
       alignment: Alignment.center,
-      height: smallScreen ? 70 : 80,
-      padding: smallScreen ? const EdgeInsets.all(12.0) : const EdgeInsets.all(20.0),
+      height: mobileView ? 70 : 80,
+      padding: mobileView ? const EdgeInsets.all(12.0) : const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
         color: AppColors.secondaryGreen,
         borderRadius: BorderRadius.only(

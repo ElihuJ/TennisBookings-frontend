@@ -58,7 +58,7 @@ class _ForgotPasswordForm extends ConsumerState<ForgotPasswordForm> {
 
   @override
   Widget build(BuildContext context) {
-    final eventStatusNotifier = ref.watch(eventsProvider.notifier);
+    final eventStatusNotifier = ref.watch(eventProvider.notifier);
     final firebaseNotifier = ref.watch(firebaseAuthProvider.notifier);
 
     return Form(

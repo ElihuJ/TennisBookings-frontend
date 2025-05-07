@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennisbookings/screens/club_membership/payment_result_screen.dart';
 
 import '../screens/calendar/calendar_screen.dart';
 import '../screens/club_details/club_details_screen.dart';
@@ -16,11 +17,13 @@ import 'index.dart';
 
 Route<dynamic> generateLoginRoutes(RouteSettings settings) {
   Widget page = const HomeScreen();
+
   final settingUri = Uri.parse(settings.name ?? '');
+
   final QueryParams queryParams = QueryParams(settingUri.queryParameters);
-  final path = settingUri.path;
-  // path.tbLogger('PATH');
-  // queryParams.toString().tbLogger('QUERY PARAMS');
+  String path = settingUri.path;
+  // path.tbLogger('PATH', DebugLevel.error);
+
   switch (path) {
     case HomeScreen.route:
       page = const HomeScreen();
@@ -56,6 +59,13 @@ Route<dynamic> generateLoginRoutes(RouteSettings settings) {
     case ClubMembershipScreen.route:
       final clubSelectedQueryParams = ClubSelectedQueryParams(queryParams.queryParams);
       page = ClubMembershipScreen(clubSelectedQueryParams: clubSelectedQueryParams);
+      break;
+    case PaymentResultScreen.route:
+      final uriQuery = Uri.base.queryParameters;
+      final QueryParams queryParams = QueryParams(uriQuery);
+      final params = StripePaymentQueryParams(queryParams.queryParams);
+
+      page = PaymentResultScreen(params: params);
       break;
   }
   return MyEsRoute(

@@ -122,7 +122,7 @@ class _ActionButtons extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cloudFunctions = ref.read(cloudFunctionsProvider.notifier);
-    final eventNotifier = ref.read(eventsProvider.notifier);
+    final eventNotifier = ref.read(eventProvider.notifier);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [

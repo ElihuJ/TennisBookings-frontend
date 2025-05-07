@@ -76,10 +76,10 @@ class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
   @override
   Widget build(BuildContext context) {
     final isLogin = widget.isLogin;
-    final eventStatusNotifier = ref.read(eventsProvider.notifier);
+    final eventStatusNotifier = ref.read(eventProvider.notifier);
     final firebaseNotifier = ref.read(firebaseAuthProvider.notifier);
     final userNotifier = ref.read(userProvider.notifier);
-    final eventNotifier = ref.read(eventsProvider.notifier);
+    final eventNotifier = ref.read(eventProvider.notifier);
 
     void onSubmit() async {
       bool success = formKey.currentState!.validate();
@@ -188,7 +188,7 @@ class SocialsRegister extends StatelessWidget {
     required this.userNotifier,
   });
 
-  final EventStatusNotifier eventNotifier;
+  final EventNotifier eventNotifier;
   final FirebaseAuthNotifier firebaseNotifier;
   final UserNotifier userNotifier;
 

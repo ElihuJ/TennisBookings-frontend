@@ -33,7 +33,10 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
           IconButton(
             highlightColor: Colors.transparent,
             hoverColor: Colors.transparent,
-            onPressed: () => Navigator.of(context).pushNamed(HomeScreen.route),
+            onPressed: () {
+              // clear URI base parameters
+              Navigator.of(context).pushNamed(HomeScreen.route);
+            },
             icon: Image.asset(logoPgn, width: smallScreen ? 90 : 130),
           ),
           if (!smallScreen) Spacer(),

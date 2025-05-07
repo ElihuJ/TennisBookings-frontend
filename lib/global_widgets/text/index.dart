@@ -32,22 +32,26 @@ class PrettyText extends StatelessWidget {
             color: color ?? Theme.of(context).textTheme.bodyLarge?.color,
           ),
       textAlign: textAlign,
-      overflow: overflow ?? TextOverflow.visible,
+      overflow: overflow ?? TextOverflow.ellipsis,
       maxLines: maxLines,
     );
   }
 }
 
 class TitleText extends StatelessWidget {
-  const TitleText(this.title, {super.key});
+  const TitleText(this.title, {super.key, this.maxLines = 1, this.fontSize = 24.0});
   final String title;
+  final int maxLines;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
     return PrettyText(
       title,
-      style: const TextStyle(
-        fontSize: 24.0,
+      maxLines: maxLines,
+      style: TextStyle(
+        fontSize: fontSize,
+        overflow: TextOverflow.ellipsis,
         fontWeight: FontWeight.bold,
       ),
     );

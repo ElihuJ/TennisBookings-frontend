@@ -69,20 +69,22 @@ class _StripePaymentFormState extends ConsumerState<StripePaymentForm> {
 
     return SizedBox(
       width: mobileView ? 300 : 700,
-      height: mobileView ? 400 : 800,
       child: Column(
         spacing: 50,
         children: [
           _Title(club: widget.club, fontSize: fontSize),
-          PaymentElement(
-            autofocus: true,
-            appearance: ElementAppearance(labels: ElementAppearanceLabels.floating),
-            clientSecret: widget.clientSecret,
-            onCardChanged: (input) {
-              setState(() {
-                formIsReady = input?.complete ?? false;
-              });
-            },
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: PaymentElement(
+              autofocus: true,
+              appearance: ElementAppearance(labels: ElementAppearanceLabels.floating),
+              clientSecret: widget.clientSecret,
+              onCardChanged: (input) {
+                setState(() {
+                  formIsReady = input?.complete ?? false;
+                });
+              },
+            ),
           ),
           TbTextButton(
             text: 'Pay \$${widget.club.annualFee}',

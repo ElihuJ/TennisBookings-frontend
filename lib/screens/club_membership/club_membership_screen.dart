@@ -93,7 +93,7 @@ class _PaymentView extends StatelessWidget {
                   );
                 }
 
-                return BorderedBox(
+                return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 50.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,

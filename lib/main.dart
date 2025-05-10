@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 // import 'package:g_recaptcha_v3/g_recaptcha_v3.dart';
 
@@ -20,6 +21,8 @@ Future<void> main() async {
   // }
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // await FirebaseAppCheck.instance.activate(webProvider: ReCaptchaV3Provider(reCaptchaKey));
+
+  Stripe.publishableKey = Config().publishableKey;
 
   await Locales.init(SupportedLocales.all);
 

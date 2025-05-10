@@ -33,10 +33,10 @@ class Config {
   }
 
   // * VERSIONING
-  static const majorVersion = 0;
-  static const minorVersion = 2;
+  static const majorVersion = 1;
+  static const minorVersion = 0;
   static const patchVersion = 0;
-  static const buildNumber = 27;
+  static const buildNumber = 28;
 
   static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';
 

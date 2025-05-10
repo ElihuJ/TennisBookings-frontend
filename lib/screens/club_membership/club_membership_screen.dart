@@ -1,7 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/cloud_functions/dto/get_payment_intent.dart';
 import 'package:tennisbookings/global_helpers/index.dart';
+import 'package:tennisbookings/global_widgets/containers/bordered_box.dart';
 import 'package:tennisbookings/screens/club_membership/stripe_payment_widget.dart';
 
 import '../../cloud_functions/index.dart';
@@ -27,7 +29,7 @@ class ClubMembershipScreen extends HookConsumerWidget {
     // * This will execute when refreshing page or loading specific URL directly
     if (clubs.isEmpty) {
       clubsNotifier.loadClubs();
-      return const LoadingScreen(message: 'Loading clubs...');
+      return const LoadingScreen(message: 'Loading Payment Data...');
     }
 
     if (clubSelected == null) {
@@ -61,50 +63,55 @@ class _PaymentView extends StatelessWidget {
     return EventfulWidget(
       child: Scaffold(
         appBar: Header(),
-        body: Container(
-          padding: const EdgeInsets.all(20.0),
+        body: SizedBox(
           width: double.infinity,
           height: double.infinity,
           child: SingleChildScrollView(
             child: FutureBuilder(
-              future: cloudFunctions.getPaymentIntent(clubSelected.id),
+              future: cloudFunctions.getPaymentIntent(clubId: clubSelected.id, intentType: IntentType.annualMembership),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return LoadingScreen(
+                    message: 'Loading payment data...',
+                    noScaffold: true,
                   );
                 }
                 if (snapshot.hasError) {
                   snapshot.error?.tbLogger('Error loading club payment data');
-                  return const Center(
-                    child: Text('Error loading club payment data'),
+                  return const NotFoundScreen(
+                    message: 'Error loading club payment data',
+                    noScaffold: true,
                   );
                 }
                 final clientSecret = snapshot.data?.data;
 
                 if (clientSecret == null) {
                   'Client secret is null'.tbLogger();
-                  return const Center(
-                    child: Text('Error loading club payment data'),
+                  return const NotFoundScreen(
+                    message: 'Error loading club payment data',
+                    noScaffold: true,
                   );
                 }
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  spacing: 50,
-                  children: [
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundImage: NetworkImage(clubSelected.clubLogoUrl),
-                      backgroundColor: Colors.grey[200],
-                    ),
-                    StripePaymentForm(
-                      clientSecret: clientSecret,
-                      club: clubSelected,
-                    ),
-                  ],
+                return BorderedBox(
+                  padding: const EdgeInsets.symmetric(vertical: 50.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    spacing: 50,
+                    children: [
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundImage: NetworkImage(clubSelected.clubLogoUrl),
+                        backgroundColor: Colors.grey[200],
+                      ),
+                      StripePaymentForm(
+                        clientSecret: clientSecret,
+                        club: clubSelected,
+                      ),
+                    ],
+                  ),
                 );
               },
             ),

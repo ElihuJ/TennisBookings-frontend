@@ -36,8 +36,9 @@ class FieldWithPencil extends StatelessWidget {
               : const SizedBox(width: 40),
           Container(
             width: 200,
-            height: 80,
+            height: 100,
             padding: const EdgeInsets.all(16),
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(10.0),

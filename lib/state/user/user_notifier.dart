@@ -41,6 +41,7 @@ class UserNotifier extends StateNotifier<User> {
         photoUrl: '',
         utrVerified: false,
         memberships: [],
+        stripeTransactionIds: [],
       );
       final FirestorePayload userPayload = user.toJson();
       await usersCollection.doc(uid).set(userPayload);

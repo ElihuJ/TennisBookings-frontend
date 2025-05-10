@@ -195,9 +195,9 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
     }
   }
 
-  Future<CFResult<String>> getPaymentIntent(String clubId) async {
+  Future<CFResult<String>> getPaymentIntent({required String clubId, required IntentType intentType}) async {
     try {
-      final payload = GetPaymentIntentPayload(clubId: clubId);
+      final payload = GetPaymentIntentPayload(clubId: clubId, intentType: intentType);
       final HttpsCallableResult result = await cloudFunctions.httpsCallable(GetPaymentIntentPayload.endpoint).call(payload.toJson());
       final response = GetPaymentIntentResponse.fromJson(result.data);
       if (response.responseStatus.code != ResponseCodeEnum.success.value) {

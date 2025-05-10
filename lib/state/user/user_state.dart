@@ -27,6 +27,8 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
   final List<UserMembership> memberships;
   final String? homeClubId;
   final double? utrRating;
+  final String? stripeCustomerId;
+  final List<String> stripeTransactionIds;
   @override
   final List<String> allFields = UserFields.allFields;
 
@@ -42,7 +44,9 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
     required this.photoUrl,
     required this.utrVerified,
     required this.memberships,
+    required this.stripeTransactionIds,
     this.utrRating,
+    this.stripeCustomerId,
     this.homeClubId,
   }) : super({
           UserFields.uid: uid,
@@ -57,6 +61,9 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
           UserFields.utrRating: utrRating,
           UserFields.utrVerified: utrVerified,
           UserFields.photoUrl: photoUrl,
+          UserFields.memberships: memberships,
+          UserFields.stripeCustomerId: stripeCustomerId,
+          UserFields.stripeTransactionIds: stripeTransactionIds,
         });
 
   User.empty()
@@ -72,6 +79,8 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
           bookings: [],
           dob: 0,
           email: _defaultEmail,
+          stripeCustomerId: null,
+          stripeTransactionIds: [],
         );
 
   factory User.fromJson(FirestoreResponse json) {
@@ -89,10 +98,13 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       final utrVerified = verifyRequiredProp<bool>(prop: json[UserFields.utrVerified], propName: UserFields.utrVerified, defaultValue: false);
       final photoUrl = verifyRequiredProp<String>(prop: json[UserFields.photoUrl], propName: UserFields.photoUrl, defaultValue: '');
       final membershipsRaw = verifyRequiredProp<List>(prop: json[UserFields.memberships], propName: UserFields.memberships, defaultValue: []);
+      final stripeTransactionIdsRaw =
+          verifyRequiredProp<List>(prop: json[UserFields.stripeTransactionIds], propName: UserFields.stripeTransactionIds, defaultValue: []);
 
       // * ================================== Optional Props ==================================
       final homeClubId = verifyNotRequiredProp<String?>(prop: json[UserFields.homeClubId], propName: UserFields.homeClubId);
       final utrRating = verifyNotRequiredProp<double?>(prop: json[UserFields.utrRating], propName: UserFields.utrRating);
+      final stripeCustomerId = verifyNotRequiredProp<String?>(prop: json[UserFields.stripeCustomerId], propName: UserFields.stripeCustomerId);
 
       // * Transformations
       List<DocumentReference<Map<String, dynamic>>> bookings;
@@ -107,6 +119,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         orElse: () => Gender.unknown,
       );
       final memberships = List<UserMembership>.from(membershipsRaw.map((x) => UserMembership.fromJson(x)));
+      final stripeTransactionIds = List<String>.from(stripeTransactionIdsRaw);
 
       verifyProps(json, UserFields.allFields);
 
@@ -124,6 +137,8 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         utrVerified: utrVerified,
         photoUrl: photoUrl,
         memberships: memberships,
+        stripeCustomerId: stripeCustomerId,
+        stripeTransactionIds: stripeTransactionIds,
       );
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING USER', DebugLevel.error);
@@ -145,7 +160,9 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         UserFields.utrRating: utrRating,
         UserFields.utrVerified: utrVerified,
         UserFields.photoUrl: photoUrl,
+        UserFields.stripeCustomerId: stripeCustomerId,
         UserFields.memberships: memberships.map((e) => e.toJson()).toList(),
+        UserFields.stripeTransactionIds: stripeTransactionIds
       };
 
   @override
@@ -163,7 +180,9 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
     double? utrRating,
     bool? utrVerified,
     String? photoUrl,
+    String? stripeCustomerId,
     List<UserMembership>? memberships,
+    List<String>? stripeTransactionIds,
   }) {
     return User(
       uid: uid ?? this.uid,
@@ -179,6 +198,8 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       utrVerified: utrVerified ?? this.utrVerified,
       photoUrl: photoUrl ?? this.photoUrl,
       memberships: memberships ?? this.memberships,
+      stripeCustomerId: stripeCustomerId ?? this.stripeCustomerId,
+      stripeTransactionIds: stripeTransactionIds ?? this.stripeTransactionIds,
     );
   }
 
@@ -197,7 +218,9 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         'utrRating: $utrRating \n'
         'utrVerified: $utrVerified \n'
         'photoUrl: $photoUrl \n'
+        'stripeCustomerId: $stripeCustomerId \n'
         'memberships: $memberships \n'
+        'stripeTransactionIds: $stripeTransactionIds \n'
         '=============================================== \n';
   }
 }

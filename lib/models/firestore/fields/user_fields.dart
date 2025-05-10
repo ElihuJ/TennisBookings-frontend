@@ -13,6 +13,8 @@ class UserFields {
   static const String utrVerified = 'utrVerified';
   static const String photoUrl = 'photoUrl';
   static const String memberships = 'memberships';
+  static const String stripeCustomerId = 'stripeCustomerId';
+  static const String stripeTransactionIds = 'stripeTransactionIds';
 
   static const List<String> allFields = [
     uid,
@@ -28,7 +30,9 @@ class UserFields {
     utrRating,
     utrVerified,
     photoUrl,
+    stripeTransactionIds,
     memberships,
+    stripeCustomerId,
   ];
 }
 

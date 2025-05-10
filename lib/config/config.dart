@@ -28,7 +28,7 @@ class Config {
     if (environment != Environment.prod) {
       _publishableKey = _devPublishableKey;
     } else if (environment == Environment.prod) {
-      _publishableKey = "";
+      _publishableKey = _prodPublishableKey;
     }
   }
 
@@ -36,7 +36,7 @@ class Config {
   static const majorVersion = 0;
   static const minorVersion = 2;
   static const patchVersion = 0;
-  static const buildNumber = 26;
+  static const buildNumber = 27;
 
   static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';
 
@@ -61,6 +61,7 @@ class Config {
   // ^ ================== STRIPE CONFIG ==================
   // cspell: disable
   static const _devPublishableKey = "pk_test_51RKduZPBFN3dQsNnbymgLQB6Tpu02JbAge53xoOAmV7WRj0bD5bHid0PXSJ2Ic5l93oLAVpv1W7MwxSKBssaCcGA00GBLL9eHf";
+  static const _prodPublishableKey = "pk_live_51RKduQAEUEBEyE19Q1YKTZlSOB0ytptc6knpktcvOerL6VNK9He5CbaHQKXMtqRJnJdoOVIeVtT7e74IphvSpWF1005OdOynTD";
   get publishableKey => _publishableKey;
 
   @override

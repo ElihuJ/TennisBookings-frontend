@@ -85,7 +85,7 @@ class MembershipDetails extends HookConsumerWidget {
                             ),
                             const SizedBox(height: 4),
                             PrettyText(
-                              'Annual Fee: \$${club.annualFee.toStringAsFixed(2)}',
+                              'Annual Membership Fee: \$${club.annualFee.toStringAsFixed(2)}',
                               style: TextStyle(fontSize: fontSize + 2, color: AppColors.grey),
                             ),
                             const SizedBox(height: 4),

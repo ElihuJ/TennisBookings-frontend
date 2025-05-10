@@ -57,7 +57,7 @@ class ClubDetailsCard extends StatelessWidget {
           ),
           space,
           PrettyText(
-            'Annual Fee: \$${clubSelected.annualFee.toStringAsFixed(2)}',
+            'Annual Membership Fee: \$${clubSelected.annualFee.toStringAsFixed(2)}',
             fontSize: _fontSize,
             color: _fontColor,
           ),
@@ -69,7 +69,7 @@ class ClubDetailsCard extends StatelessWidget {
             ),
           space,
           PrettyText(
-            'Total Members: ${clubSelected.totalMembers}',
+            'Total Members: ${clubSelected.memberIds.length}',
             fontSize: _fontSize,
             color: _fontColor,
           ),

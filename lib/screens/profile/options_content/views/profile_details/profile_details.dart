@@ -165,7 +165,6 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
     final playerData = ConfirmedPlayerData.emptyWithPhoto(user.photoUrl);
-    final spacer = const SizedBox(height: 50.0);
 
     final onGenderChangeClick = _mode == ProfileDetailsMode.edit ? _onGenderChange : null;
 
@@ -181,147 +180,145 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
         setState(() {});
       },
       autovalidateMode: AutovalidateMode.always,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            spacer,
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                TbImageField(photoUrl: playerData.photoUrl, imageBytes: imageBytes, selectImage: () async {}),
-                if (_mode == ProfileDetailsMode.edit)
-                  GestureDetector(
-                    onTap: () async {
-                      Uint8List? newImageBytes = await selectImage(imageBytes: imageBytes);
-                      setImageBytes(newImageBytes: newImageBytes);
-                    },
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: AppColors.white.withValues(alpha: 0.4),
-                        shape: BoxShape.circle,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            spacing: 35,
+            children: [
+              Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  TbImageField(photoUrl: playerData.photoUrl, imageBytes: imageBytes, selectImage: () async {}),
+                  if (_mode == ProfileDetailsMode.edit)
+                    GestureDetector(
+                      onTap: () async {
+                        Uint8List? newImageBytes = await selectImage(imageBytes: imageBytes);
+                        setImageBytes(newImageBytes: newImageBytes);
+                      },
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: AppColors.white.withValues(alpha: 0.4),
+                          shape: BoxShape.circle,
+                        ),
+                        margin: const EdgeInsets.only(top: 20),
+                        child: Icon(Icons.add_a_photo_outlined, color: Colors.white, size: 30),
                       ),
-                      margin: const EdgeInsets.only(top: 20),
-                      child: Icon(Icons.add_a_photo_outlined, color: Colors.white, size: 30),
                     ),
-                  ),
-              ],
-            ),
-            spacer,
-            FieldWithPencil(
-              mode: _mode,
-              onTap: _toggleMode,
-              child: TextFormField(
-                textAlign: TextAlign.center,
-                controller: _nameController,
-                enabled: _mode == ProfileDetailsMode.edit,
-                decoration: InputDecoration(labelText: 'Name', floatingLabelAlignment: FloatingLabelAlignment.center),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
+                ],
               ),
-            ),
-            spacer,
-            FieldWithPencil(
-              mode: _mode,
-              onTap: _toggleMode,
-              child: DropdownButtonFormField<String>(
-                borderRadius: BorderRadius.circular(5.0),
-                alignment: Alignment.center,
-                decoration: InputDecoration(labelText: 'Gender', floatingLabelAlignment: FloatingLabelAlignment.center),
-                value: _selectedGender,
-                validator: (value) {
-                  if (value == null || value == 'unknown') {
-                    return 'Please select';
-                  }
-                  return null;
-                },
-                items: ['male', 'female', 'unknown']
-                    .map((gender) => DropdownMenuItem(
-                          alignment: Alignment.bottomCenter,
-                          enabled: _mode == ProfileDetailsMode.edit,
-                          value: gender,
-                          child: PrettyText(gender,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: _mode == ProfileDetailsMode.edit ? AppColors.black : AppColors.grey,
-                              )),
-                        ))
-                    .toList(),
-                onChanged: onGenderChangeClick,
-              ),
-            ),
-            spacer,
-            FieldWithPencil(
-              mode: _mode,
-              onTap: _toggleMode,
-              child: TextFormField(
+              FieldWithPencil(
+                mode: _mode,
+                onTap: _toggleMode,
+                child: TextFormField(
                   textAlign: TextAlign.center,
-                  controller: _utrController,
+                  controller: _nameController,
                   enabled: _mode == ProfileDetailsMode.edit,
-                  decoration: InputDecoration(
-                    labelText: 'UTR Rating',
-                    floatingLabelAlignment: FloatingLabelAlignment.center,
-                  ),
-                  validator: (value) => utrValueValidator(value, context)),
-            ),
-            spacer,
-            FieldWithPencil(
-              mode: _mode,
-              onTap: () => _toggleMode(),
-              child: TextFormField(
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  labelText: 'Date of Birth',
-                  floatingLabelAlignment: FloatingLabelAlignment.center,
-                  hoverColor: Colors.white,
+                  decoration: InputDecoration(labelText: 'Name', floatingLabelAlignment: FloatingLabelAlignment.center),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  },
                 ),
-                controller: _dobController,
-                enabled: _mode == ProfileDetailsMode.edit,
-                readOnly: true,
-                onTap: () => _selectDate(context),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select your date of birth';
-                  }
-                  return null;
-                },
               ),
-            ),
-            spacer,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(Icons.email, color: AppColors.black),
-                const SizedBox(width: 10),
-                Text(user.email, style: TextStyle(fontSize: 16.0)),
-              ],
-            ),
-            spacer,
-            if (_mode == ProfileDetailsMode.edit)
-              ActionButtons(
-                onCancel: () {
-                  setState(() {
-                    _mode = ProfileDetailsMode.view;
-                    _formKey.currentState!.reset();
-                    _nameController.text = _initialName;
-                    _dobController.text = _initialDob;
-                    _selectedGender = _initialSelectedGender;
-                    _utrController.text = user.utrRating.toString();
-                    imageBytes = Uint8List(0);
-                  });
-                },
-                onSave: submitFunction,
+              FieldWithPencil(
+                mode: _mode,
+                onTap: _toggleMode,
+                child: DropdownButtonFormField<String>(
+                  borderRadius: BorderRadius.circular(5.0),
+                  alignment: Alignment.center,
+                  decoration: InputDecoration(labelText: 'Gender', floatingLabelAlignment: FloatingLabelAlignment.center),
+                  value: _selectedGender,
+                  validator: (value) {
+                    if (value == null || value == 'unknown') {
+                      return 'Please select';
+                    }
+                    return null;
+                  },
+                  items: ['male', 'female', 'unknown']
+                      .map((gender) => DropdownMenuItem(
+                            alignment: Alignment.bottomCenter,
+                            enabled: _mode == ProfileDetailsMode.edit,
+                            value: gender,
+                            child: PrettyText(gender,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: _mode == ProfileDetailsMode.edit ? AppColors.black : AppColors.grey,
+                                )),
+                          ))
+                      .toList(),
+                  onChanged: onGenderChangeClick,
+                ),
               ),
-            spacer,
-          ],
+              FieldWithPencil(
+                mode: _mode,
+                onTap: _toggleMode,
+                child: TextFormField(
+                    textAlign: TextAlign.center,
+                    controller: _utrController,
+                    enabled: _mode == ProfileDetailsMode.edit,
+                    decoration: InputDecoration(
+                      labelText: 'UTR Rating',
+                      floatingLabelAlignment: FloatingLabelAlignment.center,
+                      alignLabelWithHint: true,
+                    ),
+                    validator: (value) => utrValueValidator(value, context)),
+              ),
+              FieldWithPencil(
+                mode: _mode,
+                onTap: () => _toggleMode(),
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    labelText: 'Date of Birth',
+                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                    hoverColor: Colors.white,
+                  ),
+                  controller: _dobController,
+                  enabled: _mode == ProfileDetailsMode.edit,
+                  readOnly: true,
+                  onTap: () => _selectDate(context),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select your date of birth';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.email, color: AppColors.black),
+                  const SizedBox(width: 10),
+                  Text(user.email, style: TextStyle(fontSize: 16.0)),
+                ],
+              ),
+              if (_mode == ProfileDetailsMode.edit)
+                ActionButtons(
+                  onCancel: () {
+                    setState(() {
+                      _mode = ProfileDetailsMode.view;
+                      _formKey.currentState!.reset();
+                      _nameController.text = _initialName;
+                      _dobController.text = _initialDob;
+                      _selectedGender = _initialSelectedGender;
+                      _utrController.text = user.utrRating?.toString() ?? '';
+                      imageBytes = Uint8List(0);
+                    });
+                  },
+                  onSave: submitFunction,
+                ),
+            ],
+          ),
         ),
       ),
     );

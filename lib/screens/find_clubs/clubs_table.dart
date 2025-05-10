@@ -5,8 +5,8 @@ import '../../global_helpers/index.dart';
 import '../../global_widgets/index.dart';
 import '../../state/index.dart';
 import '../../theme/colors.dart';
-import '../club_details/club_details_screen.dart';
 import '../calendar/calendar_screen.dart';
+import '../club_details/club_details_screen.dart';
 
 const _googleUrl = 'https://www.google.com/maps/search/?api=1&query=';
 
@@ -46,10 +46,7 @@ class _ClubsTableState extends State<ClubsTable> {
   @override
   Widget build(BuildContext context) {
     final filteredClubs = widget.clubs.where((club) => club.name.toLowerCase().contains(searchQuery.toLowerCase())).toList();
-    final screenWidth = MediaQuery.of(context).size.width;
 
-    final wideScreen = screenWidth > 1800;
-    final mediumScreen = screenWidth > 1200 && screenWidth <= 1800;
     final mobileView = isMobile(context);
     final fontSize = getFontSize(mobileView);
 

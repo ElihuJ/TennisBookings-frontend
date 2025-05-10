@@ -17,9 +17,9 @@ class ClubFields {
   static const String state = 'state';
   static const String courts = 'courts';
   static const String allowPublicBookings = 'allowPublicBookings';
-  static const String totalMembers = 'totalMembers';
   static const String contactEmail = 'contactEmail';
   static const String contactPhone = 'contactPhone';
+  static const String memberIds = 'memberIds';
 
   static const List<String> allFields = [
     id,
@@ -40,7 +40,7 @@ class ClubFields {
     courts,
     allowPublicBookings,
     clubLogoUrl,
-    totalMembers,
+    memberIds,
     contactEmail,
     contactPhone,
   ];

@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/cloud_functions/dto/get_payment_intent.dart';
 import 'package:tennisbookings/global_helpers/index.dart';
 import 'package:tennisbookings/screens/club_membership/stripe_payment_widget.dart';
 
@@ -67,7 +66,7 @@ class _PaymentView extends StatelessWidget {
           height: double.infinity,
           child: SingleChildScrollView(
             child: FutureBuilder(
-              future: cloudFunctions.getPaymentIntent(clubId: clubSelected.id, intentType: IntentType.annualMembership),
+              future: cloudFunctions.getMembershipPaymentIntent(clubId: clubSelected.id),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return LoadingScreen(

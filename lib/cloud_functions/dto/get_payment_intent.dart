@@ -1,93 +1,83 @@
 import '../../global_helpers/index.dart';
 import 'index.dart';
 
-class GetPaymentIntentPayload implements APIPayload {
+class GetMembershipPaymentIntentPayload implements APIPayload {
   final String clubId;
-  final IntentType intentType;
-  static final endpoint = 'getPaymentIntent';
+  static final endpoint = 'getMembershipPaymentIntent';
 
-  GetPaymentIntentPayload({required this.clubId, required this.intentType});
+  GetMembershipPaymentIntentPayload({required this.clubId});
 
   @override
   Map<String, dynamic> toJson() {
     return {
       'clubId': clubId,
-      'intentType': intentType.value,
     };
   }
 
   @override
   String toString() {
-    return 'GetPaymentIntentPayload{clubId: $clubId, intentType: $intentType}';
+    return 'GetPaymentIntentPayload{clubId: $clubId';
   }
 }
 
 // * ===========  Response  ===========
 
-class GetPaymentIntentResponse {
+class GetMembershipPaymentIntentResponse {
   final ResponseStatus responseStatus;
-  final GetPaymentIntentResponseData data;
+  final GetMembershipPaymentIntentResponseData data;
 
-  GetPaymentIntentResponse({
+  GetMembershipPaymentIntentResponse({
     required this.data,
     required this.responseStatus,
   });
 
-  factory GetPaymentIntentResponse.fromJson(Map<String, dynamic> map) {
+  factory GetMembershipPaymentIntentResponse.fromJson(Map<String, dynamic> map) {
     try {
       final dataRaw = map[ResponseFields.data.name];
       final responseStatusRaw = map[ResponseFields.responseStatus.name];
-      return GetPaymentIntentResponse(
-        data: GetPaymentIntentResponseData.fromJson(dataRaw),
+      return GetMembershipPaymentIntentResponse(
+        data: GetMembershipPaymentIntentResponseData.fromJson(dataRaw),
         responseStatus: ResponseStatus.fromJson(responseStatusRaw),
       );
     } catch (e) {
-      throw Exception('Error parsing GetPaymentIntentResponse: $e \n\n $map');
+      throw Exception('Error parsing GetMembershipPaymentIntentResponse: $e \n\n $map');
     }
   }
 }
 
 // * ===========  Data  ===========
-class GetPaymentIntentResponseData {
+class GetMembershipPaymentIntentResponseData {
   final String clientSecret;
-  final IntentType intentType;
 
-  GetPaymentIntentResponseData({
+  GetMembershipPaymentIntentResponseData({
     required this.clientSecret,
-    required this.intentType,
   });
 
-  factory GetPaymentIntentResponseData.fromJson(Map<dynamic, dynamic> map) {
-    return GetPaymentIntentResponseData(
-      clientSecret: map[GetPaymentIntentResponseDataFields.clientSecret.name],
-      intentType: IntentType.values.firstWhere(
-        (e) => e.value == map[GetPaymentIntentResponseDataFields.clientSecret.name],
-        orElse: () => IntentType.casualFee,
-      ),
-    );
+  factory GetMembershipPaymentIntentResponseData.fromJson(Map<dynamic, dynamic> map) {
+    return GetMembershipPaymentIntentResponseData(clientSecret: map[GetMembershipPaymentIntentResponseDataFields.clientSecret.name]);
   }
 
   @override
   String toString() {
-    return 'GetPaymentIntentResponseData{clientSecret: $clientSecret, intentType: $intentType}';
+    return 'GetMembershipPaymentIntentResponseData{clientSecret: $clientSecret}';
   }
 }
 
 // * ===========  Fields  ===========
-enum GetPaymentIntentResponseDataFields {
+enum GetMembershipPaymentIntentResponseDataFields {
   clientSecret,
 }
 
 enum IntentType {
   annualMembership,
-  casualFee;
+  casualBooking;
 
   String get value {
     switch (this) {
       case IntentType.annualMembership:
         return 'annualMembership';
-      case IntentType.casualFee:
-        return 'casualFee';
+      case IntentType.casualBooking:
+        return 'casualBooking';
     }
   }
 }

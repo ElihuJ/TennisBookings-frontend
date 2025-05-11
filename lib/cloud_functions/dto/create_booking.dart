@@ -2,12 +2,12 @@ import '../../global_helpers/index.dart';
 import '../../models/riverpod/index.dart';
 import 'index.dart';
 
-class CreateBookingPayload implements APIPayload {
+class CreateMemberBookingPayload implements APIPayload {
   final Booking booking;
   final bool isOpenBooking;
-  static final endpoint = 'createBooking';
+  static final endpoint = 'createMemberBooking';
 
-  CreateBookingPayload({
+  CreateMemberBookingPayload({
     required this.booking,
     required this.isOpenBooking,
   });
@@ -28,21 +28,21 @@ class CreateBookingPayload implements APIPayload {
 
 // * ===========  Response  ===========
 
-class CreateBookingResponse {
+class CreateMemberBookingResponse {
   final ResponseStatus responseStatus;
-  final CreateBookingResponseData data;
+  final CreateMemberBookingResponseData data;
 
-  CreateBookingResponse({
+  CreateMemberBookingResponse({
     required this.data,
     required this.responseStatus,
   });
 
-  factory CreateBookingResponse.fromJson(Map<String, dynamic> map) {
+  factory CreateMemberBookingResponse.fromJson(Map<String, dynamic> map) {
     try {
       final dataRaw = map[ResponseFields.data.name];
       final responseStatusRaw = map[ResponseFields.responseStatus.name];
-      return CreateBookingResponse(
-        data: CreateBookingResponseData.fromJson(dataRaw),
+      return CreateMemberBookingResponse(
+        data: CreateMemberBookingResponseData.fromJson(dataRaw),
         responseStatus: ResponseStatus.fromJson(responseStatusRaw),
       );
     } catch (e) {
@@ -52,15 +52,15 @@ class CreateBookingResponse {
 }
 
 // * ===========  Data  ===========
-class CreateBookingResponseData {
+class CreateMemberBookingResponseData {
   final String newBookingId;
 
-  CreateBookingResponseData({
+  CreateMemberBookingResponseData({
     required this.newBookingId,
   }) : super();
 
-  factory CreateBookingResponseData.fromJson(Map<dynamic, dynamic> map) {
-    return CreateBookingResponseData(newBookingId: map[CreateBookingResponseDataFields.newBookingId.name]);
+  factory CreateMemberBookingResponseData.fromJson(Map<dynamic, dynamic> map) {
+    return CreateMemberBookingResponseData(newBookingId: map[CreateMemberBookingResponseDataFields.newBookingId.name]);
   }
 
   @override
@@ -70,6 +70,6 @@ class CreateBookingResponseData {
 }
 
 // * ===========  Fields  ===========
-enum CreateBookingResponseDataFields {
+enum CreateMemberBookingResponseDataFields {
   newBookingId,
 }

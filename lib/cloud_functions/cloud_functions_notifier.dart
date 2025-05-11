@@ -27,10 +27,10 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
     state = state.copyWith(uid: uid);
   }
 
-  Future<CFResult<String>> createBooking(CreateBookingPayload payload) async {
+  Future<CFResult<String>> createBooking(CreateMemberBookingPayload payload) async {
     try {
-      final HttpsCallableResult result = await cloudFunctions.httpsCallable(CreateBookingPayload.endpoint).call(payload.toJson());
-      final response = CreateBookingResponse.fromJson(result.data);
+      final HttpsCallableResult result = await cloudFunctions.httpsCallable(CreateMemberBookingPayload.endpoint).call(payload.toJson());
+      final response = CreateMemberBookingResponse.fromJson(result.data);
       if (response.responseStatus.code != ResponseCodeEnum.success.value) {
         return CFResult.internalError(errorMessage: response.responseStatus.message);
       }
@@ -195,11 +195,11 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
     }
   }
 
-  Future<CFResult<String>> getPaymentIntent({required String clubId, required IntentType intentType}) async {
+  Future<CFResult<String>> getMembershipPaymentIntent({required String clubId}) async {
     try {
-      final payload = GetPaymentIntentPayload(clubId: clubId, intentType: intentType);
-      final HttpsCallableResult result = await cloudFunctions.httpsCallable(GetPaymentIntentPayload.endpoint).call(payload.toJson());
-      final response = GetPaymentIntentResponse.fromJson(result.data);
+      final payload = GetMembershipPaymentIntentPayload(clubId: clubId);
+      final HttpsCallableResult result = await cloudFunctions.httpsCallable(GetMembershipPaymentIntentPayload.endpoint).call(payload.toJson());
+      final response = GetMembershipPaymentIntentResponse.fromJson(result.data);
       if (response.responseStatus.code != ResponseCodeEnum.success.value) {
         return CFResult.internalError(errorMessage: response.responseStatus.message);
       }

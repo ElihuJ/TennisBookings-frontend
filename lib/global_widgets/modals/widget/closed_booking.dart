@@ -83,7 +83,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
       courtName: widget.courtSelected.name,
     );
 
-    final payload = CreateBookingPayload(
+    final payload = CreateMemberBookingPayload(
       booking: newBooking,
       isOpenBooking: false, // * This is the only difference between open and closed booking
     );

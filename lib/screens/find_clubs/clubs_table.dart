@@ -149,7 +149,7 @@ class _ClubsTableState extends State<ClubsTable> {
                             ),
                           if (!mobileView) _RowCellText(text: club.suburb),
                           if (!mobileView) _RowCellText(text: '\$ ${club.annualFee.toString()}'),
-                          if (!mobileView) _RowCellText(text: '\$ ${club.casualFee.toString()}'),
+                          if (!mobileView) _RowCellText(text: '\$ ${club.casualBooking.toString()}'),
                           _RowCellText(
                             text: 'Book a court',
                             isButton: true,

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tennisbookings/cloud_functions/dto/get_payment_intent.dart';
 import 'package:tennisbookings/global_helpers/index.dart';
-import 'package:tennisbookings/global_widgets/containers/bordered_box.dart';
 import 'package:tennisbookings/screens/club_membership/stripe_payment_widget.dart';
 
 import '../../cloud_functions/index.dart';

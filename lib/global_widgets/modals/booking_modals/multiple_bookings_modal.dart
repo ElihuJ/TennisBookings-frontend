@@ -29,8 +29,8 @@ class MultipleBookingsModal extends HookConsumerWidget {
                 enlargeCenterPage: true,
               ),
               items: booking.mergedBookings.map((booking) {
-                final bookingAndUserContext = getBookingAndUserContext(
-                    booking: booking, user: user, allowsPublicBookings: club.allowPublicBookings, isMemberOfClub: isMemberOfClub);
+                final bookingAndUserContext =
+                    getBookingAndUserContext(booking: booking, user: user, onlyMembers: club.onlyMembers, isMemberOfClub: isMemberOfClub);
                 final bookingDetailsType = getBookingDetailsType(bookingAndUserContext);
                 return SingleChildScrollView(
                   child: Container(

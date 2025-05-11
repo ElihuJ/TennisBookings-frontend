@@ -34,7 +34,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
   Widget build(BuildContext context) {
     final clubsNotifier = ref.read(clubsProvider.notifier);
     final user = ref.watch(userProvider);
-    final allowsPublicBookings = widget.clubSelected.allowPublicBookings;
+    final onlyMembers = widget.clubSelected.onlyMembers;
     final isUserMember = user.memberships.any((membership) => membership.clubId == widget.clubSelected.id);
     final allEvents = [..._eventController.allEvents];
     _eventController.removeAll(allEvents);
@@ -105,7 +105,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
                   showLoginRegisterModal(context);
                   return;
                 }
-                if (!allowsPublicBookings && !isUserMember) {
+                if (onlyMembers && !isUserMember) {
                   showOnlyMembersModal(context: context, message: 'Only members can book in this club');
                   return;
                 }

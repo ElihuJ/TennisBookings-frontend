@@ -77,12 +77,11 @@ class BookingContainer extends StatelessWidget {
     final bookingLessThanAnHour = bookingLengthEpoch < 3600;
     final fontSize = bookingLessThanAnHour ? 10.0 : 14.0;
 
-    final allowsPublicBookings = club.allowPublicBookings;
+    final onlyMembers = club.onlyMembers;
 
     final isMemberOfClub = user.memberships.any((membership) => membership.clubId == club.id);
 
-    final bookingAndUserContext =
-        getBookingAndUserContext(booking: booking, user: user, allowsPublicBookings: allowsPublicBookings, isMemberOfClub: isMemberOfClub);
+    final bookingAndUserContext = getBookingAndUserContext(booking: booking, user: user, onlyMembers: onlyMembers, isMemberOfClub: isMemberOfClub);
     final (mouseAction, isClickable) = _getPermissionToClick(bookingAndUserContext: bookingAndUserContext);
 
     final isCoaching = booking.format == BookingFormat.coaching;
@@ -182,11 +181,11 @@ class BookingContainer extends StatelessWidget {
 }
 
 BookingAndUserContext getBookingAndUserContext(
-    {required Booking booking, required User user, required bool allowsPublicBookings, required bool isMemberOfClub}) {
-  final clubIsPublicOrMemberOfClub = allowsPublicBookings || isMemberOfClub;
+    {required Booking booking, required User user, required bool onlyMembers, required bool isMemberOfClub}) {
+  final clubIsPublicOrMemberOfClub = !onlyMembers || isMemberOfClub;
 
   if (user.uid.isEmpty) return BookingAndUserContext.isNotLoggedIn;
-  if (!allowsPublicBookings && !isMemberOfClub) return BookingAndUserContext.isNotAllowedToBook;
+  if (onlyMembers && !isMemberOfClub) return BookingAndUserContext.isNotAllowedToBook;
   if (booking.ownerId == user.uid) return BookingAndUserContext.isOwner;
   if (booking.confirmedPlayerIds.contains(user.uid)) return BookingAndUserContext.isParticipant;
   if (booking.format == BookingFormat.merged) return BookingAndUserContext.isMergedBooking; // * This needs to come before open bookings
@@ -194,7 +193,7 @@ BookingAndUserContext getBookingAndUserContext(
   if (booking.status == BookingStatus.confirmed && booking.ownerId != user.uid && booking.private) return BookingAndUserContext.isNotMineAndPrivate;
   if (booking.status == BookingStatus.confirmed && booking.ownerId != user.uid && !booking.private) return BookingAndUserContext.isNotMineAndPublic;
 
-  if (allowsPublicBookings) return BookingAndUserContext.isOpenForInvites;
+  if (!onlyMembers) return BookingAndUserContext.isOpenForInvites;
   return BookingAndUserContext.isNotAllowedToBook;
 }
 

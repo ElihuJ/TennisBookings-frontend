@@ -28,7 +28,6 @@ class Club extends MapView<String, dynamic> implements HasId {
   final int postcode;
   final String state;
   final List<Court> courts;
-  final bool allowPublicBookings;
   final String clubLogoUrl;
   final String? contactEmail;
   final String? contactPhone;
@@ -50,7 +49,6 @@ class Club extends MapView<String, dynamic> implements HasId {
     required this.postcode,
     required this.state,
     required this.courts,
-    required this.allowPublicBookings,
     required this.clubLogoUrl,
     required this.memberIds,
     this.casualFee,
@@ -95,7 +93,6 @@ class Club extends MapView<String, dynamic> implements HasId {
           postcode: 0,
           state: '',
           courts: [],
-          allowPublicBookings: false,
           clubLogoUrl: '',
           contactEmail: null,
           contactPhone: null,
@@ -134,14 +131,12 @@ class Club extends MapView<String, dynamic> implements HasId {
     final otherSurfaceCourts =
         verifyRequiredProp<int>(prop: json[ClubFields.otherSurfaceCourts], propName: ClubFields.otherSurfaceCourts, defaultValue: 0);
     final annualFee = verifyRequiredProp<double>(prop: json[ClubFields.annualFee], propName: ClubFields.annualFee, defaultValue: 0.0);
-    final onlyMembers = verifyRequiredProp<bool>(prop: json[ClubFields.onlyMembers], propName: ClubFields.onlyMembers, defaultValue: false);
+    final onlyMembers = verifyRequiredProp<bool>(prop: json[ClubFields.onlyMembers], propName: ClubFields.onlyMembers, defaultValue: true);
     final streetAddress = verifyRequiredProp<String>(prop: json[ClubFields.streetAddress], propName: ClubFields.streetAddress, defaultValue: '');
     final suburb = verifyRequiredProp<String>(prop: json[ClubFields.suburb], propName: ClubFields.suburb, defaultValue: '');
     final city = verifyRequiredProp<String>(prop: json[ClubFields.city], propName: ClubFields.city, defaultValue: '');
     final postcode = verifyRequiredProp<int>(prop: json[ClubFields.postcode], propName: ClubFields.postcode, defaultValue: 0);
     final state = verifyRequiredProp<String>(prop: json[ClubFields.state], propName: ClubFields.state, defaultValue: '');
-    final allowPublicBookings =
-        verifyRequiredProp<bool>(prop: json[ClubFields.allowPublicBookings], propName: ClubFields.allowPublicBookings, defaultValue: false);
     final clubLogoUrl = verifyRequiredProp<String>(prop: json[ClubFields.clubLogoUrl], propName: ClubFields.clubLogoUrl, defaultValue: '');
     final memberIdsRaw = verifyRequiredProp<List>(prop: json[ClubFields.memberIds], propName: ClubFields.memberIds, defaultValue: []);
     // * ================================== Verify not required props ==================================
@@ -173,7 +168,6 @@ class Club extends MapView<String, dynamic> implements HasId {
       postcode: postcode,
       state: state,
       courts: courts,
-      allowPublicBookings: allowPublicBookings,
       clubLogoUrl: clubLogoUrl,
       contactEmail: contactEmail,
       contactPhone: contactPhone,
@@ -198,7 +192,6 @@ class Club extends MapView<String, dynamic> implements HasId {
     int? postcode,
     String? state,
     List<Court>? courts,
-    bool? allowPublicBookings,
     List<String>? memberIds,
     String? clubLogoUrl,
     String? contactEmail,
@@ -221,7 +214,6 @@ class Club extends MapView<String, dynamic> implements HasId {
       postcode: postcode ?? this.postcode,
       state: state ?? this.state,
       courts: courts ?? this.courts,
-      allowPublicBookings: allowPublicBookings ?? this.allowPublicBookings,
       clubLogoUrl: clubLogoUrl ?? this.clubLogoUrl,
       contactEmail: contactEmail ?? this.contactEmail,
       contactPhone: contactPhone ?? this.contactPhone,
@@ -247,7 +239,6 @@ class Club extends MapView<String, dynamic> implements HasId {
         'postcode: $postcode, \n'
         'state: $state, \n'
         'courts: $courts, \n'
-        'allowPublicBookings: $allowPublicBookings, \n'
         'clubLogoUrl: $clubLogoUrl, \n'
         'contactEmail: $contactEmail, \n'
         'contactPhone: $contactPhone, \n'

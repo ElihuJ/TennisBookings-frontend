@@ -51,7 +51,7 @@ class ClubDetailsCard extends StatelessWidget {
           ),
           space,
           PrettyText(
-            'Public Bookings Allowed: ${clubSelected.allowPublicBookings ? "Yes" : "No"}',
+            'Public Bookings Allowed: ${clubSelected.onlyMembers ? "No" : "Yes"}',
             fontSize: _fontSize,
             color: _fontColor,
           ),

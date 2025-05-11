@@ -16,7 +16,6 @@ class ClubFields {
   static const String postcode = 'postcode';
   static const String state = 'state';
   static const String courts = 'courts';
-  static const String allowPublicBookings = 'allowPublicBookings';
   static const String contactEmail = 'contactEmail';
   static const String contactPhone = 'contactPhone';
   static const String memberIds = 'memberIds';
@@ -38,7 +37,6 @@ class ClubFields {
     postcode,
     state,
     courts,
-    allowPublicBookings,
     clubLogoUrl,
     memberIds,
     contactEmail,

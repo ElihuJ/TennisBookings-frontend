@@ -24,7 +24,7 @@ class MembershipDetails extends HookConsumerWidget {
     // * This will execute when refreshing page or loading specific URL directly
     if (clubs.isEmpty) {
       clubsNotifier.loadClubs();
-      return const Scaffold(
+      return const TbScaffold(
         body: Center(
           child: Text('Loading clubs...'),
         ),
@@ -43,9 +43,7 @@ class MembershipDetails extends HookConsumerWidget {
       mainAxisSize: MainAxisSize.max,
       children: [
         const SizedBox(height: 20),
-        const TitleText(
-          'Membership Details',
-        ),
+        const TitleText('Membership Details'),
         const SizedBox(height: 20),
         Flexible(
           child: SingleChildScrollView(

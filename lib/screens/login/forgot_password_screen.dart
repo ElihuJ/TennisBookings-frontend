@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../global_helpers/index.dart';
-import '../../global_widgets/eventful/eventful.dart';
-import '../../global_widgets/header/index.dart';
-import '../../theme/colors.dart';
+import '../../global_widgets/index.dart';
 import 'forms/forgot_password_form.dart';
 import 'widgets/back_arrow.dart';
 import 'widgets/forgot_password_header.dart';
@@ -23,9 +21,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return EventfulWidget(
-      child: Scaffold(
-        backgroundColor: AppColors.almostWhite,
-        appBar: const Header(),
+      child: TbScaffold(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

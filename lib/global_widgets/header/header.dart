@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/global_helpers/index.dart';
 
 import '../../assets/index.dart';
 import '../../config/config.dart';
@@ -20,40 +21,19 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
     ref.watch(firebaseAuthProvider);
     final currentUser = fb_auth.FirebaseAuth.instance.currentUser;
     final isLoggedIn = currentUser != null && currentUser.emailVerified;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final smallScreen = screenWidth < 600;
+    final mobileView = isMobile(context);
 
     return AppBar(
-      leadingWidth: smallScreen ? 150 : 250,
+      leadingWidth: mobileView ? 150 : 250,
       toolbarHeight: 80,
-      leading: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          if (!smallScreen) Spacer(),
-          IconButton(
-            highlightColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-            onPressed: () {
-              // clear URI base parameters
-              Navigator.of(context).pushNamed(HomeScreen.route);
-            },
-            icon: Image.asset(logoPgn, width: smallScreen ? 90 : 130),
-          ),
-          if (!smallScreen) Spacer(),
-          if (!smallScreen)
-            PrettyText(
-              Config.versionString,
-              style: TextStyle(color: Colors.white),
-            ),
-        ],
-      ),
+      leading: mobileView ? MobileLeading() : DesktopLeading(),
       backgroundColor: AppColors.primaryGreen,
       actions: <Widget>[
-        if (!smallScreen) Spacer(),
+        if (!mobileView) Spacer(),
         if (isLoggedIn) InvitesButtonHeader(),
-        if (isLoggedIn && !smallScreen) const SizedBox(width: 20),
+        if (isLoggedIn && !mobileView) const SizedBox(width: 20),
         BookACourtButtonHeader(),
-        SizedBox(width: smallScreen ? 20 : 100),
+        SizedBox(width: mobileView ? 20 : 100),
         Container(
           padding: const EdgeInsets.only(right: 30),
           child: isLoggedIn ? ProfileButton() : LoginRegisterButton(),
@@ -64,4 +44,53 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(80);
+}
+
+class MobileLeading extends StatelessWidget {
+  const MobileLeading({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      highlightColor: AppColors.secondaryGreen,
+      onPressed: () {
+        Navigator.of(context).pushNamed(HomeScreen.route);
+      },
+      icon: Image.asset(
+        logoPgn,
+        width: 130,
+      ),
+    );
+  }
+}
+
+class DesktopLeading extends StatelessWidget {
+  const DesktopLeading({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Spacer(),
+        IconButton(
+          highlightColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          onPressed: () {
+            Navigator.of(context).pushNamed(HomeScreen.route);
+          },
+          icon: Image.asset(logoPgn, width: 130),
+        ),
+        Spacer(),
+        PrettyText(
+          Config.versionString,
+          style: TextStyle(color: Colors.white),
+        ),
+      ],
+    );
+  }
 }

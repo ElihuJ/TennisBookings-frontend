@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tennisbookings/screens/club_membership/payment_result_screen.dart';
 
+import '../global_helpers/index.dart';
 import '../screens/calendar/calendar_screen.dart';
 import '../screens/club_details/club_details_screen.dart';
 import '../screens/club_membership/club_membership_screen.dart';
@@ -20,9 +21,8 @@ Route<dynamic> generateLoginRoutes(RouteSettings settings) {
 
   final settingUri = Uri.parse(settings.name ?? '');
 
-  final QueryParams queryParams = QueryParams(settingUri.queryParameters);
+  final queryParams = QueryParams(settingUri.queryParameters);
   String path = settingUri.path;
-  // path.tbLogger('PATH', DebugLevel.error);
 
   switch (path) {
     case HomeScreen.route:
@@ -48,9 +48,9 @@ Route<dynamic> generateLoginRoutes(RouteSettings settings) {
     case ProfileScreen.route:
       page = const ProfileScreen();
       break;
-    case ScheduleScreen.route:
+    case CalendarScreen.route:
       final clubSelectedQueryParams = ClubSelectedQueryParams(queryParams.queryParams);
-      page = ScheduleScreen(clubSelectedQueryParams: clubSelectedQueryParams);
+      page = CalendarScreen(clubSelectedQueryParams: clubSelectedQueryParams);
       break;
     case ClubDetailsScreen.route:
       final clubSelectedQueryParams = ClubSelectedQueryParams(queryParams.queryParams);
@@ -62,10 +62,10 @@ Route<dynamic> generateLoginRoutes(RouteSettings settings) {
       break;
     case PaymentResultScreen.route:
       final uriQuery = Uri.base.queryParameters;
-      final QueryParams queryParams = QueryParams(uriQuery);
-      final params = StripePaymentQueryParams(queryParams.queryParams);
+      final baseQueryParams = QueryParams({...uriQuery, ...queryParams.queryParams});
+      final stripeParams = StripePaymentQueryParams(baseQueryParams.queryParams);
 
-      page = PaymentResultScreen(params: params);
+      page = PaymentResultScreen(params: stripeParams);
       break;
   }
   return MyEsRoute(

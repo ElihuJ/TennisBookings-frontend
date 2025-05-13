@@ -4,7 +4,6 @@ import 'package:tennisbookings/global_widgets/containers/bordered_box.dart';
 import '../../global_helpers/index.dart';
 import '../../screens/home_screen.dart';
 import '../../theme/colors.dart';
-import '../header/index.dart';
 import '../index.dart';
 
 class LoadingScreen extends StatelessWidget {
@@ -32,8 +31,7 @@ class LoadingScreen extends StatelessWidget {
       return body;
     }
 
-    return Scaffold(
-      appBar: Header(),
+    return TbScaffold(
       body: body,
     );
   }
@@ -89,8 +87,7 @@ class NotFoundScreen extends StatelessWidget {
       return body;
     }
 
-    return Scaffold(
-      appBar: Header(),
+    return TbScaffold(
       body: body,
     );
   }

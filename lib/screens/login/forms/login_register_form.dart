@@ -126,7 +126,6 @@ class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
         messageType: messageType,
         title: messageType.name,
         message: message,
-        duration: Duration(seconds: 5),
       );
     }
 

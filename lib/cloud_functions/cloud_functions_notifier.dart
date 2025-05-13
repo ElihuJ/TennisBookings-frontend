@@ -7,8 +7,9 @@ import '../global_helpers/index.dart';
 import '../global_types/index.dart';
 import '../models/index.dart';
 import 'dto/delete_booking.dart';
+import 'dto/get_casual_payment_intent.dart';
 import 'dto/get_confirmed_players.dart';
-import 'dto/get_payment_intent.dart';
+import 'dto/get_membership_payment_intent.dart';
 import 'dto/index.dart';
 import 'dto/send_invite.dart';
 import 'dto/update_profile.dart';
@@ -200,6 +201,31 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
       final payload = GetMembershipPaymentIntentPayload(clubId: clubId);
       final HttpsCallableResult result = await cloudFunctions.httpsCallable(GetMembershipPaymentIntentPayload.endpoint).call(payload.toJson());
       final response = GetMembershipPaymentIntentResponse.fromJson(result.data);
+      if (response.responseStatus.code != ResponseCodeEnum.success.value) {
+        return CFResult.internalError(errorMessage: response.responseStatus.message);
+      }
+      return CFResult.ok<String>(data: response.data.clientSecret);
+    } on FirebaseFunctionsException catch (error) {
+      error.tbLogger('FirebaseFunctionsException getPaymentIntent', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    } catch (error) {
+      error.tbLogger('Error getPaymentIntent', DebugLevel.error);
+      return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
+    }
+  }
+
+  Future<CFResult<String>> getCasualPaymentIntent({required Booking booking}) async {
+    try {
+      final payload = GetCasualPaymentIntentPayload(
+          clubId: booking.clubId,
+          courtId: booking.courtId,
+          format: booking.format,
+          private: booking.private,
+          title: booking.title,
+          startTime: booking.startTime,
+          endTime: booking.endTime);
+      final HttpsCallableResult result = await cloudFunctions.httpsCallable(GetCasualPaymentIntentPayload.endpoint).call(payload.toJson());
+      final response = GetCasualPaymentIntentResponse.fromJson(result.data);
       if (response.responseStatus.code != ResponseCodeEnum.success.value) {
         return CFResult.internalError(errorMessage: response.responseStatus.message);
       }

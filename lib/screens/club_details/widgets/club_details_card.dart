@@ -61,9 +61,9 @@ class ClubDetailsCard extends StatelessWidget {
             fontSize: _fontSize,
             color: _fontColor,
           ),
-          if (clubSelected.casualBooking != null)
+          if (clubSelected.casualFee != null)
             PrettyText(
-              'Casual Booking: \$${clubSelected.casualBooking!.toStringAsFixed(2)}',
+              'Casual Booking: \$${clubSelected.casualFee!.toStringAsFixed(2)}',
               fontSize: _fontSize,
               color: _fontColor,
             ),

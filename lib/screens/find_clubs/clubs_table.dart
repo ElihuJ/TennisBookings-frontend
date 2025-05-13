@@ -30,7 +30,7 @@ class _ClubsTableState extends State<ClubsTable> {
     'Other\nCourts',
     'Address',
     'Suburb',
-    'Annua\nFee',
+    'Annual\nFee',
     'Casual\nFee',
     'Club Schedule',
     'More Info',
@@ -149,11 +149,11 @@ class _ClubsTableState extends State<ClubsTable> {
                             ),
                           if (!mobileView) _RowCellText(text: club.suburb),
                           if (!mobileView) _RowCellText(text: '\$ ${club.annualFee.toString()}'),
-                          if (!mobileView) _RowCellText(text: '\$ ${club.casualBooking.toString()}'),
+                          if (!mobileView) _RowCellText(text: '\$ ${club.casualFee.toString()}'),
                           _RowCellText(
                             text: 'Book a court',
                             isButton: true,
-                            onPressed: () => Navigator.of(context).pushNamed('${ScheduleScreen.route}?clubId=${club.id}'),
+                            onPressed: () => Navigator.of(context).pushNamed('${CalendarScreen.route}?clubId=${club.id}'),
                           ),
                           if (!mobileView)
                             _RowCellText(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../global_helpers/index.dart';
 import '../../theme/index.dart';
 import '../index.dart';
 
@@ -8,8 +9,8 @@ class TbTextButton extends StatelessWidget {
   final void Function()? onPressed;
   final Color color;
   final Color textColor;
-  final double height;
-  final double width;
+  final double? height;
+  final double? width;
   final double? fontSize;
 
   const TbTextButton({
@@ -18,13 +19,19 @@ class TbTextButton extends StatelessWidget {
     required this.text,
     this.color = AppColors.primaryGreen,
     this.textColor = AppColors.white,
-    this.height = 60,
-    this.width = 140,
+    this.height,
+    this.width,
     this.fontSize,
   });
 
   @override
   Widget build(BuildContext context) {
+    final mobileView = isMobile(context);
+    final fontSize = getFontSize(mobileView);
+
+    final height = this.height ?? (mobileView ? 50 : 60);
+    final width = this.width ?? (mobileView ? 100 : 140);
+
     return SizedBox(
       height: height,
       width: width,
@@ -97,7 +104,7 @@ class TbTextButtonWithImage extends StatelessWidget {
   }
 }
 
-class TbTextPlainButton extends StatelessWidget {
+class TbClickableText extends StatelessWidget {
   final String text;
   final void Function()? onPressed;
   final Color textColor;
@@ -105,7 +112,7 @@ class TbTextPlainButton extends StatelessWidget {
   final double width;
   final double fontSize;
 
-  const TbTextPlainButton({
+  const TbClickableText({
     super.key,
     required this.onPressed,
     required this.text,

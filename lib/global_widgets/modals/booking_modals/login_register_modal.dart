@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennisbookings/global_widgets/index.dart';
 
 import '../../../screens/login/email_login_screen.dart';
 import '../../../screens/login/login_screen.dart';
@@ -13,12 +14,12 @@ class LoginRegisterModal extends StatelessWidget {
       title: Text('Welcome'),
       content: Text('Please log in or create a new account to continue.'),
       actions: <Widget>[
-        TextButton(
-          child: Text('Login'),
+        TbTextButton(
+          text: 'Login',
           onPressed: () => Navigator.of(context).pushNamed(LoginScreen.route),
         ),
-        TextButton(
-          child: Text('Register'),
+        TbTextButton(
+          text: 'Register',
           onPressed: () => Navigator.of(context).pushNamed(EmailLoginScreen.route, arguments: ScreenMode.register),
         ),
       ],

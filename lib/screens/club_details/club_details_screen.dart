@@ -43,8 +43,7 @@ class ClubDetailsScreen extends HookConsumerWidget {
       );
     }
 
-    return Scaffold(
-      appBar: Header(),
+    return TbScaffold(
       body: Container(
         padding: const EdgeInsets.all(20.0),
         width: double.infinity,

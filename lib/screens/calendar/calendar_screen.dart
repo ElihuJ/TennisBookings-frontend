@@ -12,16 +12,16 @@ import '../login/widgets/containers.dart';
 import 'widgets/calendar_view.dart';
 import 'widgets/schedule_header.dart';
 
-class ScheduleScreen extends StatefulHookConsumerWidget {
+class CalendarScreen extends StatefulHookConsumerWidget {
   final ClubSelectedQueryParams clubSelectedQueryParams;
-  const ScheduleScreen({super.key, required this.clubSelectedQueryParams});
-  static const String route = 'ClubSchedule';
+  const CalendarScreen({super.key, required this.clubSelectedQueryParams});
+  static const String route = 'Calendar';
 
   @override
-  ConsumerState<ScheduleScreen> createState() => _ScheduleScreen();
+  ConsumerState<CalendarScreen> createState() => _ScheduleScreen();
 }
 
-class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
+class _ScheduleScreen extends ConsumerState<CalendarScreen> {
   Court? _courtSelected;
   Club? _clubSelected;
   String get paramClubId => widget.clubSelectedQueryParams.clubId;
@@ -72,8 +72,7 @@ class _ScheduleScreen extends ConsumerState<ScheduleScreen> {
 
     // ^ ==============================  Main View  =======================================
 
-    return Scaffold(
-      appBar: Header(),
+    return TbScaffold(
       body: ContainerWithBackground(
         imagePath: homeBackgroundPng,
         child: EventfulWidget(

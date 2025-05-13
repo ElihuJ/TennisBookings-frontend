@@ -7,3 +7,5 @@ export 'input_fields/index.dart';
 export 'loading/loading_screen.dart';
 export 'modals/index.dart';
 export 'text/index.dart';
+export './drawer/index.dart';
+export './scaffold/index.dart';

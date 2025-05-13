@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../global_widgets/header/index.dart';
+import '../../global_widgets/index.dart';
 
 class NotFoundScreen extends StatelessWidget {
   const NotFoundScreen({super.key});
@@ -9,8 +9,7 @@ class NotFoundScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: Header(),
+    return TbScaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

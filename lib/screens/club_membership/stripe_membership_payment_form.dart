@@ -10,13 +10,13 @@ import 'package:web/web.dart' as web;
 
 String getUrlPort() => web.window.location.port;
 
-String getReturnUrl() => '${web.window.origin}#${PaymentResultScreen.route}';
+String getReturnUrl(String clubId) => '${web.window.origin}#${PaymentResultScreen.route}?clubId=$clubId';
 
-Future<void> pay() async {
+Future<void> pay({required String clubId}) async {
   try {
     final paymentIntent = await WebStripe.instance.confirmPaymentElement(
       ConfirmPaymentElementOptions(
-        confirmParams: ConfirmPaymentParams(return_url: getReturnUrl()),
+        confirmParams: ConfirmPaymentParams(return_url: getReturnUrl(clubId)),
       ),
     );
     paymentIntent.tbLogger('PaymentIntent', DebugLevel.warning);
@@ -48,7 +48,7 @@ class _StripePaymentFormState extends ConsumerState<StripePaymentForm> {
     bool success = true;
     if (formIsReady) {
       eventNotifier.showLoading(title: 'Processing payment');
-      await pay().catchError((_) {
+      await pay(clubId: widget.club.id).catchError((_) {
         eventNotifier.hideLoading();
         eventNotifier.showMessage(message: 'Payment failed', messageType: MessageType.error);
         success = false;

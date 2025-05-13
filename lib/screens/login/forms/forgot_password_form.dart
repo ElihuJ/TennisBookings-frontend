@@ -93,7 +93,6 @@ class _ForgotPasswordForm extends ConsumerState<ForgotPasswordForm> {
                 messageType: messageType,
                 message: message,
                 title: messageType.name,
-                duration: const Duration(seconds: 5),
               );
 
               // * Clear fields if no error and pop context

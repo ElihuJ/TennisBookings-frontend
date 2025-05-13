@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../assets/index.dart';
 import '../global_widgets/eventful/eventful.dart';
-import '../global_widgets/header/header.dart';
+import '../global_widgets/scaffold/index.dart';
 import '../theme/index.dart';
 import 'login/widgets/containers.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
@@ -21,8 +21,7 @@ class HomeScreen extends HookConsumerWidget {
     return EventfulWidget(
       child: PopScope(
         canPop: false,
-        child: Scaffold(
-          appBar: Header(),
+        child: TbScaffold(
           body: ContainerWithBackground(
             imagePath: homeBackgroundPng,
             child: Column(

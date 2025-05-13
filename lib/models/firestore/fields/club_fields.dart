@@ -7,7 +7,7 @@ class ClubFields {
   static const String grassCourts = 'grassCourts';
   static const String otherSurfaceCourts = 'otherSurfaceCourts';
   static const String annualFee = 'annualFee';
-  static const String casualBooking = 'casualBooking';
+  static const String casualFee = 'casualFee';
   static const String onlyMembers = 'onlyMembers';
   static const String streetAddress = 'streetAddress';
   static const String suburb = 'suburb';
@@ -29,7 +29,7 @@ class ClubFields {
     grassCourts,
     otherSurfaceCourts,
     annualFee,
-    casualBooking,
+    casualFee,
     onlyMembers,
     streetAddress,
     suburb,

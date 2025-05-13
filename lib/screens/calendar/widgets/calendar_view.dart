@@ -102,43 +102,44 @@ class _CalendarView extends ConsumerState<CalendarView> {
               ),
               onDateTap: (date) {
                 if (user.uid.isEmpty) {
+                  // ^ User is not logged in
                   showLoginRegisterModal(context);
-                  return;
-                }
-                if (onlyMembers && !isUserMember) {
+                } else if (onlyMembers && !isUserMember) {
+                  // ^ User is not a member
                   showOnlyMembersModal(context: context, message: 'Only members can book in this club');
-                  return;
-                }
-                if (isInThePast(date.millisecondsSinceEpoch)) {
+                } else if (isInThePast(date.millisecondsSinceEpoch)) {
+                  // ^ Booking in the past
                   showGeneralForbiddenModal(context, title: 'Booking in the past', message: 'You cannot book a time in the past.');
-                  return;
-                }
-
-                if (isAboveFutureLimit(date.millisecondsSinceEpoch)) {
+                } else if (isAboveFutureLimit(date.millisecondsSinceEpoch)) {
+                  // ^ Booking too far in the future
                   showGeneralForbiddenModal(context,
                       title: 'Booking too far in the future', message: 'You cannot book a time more than 8 weeks in the future.');
-                  return;
+                } else if (!onlyMembers && !isUserMember) {
+                  // ^ User is not a member and can book
+                  showCreateCasualBookingModal(
+                      context: context, clubSelected: widget.clubSelected, courtSelected: widget.courtSelected, date: date, bookedTimes: bookedTimes);
+                } else {
+                  // ^ User is member in and can book
+                  showCreateMemberBookingModal(
+                      context: context, clubSelected: widget.clubSelected, courtSelected: widget.courtSelected, date: date, bookedTimes: bookedTimes);
                 }
-
-                showCreateBookingModal(
-                    context: context, clubSelected: widget.clubSelected, courtSelected: widget.courtSelected, date: date, bookedTimes: bookedTimes);
               },
               controller: _eventController,
               eventTileBuilder: (date, events, boundary, start, end) {
                 return EventContainer(events: events, club: widget.clubSelected);
               },
-              showLiveTimeLineInAllDays: true, // To display live time line in all pages in day view.
+              showLiveTimeLineInAllDays: true, // * To display live time line in all pages in day view.
               initialDay: dateInView,
               key: _calendarKey,
-              heightPerMinute: 2, // height occupied by 1 minute time span.
+              heightPerMinute: 2, // * height occupied by 1 minute time span.
               showHalfHours: true,
-              eventArranger: SideEventArranger(), // To define how simultaneous events will be arranged.
+              eventArranger: SideEventArranger(), // * To define how simultaneous events will be arranged.
               onPageChange: (startDate, number) async {
                 widget.setDateInView(startDate);
                 clubsNotifier.loadBookings(widget.clubSelected, widget.courtSelected, startDate, user.uid);
               },
-              endHour: 23, // To set the end hour displayed
-              keepScrollOffset: true, // To maintain scroll offset when the page changes
+              endHour: 23, // * To set the end hour displayed
+              keepScrollOffset: true, // * To maintain scroll offset when the page changes
             ),
           ),
         ),

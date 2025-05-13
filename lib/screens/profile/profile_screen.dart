@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../global_widgets/header/index.dart';
 import '../../global_widgets/index.dart';
 import '../../state/index.dart';
 import 'options_content/options_content.dart';
@@ -37,8 +36,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return EventfulWidget(
       child: PopScope(
         canPop: false,
-        child: Scaffold(
-          appBar: Header(),
+        child: TbScaffold(
           body: Row(
             children: [
               OptionsDrawer(toggleSelectedOption: toggleSelectedOption),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/screens/profile/profile_screen.dart';
 import 'package:web/web.dart' as web;
 
 import '../../global_widgets/header/header.dart';
 import '../../global_widgets/index.dart';
 import '../../routes/index.dart';
 import '../../theme/index.dart';
+import '../calendar/calendar_screen.dart';
 
 class PaymentResultScreen extends StatefulHookConsumerWidget {
   const PaymentResultScreen({super.key, required this.params});
@@ -48,19 +48,21 @@ class _PaymentResultScreenState extends ConsumerState<PaymentResultScreen> {
       return PaymentFailed();
     }
 
-    return PaymentSuccessful();
+    return PaymentSuccessful(params: widget.params);
   }
 }
 
 class PaymentSuccessful extends StatelessWidget {
   const PaymentSuccessful({
     super.key,
+    required this.params,
   });
+
+  final StripePaymentQueryParams params;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: Header(),
+    return TbScaffold(
       body: Center(
         child: Column(
           spacing: 20,
@@ -77,8 +79,8 @@ class PaymentSuccessful extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             TbTextButton(
-              onPressed: () => Navigator.of(context).pushNamed(ProfileScreen.route),
-              text: 'Go to Dashboard',
+              onPressed: () => Navigator.of(context).pushNamed('${CalendarScreen.route}?clubId=${params.clubId}&courtId=${params.courtId}'),
+              text: 'Go to Club Calendar',
             ),
           ],
         ),
@@ -94,8 +96,7 @@ class PaymentFailed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: Header(),
+    return TbScaffold(
       body: Center(
         child: Column(
           spacing: 20,

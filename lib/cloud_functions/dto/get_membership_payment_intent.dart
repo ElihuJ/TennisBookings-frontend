@@ -67,17 +67,3 @@ class GetMembershipPaymentIntentResponseData {
 enum GetMembershipPaymentIntentResponseDataFields {
   clientSecret,
 }
-
-enum IntentType {
-  annualMembership,
-  casualBooking;
-
-  String get value {
-    switch (this) {
-      case IntentType.annualMembership:
-        return 'annualMembership';
-      case IntentType.casualBooking:
-        return 'casualBooking';
-    }
-  }
-}

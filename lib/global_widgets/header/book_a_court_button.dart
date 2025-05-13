@@ -15,7 +15,7 @@ class BookACourtButtonHeader extends StatelessWidget {
     final fontSize = getFontSize(mobile);
     return Container(
       padding: const EdgeInsets.only(left: 0),
-      child: TbTextPlainButton(
+      child: TbClickableText(
         text: 'BOOKINGS',
         fontSize: fontSize,
         onPressed: () => Navigator.of(context).pushNamed(FindClubsScreen.route),

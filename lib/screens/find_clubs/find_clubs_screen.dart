@@ -21,7 +21,7 @@ class FindClubsScreen extends HookConsumerWidget {
     // * This will execute when refreshing page or loading specific URL directly
     if (clubs.isEmpty) {
       clubsNotifier.loadClubs();
-      return const Scaffold(
+      return const TbScaffold(
         body: Center(
           child: Text('Loading clubs...'),
         ),
@@ -34,8 +34,7 @@ class FindClubsScreen extends HookConsumerWidget {
     return EventfulWidget(
       child: PopScope(
         canPop: false,
-        child: Scaffold(
-          appBar: Header(),
+        child: TbScaffold(
           body: ContainerWithBackground(
             imagePath: homeBackgroundPng,
             child: ClubsTable(clubs: uniqueClubs),

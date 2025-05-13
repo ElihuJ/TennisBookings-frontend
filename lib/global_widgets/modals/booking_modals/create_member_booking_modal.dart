@@ -10,8 +10,8 @@ import '../widget/open_booking.dart';
 
 enum BookingMode { closed, open }
 
-class CreateBookingModal extends StatefulHookConsumerWidget {
-  const CreateBookingModal(
+class CreateMemberBookingModal extends StatefulHookConsumerWidget {
+  const CreateMemberBookingModal(
       {super.key, required this.clubSelected, required this.courtSelected, required this.date, required this.bookedTimes, required this.context});
   final Club clubSelected;
   final Court courtSelected;
@@ -20,10 +20,10 @@ class CreateBookingModal extends StatefulHookConsumerWidget {
   final BuildContext context; // This is a workaround to avoid passing context in the constructor
 
   @override
-  ConsumerState<CreateBookingModal> createState() => _CreateBookingModalState();
+  ConsumerState<CreateMemberBookingModal> createState() => _CreateBookingModalState();
 }
 
-class _CreateBookingModalState extends ConsumerState<CreateBookingModal> {
+class _CreateBookingModalState extends ConsumerState<CreateMemberBookingModal> {
   BookingMode _bookingMode = BookingMode.closed;
   String _titleValue = 'Booking';
   final TextEditingController endTimeController = TextEditingController();
@@ -115,7 +115,7 @@ class _CreateBookingModalState extends ConsumerState<CreateBookingModal> {
   }
 }
 
-showCreateBookingModal(
+showCreateMemberBookingModal(
     {required BuildContext context,
     required Club clubSelected,
     required Court courtSelected,
@@ -124,7 +124,8 @@ showCreateBookingModal(
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return CreateBookingModal(clubSelected: clubSelected, courtSelected: courtSelected, date: date, bookedTimes: bookedTimes, context: context);
+      return CreateMemberBookingModal(
+          clubSelected: clubSelected, courtSelected: courtSelected, date: date, bookedTimes: bookedTimes, context: context);
     },
   );
 }

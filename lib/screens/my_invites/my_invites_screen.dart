@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../cloud_functions/index.dart';
 import '../../cloud_functions/types.dart';
-import '../../global_widgets/header/index.dart';
 import '../../global_widgets/index.dart';
 import '../../models/index.dart';
 import '../../state/index.dart';
@@ -66,8 +65,7 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
     return EventfulWidget(
       child: PopScope(
         canPop: false,
-        child: Scaffold(
-          appBar: Header(),
+        child: TbScaffold(
           body: Center(
             child: SizedBox(
               width: sectionWidth,

@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tennisbookings/global_helpers/index.dart';
-import 'package:tennisbookings/screens/club_membership/stripe_payment_widget.dart';
+import 'package:tennisbookings/screens/club_membership/stripe_membership_payment_form.dart';
 
 import '../../cloud_functions/index.dart';
 import '../../global_widgets/header/header.dart';
@@ -59,8 +59,7 @@ class _PaymentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EventfulWidget(
-      child: Scaffold(
-        appBar: Header(),
+      child: TbScaffold(
         body: SizedBox(
           width: double.infinity,
           height: double.infinity,

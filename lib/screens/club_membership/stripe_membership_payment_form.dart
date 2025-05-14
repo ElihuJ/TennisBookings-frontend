@@ -88,7 +88,7 @@ class _StripePaymentFormState extends ConsumerState<StripePaymentForm> {
             ),
           ),
           TbTextButton(
-            text: 'Pay \$${widget.club.casualFee} ${widget.club.currency.value.toUpperCase()}',
+            text: 'Pay \$${widget.club.annualFee} ${widget.club.currency.value.toUpperCase()}',
             onPressed: formIsReady ? onPay : null,
           )
         ],

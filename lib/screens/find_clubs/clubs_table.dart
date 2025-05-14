@@ -157,7 +157,7 @@ class _ClubsTableState extends State<ClubsTable> {
                           ),
                           if (!mobileView)
                             _RowCellText(
-                              text: 'Club details',
+                              text: 'Get Membership',
                               isButton: true,
                               onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}'),
                             ),

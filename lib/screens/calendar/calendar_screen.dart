@@ -76,8 +76,10 @@ class _ScheduleScreen extends ConsumerState<CalendarScreen> {
       body: ContainerWithBackground(
         imagePath: homeBackgroundPng,
         child: EventfulWidget(
-          child: Center(
-            child: SingleChildScrollView(
+          child: SingleChildScrollView(
+            child: Container(
+              alignment: Alignment.center,
+              height: MediaQuery.of(context).size.height,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -90,11 +92,7 @@ class _ScheduleScreen extends ConsumerState<CalendarScreen> {
                       clubsNotifier.loadBookings(_clubSelected!, _courtSelected!, _dateInView, user.uid);
                     }),
                   ),
-                  SizedBox(
-                    height: 700,
-                    child: CalendarView(
-                        clubSelected: _clubSelected!, courtSelected: _courtSelected!, dateInView: _dateInView, setDateInView: setDateInView),
-                  ),
+                  CalendarView(clubSelected: _clubSelected!, courtSelected: _courtSelected!, dateInView: _dateInView, setDateInView: setDateInView),
                 ],
               ),
             ),

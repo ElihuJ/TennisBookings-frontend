@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../cloud_functions/index.dart';
+import '../../global_helpers/index.dart';
 import '../../models/index.dart';
 import '../../state/index.dart';
 import '../index.dart';
@@ -50,12 +51,9 @@ class _RowOfPlayerIconsState extends ConsumerState<RowOfPlayerIcons> {
   Widget build(BuildContext context) {
     final confirmedPlayersPlusOwner = [...widget.confirmedPlayerIds, widget.booking.ownerId];
 
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth < 600;
+    final mobileView = isMobile(context);
 
-    if (isMobile) {
-      return Container();
-    }
+    if (mobileView) return Container();
 
     return FutureBuilder<List<ConfirmedPlayerData>>(
       future: playersDataFuture,

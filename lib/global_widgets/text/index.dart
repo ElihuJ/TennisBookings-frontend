@@ -9,8 +9,8 @@ class PrettyText extends StatelessWidget {
     this.style,
     this.textAlign,
     this.overflow,
-    this.maxLines = 1,
-    this.fontSize = 16,
+    this.maxLines,
+    this.fontSize,
     this.color,
   });
 
@@ -18,22 +18,24 @@ class PrettyText extends StatelessWidget {
   final TextStyle? style;
   final TextAlign? textAlign;
   final TextOverflow? overflow;
-  final int maxLines;
-  final double fontSize;
+  final int? maxLines;
+  final double? fontSize;
   final Color? color;
 
   @override
   Widget build(BuildContext context) {
+    final mobileView = isMobile(context);
+    final defaultFontSize = getFontSize(mobileView);
     return Text(
       capitalizeFirstLetter(text),
       style: style ??
           TextStyle(
-            fontSize: fontSize,
+            fontSize: fontSize ?? defaultFontSize,
             color: color ?? Theme.of(context).textTheme.bodyLarge?.color,
           ),
       textAlign: textAlign,
       overflow: overflow ?? TextOverflow.ellipsis,
-      maxLines: maxLines,
+      maxLines: maxLines ?? 1,
     );
   }
 }

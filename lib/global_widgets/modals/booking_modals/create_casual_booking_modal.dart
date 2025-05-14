@@ -72,9 +72,12 @@ class _CreateCasualBookingModalState extends ConsumerState<CreateCasualBookingMo
                   future: getCasualPaymentIntent,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return LoadingScreen(
-                        message: 'Loading payment data...',
-                        noScaffold: true,
+                      return SizedBox(
+                        height: 300,
+                        child: LoadingScreen(
+                          message: 'Loading payment data...',
+                          noScaffold: true,
+                        ),
                       );
                     }
                     if (snapshot.hasError) {

@@ -65,14 +65,15 @@ class _StripePaymentFormState extends ConsumerState<StripePaymentForm> {
   @override
   Widget build(BuildContext context) {
     final mobileView = isMobile(context);
-    final fontSize = getFontSize(mobileView);
+
+    widget.club.currency.tbLogger('Currency', DebugLevel.warning);
 
     return SizedBox(
       width: mobileView ? 300 : 700,
       child: Column(
         spacing: 50,
         children: [
-          _Title(club: widget.club, fontSize: fontSize),
+          _Title(club: widget.club),
           Padding(
             padding: const EdgeInsets.all(20),
             child: PaymentElement(
@@ -87,7 +88,7 @@ class _StripePaymentFormState extends ConsumerState<StripePaymentForm> {
             ),
           ),
           TbTextButton(
-            text: 'Pay \$${widget.club.annualFee}',
+            text: 'Pay \$${widget.club.casualFee} ${widget.club.currency.value.toUpperCase()}',
             onPressed: formIsReady ? onPay : null,
           )
         ],
@@ -99,14 +100,13 @@ class _StripePaymentFormState extends ConsumerState<StripePaymentForm> {
 class _Title extends StatelessWidget {
   const _Title({
     required this.club,
-    required this.fontSize,
   });
 
   final Club club;
-  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
+    final mobileView = isMobile(context);
     final now = DateTime.now();
     final aYearFromNow = DateTime(now.year + 1, now.month, now.day);
     final aYearFromNowString = prettyDateLocalFromEpoch(aYearFromNow.millisecondsSinceEpoch);
@@ -117,13 +117,13 @@ class _Title extends StatelessWidget {
           '\nAnnual membership fee',
           textAlign: TextAlign.center,
           maxLines: 2,
-          fontSize: fontSize + 4,
+          fontSize: getFontSize(mobileView) + 4,
         ),
         SizedBox(height: 10),
         PrettyText(
           'Valid until $aYearFromNowString',
           textAlign: TextAlign.center,
-          fontSize: fontSize,
+          fontSize: getFontSize(mobileView),
           style: TextStyle(fontStyle: FontStyle.italic),
         ),
       ],

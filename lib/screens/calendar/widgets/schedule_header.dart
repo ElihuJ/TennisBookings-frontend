@@ -126,14 +126,18 @@ class _HeaderButton extends StatelessWidget {
         onTap: onTap,
         child: Container(
           alignment: Alignment.center,
-          height: _buttonsHeight,
+          // height: mobileScreen ? _buttonsHeight - 20 : _buttonsHeight,
           decoration: BoxDecoration(
             color: courtColor,
             borderRadius: BorderRadius.circular(15),
           ),
           padding: padding ?? const EdgeInsets.all(16),
           margin: EdgeInsets.all(15),
-          child: PrettyText(text, overflow: TextOverflow.ellipsis),
+          child: PrettyText(
+            text,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 3,
+          ),
         ),
       ),
     );

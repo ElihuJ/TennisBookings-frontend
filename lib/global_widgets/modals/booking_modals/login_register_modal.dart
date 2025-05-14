@@ -4,6 +4,7 @@ import 'package:tennisbookings/global_widgets/index.dart';
 import '../../../screens/login/email_login_screen.dart';
 import '../../../screens/login/login_screen.dart';
 import '../../../screens/login/types.dart';
+import '../../../theme/index.dart';
 
 class LoginRegisterModal extends StatelessWidget {
   const LoginRegisterModal({super.key});
@@ -17,9 +18,11 @@ class LoginRegisterModal extends StatelessWidget {
         TbTextButton(
           text: 'Login',
           onPressed: () => Navigator.of(context).pushNamed(LoginScreen.route),
+          color: AppColors.secondaryGreen,
         ),
         TbTextButton(
           text: 'Register',
+          color: AppColors.darkGreen,
           onPressed: () => Navigator.of(context).pushNamed(EmailLoginScreen.route, arguments: ScreenMode.register),
         ),
       ],

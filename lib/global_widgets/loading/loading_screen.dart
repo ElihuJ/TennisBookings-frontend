@@ -14,11 +14,12 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final body = BorderedBox(
+    final body = Container(
       alignment: Alignment.center,
       height: MediaQuery.of(context).size.height,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           const CircularProgressIndicator(),
           const SizedBox(height: 20),
@@ -45,9 +46,6 @@ class NotFoundScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mobile = isMobile(context);
-    final fontSize = getFontSize(mobile);
-
     final body = BorderedBox(
       alignment: Alignment.center,
       height: MediaQuery.of(context).size.height,
@@ -66,7 +64,6 @@ class NotFoundScreen extends StatelessWidget {
               message,
               maxLines: 4,
               style: TextStyle(
-                fontSize: fontSize + 4,
                 fontWeight: FontWeight.bold,
                 color: Colors.grey[800],
               ),

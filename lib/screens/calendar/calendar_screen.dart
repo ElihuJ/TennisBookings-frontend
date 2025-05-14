@@ -77,20 +77,26 @@ class _ScheduleScreen extends ConsumerState<CalendarScreen> {
         imagePath: homeBackgroundPng,
         child: EventfulWidget(
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ScheduleHeader(
-                  clubSelected: _clubSelected!,
-                  courts: courts,
-                  courtSelected: _courtSelected!,
-                  setState: (newValue) => setState(() {
-                    _courtSelected = courts.firstWhere((court) => court.id == newValue);
-                    clubsNotifier.loadBookings(_clubSelected!, _courtSelected!, _dateInView, user.uid);
-                  }),
-                ),
-                CalendarView(clubSelected: _clubSelected!, courtSelected: _courtSelected!, dateInView: _dateInView, setDateInView: setDateInView),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ScheduleHeader(
+                    clubSelected: _clubSelected!,
+                    courts: courts,
+                    courtSelected: _courtSelected!,
+                    setState: (newValue) => setState(() {
+                      _courtSelected = courts.firstWhere((court) => court.id == newValue);
+                      clubsNotifier.loadBookings(_clubSelected!, _courtSelected!, _dateInView, user.uid);
+                    }),
+                  ),
+                  SizedBox(
+                    height: 700,
+                    child: CalendarView(
+                        clubSelected: _clubSelected!, courtSelected: _courtSelected!, dateInView: _dateInView, setDateInView: setDateInView),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

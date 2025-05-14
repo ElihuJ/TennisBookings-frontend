@@ -69,7 +69,6 @@ class _StripePaymentFormModalState extends ConsumerState<StripePaymentModalForm>
   @override
   Widget build(BuildContext context) {
     final mobileView = isMobile(context);
-    final fontSize = getFontSize(mobileView);
 
     return SizedBox(
       width: mobileView ? 300 : 700,
@@ -77,7 +76,7 @@ class _StripePaymentFormModalState extends ConsumerState<StripePaymentModalForm>
         child: Column(
           spacing: 50,
           children: [
-            _Title(club: widget.club, fontSize: fontSize, booking: widget.booking),
+            _Title(club: widget.club, booking: widget.booking),
             Padding(
               padding: const EdgeInsets.all(20),
               child: PaymentElement(
@@ -92,7 +91,7 @@ class _StripePaymentFormModalState extends ConsumerState<StripePaymentModalForm>
               ),
             ),
             TbTextButton(
-              text: 'Pay \$${widget.club.casualFee}',
+              text: 'Pay \$${widget.club.casualFee} ${widget.club.currency.value.toUpperCase()}',
               onPressed: formIsReady ? onPay : null,
             )
           ],
@@ -105,18 +104,17 @@ class _StripePaymentFormModalState extends ConsumerState<StripePaymentModalForm>
 class _Title extends StatelessWidget {
   const _Title({
     required this.club,
-    required this.fontSize,
     required this.booking,
   });
 
   final Club club;
-  final double fontSize;
   final Booking booking;
 
   @override
   Widget build(BuildContext context) {
     final startTimeString = getLocalTimeFromEpoch(booking.startTime);
     final endTimeString = getLocalTimeFromEpoch(booking.endTime);
+    final mobileView = isMobile(context);
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -133,13 +131,13 @@ class _Title extends StatelessWidget {
               '\nFrom: $startTimeString to $endTimeString',
               textAlign: TextAlign.center,
               maxLines: 5,
-              fontSize: fontSize + 4,
+              fontSize: getFontSize(mobileView) + 4,
             ),
             SizedBox(height: 10),
             PrettyText(
               'Booking details are: ${booking.private ? 'Private' : 'Public'}',
               textAlign: TextAlign.center,
-              fontSize: fontSize,
+              fontSize: getFontSize(mobileView),
               style: TextStyle(fontStyle: FontStyle.italic),
             ),
           ],

@@ -32,6 +32,7 @@ class Club extends MapView<String, dynamic> implements HasId {
   final String? contactEmail;
   final String? contactPhone;
   final List<String> memberIds;
+  final Currency currency;
 
   Club({
     required this.id,
@@ -51,6 +52,7 @@ class Club extends MapView<String, dynamic> implements HasId {
     required this.courts,
     required this.clubLogoUrl,
     required this.memberIds,
+    required this.currency,
     this.casualFee,
     this.contactEmail,
     this.contactPhone,
@@ -73,6 +75,7 @@ class Club extends MapView<String, dynamic> implements HasId {
           ClubFields.courts: courts,
           ClubFields.clubLogoUrl: clubLogoUrl,
           ClubFields.memberIds: memberIds,
+          ClubFields.currency: currency,
         });
 
   Club.empty()
@@ -97,6 +100,7 @@ class Club extends MapView<String, dynamic> implements HasId {
           contactEmail: null,
           contactPhone: null,
           memberIds: [],
+          currency: Currency.aud,
         );
 
   // ^ ================================== Loaders ==================================
@@ -139,6 +143,7 @@ class Club extends MapView<String, dynamic> implements HasId {
     final state = verifyRequiredProp<String>(prop: json[ClubFields.state], propName: ClubFields.state, defaultValue: '');
     final clubLogoUrl = verifyRequiredProp<String>(prop: json[ClubFields.clubLogoUrl], propName: ClubFields.clubLogoUrl, defaultValue: '');
     final memberIdsRaw = verifyRequiredProp<List>(prop: json[ClubFields.memberIds], propName: ClubFields.memberIds, defaultValue: []);
+    final currencyRaw = verifyRequiredProp<String>(prop: json[ClubFields.currency], propName: ClubFields.currency, defaultValue: Currency.aud.value);
     // * ================================== Verify not required props ==================================
     final casualFee = verifyNotRequiredProp<double>(prop: json[ClubFields.casualFee], propName: ClubFields.casualFee);
     final contactEmail = verifyNotRequiredProp<String>(prop: json[ClubFields.contactEmail], propName: ClubFields.contactEmail);
@@ -148,6 +153,8 @@ class Club extends MapView<String, dynamic> implements HasId {
     List<Court> courts = json[ClubFields.courts] != null ? List<Court>.from(json[ClubFields.courts].map((x) => Court.fromJson(x))) : [];
     final adminIds = List<String>.from(adminIdsRaw);
     final memberIds = List<String>.from(memberIdsRaw);
+
+    final currency = Currency.values.firstWhere((e) => e.value == currencyRaw, orElse: () => Currency.aud);
 
     verifyProps(json, ClubFields.allFields);
 
@@ -170,6 +177,7 @@ class Club extends MapView<String, dynamic> implements HasId {
       courts: courts,
       clubLogoUrl: clubLogoUrl,
       contactEmail: contactEmail,
+      currency: currency,
       contactPhone: contactPhone,
       memberIds: memberIds,
     );
@@ -196,6 +204,7 @@ class Club extends MapView<String, dynamic> implements HasId {
     String? clubLogoUrl,
     String? contactEmail,
     String? contactPhone,
+    Currency? currency,
   }) {
     return Club(
       id: id ?? this.id,
@@ -218,6 +227,7 @@ class Club extends MapView<String, dynamic> implements HasId {
       contactEmail: contactEmail ?? this.contactEmail,
       contactPhone: contactPhone ?? this.contactPhone,
       memberIds: memberIds ?? this.memberIds,
+      currency: currency ?? this.currency,
     );
   }
 
@@ -243,6 +253,20 @@ class Club extends MapView<String, dynamic> implements HasId {
         'contactEmail: $contactEmail, \n'
         'contactPhone: $contactPhone, \n'
         'memberIds: $memberIds, \n'
+        'currency: $currency, \n'
         '=============================================== \n';
   }
+}
+
+enum Currency {
+  aud('aud'),
+  usd('usd'),
+  mxn('mxn');
+
+  final String value;
+
+  const Currency(this.value);
+
+  @override
+  String toString() => value;
 }

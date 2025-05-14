@@ -33,6 +33,7 @@ class Club extends MapView<String, dynamic> implements HasId {
   final String? contactPhone;
   final List<String> memberIds;
   final Currency currency;
+  final bool enabled;
 
   Club({
     required this.id,
@@ -53,6 +54,7 @@ class Club extends MapView<String, dynamic> implements HasId {
     required this.clubLogoUrl,
     required this.memberIds,
     required this.currency,
+    required this.enabled,
     this.casualFee,
     this.contactEmail,
     this.contactPhone,
@@ -76,6 +78,7 @@ class Club extends MapView<String, dynamic> implements HasId {
           ClubFields.clubLogoUrl: clubLogoUrl,
           ClubFields.memberIds: memberIds,
           ClubFields.currency: currency,
+          ClubFields.enabled: enabled,
         });
 
   Club.empty()
@@ -101,6 +104,7 @@ class Club extends MapView<String, dynamic> implements HasId {
           contactPhone: null,
           memberIds: [],
           currency: Currency.aud,
+          enabled: true,
         );
 
   // ^ ================================== Loaders ==================================
@@ -144,6 +148,7 @@ class Club extends MapView<String, dynamic> implements HasId {
     final clubLogoUrl = verifyRequiredProp<String>(prop: json[ClubFields.clubLogoUrl], propName: ClubFields.clubLogoUrl, defaultValue: '');
     final memberIdsRaw = verifyRequiredProp<List>(prop: json[ClubFields.memberIds], propName: ClubFields.memberIds, defaultValue: []);
     final currencyRaw = verifyRequiredProp<String>(prop: json[ClubFields.currency], propName: ClubFields.currency, defaultValue: Currency.aud.value);
+    final enabled = verifyRequiredProp<bool>(prop: json[ClubFields.enabled], propName: ClubFields.enabled, defaultValue: true);
     // * ================================== Verify not required props ==================================
     final casualFee = verifyNotRequiredProp<double>(prop: json[ClubFields.casualFee], propName: ClubFields.casualFee);
     final contactEmail = verifyNotRequiredProp<String>(prop: json[ClubFields.contactEmail], propName: ClubFields.contactEmail);
@@ -180,6 +185,7 @@ class Club extends MapView<String, dynamic> implements HasId {
       currency: currency,
       contactPhone: contactPhone,
       memberIds: memberIds,
+      enabled: enabled,
     );
   }
 
@@ -205,6 +211,7 @@ class Club extends MapView<String, dynamic> implements HasId {
     String? contactEmail,
     String? contactPhone,
     Currency? currency,
+    bool? enabled,
   }) {
     return Club(
       id: id ?? this.id,
@@ -228,6 +235,7 @@ class Club extends MapView<String, dynamic> implements HasId {
       contactPhone: contactPhone ?? this.contactPhone,
       memberIds: memberIds ?? this.memberIds,
       currency: currency ?? this.currency,
+      enabled: enabled ?? this.enabled,
     );
   }
 
@@ -254,6 +262,7 @@ class Club extends MapView<String, dynamic> implements HasId {
         'contactPhone: $contactPhone, \n'
         'memberIds: $memberIds, \n'
         'currency: $currency, \n'
+        'enabled: $enabled, \n'
         '=============================================== \n';
   }
 }

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../assets/index.dart';
-import '../../global_widgets/eventful/eventful.dart';
-import '../../global_widgets/header/index.dart';
 import '../../global_widgets/index.dart';
 import '../../state/clubs/index.dart';
 import '../login/widgets/containers.dart';
@@ -29,7 +27,8 @@ class FindClubsScreen extends HookConsumerWidget {
     }
 
     // * remove duplicates from clubs
-    final uniqueClubs = clubs.toSet().toList();
+    List<Club> uniqueClubs = clubs.toSet().toList();
+    uniqueClubs.removeWhere((club) => club.enabled == false);
 
     return EventfulWidget(
       child: PopScope(

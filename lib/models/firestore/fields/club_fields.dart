@@ -20,6 +20,7 @@ class ClubFields {
   static const String contactPhone = 'contactPhone';
   static const String memberIds = 'memberIds';
   static const String currency = 'currency';
+  static const String enabled = 'enabled';
 
   static const List<String> allFields = [
     id,
@@ -43,6 +44,7 @@ class ClubFields {
     memberIds,
     contactEmail,
     contactPhone,
+    enabled,
   ];
 }
 

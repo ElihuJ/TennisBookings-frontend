@@ -5,6 +5,7 @@ import 'package:tennisbookings/global_helpers/index.dart';
 
 import '../../assets/index.dart';
 import '../../config/config.dart';
+import '../../global_types/index.dart';
 import '../../screens/home_screen.dart';
 import '../../state/index.dart';
 import '../../theme/index.dart';
@@ -22,6 +23,7 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
     final currentUser = fb_auth.FirebaseAuth.instance.currentUser;
     final isLoggedIn = currentUser != null && currentUser.emailVerified;
     final mobileView = isMobile(context);
+    final env = Config().environment;
 
     return AppBar(
       leadingWidth: mobileView ? 150 : 250,
@@ -30,6 +32,25 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
       backgroundColor: AppColors.primaryGreen,
       actions: <Widget>[
         if (!mobileView) Spacer(),
+        if (env != Environment.prod)
+          TbClickableText(
+            text: Config().envString,
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Environment'),
+                  content: Text(env.toString()),
+                  actions: <Widget>[
+                    TbTextButton(
+                      text: 'OK',
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         if (isLoggedIn) InvitesButtonHeader(),
         if (isLoggedIn && !mobileView) const SizedBox(width: 20),
         BookACourtButtonHeader(),

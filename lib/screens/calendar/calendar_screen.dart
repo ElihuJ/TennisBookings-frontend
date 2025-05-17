@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../assets/index.dart';
 import '../../global_helpers/index.dart';
-import '../../global_widgets/header/index.dart';
 import '../../global_widgets/index.dart';
 import '../../models/index.dart';
 import '../../routes/index.dart';

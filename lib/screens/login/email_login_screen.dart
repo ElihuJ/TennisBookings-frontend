@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../global_widgets/eventful/eventful.dart';
-import '../../global_widgets/header/index.dart';
 import '../../global_widgets/index.dart';
-import '../../theme/colors.dart';
 import 'forms/login_register_form.dart';
 import 'types.dart';
 import 'widgets/footer.dart';

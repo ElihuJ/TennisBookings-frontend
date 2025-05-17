@@ -1,6 +1,22 @@
 import '../global_helpers/index.dart';
 
-enum Environment { dev, prod, staging }
+enum Environment {
+  dev,
+  prod,
+  uat;
+
+  @override
+  String toString() {
+    switch (this) {
+      case Environment.dev:
+        return 'Development';
+      case Environment.prod:
+        return 'Production';
+      case Environment.uat:
+        return 'UAT';
+    }
+  }
+}
 
 enum MessageType { success, error, warning, info }
 

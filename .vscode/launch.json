@@ -2,26 +2,28 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug",
+      "name": "DEV",
       "type": "dart",
       "request": "launch",
       "flutterMode": "debug",
-      "args": ["-d", "chrome"],
-      "program": "lib/main_dev.dart"
+      "args": ["-d", "chrome", "--dart-define=ENV=dev"],
+      "program": "lib/main.dart"
     },
     {
-      "name": "Profile",
+      "name": "UAT",
       "type": "dart",
       "request": "launch",
       "flutterMode": "profile",
-      "args": ["-d", "chrome"]
+      "args": ["-d", "chrome", "--dart-define=ENV=uat"],
+      "program": "lib/main.dart"
     },
     {
-      "name": "Release",
+      "name": "PROD",
       "type": "dart",
       "request": "launch",
       "flutterMode": "debug",
-      "args": ["-d", "chrome"]
+      "args": ["-d", "chrome", "--dart-define=ENV=prod"],
+      "program": "lib/main.dart"
     }
   ]
 }

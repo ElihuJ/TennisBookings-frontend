@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-import '../../config/google_sign_in.dart';
+import 'package:tennisbookings/config/config.dart';
 
 final firebase = fb_auth.FirebaseAuth.instance;
 
@@ -25,8 +24,7 @@ class FirebaseAuth {
     this.metadata,
     this.photoUrl,
   })  : firebaseInstance = fb_auth.FirebaseAuth.instance,
-        googleSignIn = GoogleSignIn(scopes: GoogleSignInConfig.scopes, clientId: GoogleSignInConfig.clientId);
-
+        googleSignIn = Config().googleSignInConfig;
   FirebaseAuth.empty()
       : uid = null,
         email = null,
@@ -35,7 +33,7 @@ class FirebaseAuth {
         photoUrl = null,
         metadata = null,
         firebaseInstance = fb_auth.FirebaseAuth.instance,
-        googleSignIn = GoogleSignIn(scopes: GoogleSignInConfig.scopes);
+        googleSignIn = Config().googleSignInConfig;
 
   FirebaseAuth copyWith({
     String? uid,

@@ -24,3 +24,7 @@ samples, guidance on mobile development, and a full API reference.
 
 1. run `firebase firestore:indexes > firestore.indexes.json` from firebase project
 This will update the indexes json file
+
+## CORS FIX
+
+1. run `gsutil cors set cors.json gs://<your-bucket-name>` to start the emulator

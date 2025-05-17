@@ -21,7 +21,7 @@ Future<void> main() async {
   // }
 
   Config(environment: Environment.dev);
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: ProdDefaultFirebaseOptions.currentPlatform);
 
   const host = '192.168.86.246';
 

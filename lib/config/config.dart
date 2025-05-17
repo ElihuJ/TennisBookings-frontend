@@ -1,17 +1,24 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../global_types/index.dart';
 
 import '../theme/index.dart';
+import 'firebase_options.dart';
+import 'firebase_options_uat..dart';
+import 'google_sign_in.dart';
 
 // * SINGLETON
 class Config {
   static Config? _instance;
-  late final String _publishableKey;
   final Environment? environment;
   final String envString;
   static ThemeData theme = selectedTheme;
+  late final String _publishableKey;
+  late final FirebaseOptions _firebaseOptions;
+  late final GoogleSignIn _googleSignInConfig;
 
   factory Config({Environment environment = Environment.dev}) {
     return _instance ??= Config._(environment: environment);
@@ -25,10 +32,15 @@ class Config {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    if (environment != Environment.prod) {
+
+    if (environment == Environment.uat) {
       _publishableKey = _devPublishableKey;
-    } else if (environment == Environment.prod) {
+      _firebaseOptions = UatDefaultFirebaseOptions.currentPlatform;
+      _googleSignInConfig = GoogleSignIn(scopes: GoogleSignInConfig.scopes, clientId: GoogleSignInConfig.uatClientId);
+    } else if (environment == Environment.prod || environment == Environment.dev) {
       _publishableKey = _prodPublishableKey;
+      _firebaseOptions = ProdDefaultFirebaseOptions.currentPlatform;
+      _googleSignInConfig = GoogleSignIn(scopes: GoogleSignInConfig.scopes, clientId: GoogleSignInConfig.clientId);
     }
   }
 
@@ -36,7 +48,7 @@ class Config {
   static const majorVersion = 1;
   static const minorVersion = 2;
   static const patchVersion = 3;
-  static const buildNumber = 34;
+  static const buildNumber = 35;
 
   static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';
 
@@ -62,7 +74,10 @@ class Config {
   // cspell: disable
   static const _devPublishableKey = "pk_test_51RKduZPBFN3dQsNnbymgLQB6Tpu02JbAge53xoOAmV7WRj0bD5bHid0PXSJ2Ic5l93oLAVpv1W7MwxSKBssaCcGA00GBLL9eHf";
   static const _prodPublishableKey = "pk_live_51RKduQAEUEBEyE19Q1YKTZlSOB0ytptc6knpktcvOerL6VNK9He5CbaHQKXMtqRJnJdoOVIeVtT7e74IphvSpWF1005OdOynTD";
+
   get publishableKey => _publishableKey;
+  get firebaseOptions => _firebaseOptions;
+  get googleSignInConfig => _googleSignInConfig;
 
   @override
   String toString() => 'Config: $envString environment is running'

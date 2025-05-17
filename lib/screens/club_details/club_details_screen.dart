@@ -5,7 +5,6 @@ import 'package:tennisbookings/screens/club_details/widgets/club_details_card.da
 import 'package:tennisbookings/screens/club_details/widgets/contact_card.dart';
 import 'package:tennisbookings/screens/club_details/widgets/membership_card.dart';
 
-import '../../global_widgets/header/header.dart';
 import '../../global_widgets/index.dart';
 import '../../routes/index.dart';
 import '../../state/index.dart';

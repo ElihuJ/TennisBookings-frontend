@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:web/web.dart' as web;
 
-import '../../global_widgets/header/header.dart';
 import '../../global_widgets/index.dart';
 import '../../routes/index.dart';
 import '../../theme/index.dart';

@@ -5,7 +5,6 @@ import 'package:tennisbookings/global_helpers/index.dart';
 import 'package:tennisbookings/screens/club_membership/stripe_membership_payment_form.dart';
 
 import '../../cloud_functions/index.dart';
-import '../../global_widgets/header/header.dart';
 import '../../global_widgets/index.dart';
 import '../../routes/index.dart';
 import '../../state/index.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tennisbookings/global_helpers/index.dart';
 import 'package:tennisbookings/global_widgets/containers/bordered_box.dart';
 
-import '../../global_helpers/index.dart';
 import '../../screens/home_screen.dart';
 import '../../theme/colors.dart';
 import '../index.dart';
@@ -14,17 +14,28 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final body = Container(
-      alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const CircularProgressIndicator(),
-          const SizedBox(height: 20),
-          Text(message),
-        ],
+    final mobileView = isMobile(context);
+
+    final height = mobileView ? MediaQuery.of(context).size.height / 3 : MediaQuery.of(context).size.height / 2;
+
+    final width = mobileView ? MediaQuery.of(context).size.width / 2 : MediaQuery.of(context).size.width / 4;
+
+    final body = Center(
+      child: BorderedBox(
+        backgroundColor: AppColors.white,
+        height: height,
+        width: width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(
+              color: AppColors.primaryGreen,
+            ),
+            const SizedBox(height: 20),
+            PrettyText(message),
+          ],
+        ),
       ),
     );
 

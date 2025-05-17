@@ -21,39 +21,33 @@ class MultipleBookingsModal extends HookConsumerWidget {
     return EventfulWidget(
       child: AlertDialog(
         title: const Text('Multiple Open bookings (Swipe across)', textAlign: TextAlign.center),
-        content: SizedBox(
+        content: Container(
+          color: AppColors.blue.withAlpha(30),
           width: 700,
+          height: 400,
           child: CarouselSlider(
-              options: CarouselOptions(
-                autoPlay: true,
-                enlargeCenterPage: true,
-              ),
-              items: booking.mergedBookings.map((booking) {
-                final bookingAndUserContext =
-                    getBookingAndUserContext(booking: booking, user: user, onlyMembers: club.onlyMembers, isMemberOfClub: isMemberOfClub);
-                final bookingDetailsType = getBookingDetailsType(bookingAndUserContext);
-                return SingleChildScrollView(
-                  child: Container(
-                    margin: const EdgeInsets.all(0),
-                    padding: const EdgeInsets.all(0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      color: AppColors.blue.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: BookingDetailsModal(
-                      booking: booking,
-                      bookingDetailsType: bookingDetailsType,
-                      multipleBookingsView: true,
-                    ),
-                  ),
-                );
-              }).toList()),
+            options: CarouselOptions(
+              autoPlay: true,
+              enlargeCenterPage: true,
+              height: 800, // * Max Height of content box in carousel, not including title and buttons
+            ),
+            items: booking.mergedBookings.map((booking) {
+              final bookingAndUserContext =
+                  getBookingAndUserContext(booking: booking, user: user, onlyMembers: club.onlyMembers, isMemberOfClub: isMemberOfClub);
+              final bookingDetailsType = getBookingDetailsType(bookingAndUserContext);
+              return BookingDetailsModal(
+                booking: booking,
+                bookingDetailsType: bookingDetailsType,
+                multipleBookingsView: true,
+              );
+            }).toList(),
+          ),
         ),
         actions: <Widget>[
-          TextButton(
-            child: const Text('Close'),
+          TbTextButton(
+            text: 'Close',
             onPressed: () => Navigator.of(context).pop(),
+            color: AppColors.grey,
           ),
         ],
       ),

@@ -115,7 +115,9 @@ class _NoInvitesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.all(32.0),
       child: MessageCard(
         icon: Icon(
           Icons.mail_outline,

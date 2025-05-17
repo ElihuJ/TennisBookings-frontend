@@ -66,7 +66,7 @@ class _ColumnOfPlayerIconsState extends ConsumerState<ColumnOfPlayerIcons> {
         }
 
         if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-          var players = snapshot.data!;
+          final players = snapshot.data!;
 
           return Flexible(
             child: SingleChildScrollView(
@@ -184,6 +184,7 @@ class _MobileView extends StatelessWidget {
         ),
         if (player.name.isNotEmpty)
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FieldBox(
                   width: nameWidth,

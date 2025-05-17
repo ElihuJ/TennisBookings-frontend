@@ -29,23 +29,8 @@ class BookingDetailsModal extends HookConsumerWidget {
     final toInMilliseconds = booking.endTime;
 
     final alertDialog = AlertDialog(
-      title: PrettyText(
-        booking.title,
-        maxLines: 3,
-      ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(height: 15),
-          PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, type: PlayerIconsType.column),
-          const SizedBox(height: 15),
-          PrettyText(prettyDateLocalFromEpoch(fromInMilliseconds)),
-          PrettyText('${getLocalTimeFromEpoch(fromInMilliseconds)} - ${getLocalTimeFromEpoch(toInMilliseconds)}'),
-          const SizedBox(height: 15),
-        ],
-      ),
+      title: _ContainerTitle(booking: booking, fromInMilliseconds: fromInMilliseconds, toInMilliseconds: toInMilliseconds),
+      content: _BookingContainer(booking: booking, fromInMilliseconds: fromInMilliseconds, toInMilliseconds: toInMilliseconds),
       actions: _getActions(context: context, bookingDetailsType: bookingDetailsType, widgetRef: ref, booking: booking),
       actionsAlignment: MainAxisAlignment.center,
     );
@@ -55,6 +40,67 @@ class BookingDetailsModal extends HookConsumerWidget {
     }
 
     return EventfulWidget(child: alertDialog);
+  }
+}
+
+class _ContainerTitle extends StatelessWidget {
+  const _ContainerTitle({
+    required this.booking,
+    required this.fromInMilliseconds,
+    required this.toInMilliseconds,
+  });
+
+  final Booking booking;
+  final int fromInMilliseconds;
+  final int toInMilliseconds;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(padding: const EdgeInsets.only(right: 8.0), child: PrettyText(booking.title, maxLines: 3)),
+          Padding(padding: const EdgeInsets.only(right: 8.0), child: PrettyText(prettyDateLocalFromEpoch(fromInMilliseconds))),
+          Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: PrettyText('${getLocalTimeFromEpoch(fromInMilliseconds)} - ${getLocalTimeFromEpoch(toInMilliseconds)}')),
+        ],
+      ),
+    );
+  }
+}
+
+class _BookingContainer extends StatelessWidget {
+  const _BookingContainer({
+    required this.booking,
+    required this.fromInMilliseconds,
+    required this.toInMilliseconds,
+  });
+
+  final Booking booking;
+  final int fromInMilliseconds;
+  final int toInMilliseconds;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 15),
+            PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, type: PlayerIconsType.column),
+            const SizedBox(height: 15),
+            const SizedBox(height: 15),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -84,7 +130,6 @@ _getOwnerActions({
       },
       color: Colors.red,
       text: 'Delete',
-      height: 40,
     ),
   ];
 }
@@ -117,7 +162,6 @@ _getParticipantActions({
       },
       color: Colors.red,
       text: 'Withdraw',
-      height: 40,
     ),
   ];
 }
@@ -166,7 +210,6 @@ _getOpenForInvitesActions({
       onPressed: onTapAction,
       color: Colors.green,
       text: buttonText,
-      height: 40,
     ),
   ];
 }

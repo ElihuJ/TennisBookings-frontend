@@ -26,13 +26,17 @@ class ScheduleHeader extends HookConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _ClubDetailsButton(clubSelected: clubSelected, mobileScreen: mobileScreen, selectedCourtColor: selectedCourtColor),
-          mobileScreen ? Container() : _MembershipStatus(clubSelected: clubSelected),
-          _CourtSelectionButton(selectedCourtColor: selectedCourtColor, courtSelected: courtSelected, setState: setState, sortedCourts: sortedCourts),
-        ],
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _ClubDetailsButton(clubSelected: clubSelected, mobileScreen: mobileScreen, selectedCourtColor: selectedCourtColor),
+            mobileScreen ? Container() : _MembershipStatus(clubSelected: clubSelected),
+            _CourtSelectionButton(
+                selectedCourtColor: selectedCourtColor, courtSelected: courtSelected, setState: setState, sortedCourts: sortedCourts),
+          ],
+        ),
       ),
     );
   }

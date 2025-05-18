@@ -148,13 +148,7 @@ class _DesktopView extends StatelessWidget {
           width: iconSize,
           child: PlayerIcon(player: player, size: iconSize),
         ),
-        if (player.name.isNotEmpty)
-          FieldBox(
-              width: nameWidth,
-              child: Text(
-                player.name,
-                style: TextStyle(fontSize: 16),
-              )),
+        if (player.name.isNotEmpty) FieldBox(width: nameWidth, child: PrettyText(player.name)),
         if (player.utrRating != null) FieldBox(width: utrWidth, child: UtrBox(utrRating: player.utrRating, verified: player.utrVerified))
       ],
     );
@@ -166,7 +160,6 @@ class _MobileView extends StatelessWidget {
 
   final ConfirmedPlayerData player;
   final double iconSize = 40;
-  final double fontSize = 14;
 
   @override
   Widget build(BuildContext context) {
@@ -186,25 +179,13 @@ class _MobileView extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FieldBox(
-                  width: nameWidth,
-                  child: Text(
-                    player.name,
-                    style: TextStyle(
-                      fontSize: fontSize,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )),
+              FieldBox(width: nameWidth, child: PrettyText(player.name)),
               if (player.utrRating != null)
                 FieldBox(
                   width: utrWidth,
                   child: UtrBox(
                     utrRating: player.utrRating,
                     verified: player.utrVerified,
-                    textStyle: TextStyle(
-                      fontSize: fontSize,
-                      overflow: TextOverflow.ellipsis,
-                    ),
                   ),
                 )
             ],

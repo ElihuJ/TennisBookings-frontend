@@ -31,7 +31,7 @@ class ScheduleHeader extends HookConsumerWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _ClubDetailsButton(clubSelected: clubSelected, mobileScreen: mobileScreen, selectedCourtColor: selectedCourtColor),
+            _ClubDetailsButton(clubSelected: clubSelected, selectedCourtColor: selectedCourtColor),
             mobileScreen ? Container() : _MembershipStatus(clubSelected: clubSelected),
             _CourtSelectionButton(
                 selectedCourtColor: selectedCourtColor, courtSelected: courtSelected, setState: setState, sortedCourts: sortedCourts),
@@ -130,7 +130,6 @@ class _HeaderButton extends StatelessWidget {
         onTap: onTap,
         child: Container(
           alignment: Alignment.center,
-          // height: mobileScreen ? _buttonsHeight - 20 : _buttonsHeight,
           decoration: BoxDecoration(
             color: courtColor,
             borderRadius: BorderRadius.circular(15),
@@ -151,12 +150,10 @@ class _HeaderButton extends StatelessWidget {
 class _ClubDetailsButton extends StatelessWidget {
   const _ClubDetailsButton({
     required this.clubSelected,
-    required this.mobileScreen,
     required this.selectedCourtColor,
   });
 
   final Club clubSelected;
-  final bool mobileScreen;
   final dynamic selectedCourtColor;
 
   @override

@@ -167,7 +167,7 @@ class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
             if (!isLogin)
               Column(
                 children: [
-                  Text(context.localeString(EmailLoginScreenStrings.orContinueWith)),
+                  PrettyText(context.localeString(EmailLoginScreenStrings.orContinueWith)),
                   const SizedBox(height: _margin),
                   SocialsRegister(eventNotifier: eventNotifier, firebaseNotifier: firebaseNotifier, userNotifier: userNotifier),
                 ],

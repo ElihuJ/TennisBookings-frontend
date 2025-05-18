@@ -21,7 +21,7 @@ class FindClubsScreen extends HookConsumerWidget {
       clubsNotifier.loadClubs();
       return const TbScaffold(
         body: Center(
-          child: Text('Loading clubs...'),
+          child: PrettyText('Loading clubs...'),
         ),
       );
     }

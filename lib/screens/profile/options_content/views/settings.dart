@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 
 import '../../../../global_types/index.dart';
+import '../../../../global_widgets/index.dart';
 import '../../../../strings/index.dart';
 
 class SettingsContent extends StatelessWidget {
@@ -29,7 +30,7 @@ class SettingsContent extends StatelessWidget {
                 onPressed: () {
                   Locales.change(context, SupportedLocales.en);
                 },
-                child: Text(
+                child: PrettyText(
                   context.localeString(SettingsLanguageDialogStrings.english),
                 ),
               ),
@@ -39,7 +40,7 @@ class SettingsContent extends StatelessWidget {
                 onPressed: () {
                   Locales.change(context, SupportedLocales.es);
                 },
-                child: Text(
+                child: PrettyText(
                   context.localeString(SettingsLanguageDialogStrings.spanish),
                 ),
               ),

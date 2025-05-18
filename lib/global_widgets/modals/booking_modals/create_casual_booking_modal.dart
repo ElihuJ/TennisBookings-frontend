@@ -53,7 +53,7 @@ class _CreateCasualBookingModalState extends ConsumerState<CreateCasualBookingMo
 
     return EventfulWidget(
       child: AlertDialog(
-        title: Text(
+        title: PrettyText(
           '${widget.courtSelected.name} Casual Booking \n$dateString',
           textAlign: TextAlign.center,
         ),

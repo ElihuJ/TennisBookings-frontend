@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/global_widgets/index.dart';
 
 import '../assets/index.dart';
-import '../global_widgets/eventful/eventful.dart';
-import '../global_widgets/scaffold/index.dart';
 import '../theme/index.dart';
 import 'login/widgets/containers.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
@@ -39,8 +38,9 @@ class HomeScreen extends HookConsumerWidget {
                   ),
                   child: Container(
                     margin: EdgeInsets.all(40),
-                    child: Text(
+                    child: PrettyText(
                       'GET A COURT \nFIND A PARTNER\nPLAY',
+                      maxLines: 3,
                       style: TextStyle(
                         fontSize: smallScreen ? 20 : 60,
                         color: AppColors.almostWhite,

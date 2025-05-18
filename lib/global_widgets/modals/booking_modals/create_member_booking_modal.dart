@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/global_widgets/text/index.dart';
 
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
@@ -106,7 +107,7 @@ class _CreateBookingModalState extends ConsumerState<CreateMemberBookingModal> {
     final bookingModeString = _bookingMode == BookingMode.open ? 'Searching for a player' : 'Booking';
 
     return AlertDialog(
-      title: Text(
+      title: PrettyText(
         '${widget.courtSelected.name} $bookingModeString \n$dateString',
         textAlign: TextAlign.center,
       ),

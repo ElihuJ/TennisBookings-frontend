@@ -31,7 +31,7 @@ class ClubDetailsScreen extends HookConsumerWidget {
       clubsNotifier.loadClubs();
       return const Scaffold(
         body: Center(
-          child: Text('Loading clubs...'),
+          child: PrettyText('Loading clubs...'),
         ),
       );
     }

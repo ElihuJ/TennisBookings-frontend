@@ -24,11 +24,7 @@ class MembershipDetails extends HookConsumerWidget {
     // * This will execute when refreshing page or loading specific URL directly
     if (clubs.isEmpty) {
       clubsNotifier.loadClubs();
-      return const TbScaffold(
-        body: Center(
-          child: Text('Loading clubs...'),
-        ),
-      );
+      return const LoadingScreen(message: 'Loading clubs...');
     }
 
     final clubsWithMembership = user.memberships.map((membership) => membership.clubId).toList();
@@ -43,7 +39,10 @@ class MembershipDetails extends HookConsumerWidget {
       mainAxisSize: MainAxisSize.max,
       children: [
         const SizedBox(height: 20),
-        const TitleText('Membership Details'),
+        PrettyText(
+          'Membership Details',
+          fontSize: fontSize + 4,
+        ),
         const SizedBox(height: 20),
         Flexible(
           child: SingleChildScrollView(
@@ -122,6 +121,9 @@ class _NoMembershipView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mobileView = isMobile(context);
+    final fontSize = getFontSize(mobileView);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -132,21 +134,21 @@ class _NoMembershipView extends StatelessWidget {
             color: Colors.grey.shade600,
           ),
           const SizedBox(height: 10),
-          Text(
+          PrettyText(
             'No Club Memberships',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 25,
+              fontSize: fontSize + 6,
               color: Colors.grey.shade700,
               fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 5),
-          Text(
+          PrettyText(
             'Looks like you\'re not a member of any club yet.',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: fontSize,
               color: Colors.grey.shade600,
             ),
           ),

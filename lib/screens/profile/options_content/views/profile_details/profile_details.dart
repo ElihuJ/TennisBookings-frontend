@@ -168,6 +168,9 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
 
     final onGenderChangeClick = _mode == ProfileDetailsMode.edit ? _onGenderChange : null;
 
+    final mobileView = isMobile(context);
+    final fontSize = getFontSize(mobileView);
+
     return Form(
       key: _formKey,
       onChanged: () {
@@ -216,6 +219,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                 mode: _mode,
                 onTap: _toggleMode,
                 child: TextFormField(
+                  style: TextStyle(fontSize: fontSize),
                   textAlign: TextAlign.center,
                   controller: _nameController,
                   enabled: _mode == ProfileDetailsMode.edit,
@@ -247,11 +251,14 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                             alignment: Alignment.bottomCenter,
                             enabled: _mode == ProfileDetailsMode.edit,
                             value: gender,
-                            child: PrettyText(gender,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: _mode == ProfileDetailsMode.edit ? AppColors.black : AppColors.grey,
-                                )),
+                            child: PrettyText(
+                              gender,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: _mode == ProfileDetailsMode.edit ? AppColors.black : AppColors.disabled,
+                                fontSize: fontSize,
+                              ),
+                            ),
                           ))
                       .toList(),
                   onChanged: onGenderChangeClick,
@@ -261,6 +268,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                 mode: _mode,
                 onTap: _toggleMode,
                 child: TextFormField(
+                    style: TextStyle(fontSize: fontSize),
                     textAlign: TextAlign.center,
                     controller: _utrController,
                     enabled: _mode == ProfileDetailsMode.edit,
@@ -276,6 +284,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                 onTap: () => _toggleMode(),
                 child: TextFormField(
                   textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: fontSize),
                   decoration: InputDecoration(
                     labelText: 'Date of Birth',
                     floatingLabelAlignment: FloatingLabelAlignment.center,
@@ -299,7 +308,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                 children: [
                   Icon(Icons.email, color: AppColors.black),
                   const SizedBox(width: 10),
-                  Text(user.email, style: TextStyle(fontSize: 16.0)),
+                  PrettyText(user.email),
                 ],
               ),
               if (_mode == ProfileDetailsMode.edit)

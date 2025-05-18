@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../cloud_functions/index.dart';
 import '../../cloud_functions/types.dart';
+import '../../global_helpers/index.dart';
 import '../../global_widgets/index.dart';
 import '../../models/index.dart';
 import '../../state/index.dart';
@@ -39,6 +40,8 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
     final isLoggedIn = user.uid.isNotEmpty;
+    final mobileView = isMobile(context);
+    final fontSize = getFontSize(mobileView);
 
     if (!isLoggedIn) {
       return const NotFoundScreen();
@@ -75,10 +78,10 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 40),
-                    const PrettyText(
+                    PrettyText(
                       'My Invites',
                       style: TextStyle(
-                        fontSize: 24.0,
+                        fontSize: fontSize + 6,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

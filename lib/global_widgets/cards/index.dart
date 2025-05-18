@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tennisbookings/global_widgets/text/index.dart';
 
+import '../../global_helpers/index.dart';
 import '../../theme/index.dart';
 
 class MessageCard extends StatelessWidget {
@@ -11,6 +13,9 @@ class MessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mobileView = isMobile(context);
+    final fontSize = getFontSize(mobileView);
+
     return Container(
       height: 250,
       width: double.infinity,
@@ -31,20 +36,20 @@ class MessageCard extends StatelessWidget {
         children: [
           icon,
           const SizedBox(height: 16.0),
-          Text(
+          PrettyText(
             title ?? '',
             style: TextStyle(
-              fontSize: 18.0,
+              fontSize: fontSize + 2,
               fontWeight: FontWeight.w600,
               color: Colors.blueGrey[700],
             ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8.0),
-          Text(
+          PrettyText(
             description ?? '',
             style: TextStyle(
-              fontSize: 14.0,
+              fontSize: fontSize,
               color: Colors.blueGrey[500],
             ),
             textAlign: TextAlign.center,

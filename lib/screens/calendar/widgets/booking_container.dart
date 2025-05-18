@@ -73,9 +73,8 @@ class BookingContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bookingLengthEpoch = booking.endTime - booking.startTime;
-    final bookingLessThanAnHour = bookingLengthEpoch < 3600;
-    final fontSize = bookingLessThanAnHour ? 10.0 : 14.0;
+    final mobileView = isMobile(context);
+    final fontSize = getFontSize(mobileView);
 
     final onlyMembers = club.onlyMembers;
 

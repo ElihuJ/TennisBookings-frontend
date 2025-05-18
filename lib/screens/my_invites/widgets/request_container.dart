@@ -85,17 +85,11 @@ class _PlayerData extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  request.playerName,
-                  style: const TextStyle(
-                    fontSize: 18.0,
-                  ),
-                ),
+                PrettyText(request.playerName),
                 const SizedBox(height: 4.0),
                 UtrBox(
                   utrRating: request.playerUtrRating,
                   verified: request.playerUtrVerified,
-                  textStyle: const TextStyle(fontSize: 14.0, color: AppColors.grey),
                 ),
                 PrettyText(
                   'Gender: ${capitalizeFirstLetter(request.playerGender.name)}',
@@ -145,7 +139,7 @@ class _ActionButtons extends HookConsumerWidget {
             }
           },
           icon: const Icon(Icons.check),
-          label: const Text('Accept'),
+          label: const PrettyText('Accept'),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green,
             shape: RoundedRectangleBorder(
@@ -172,7 +166,7 @@ class _ActionButtons extends HookConsumerWidget {
             }
           },
           icon: const Icon(Icons.close),
-          label: const Text('Decline'),
+          label: const PrettyText('Decline'),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
             shape: RoundedRectangleBorder(

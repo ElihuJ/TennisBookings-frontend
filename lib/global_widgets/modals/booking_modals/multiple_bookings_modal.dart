@@ -20,7 +20,7 @@ class MultipleBookingsModal extends HookConsumerWidget {
     final isMemberOfClub = user.memberships.any((membership) => membership.clubId == booking.clubId);
     return EventfulWidget(
       child: AlertDialog(
-        title: const Text('Multiple Open bookings (Swipe across)', textAlign: TextAlign.center),
+        title: const PrettyText('Multiple Open bookings (Swipe across)', textAlign: TextAlign.center),
         content: Container(
           color: AppColors.blue.withAlpha(30),
           width: 700,

@@ -72,10 +72,27 @@ final ThemeData selectedTheme = ThemeData(
   ),
   inputDecorationTheme: const InputDecorationTheme(
     // * Input fields style for search box
-    floatingLabelStyle: TextStyle(color: AppColors.grey, fontSize: 12),
-    hintStyle: TextStyle(color: AppColors.grey, fontSize: 20),
+    floatingLabelStyle: TextStyle(color: AppColors.grey, fontSize: 11),
+    hintStyle: TextStyle(color: AppColors.grey, fontSize: 11),
     border: InputBorder.none,
     contentPadding: EdgeInsets.only(bottom: 14),
+    labelStyle: TextStyle(
+      color: AppColors.grey,
+      fontSize: 12,
+    ),
+    helperStyle: TextStyle(
+      color: AppColors.grey,
+      fontSize: 12,
+    ),
+    errorStyle: TextStyle(
+      color: AppColors.red,
+      fontSize: 12,
+    ),
+    prefixStyle: TextStyle(color: AppColors.grey, fontSize: 12), // * Prefix text style for phone number input
+    suffixStyle: TextStyle(color: AppColors.grey, fontSize: 12), // * Suffix text style for phone number input
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: AppColors.primaryGreen, width: 2),
+    ),
   ),
   textSelectionTheme: const TextSelectionThemeData(
     // * Cursor color

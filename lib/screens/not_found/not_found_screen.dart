@@ -20,12 +20,12 @@ class NotFoundScreen extends StatelessWidget {
               color: Colors.red,
             ),
             SizedBox(height: 20.0),
-            Text(
+            PrettyText(
               '404',
               style: TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10.0),
-            Text(
+            PrettyText(
               'Page Not Found',
               style: TextStyle(fontSize: 20.0),
             ),
@@ -34,7 +34,7 @@ class NotFoundScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Go Back'),
+              child: PrettyText('Go Back'),
             ),
           ],
         ),

@@ -21,5 +21,5 @@ bool isMobile(BuildContext context) {
 }
 
 double getFontSize(bool isMobile) {
-  return isMobile ? 12 : 16;
+  return isMobile ? 11 : 16;
 }

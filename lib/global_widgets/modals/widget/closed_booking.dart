@@ -119,6 +119,9 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
 
   @override
   Widget build(BuildContext context) {
+    final mobileView = isMobile(context);
+    final fontSize = getFontSize(mobileView);
+
     return Form(
       key: _formKey,
       autovalidateMode: AutovalidateMode.always,
@@ -152,6 +155,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
             ),
             // ^ =============== TITLE FIELD ===============
             TextFormField(
+              style: TextStyle(fontSize: fontSize),
               initialValue: widget.titleValue,
               decoration: const InputDecoration(
                 labelText: 'Title',
@@ -211,6 +215,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
             ),
             // ^ =============== START TIME FIELD ===============
             TextFormField(
+              style: TextStyle(fontSize: fontSize),
               controller: widget.startTimeController,
               decoration: const InputDecoration(labelText: 'Start Time'),
               onTap: () async {
@@ -228,6 +233,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
             ),
             // ^ =============== END TIME FIELD ===============
             TextFormField(
+              style: TextStyle(fontSize: fontSize),
               controller: widget.endTimeController,
               decoration: const InputDecoration(labelText: 'End Time'),
               onTap: () async {

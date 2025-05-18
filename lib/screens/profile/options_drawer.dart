@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../global_widgets/index.dart';
 import '../../state/index.dart';
 import '../../theme/index.dart';
 import '../home_screen.dart';
@@ -34,25 +35,25 @@ class OptionsDrawer extends HookConsumerWidget {
         children: [
           ListTile(
             leading: Icon(Icons.person),
-            title: smallScreen ? null : const Text('Profile Details'),
+            title: smallScreen ? null : const PrettyText('Profile Details'),
             onTap: () => toggleSelectedOption(ProfileOptions.profileDetails),
           ),
           Divider(color: AppColors.primaryGreen),
           // ListTile(
           //   leading: Icon(Icons.settings),
-          //   title: const Text('Settings'),
+          //   title: const PrettyText('Settings'),
           //   onTap: () => toggleSelectedOption(ProfileOptions.settings),
           // ),
           // Divider(color: AppColors.primaryGreen),
           ListTile(
             leading: Icon(Icons.card_membership),
-            title: smallScreen ? null : const Text('Memberships'),
+            title: smallScreen ? null : const PrettyText('Memberships'),
             onTap: () => toggleSelectedOption(ProfileOptions.memberships),
           ),
           Divider(color: AppColors.primaryGreen),
           ListTile(
             leading: Icon(Icons.exit_to_app),
-            title: smallScreen ? null : const Text('Logout'),
+            title: smallScreen ? null : const PrettyText('Logout'),
             onTap: () async {
               await fbNotifier.logout();
               clubNotifier.clearPrivateBookings();

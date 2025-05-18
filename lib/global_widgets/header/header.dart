@@ -39,8 +39,8 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('Environment'),
-                  content: Text(env.toString()),
+                  title: const PrettyText('Environment', textAlign: TextAlign.center),
+                  content: PrettyText(env.toString()),
                   actions: <Widget>[
                     TbTextButton(
                       text: 'OK',

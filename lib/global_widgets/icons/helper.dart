@@ -13,19 +13,17 @@ class UtrBox extends StatelessWidget {
     super.key,
     required this.utrRating,
     required this.verified,
-    this.textStyle = const TextStyle(fontSize: 16),
   });
 
   final double? utrRating;
   final bool verified;
-  final TextStyle textStyle;
 
   @override
   Widget build(BuildContext context) {
     final utrNull = utrRating == null;
     return Row(
       children: [
-        utrNull ? const SizedBox() : Text('UTR: $utrRating', style: textStyle),
+        utrNull ? const SizedBox() : PrettyText('UTR: $utrRating'),
         const SizedBox(width: 5),
         utrNull ? const SizedBox() : VerifiedBadge(verified: verified),
       ],

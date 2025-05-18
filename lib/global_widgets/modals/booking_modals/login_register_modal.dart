@@ -12,8 +12,8 @@ class LoginRegisterModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Welcome'),
-      content: Text('Please log in or create a new account to continue.'),
+      title: PrettyText('Welcome'),
+      content: PrettyText('Please log in or create a new account to continue.'),
       actions: <Widget>[
         TbTextButton(
           text: 'Login',
@@ -44,11 +44,11 @@ void showOnlyMembersModal({required BuildContext context, String? message}) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('Members only'),
-        content: Text(message ?? 'This feature is only available to members of this club.'),
+        title: const TitleText('Members only', textAlign: TextAlign.center),
+        content: PrettyText(message ?? 'This feature is only available to members of this club.'),
         actions: <Widget>[
           TextButton(
-            child: const Text('Close'),
+            child: const PrettyText('Close'),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],

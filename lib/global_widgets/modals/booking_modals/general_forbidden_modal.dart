@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennisbookings/global_widgets/index.dart';
 
 class GeneralForbiddenModal extends StatelessWidget {
   const GeneralForbiddenModal({super.key, this.title, this.message});
@@ -8,8 +9,13 @@ class GeneralForbiddenModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(title ?? 'Not allowed'),
-      content: Text(message ?? ''),
+      title: TitleText(
+        title ?? 'Not allowed',
+        textAlign: TextAlign.center,
+      ),
+      content: PrettyText(
+        message ?? '',
+      ),
     );
   }
 }

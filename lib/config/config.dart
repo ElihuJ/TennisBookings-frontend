@@ -47,8 +47,8 @@ class Config {
   // * VERSIONING
   static const majorVersion = 1;
   static const minorVersion = 2;
-  static const patchVersion = 3;
-  static const buildNumber = 36;
+  static const patchVersion = 5;
+  static const buildNumber = 39;
 
   static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';
 
@@ -60,7 +60,7 @@ class Config {
 
   // ^ ================== APP CONFIG ==================
   static const appName = "Tennis Bookings";
-  static const functionsRegion = "australia-southeast1";
+  static const functionsRegion = "australia-southeast2";
   static const maxBookingDuration = 3600 * 1.5 * 1000; // 1.5 hours in milliseconds // * Keep synced with maxBookingHours
   static const maxBookingHoursString = 1.5;
   static const bookingFutureLimit = 2 * 4 * 7 * 24 * 60 * 60 * 1000; // * 2 months in milliseconds// * Keep synced with BOOKING_FUTURE_LIMIT

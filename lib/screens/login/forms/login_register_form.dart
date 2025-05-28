@@ -111,9 +111,12 @@ class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
 
       final messageType = errorInfo != null ? errorInfo.$1 : MessageType.success;
       final message = errorInfo != null
+          // ignore: use_build_context_synchronously
           ? context.localeString(errorInfo.$2)
           : isLogin
+              // ignore: use_build_context_synchronously
               ? context.localeString(EmailLoginScreenStrings.loginToYourAccount)
+              // ignore: use_build_context_synchronously
               : context.localeString(EmailLoginScreenStrings.verificationEmailSent);
       eventStatusNotifier.hideLoading();
 

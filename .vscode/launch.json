@@ -13,7 +13,7 @@
       "name": "UAT",
       "type": "dart",
       "request": "launch",
-      "flutterMode": "profile",
+      "flutterMode": "debug",
       "args": ["-d", "chrome", "--dart-define=ENV=uat"],
       "program": "lib/main.dart"
     },
@@ -21,7 +21,7 @@
       "name": "PROD",
       "type": "dart",
       "request": "launch",
-      "flutterMode": "debug",
+      "flutterMode": "release",
       "args": ["-d", "chrome", "--dart-define=ENV=prod"],
       "program": "lib/main.dart"
     }

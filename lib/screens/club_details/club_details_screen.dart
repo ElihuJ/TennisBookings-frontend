@@ -1,13 +1,13 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/screens/club_details/widgets/club_details_card.dart';
-import 'package:tennisbookings/screens/club_details/widgets/contact_card.dart';
-import 'package:tennisbookings/screens/club_details/widgets/membership_card.dart';
 
 import '../../global_widgets/index.dart';
 import '../../routes/index.dart';
 import '../../state/index.dart';
+import 'widgets/club_details_card.dart';
+import 'widgets/contact_card.dart';
+import 'widgets/membership_card.dart';
 import 'widgets/title_card.dart';
 
 final _space = SizedBox(height: 20);

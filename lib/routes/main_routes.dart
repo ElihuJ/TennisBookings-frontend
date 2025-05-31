@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/screens/club_membership/payment_result_screen.dart';
 
 import '../screens/calendar/calendar_screen.dart';
 import '../screens/club_details/club_details_screen.dart';
 import '../screens/club_membership/club_membership_screen.dart';
+import '../screens/club_membership/payment_result_screen.dart';
 import '../screens/find_clubs/find_clubs_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/login/email_login_screen.dart';

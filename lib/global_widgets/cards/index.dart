@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/global_widgets/text/index.dart';
 
 import '../../global_helpers/index.dart';
 import '../../theme/index.dart';
+import '../text/index.dart';
 
 class MessageCard extends StatelessWidget {
   const MessageCard({super.key, required this.icon, this.title, this.description});

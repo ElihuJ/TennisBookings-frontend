@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe_web/flutter_stripe_web.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_helpers/index.dart';
-import 'package:tennisbookings/global_types/index.dart';
-import 'package:tennisbookings/global_widgets/index.dart';
-import 'package:tennisbookings/screens/club_membership/payment_result_screen.dart';
-import 'package:tennisbookings/state/index.dart';
 import 'package:web/web.dart' as web;
+
+import '../../global_helpers/index.dart';
+import '../../global_types/index.dart';
+import '../../global_widgets/index.dart';
+import '../../state/index.dart';
+import 'payment_result_screen.dart';
 
 String getUrlPort() => web.window.location.port;
 

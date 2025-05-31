@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/global_widgets/index.dart';
-import 'package:tennisbookings/theme/index.dart';
 
 import '../../screens/login/email_login_screen.dart';
 import '../../screens/login/login_screen.dart';
 import '../../screens/login/types.dart';
+import '../../theme/index.dart';
+import '../index.dart';
 
 class LoginRegisterButton extends StatelessWidget {
   const LoginRegisterButton({

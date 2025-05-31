@@ -25,5 +25,6 @@
         "flushbar",
         "riverpod",
         "tennisbookings"
-    ]
+    ],
+    "atlascode.jira.enabled": false
 }

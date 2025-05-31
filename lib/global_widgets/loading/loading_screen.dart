@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/global_helpers/index.dart';
-import 'package:tennisbookings/global_widgets/containers/bordered_box.dart';
 
+import '../../global_helpers/index.dart';
 import '../../screens/home_screen.dart';
 import '../../theme/colors.dart';
+import '../containers/bordered_box.dart';
 import '../index.dart';
 
 class LoadingScreen extends StatelessWidget {

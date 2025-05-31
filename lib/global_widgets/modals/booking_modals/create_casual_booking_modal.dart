@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/cloud_functions/cloud_functions_provider.dart';
-import 'package:tennisbookings/cloud_functions/types.dart';
-import 'package:tennisbookings/global_widgets/modals/widget/casual_booking.dart';
-import 'package:tennisbookings/global_widgets/modals/widget/stripe_casual_payment.dart';
 
+import '../../../cloud_functions/cloud_functions_provider.dart';
+import '../../../cloud_functions/types.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
 import '../../index.dart';
+import '../widget/casual_booking.dart';
+import '../widget/stripe_casual_payment.dart';
 
 enum _ViewMode {
   booking,

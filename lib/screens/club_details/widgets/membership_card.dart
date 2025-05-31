@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_helpers/index.dart';
 
+import '../../../global_helpers/index.dart';
 import '../../../global_widgets/index.dart';
 import '../../../state/index.dart';
 import '../../club_membership/club_membership_screen.dart';

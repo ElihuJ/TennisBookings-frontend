@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/global_widgets/index.dart';
 
 import '../../../screens/login/email_login_screen.dart';
 import '../../../screens/login/login_screen.dart';
 import '../../../screens/login/types.dart';
 import '../../../theme/index.dart';
+import '../../index.dart';
 
 class LoginRegisterModal extends StatelessWidget {
   const LoginRegisterModal({super.key});

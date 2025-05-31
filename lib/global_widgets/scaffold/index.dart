@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/global_helpers/index.dart';
-import 'package:tennisbookings/global_widgets/drawer/drawer.dart';
-import 'package:tennisbookings/global_widgets/header/index.dart';
+
+import '../../global_helpers/index.dart';
+import '../drawer/drawer.dart';
+import '../header/index.dart';
 
 class TbScaffold extends StatelessWidget {
   const TbScaffold({

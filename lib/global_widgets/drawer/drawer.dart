@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/global_helpers/index.dart';
 
 import '../../assets/index.dart';
 import '../../config/config.dart';
+import '../../global_helpers/index.dart';
 import '../../screens/home_screen.dart';
 import '../../theme/index.dart';
 import '../text/index.dart';

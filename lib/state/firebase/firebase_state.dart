@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:tennisbookings/config/config.dart';
+
+import '../../config/config.dart';
 
 final firebase = fb_auth.FirebaseAuth.instance;
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/global_widgets/text/index.dart';
+
+import '../../text/index.dart';
 
 void showPrivateWallModal({required BuildContext context, String? message}) {
   showDialog(

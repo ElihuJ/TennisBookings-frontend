@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/global_widgets/index.dart';
+
+import '../../index.dart';
 
 class GeneralForbiddenModal extends StatelessWidget {
   const GeneralForbiddenModal({super.key, this.title, this.message});

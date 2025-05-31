@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/global_widgets/index.dart';
-import 'package:tennisbookings/theme/index.dart';
 
 import '../../../../../global_helpers/index.dart';
+import '../../../../../global_widgets/index.dart';
 import '../../../../../state/index.dart';
+import '../../../../../theme/index.dart';
 import '../../../../club_details/club_details_screen.dart';
 
 class MembershipDetails extends HookConsumerWidget {

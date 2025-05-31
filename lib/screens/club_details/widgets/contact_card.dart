@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/screens/club_details/widgets/card.dart';
 
 import '../../../global_widgets/index.dart';
 import '../../../state/index.dart';
 import '../../../theme/index.dart';
+import 'card.dart';
 
 double _fontTitleSize = 24.0;
 double _fontSize = 16.0;

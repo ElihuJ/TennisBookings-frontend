@@ -11,7 +11,7 @@ definitions:
 
   # Define reusable steps using YAML anchors
   steps:
-    - step: &flutter_setup
+    - step: &setup
         name: Setup Flutter & Dependencies
         caches:
           - flutter # Use Flutter SDK cache
@@ -24,7 +24,7 @@ definitions:
           - .dart_tool/package_config.json
           - pubspec.lock
 
-    - step: &flutter_lint
+    - step: &lint
         name: Lint & Analyze
         caches:
           - flutter
@@ -32,8 +32,7 @@ definitions:
         script:
           - flutter analyze .
 
-
-    - step: &flutter_build_web_uat
+    - step: &build_web_uat
         name: Build Web App (UAT)
         caches:
           - flutter
@@ -43,9 +42,9 @@ definitions:
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
 
           - echo "Building Web App (UAT) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
-          - flutter build web --dart-define=Dart2jsOptimization=00 --dart-define=ENV=uat && yarn clear-web && cp -r build/web/* ../Firebase/public
+          - yarn build-web-uat
 
-    - step: &flutter_build_web_prod
+    - step: &build_web_prod
         name: Build Web App (PROD)
         caches:
           - flutter
@@ -55,103 +54,54 @@ definitions:
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
 
           - echo "Building Web App (PROD) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
-          - flutter build web --release --dart-define=Dart2jsOptimization=00 --dart-define=ENV=prod && yarn clear-web && cp -r build/web/* ../Firebase/public
+          - yarn build-web-prod
 
+    - step: &deploy_prod
+        name: Deploy Web App (PROD)
+        trigger: manual
+        script:
+          - echo "Setting firebase config"
+          - yarn use-prod
+          - echo "Deploying Web App to Production..."
+          - yarn deploy-web-prod
+    - step: &deploy_uat
+        name: Deploy Web App (UAT)
+        trigger: manual
+        script:
+          - echo "Setting firebase config"
+          - yarn use-uat
+          - echo "Deploying Web App to UAT..."
+          - yarn deploy-web-uat
 
 pipelines:
   # Default pipeline: Runs on every push to any branch not explicitly defined below.
   default:
-    - step: *flutter_setup
-    - step: *flutter_lint
+    - step: *setup
+    - step: *lint
 
 
   # Pipeline for the main/development branch (e.g., 'develop' or 'main')
   branches:
     main: # Or your primary development branch like 'develop'
-      - step: *flutter_setup
-      - step: *flutter_lint
-      - step: *flutter_build_web_prod
-
-      - step:
-          name: Building PROD
-          trigger: manual # This step requires manual initiation from Bitbucket UI
-          script:
-            - echo "Building PROD environment..."
-            - echo "Artifacts from build steps are automatically available."
-            - echo "Listing available Android artifacts:"
-            - ls -l build/app/outputs/flutter-apk/
-            - ls -l build/app/outputs/bundle/release/
-            - echo "Listing available iOS artifacts:"
-            - ls -l build/ios/archive/
-            # --- Add your PROD deployment script here ---
-            # Example: Upload to Firebase App Distribution
-            # Ensure FIREBASE_TOKEN and FIREBASE_APP_ID_ANDROID/IOS are set as secure variables.
-            # - export FIREBASE_TOKEN=${YOUR_FIREBASE_TOKEN}
-            # - firebase appdistribution:distribute build/app/outputs/bundle/release/app-release.aab --app ${YOUR_FIREBASE_ANDROID_APP_ID} --groups "uat-testers" --release-notes "UAT build $BITBUCKET_BUILD_NUMBER"
-            # - firebase appdistribution:distribute build/ios/archive/Runner.app.zip --app ${YOUR_FIREBASE_IOS_APP_ID} --groups "uat-testers" --release-notes "UAT build $BITBUCKET_BUILD_NUMBER" # Note: Firebase might prefer an IPA.
-            # Example: SCP to a server (ensure SSH keys are configured in Bitbucket)
-            # - scp build/app/outputs/bundle/release/app-release.aab user@uat-server:/path/to/deploy/
-            - echo "PROD deployment script placeholder. Implement your actual deployment logic."
-            - echo "Deployment to PROD complete (simulated)."
+      - step: *setup
+      - step: *lint
+      - step: *build_web_prod
+      - step: *deploy_prod
 
     # Pipeline for release branches (e.g., 'release/v1.2.3')
     develop:
-      - step: *flutter_setup
-      - step: *flutter_lint
-      - step: *flutter_build_web_uat
-      - step:
-          name: Building UAT
-          trigger: manual # This step requires manual initiation from Bitbucket UI
-          script:
-            - echo "Building UAT environment..."
-            - echo "Artifacts from build steps are automatically available."
-            - echo "Listing available Android artifacts:"
-            - ls -l build/app/outputs/flutter-apk/
-            - ls -l build/app/outputs/bundle/release/
-            - echo "Listing available iOS artifacts:"
-            - ls -l build/ios/archive/
-            # --- Add your UAT deployment script here ---
-            # Example: Upload to Firebase App Distribution
-            # Ensure FIREBASE_TOKEN and FIREBASE_APP_ID_ANDROID/IOS are set as secure variables.
-            # - export FIREBASE_TOKEN=${YOUR_FIREBASE_TOKEN}
-            # - firebase appdistribution:distribute build/app/outputs/bundle/release/app-release.aab --app ${YOUR_FIREBASE_ANDROID_APP_ID} --groups "uat-testers" --release-notes "UAT build $BITBUCKET_BUILD_NUMBER"
-            # - firebase appdistribution:distribute build/ios/archive/Runner.app.zip --app ${YOUR_FIREBASE_IOS_APP_ID} --groups "uat-testers" --release-notes "UAT build $BITBUCKET_BUILD_NUMBER" # Note: Firebase might prefer an IPA.
-            # Example: SCP to a server (ensure SSH keys are configured in Bitbucket)
-            # - scp build/app/outputs/bundle/release/app-release.aab user@uat-server:/path/to/deploy/
-            - echo "UAT deployment script placeholder. Implement your actual deployment logic."
-            - echo "Deployment to UAT complete (simulated)."
-      - step:
-          name: Deploy Web App to UAT
-          trigger: manual
-          script:
-            - echo "Deploying Release Candidate ($BITBUCKET_BRANCH) to UAT environment..."
-            - echo "Ensure the web app is thoroughly tested in UAT before promoting to PROD."
-            - echo "Listing available web artifacts:"
-            - ls -l ../Firebase/public
-            # Example: Upload to Firebase Hosting
-            # Ensure FIREBASE_TOKEN is set as a secure variable.
-            # - export FIREBASE_TOKEN=${YOUR_FIREBASE_TOKEN}
-            # - firebase deploy --only hosting --message "UAT deployment for $BITBUCKET_BRANCH build $BITBUCKET_BUILD_NUMBER"
+      - step: *setup
+      - step: *lint
+      - step: *build_web_uat
+      - step: *deploy_uat
 
-      - step:
-          name: Deploy to PROD
-          trigger: manual # CRITICAL: This step MUST be manual and follow UAT validation.
-          script:
-            - echo "Deploying Release Candidate ($BITBUCKET_BRANCH) to PROD environment..."
-            - echo "Ensure the web app is thoroughly tested in UAT before promoting to PROD."
-            - echo "Listing available web artifacts:"
-            - ls -l ../Firebase/public
-            # Example: Upload to Firebase Hosting
-            # Ensure FIREBASE_TOKEN is set as a secure variable.
-            # - export FIREBASE_TOKEN=${YOUR_FIREBASE_TOKEN}
-            # - firebase deploy --only hosting --message "Production deployment for $BITBUCKET_BRANCH build $BITBUCKET_BUILD_NUMBER"
 
             
   # Optional: Pipeline for tags (e.g., when you create a git tag like 'v1.2.3')
   # tags:
   #   'v*': # Matches tags like v1.0, v1.2.3, etc.
-  #     - step: *flutter_setup
-  #     - step: *flutter_lint
+  #     - step: *setup
+  #     - step: *lint
   #     - step: *flutter_test
   #     - parallel:
   #         - step: *flutter_build_android

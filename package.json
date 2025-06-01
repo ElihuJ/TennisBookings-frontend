@@ -9,11 +9,11 @@
     "run-web": "flutter run -d chrome",
     "run-web-release": "flutter run -d chrome --release",
     "clear-web": "rm -rf ../Firebase/public/*",
-    "build-web-prod": "flutter build web --dart-define=Dart2jsOptimization=00 --dart-define=ENV=prod && yarn clear-web && cp -r build/web/* ../Firebase/public",
-    "build-web-uat": "flutter build web --dart-define=Dart2jsOptimization=00 --dart-define=ENV=uat && yarn clear-web && cp -r build/web/* ../Firebase/public",
+    "build-web-prod": "flutter build web --release --dart-define=Dart2jsOptimization=00 --dart-define=ENV=prod",
+    "build-web-uat": "flutter build web --dart-define=Dart2jsOptimization=00 --dart-define=ENV=uat",
     "push-tags": "git push --tags",
-    "deploy-web-prod": "yarn use-prod && firebase deploy --only hosting",
-    "deploy-web-uat": "yarn use-uat && firebase deploy --only hosting",
+    "deploy-web-prod": "npm run use-prod && firebase deploy --only hosting",
+    "deploy-web-uat": "npm run use-uat && firebase deploy --only hosting",
     "use-uat": "firebase use tennisbookings-uat",
     "use-prod": "firebase use tennisbookings"
   }

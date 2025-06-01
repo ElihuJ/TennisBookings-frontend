@@ -72,6 +72,10 @@ definitions:
         name: Deploy Web App (PROD)
         trigger: manual
         deployment: production
+        caches:
+          - firebase
+          - firebase-tools
+          - node
         script:
           - echo "Creating Firebase service account key file..."
           - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json

@@ -6,10 +6,10 @@ definitions:
   # Define caches to speed up subsequent builds
   caches:
     flutter: /opt/flutter # Cache Flutter SDK
-    pub: $HOME/.pub-cache # Cache Flutter package dependencies
-    node: $HOME/.npm # Cache Node.js packages
-    firebase: $HOME/.firebase # Cache Firebase CLI
-    firebase-tools: $HOME/.cache/firebase-tools # Cache Firebase tools
+    pub: ~/.pub-cache # Cache Flutter package dependencies
+    node: ~/.npm # Cache Node.js packages
+    firebase: ~/.firebase # Cache Firebase CLI
+    firebase-tools: ~/.cache/firebase-tools # Cache Firebase tools
   # Define reusable steps using YAML anchors
   steps:
     - step: &setup_flutter

@@ -1,30 +1,40 @@
-# Use an image with Flutter SDK pre-installed. Pin to a specific version for consistency.
-# Find available tags at: https://hub.docker.com/r/cirrusci/flutter/tags
+
 # cspell: disable
-image: ghcr.io/cirruslabs/flutter:3.29.2 # Replace with your desired Flutter version
+image: ghcr.io/cirruslabs/flutter:3.29.2
 
 definitions:
   # Define caches to speed up subsequent builds
   caches:
     flutter: /opt/flutter # Cache Flutter SDK
     pub: $HOME/.pub-cache # Cache Flutter package dependencies
-
+    node: $HOME/.npm # Cache Node.js packages
+    firebase: $HOME/.firebase # Cache Firebase CLI
+    firebase-tools: $HOME/.cache/firebase-tools # Cache Firebase tools
   # Define reusable steps using YAML anchors
   steps:
-    - step: &setup
+    - step: &setup_flutter
         name: Setup Flutter & Dependencies
         caches:
-          - flutter # Use Flutter SDK cache
-          - pub   # Use Pub package cache
+          - flutter 
+          - pub
         script:
           - flutter --version
           - flutter doctor -v
           - flutter pub get
-          - npm install -g firebase-tools
         artifacts: # Make dependencies available for subsequent parallel steps if needed, though pub cache is better
           - .dart_tool/package_config.json
           - pubspec.lock
-          
+
+    - step: &setup_node
+        name: Setup Node.js
+        caches:
+          - node
+        script:
+          - echo "Installing Node.js"
+          - sudo apt-get update
+          - sudo apt-get install -y curl gnupg
+          - curl -sSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+          - sudo apt-get install -y nodejs
 
     - step: &lint
         name: Lint & Analyze
@@ -70,7 +80,7 @@ definitions:
 
           - firebase login:list # Should show the service account
           - firebase projects:list # Should list projects the SA has access to
-          
+
           - echo "Setting firebase config"
           - npm run use-prod
           - echo "Deploying Web App to Production..."
@@ -88,21 +98,24 @@ definitions:
 pipelines:
   # Default pipeline: Runs on every push to any branch not explicitly defined below.
   default:
-    - step: *setup
+    - step: *setup_flutter
+    - step: *setup_node
     - step: *lint
 
 
   # Pipeline for the main/development branch (e.g., 'develop' or 'main')
   branches:
     main: # Or your primary development branch like 'develop'
-      - step: *setup
+      - step: *setup_flutter
+      - step: *setup_node
       - step: *lint
       - step: *build_web_prod
       - step: *deploy_prod
 
     # Pipeline for release branches (e.g., 'release/v1.2.3')
     develop:
-      - step: *setup
+      - step: *setup_flutter
+      - step: *setup_node
       - step: *lint
       - step: *build_web_uat
       - step: *deploy_uat

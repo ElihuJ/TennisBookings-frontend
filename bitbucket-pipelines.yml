@@ -20,9 +20,11 @@ definitions:
           - flutter --version
           - flutter doctor -v
           - flutter pub get
+          - npm install -g firebase-tools
         artifacts: # Make dependencies available for subsequent parallel steps if needed, though pub cache is better
           - .dart_tool/package_config.json
           - pubspec.lock
+          
 
     - step: &lint
         name: Lint & Analyze
@@ -42,7 +44,7 @@ definitions:
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
 
           - echo "Building Web App (UAT) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
-          - yarn build-web-uat
+          - npm run build-web-uat
 
     - step: &build_web_prod
         name: Build Web App (PROD)
@@ -54,24 +56,34 @@ definitions:
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
 
           - echo "Building Web App (PROD) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
-          - yarn build-web-prod
+          - npm run build-web-prod
 
     - step: &deploy_prod
         name: Deploy Web App (PROD)
         trigger: manual
+        deployment: production
         script:
+          - echo "Creating Firebase service account key file..."
+          - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json
+          # * Setting the GOOGLE_APPLICATION_CREDENTIALS environment variable
+          - export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-service-account-key.json
+
+          - firebase login:list # Should show the service account
+          - firebase projects:list # Should list projects the SA has access to
+          
           - echo "Setting firebase config"
-          - yarn use-prod
+          - npm run use-prod
           - echo "Deploying Web App to Production..."
-          - yarn deploy-web-prod
+          - npm run deploy-web-prod
     - step: &deploy_uat
         name: Deploy Web App (UAT)
         trigger: manual
+        deployment: uat
         script:
           - echo "Setting firebase config"
-          - yarn use-uat
+          - npm run use-uat
           - echo "Deploying Web App to UAT..."
-          - yarn deploy-web-uat
+          - npm run deploy-web-uat
 
 pipelines:
   # Default pipeline: Runs on every push to any branch not explicitly defined below.

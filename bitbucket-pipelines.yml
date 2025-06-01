@@ -61,6 +61,9 @@ definitions:
         caches:
           - flutter
           - pub
+          - node
+          - firebase
+          - firebase-tools
         script:
           - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER

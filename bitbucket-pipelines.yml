@@ -12,7 +12,7 @@ definitions:
     firebase-tools: ~/.cache/firebase-tools # Cache Firebase tools
   # Define reusable steps using YAML anchors
   steps:
-    - step: &setup_flutter
+    - step: &setup_flutter_and_lint
         name: Setup Flutter & Dependencies
         caches:
           - flutter 
@@ -21,17 +21,10 @@ definitions:
           - flutter --version
           - flutter doctor -v
           - flutter pub get
+          - flutter analyze .
         artifacts: # Make dependencies available for subsequent parallel steps if needed, though pub cache is better
           - .dart_tool/package_config.json
           - pubspec.lock
-
-    - step: &lint
-        name: Lint & Analyze
-        caches:
-          - flutter
-          - pub
-        script:
-          - flutter analyze .
 
     - step: &build_web_uat
         name: Build Web App (UAT)
@@ -61,6 +54,7 @@ definitions:
         name: Deploy Web App (PROD)
         trigger: manual
         deployment: production
+        image: atlassian/default-image:5
         caches:
           - firebase
           - firebase-tools
@@ -86,10 +80,23 @@ definitions:
         name: Deploy Web App (UAT)
         trigger: manual
         deployment: uat
+        image: atlassian/default-image:5
         caches:
           - firebase
           - firebase-tools
+          - node
         script:
+          - echo "Creating Firebase service account key file..."
+          - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json
+          # * Setting the GOOGLE_APPLICATION_CREDENTIALS environment variable
+          - export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-service-account-key.json
+
+          - echo "Installing Firebase CLI..."
+          - npm install -g firebase-tools
+
+          - firebase login:list # Should show the service account
+          - firebase projects:list # Should list projects the SA has access to
+
           - echo "Setting firebase config"
           - firebase use tennisbookings-uat
           - echo "Deploying Web App to UAT..."
@@ -99,21 +106,18 @@ pipelines:
   # Default pipeline: Runs on every push to any branch not explicitly defined below.
   
   default:
-    - step: *setup_flutter
-    - step: *lint
+    - step: *setup_flutter_and_lint
 
   # Pipeline for the main/development branch (e.g., 'develop' or 'main')
   branches:
     main: # Or your primary development branch like 'develop'
-      - step: *setup_flutter
-      - step: *lint
+      - step: *setup_flutter_and_lint
       - step: *build_web_prod
       - step: *deploy_prod
 
     # Pipeline for release branches (e.g., 'release/v1.2.3')
     develop:
-      - step: *setup_flutter
-      - step: *lint
+      - step: *setup_flutter_and_lint
       - step: *build_web_uat
       - step: *deploy_uat
 

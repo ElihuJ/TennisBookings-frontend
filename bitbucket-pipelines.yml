@@ -6,9 +6,9 @@ definitions:
   # Define caches to speed up subsequent builds
   caches:
     flutter: /opt/flutter # Cache Flutter SDK
-    flutter_build: ./build
+    flutter-build: ./build
     pub: ~/.pub-cache # Cache Flutter package dependencies
-    node_globals: ~/.npm # Cache global npm packages
+    node-globals: ~/.npm # Cache global npm packages
     firebase: ~/.firebase # Cache Firebase CLI
     firebase-tools: ~/.cache/firebase-tools # Cache Firebase tools
   # Define reusable steps using YAML anchors
@@ -32,7 +32,7 @@ definitions:
         caches:
           - flutter
           - pub
-          - flutter_build
+          - flutter-build
         script:
           - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
@@ -45,7 +45,7 @@ definitions:
         caches:
           - flutter
           - pub
-          - flutter_build
+          - flutter-build
         script:
           - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
@@ -60,9 +60,9 @@ definitions:
         image: atlassian/default-image:5
         caches:
           - firebase
-          - node_globals
+          - node-globals
           - firebase-tools
-          - flutter_build
+          - flutter-build
         script:
           - echo "Creating Firebase service account key file..."
           - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json
@@ -87,9 +87,9 @@ definitions:
         image: atlassian/default-image:5
         caches:
           - firebase
-          - node_globals
+          - node-globals
           - firebase-tools
-          - flutter_build
+          - flutter-build
         script:
           - echo "Creating Firebase service account key file..."
           - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json
@@ -135,8 +135,8 @@ pipelines:
   #     - step: *lint
   #     - step: *flutter_test
   #     - parallel:
-  #         - step: *flutter_build_android
-  #         - step: *flutter_build_ios
+  #         - step: *flutter-build_android
+  #         - step: *flutter-build_ios
   #     - step:
   #         name: Deploy Tagged Release to UAT
   #         trigger: manual

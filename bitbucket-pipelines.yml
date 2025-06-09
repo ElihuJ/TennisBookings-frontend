@@ -25,17 +25,6 @@ definitions:
           - .dart_tool/package_config.json
           - pubspec.lock
 
-    - step: &setup_node
-        name: Setup Node.js
-        caches:
-          - node
-        script:
-          - echo "Installing Node.js"
-          - sudo apt-get update
-          - sudo apt-get install -y curl gnupg
-          - curl -sSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-          - sudo apt-get install -y nodejs
-
     - step: &lint
         name: Lint & Analyze
         caches:
@@ -54,7 +43,7 @@ definitions:
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
 
           - echo "Building Web App (UAT) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
-          - npm run build-web-uat
+          - flutter build web --dart-define=Dart2jsOptimization=00 --dart-define=ENV=uat
 
     - step: &build_web_prod
         name: Build Web App (PROD)
@@ -69,7 +58,7 @@ definitions:
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
 
           - echo "Building Web App (PROD) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
-          - npm run build-web-prod
+          - flutter build web --release --dart-define=Dart2jsOptimization=00 --dart-define=ENV=prod
 
     - step: &deploy_prod
         name: Deploy Web App (PROD)
@@ -78,7 +67,6 @@ definitions:
         caches:
           - firebase
           - firebase-tools
-          - node
         script:
           - echo "Creating Firebase service account key file..."
           - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json
@@ -89,32 +77,34 @@ definitions:
           - firebase projects:list # Should list projects the SA has access to
 
           - echo "Setting firebase config"
-          - npm run use-prod
+          - firebase use tennisbookings
           - echo "Deploying Web App to Production..."
-          - npm run deploy-web-prod
+          - firebase deploy --only hosting --non-interactive --force
+
     - step: &deploy_uat
         name: Deploy Web App (UAT)
         trigger: manual
         deployment: uat
+        caches:
+          - firebase
+          - firebase-tools
         script:
           - echo "Setting firebase config"
-          - npm run use-uat
+          - firebase use tennisbookings-uat
           - echo "Deploying Web App to UAT..."
-          - npm run deploy-web-uat
+          - firebase deploy --only hosting --non-interactive --force
 
 pipelines:
   # Default pipeline: Runs on every push to any branch not explicitly defined below.
+  
   default:
     - step: *setup_flutter
-    - step: *setup_node
     - step: *lint
-
 
   # Pipeline for the main/development branch (e.g., 'develop' or 'main')
   branches:
     main: # Or your primary development branch like 'develop'
       - step: *setup_flutter
-      - step: *setup_node
       - step: *lint
       - step: *build_web_prod
       - step: *deploy_prod
@@ -122,7 +112,6 @@ pipelines:
     # Pipeline for release branches (e.g., 'release/v1.2.3')
     develop:
       - step: *setup_flutter
-      - step: *setup_node
       - step: *lint
       - step: *build_web_uat
       - step: *deploy_uat

@@ -5,13 +5,11 @@ image: ghcr.io/cirruslabs/flutter:3.29.2
 definitions:
   # Define caches to speed up subsequent builds
   caches:
-    flutter: /opt/flutter # Cache Flutter SDK
-    flutter-build: ./build
-    pub: ~/.pub-cache # Cache Flutter package dependencies
-    node-globals: ~/.npm # Cache global npm packages
-    firebase: ~/.firebase # Cache Firebase CLI
-    firebase-tools: ~/.cache/firebase-tools # Cache Firebase tools
-  # Define reusable steps using YAML anchors
+    flutter: /opt/flutter # * Cache Flutter SDK
+    pub: ~/.pub-cache # * Cache Flutter package dependencies
+    node-globals: ~/.npm # * Cache global npm packages
+    firebase: ~/.firebase # * Cache Firebase CLI
+    firebase-tools: ~/.cache/firebase-tools # * Cache Firebase tools
   steps:
     - step: &setup_flutter_and_lint
         name: Setup Flutter & Dependencies
@@ -64,7 +62,6 @@ definitions:
           - firebase
           - node-globals
           - firebase-tools
-          - flutter-build
         script:
           - echo "Creating Firebase service account key file..."
           - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json
@@ -74,7 +71,6 @@ definitions:
           - echo "Installing Firebase CLI..."
           - npm install -g firebase-tools
 
-          - firebase login:list # Should show the service account
           - firebase projects:list # Should list projects the SA has access to
 
           - echo "Setting firebase config"
@@ -91,7 +87,6 @@ definitions:
           - firebase
           - node-globals
           - firebase-tools
-          - flutter-build
         script:
           - echo "Creating Firebase service account key file..."
           - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json
@@ -101,10 +96,8 @@ definitions:
           - echo "Installing Firebase CLI..."
           - npm install -g firebase-tools
 
-          - firebase login:list # Should show the service account
           - firebase projects:list # Should list projects the SA has access to
 
-          - echo "Setting firebase config"
           - firebase use tennisbookings-uat
           - echo "Deploying Web App to UAT..."
           - firebase deploy --only hosting --non-interactive --force

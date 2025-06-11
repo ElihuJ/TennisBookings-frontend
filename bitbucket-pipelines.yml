@@ -30,7 +30,6 @@ definitions:
         caches:
           - flutter
           - pub
-          - flutter-build
         script:
           - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
@@ -44,7 +43,6 @@ definitions:
         caches:
           - flutter
           - pub
-          - flutter-build
         script:
           - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER

@@ -116,13 +116,11 @@ pipelines:
   # Pipeline for the main/development branch (e.g., 'develop' or 'main')
   branches:
     main: # Or your primary development branch like 'develop'
-      - step: *setup_flutter_and_lint
       - step: *build_web_prod
       - step: *deploy_prod
 
     # Pipeline for release branches (e.g., 'release/v1.2.3')
     develop:
-      - step: *setup_flutter_and_lint
       - step: *build_web_uat
       - step: *deploy_uat
 

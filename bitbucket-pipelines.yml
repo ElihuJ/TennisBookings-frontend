@@ -6,7 +6,8 @@ definitions:
   # Define caches to speed up subsequent builds
   caches:
     flutter: /opt/flutter # Cache Flutter SDK
-    flutter-build: ./build
+    flutter-build-uat: ./build
+    flutter-build-prod: ./build
     pub: ~/.pub-cache # Cache Flutter package dependencies
     node-globals: ~/.npm # Cache global npm packages
     firebase: ~/.firebase # Cache Firebase CLI
@@ -32,7 +33,7 @@ definitions:
         caches:
           - flutter
           - pub
-          - flutter-build
+          - flutter-build-uat
         script:
           - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
@@ -46,7 +47,7 @@ definitions:
         caches:
           - flutter
           - pub
-          - flutter-build
+          - flutter-build-prod
         script:
           - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
@@ -64,7 +65,7 @@ definitions:
           - firebase
           - node-globals
           - firebase-tools
-          - flutter-build
+          - flutter-build-prod
         script:
           - echo "Creating Firebase service account key file..."
           - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json
@@ -91,7 +92,7 @@ definitions:
           - firebase
           - node-globals
           - firebase-tools
-          - flutter-build
+          - flutter-build-uat
         script:
           - echo "Creating Firebase service account key file..."
           - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json

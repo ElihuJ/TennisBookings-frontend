@@ -1,0 +1,203 @@
+# Use an image with Flutter SDK pre-installed. Pin to a specific version for consistency.
+# Find available tags at: https://hub.docker.com/r/cirrusci/flutter/tags
+# cspell: disable
+image: ghcr.io/cirruslabs/flutter:3.29.2 # Replace with your desired Flutter version
+
+definitions:
+  # Define caches to speed up subsequent builds
+  caches:
+    flutter: /opt/flutter # Cache Flutter SDK
+    pub: $HOME/.pub-cache # Cache Flutter package dependencies
+
+  # Define reusable steps using YAML anchors
+  steps:
+    - step: &flutter_setup
+        name: Setup Flutter & Dependencies
+        caches:
+          - flutter # Use Flutter SDK cache
+          - pub   # Use Pub package cache
+        script:
+          - flutter --version
+          - flutter doctor -v
+          - flutter pub get
+        artifacts: # Make dependencies available for subsequent parallel steps if needed, though pub cache is better
+          - .dart_tool/package_config.json
+          - pubspec.lock
+
+    - step: &flutter_lint
+        name: Lint & Analyze
+        caches:
+          - flutter
+          - pub
+        script:
+          - flutter analyze .
+
+
+    - step: &flutter_build_web_uat
+        name: Build Web App (UAT)
+        caches:
+          - flutter
+          - pub
+        script:
+          - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
+          - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
+
+          - echo "Building Web App (UAT) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
+          - flutter build web --dart-define=Dart2jsOptimization=00 --dart-define=ENV=uat && yarn clear-web && cp -r build/web/* ../Firebase/public
+
+    - step: &flutter_build_web_prod
+        name: Build Web App (PROD)
+        caches:
+          - flutter
+          - pub
+        script:
+          - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
+          - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
+
+          - echo "Building Web App (PROD) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
+          - flutter build web --release --dart-define=Dart2jsOptimization=00 --dart-define=ENV=prod && yarn clear-web && cp -r build/web/* ../Firebase/public
+
+
+pipelines:
+  # Default pipeline: Runs on every push to any branch not explicitly defined below.
+  default:
+    - step: *flutter_setup
+    - step: *flutter_lint
+
+
+  # Pipeline for the main/development branch (e.g., 'develop' or 'main')
+  branches:
+    main: # Or your primary development branch like 'develop'
+      - step: *flutter_setup
+      - step: *flutter_lint
+      - step: *flutter_build_web_prod
+
+      - step:
+          name: Building PROD
+          trigger: manual # This step requires manual initiation from Bitbucket UI
+          script:
+            - echo "Building PROD environment..."
+            - echo "Artifacts from build steps are automatically available."
+            - echo "Listing available Android artifacts:"
+            - ls -l build/app/outputs/flutter-apk/
+            - ls -l build/app/outputs/bundle/release/
+            - echo "Listing available iOS artifacts:"
+            - ls -l build/ios/archive/
+            # --- Add your PROD deployment script here ---
+            # Example: Upload to Firebase App Distribution
+            # Ensure FIREBASE_TOKEN and FIREBASE_APP_ID_ANDROID/IOS are set as secure variables.
+            # - export FIREBASE_TOKEN=${YOUR_FIREBASE_TOKEN}
+            # - firebase appdistribution:distribute build/app/outputs/bundle/release/app-release.aab --app ${YOUR_FIREBASE_ANDROID_APP_ID} --groups "uat-testers" --release-notes "UAT build $BITBUCKET_BUILD_NUMBER"
+            # - firebase appdistribution:distribute build/ios/archive/Runner.app.zip --app ${YOUR_FIREBASE_IOS_APP_ID} --groups "uat-testers" --release-notes "UAT build $BITBUCKET_BUILD_NUMBER" # Note: Firebase might prefer an IPA.
+            # Example: SCP to a server (ensure SSH keys are configured in Bitbucket)
+            # - scp build/app/outputs/bundle/release/app-release.aab user@uat-server:/path/to/deploy/
+            - echo "PROD deployment script placeholder. Implement your actual deployment logic."
+            - echo "Deployment to PROD complete (simulated)."
+
+    # Pipeline for release branches (e.g., 'release/v1.2.3')
+    develop:
+      - step: *flutter_setup
+      - step: *flutter_lint
+      - step: *flutter_build_web_uat
+      - step:
+          name: Building UAT
+          trigger: manual # This step requires manual initiation from Bitbucket UI
+          script:
+            - echo "Building UAT environment..."
+            - echo "Artifacts from build steps are automatically available."
+            - echo "Listing available Android artifacts:"
+            - ls -l build/app/outputs/flutter-apk/
+            - ls -l build/app/outputs/bundle/release/
+            - echo "Listing available iOS artifacts:"
+            - ls -l build/ios/archive/
+            # --- Add your UAT deployment script here ---
+            # Example: Upload to Firebase App Distribution
+            # Ensure FIREBASE_TOKEN and FIREBASE_APP_ID_ANDROID/IOS are set as secure variables.
+            # - export FIREBASE_TOKEN=${YOUR_FIREBASE_TOKEN}
+            # - firebase appdistribution:distribute build/app/outputs/bundle/release/app-release.aab --app ${YOUR_FIREBASE_ANDROID_APP_ID} --groups "uat-testers" --release-notes "UAT build $BITBUCKET_BUILD_NUMBER"
+            # - firebase appdistribution:distribute build/ios/archive/Runner.app.zip --app ${YOUR_FIREBASE_IOS_APP_ID} --groups "uat-testers" --release-notes "UAT build $BITBUCKET_BUILD_NUMBER" # Note: Firebase might prefer an IPA.
+            # Example: SCP to a server (ensure SSH keys are configured in Bitbucket)
+            # - scp build/app/outputs/bundle/release/app-release.aab user@uat-server:/path/to/deploy/
+            - echo "UAT deployment script placeholder. Implement your actual deployment logic."
+            - echo "Deployment to UAT complete (simulated)."
+      - step:
+          name: Deploy Web App to UAT
+          trigger: manual
+          script:
+            - echo "Deploying Release Candidate ($BITBUCKET_BRANCH) to UAT environment..."
+            - echo "Ensure the web app is thoroughly tested in UAT before promoting to PROD."
+            - echo "Listing available web artifacts:"
+            - ls -l ../Firebase/public
+            # Example: Upload to Firebase Hosting
+            # Ensure FIREBASE_TOKEN is set as a secure variable.
+            # - export FIREBASE_TOKEN=${YOUR_FIREBASE_TOKEN}
+            # - firebase deploy --only hosting --message "UAT deployment for $BITBUCKET_BRANCH build $BITBUCKET_BUILD_NUMBER"
+
+      - step:
+          name: Deploy to PROD
+          trigger: manual # CRITICAL: This step MUST be manual and follow UAT validation.
+          script:
+            - echo "Deploying Release Candidate ($BITBUCKET_BRANCH) to PROD environment..."
+            - echo "Ensure the web app is thoroughly tested in UAT before promoting to PROD."
+            - echo "Listing available web artifacts:"
+            - ls -l ../Firebase/public
+            # Example: Upload to Firebase Hosting
+            # Ensure FIREBASE_TOKEN is set as a secure variable.
+            # - export FIREBASE_TOKEN=${YOUR_FIREBASE_TOKEN}
+            # - firebase deploy --only hosting --message "Production deployment for $BITBUCKET_BRANCH build $BITBUCKET_BUILD_NUMBER"
+
+            
+  # Optional: Pipeline for tags (e.g., when you create a git tag like 'v1.2.3')
+  # tags:
+  #   'v*': # Matches tags like v1.0, v1.2.3, etc.
+  #     - step: *flutter_setup
+  #     - step: *flutter_lint
+  #     - step: *flutter_test
+  #     - parallel:
+  #         - step: *flutter_build_android
+  #         - step: *flutter_build_ios
+  #     - step:
+  #         name: Deploy Tagged Release to UAT
+  #         trigger: manual
+  #         script:
+  #           - echo "Deploying tagged release $BITBUCKET_TAG to UAT..."
+  #           # ... UAT deployment script
+  #     - step:
+  #         name: Deploy Tagged Release to PROD
+  #         trigger: manual
+  #         script:
+  #           - echo "Deploying tagged release $BITBUCKET_TAG to PROD..."
+  #           # ... PROD deployment script (ensure this is what you want for tags)
+
+# --- General Good Practices & Notes ---
+# 1. Secure Variables: Store all sensitive data (API keys, passwords, tokens like FIREBASE_TOKEN, ANDROID_STORE_PASSWORD, etc.)
+#    in Bitbucket Pipelines settings: Repository settings > CI/CD > Repository variables. Mark them as "Secured".
+#
+# 4. Versioning:
+#    - The script uses `BITBUCKET_BUILD_NUMBER` for `build-number` and `BITBUCKET_TAG` (if available) or a derivative of `BITBUCKET_BUILD_NUMBER` for `build-name`.
+#    - For user-facing versions (e.g., 1.2.3), manage this in your `pubspec.yaml` and consider using Git tags to mark releases.
+#      Your pipeline can extract the version from `pubspec.yaml` if needed:
+#      `VERSION_NAME=$(grep 'version:' pubspec.yaml | cut -d ' ' -f 2 | cut -d '+' -f 1)`
+#
+# 5. Flutter SDK Version:
+#    - Pin the Flutter version in `image: cirrusci/flutter:<version>` (e.g., `cirrusci/flutter:3.22.0`) for reproducible builds.
+#    - Avoid using `:latest` or `:stable` for critical production pipelines as they can change unexpectedly.
+#
+# 6. Artifacts:
+#    - Artifacts are defined in each build step and are automatically passed to subsequent steps in the same pipeline execution.
+#    - You can download them from the Bitbucket UI.
+#
+# 7. Deployment Scripts:
+#    - The deployment steps (`Deploy to UAT`, `Deploy to PROD`) are placeholders.
+#    - You need to replace the `echo` commands with your actual deployment commands/scripts (e.g., using `scp`, `rsync`, `firebase deploy`, `fastlane`, or custom API calls to cloud services).
+#
+# 8. Notifications:
+#    - Configure Bitbucket notifications (email, Slack) for pipeline status updates in your repository settings.
+#
+# 9. Resource Limits:
+#    - For larger projects, you might need to increase the default resource allocation for steps.
+#      `size: 2x` can be added to a step definition for double resources (if your plan allows).
+#
+# 10. Testing Strategy:
+#     - The script includes unit/widget tests. Consider adding integration tests if applicable.
+#     - For UI-heavy integration tests, you might need emulators/simulators or a device farm service, which adds complexity.

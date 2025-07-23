@@ -37,6 +37,7 @@ definitions:
           - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
 
+          - rm -rf build/web # * Clean previous builds
           - echo "Building Web App (UAT) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
           - flutter build web --dart-define=Dart2jsOptimization=00 --dart-define=ENV=uat
 
@@ -49,7 +50,8 @@ definitions:
         script:
           - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
-
+          
+          - rm -rf build/web # * Clean previous builds
           - echo "Building Web App (PROD) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
           - flutter build web --release --dart-define=Dart2jsOptimization=00 --dart-define=ENV=prod
 
@@ -116,13 +118,11 @@ pipelines:
   # Pipeline for the main/development branch (e.g., 'develop' or 'main')
   branches:
     main: # Or your primary development branch like 'develop'
-      - step: *setup_flutter_and_lint
       - step: *build_web_prod
       - step: *deploy_prod
 
     # Pipeline for release branches (e.g., 'release/v1.2.3')
     develop:
-      - step: *setup_flutter_and_lint
       - step: *build_web_uat
       - step: *deploy_uat
 

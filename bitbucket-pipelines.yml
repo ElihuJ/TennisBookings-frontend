@@ -1,4 +1,3 @@
-
 # cspell: disable
 image: ghcr.io/cirruslabs/flutter:3.29.2
 
@@ -6,9 +5,12 @@ definitions:
   # Define caches to speed up subsequent builds
   caches:
     flutter: /opt/flutter # Cache Flutter SDK
-    flutter-build-uat: ./build
-    flutter-build-prod: ./build
-    pub: ~/.pub-cache # Cache Flutter package dependencies
+    pub:
+      key:
+        files:
+          - pubspec.yaml
+          - pubspec.lock
+      path: ~/.pub-cache
     node-globals: ~/.npm # Cache global npm packages
     firebase: ~/.firebase # Cache Firebase CLI
     firebase-tools: ~/.cache/firebase-tools # Cache Firebase tools
@@ -17,44 +19,41 @@ definitions:
     - step: &setup_flutter_and_lint
         name: Setup Flutter & Dependencies
         caches:
-          - flutter 
+          - flutter
           - pub
         script:
           - flutter --version
           - flutter doctor -v
           - flutter pub get
           - flutter analyze .
-        artifacts: # Make dependencies available for subsequent parallel steps if needed, though pub cache is better
-          - .dart_tool/package_config.json
-          - pubspec.lock
 
     - step: &build_web_uat
         name: Build Web App (UAT)
         caches:
           - flutter
           - pub
-          - flutter-build-uat
         script:
           - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
 
-          - rm -rf build/web # * Clean previous builds
           - echo "Building Web App (UAT) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
           - flutter build web --dart-define=Dart2jsOptimization=00 --dart-define=ENV=uat
+        artifacts:
+          - build/web
 
     - step: &build_web_prod
         name: Build Web App (PROD)
         caches:
           - flutter
           - pub
-          - flutter-build-prod
         script:
           - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
-          
-          - rm -rf build/web # * Clean previous builds
+
           - echo "Building Web App (PROD) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
           - flutter build web --release --dart-define=Dart2jsOptimization=00 --dart-define=ENV=prod
+        artifacts:
+          - build/web
 
     - step: &deploy_prod
         name: Deploy Web App (PROD)
@@ -65,7 +64,6 @@ definitions:
           - firebase
           - node-globals
           - firebase-tools
-          - flutter-build-prod
         script:
           - echo "Creating Firebase service account key file..."
           - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json
@@ -92,7 +90,6 @@ definitions:
           - firebase
           - node-globals
           - firebase-tools
-          - flutter-build-uat
         script:
           - echo "Creating Firebase service account key file..."
           - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json
@@ -112,7 +109,7 @@ definitions:
 
 pipelines:
   # Default pipeline: Runs on every push to any branch not explicitly defined below.
-  
+
   default:
     - step: *setup_flutter_and_lint
 
@@ -126,60 +123,3 @@ pipelines:
     develop:
       - step: *build_web_uat
       - step: *deploy_uat
-
-
-            
-  # Optional: Pipeline for tags (e.g., when you create a git tag like 'v1.2.3')
-  # tags:
-  #   'v*': # Matches tags like v1.0, v1.2.3, etc.
-  #     - step: *setup
-  #     - step: *lint
-  #     - step: *flutter_test
-  #     - parallel:
-  #         - step: *flutter-build_android
-  #         - step: *flutter-build_ios
-  #     - step:
-  #         name: Deploy Tagged Release to UAT
-  #         trigger: manual
-  #         script:
-  #           - echo "Deploying tagged release $BITBUCKET_TAG to UAT..."
-  #           # ... UAT deployment script
-  #     - step:
-  #         name: Deploy Tagged Release to PROD
-  #         trigger: manual
-  #         script:
-  #           - echo "Deploying tagged release $BITBUCKET_TAG to PROD..."
-  #           # ... PROD deployment script (ensure this is what you want for tags)
-
-# --- General Good Practices & Notes ---
-# 1. Secure Variables: Store all sensitive data (API keys, passwords, tokens like FIREBASE_TOKEN, ANDROID_STORE_PASSWORD, etc.)
-#    in Bitbucket Pipelines settings: Repository settings > CI/CD > Repository variables. Mark them as "Secured".
-#
-# 4. Versioning:
-#    - The script uses `BITBUCKET_BUILD_NUMBER` for `build-number` and `BITBUCKET_TAG` (if available) or a derivative of `BITBUCKET_BUILD_NUMBER` for `build-name`.
-#    - For user-facing versions (e.g., 1.2.3), manage this in your `pubspec.yaml` and consider using Git tags to mark releases.
-#      Your pipeline can extract the version from `pubspec.yaml` if needed:
-#      `VERSION_NAME=$(grep 'version:' pubspec.yaml | cut -d ' ' -f 2 | cut -d '+' -f 1)`
-#
-# 5. Flutter SDK Version:
-#    - Pin the Flutter version in `image: cirrusci/flutter:<version>` (e.g., `cirrusci/flutter:3.22.0`) for reproducible builds.
-#    - Avoid using `:latest` or `:stable` for critical production pipelines as they can change unexpectedly.
-#
-# 6. Artifacts:
-#    - Artifacts are defined in each build step and are automatically passed to subsequent steps in the same pipeline execution.
-#    - You can download them from the Bitbucket UI.
-#
-# 7. Deployment Scripts:
-#    - The deployment steps (`Deploy to UAT`, `Deploy to PROD`) are placeholders.
-#    - You need to replace the `echo` commands with your actual deployment commands/scripts (e.g., using `scp`, `rsync`, `firebase deploy`, `fastlane`, or custom API calls to cloud services).
-#
-# 8. Notifications:
-#    - Configure Bitbucket notifications (email, Slack) for pipeline status updates in your repository settings.
-#
-# 9. Resource Limits:
-#    - For larger projects, you might need to increase the default resource allocation for steps.
-#      `size: 2x` can be added to a step definition for double resources (if your plan allows).
-#
-# 10. Testing Strategy:
-#     - The script includes unit/widget tests. Consider adding integration tests if applicable.
-#     - For UI-heavy integration tests, you might need emulators/simulators or a device farm service, which adds complexity.

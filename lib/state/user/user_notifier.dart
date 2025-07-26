@@ -3,6 +3,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../cloud_functions/index.dart';
+import '../../cloud_functions/types.dart';
 import '../../global_helpers/index.dart';
 import '../../global_types/index.dart';
 import '../../models/index.dart';
@@ -11,7 +13,8 @@ import 'index.dart';
 typedef NewUrl = String?;
 
 class UserNotifier extends StateNotifier<User> {
-  UserNotifier() : super(User.empty());
+  final CloudFunctionsNotifier cloudFunctionsNotifier;
+  UserNotifier({required this.cloudFunctionsNotifier}) : super(User.empty());
   final usersCollection = FirebaseFirestore.instance.collection(FirestoreCollection.users);
   final storageRef = FirebaseStorage.instance.ref();
 
@@ -22,7 +25,16 @@ class UserNotifier extends StateNotifier<User> {
     if (doc.exists) {
       final data = doc.data() as FirestoreResponse;
       state = User.fromJson(data);
+      cloudFunctionsNotifier.getActiveOpenBookings().then((result) {
+        if (result.responseStatus.code == CFResponseCode.ok) {
+          setBookingsWithPopulatedRequests(requests: result.data!);
+        }
+      });
     }
+  }
+
+  void setBookingsWithPopulatedRequests({required List<BookingWithPopulatedRequest> requests}) async {
+    state = state.copyWith(bookingsWithPopulatedRequests: requests);
   }
 
   FirestoreActionResult<Success> createUser({String? name, required String uid, required String? email, ResultHandler? resultHandler}) async {

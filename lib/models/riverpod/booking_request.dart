@@ -70,7 +70,7 @@ class BookingRequest extends MapView<String, dynamic> implements FirestoreModel 
 * This class extends BookingRequest and adds additional fields which are the private data of the player that requested
 * to join the booking 
 */
-class BookingPopulatedRequest extends BookingRequest {
+class PopulatedRequest extends BookingRequest {
   final String playerName;
   final double? playerUtrRating;
   final bool playerUtrVerified;
@@ -79,7 +79,7 @@ class BookingPopulatedRequest extends BookingRequest {
   @override
   List<String> get allFields => BookingRequestFields.allFields;
 
-  BookingPopulatedRequest({
+  PopulatedRequest({
     required this.playerName,
     this.playerUtrRating,
     required this.playerUtrVerified,
@@ -88,7 +88,7 @@ class BookingPopulatedRequest extends BookingRequest {
     required super.status,
   });
 
-  BookingPopulatedRequest.empty()
+  PopulatedRequest.empty()
       : this(
             playerGender: Gender.unknown,
             playerName: '',
@@ -98,7 +98,7 @@ class BookingPopulatedRequest extends BookingRequest {
             status: BookingRequestStatus.unknown);
 
   @override
-  BookingPopulatedRequest copyWith({
+  PopulatedRequest copyWith({
     String? playerId,
     BookingRequestStatus? status,
     String? playerName,
@@ -106,7 +106,7 @@ class BookingPopulatedRequest extends BookingRequest {
     Gender? playerGender,
     bool? playerUtrVerified,
   }) {
-    return BookingPopulatedRequest(
+    return PopulatedRequest(
       playerId: playerId ?? this.playerId,
       status: status ?? this.status,
       playerName: playerName ?? this.playerName,
@@ -128,7 +128,7 @@ class BookingPopulatedRequest extends BookingRequest {
     };
   }
 
-  factory BookingPopulatedRequest.fromJson(Map<String, dynamic> json) {
+  factory PopulatedRequest.fromJson(Map<String, dynamic> json) {
     try {
       // * Verify required props
       final playerId = verifyRequiredProp<String>(
@@ -158,7 +158,7 @@ class BookingPopulatedRequest extends BookingRequest {
       verifyProps(json, BookingPopulatedRequestFields.allFields);
 
       // Debug print all props
-      final booking = BookingPopulatedRequest(
+      final booking = PopulatedRequest(
         playerId: playerId,
         status: status,
         playerName: playerName,
@@ -170,7 +170,7 @@ class BookingPopulatedRequest extends BookingRequest {
       return booking;
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING BOOKING REQUEST', DebugLevel.error);
-      return BookingPopulatedRequest.empty();
+      return PopulatedRequest.empty();
     }
   }
 

@@ -40,10 +40,11 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const PrettyText('Version', textAlign: TextAlign.center),
-                  content: PrettyText('${env.toString()} - ${Config.versionString}'),
+                  content: PrettyText('${env.toString()} - ${Config.versionString}'
+                      '\n${Config.latestNotes}'),
                   actions: <Widget>[
                     TbTextButton(
-                      text: 'OK',
+                      text: 'Cool!',
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                   ],

@@ -29,6 +29,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
   final double? utrRating;
   final String? stripeCustomerId;
   final List<String> stripeTransactionIds;
+  final List<BookingWithPopulatedRequest> bookingsWithPopulatedRequests;
   @override
   final List<String> allFields = UserFields.allFields;
 
@@ -45,6 +46,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
     required this.utrVerified,
     required this.memberships,
     required this.stripeTransactionIds,
+    this.bookingsWithPopulatedRequests = const [],
     this.utrRating,
     this.stripeCustomerId,
     this.homeClubId,
@@ -81,6 +83,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
           email: _defaultEmail,
           stripeCustomerId: null,
           stripeTransactionIds: [],
+          bookingsWithPopulatedRequests: [],
         );
 
   factory User.fromJson(FirestoreResponse json) {
@@ -139,6 +142,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         memberships: memberships,
         stripeCustomerId: stripeCustomerId,
         stripeTransactionIds: stripeTransactionIds,
+        bookingsWithPopulatedRequests: [],
       );
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING USER', DebugLevel.error);
@@ -183,6 +187,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
     String? stripeCustomerId,
     List<UserMembership>? memberships,
     List<String>? stripeTransactionIds,
+    List<BookingWithPopulatedRequest>? bookingsWithPopulatedRequests,
   }) {
     return User(
       uid: uid ?? this.uid,
@@ -200,6 +205,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       memberships: memberships ?? this.memberships,
       stripeCustomerId: stripeCustomerId ?? this.stripeCustomerId,
       stripeTransactionIds: stripeTransactionIds ?? this.stripeTransactionIds,
+      bookingsWithPopulatedRequests: bookingsWithPopulatedRequests ?? this.bookingsWithPopulatedRequests,
     );
   }
 
@@ -221,6 +227,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         'stripeCustomerId: $stripeCustomerId \n'
         'memberships: $memberships \n'
         'stripeTransactionIds: $stripeTransactionIds \n'
+        'bookingsWithPopulatedRequests: $bookingsWithPopulatedRequests \n'
         '=============================================== \n';
   }
 }

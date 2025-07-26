@@ -9,9 +9,8 @@ import '../../../theme/index.dart';
 import 'request_container.dart';
 
 class BookingWithInvites extends HookConsumerWidget {
-  const BookingWithInvites({super.key, required this.booking, required this.removeInviteFromState});
+  const BookingWithInvites({super.key, required this.booking});
 
-  final Function removeInviteFromState;
   final BookingWithPopulatedRequest booking;
 
   @override
@@ -64,8 +63,7 @@ class BookingWithInvites extends HookConsumerWidget {
                   courtName: courtName,
                   booking: booking,
                 ),
-                ...booking.requests
-                    .map((request) => RequestContainer(request: request, booking: booking, removeInviteFromState: removeInviteFromState)),
+                ...booking.requests.map((request) => RequestContainer(request: request, booking: booking)),
               ],
             ),
           ),

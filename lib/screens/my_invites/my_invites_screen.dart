@@ -1,43 +1,20 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../cloud_functions/index.dart';
-import '../../cloud_functions/types.dart';
 import '../../global_helpers/index.dart';
 import '../../global_widgets/index.dart';
-import '../../models/index.dart';
 import '../../state/index.dart';
 import 'widgets/booking_with_invites_container.dart';
 
 const sectionWidth = 600.0;
 
-class MyInvitesScreen extends StatefulHookConsumerWidget {
+class MyInvitesScreen extends HookConsumerWidget {
   const MyInvitesScreen({super.key});
 
   static const route = 'MyInvites';
 
   @override
-  ConsumerState<MyInvitesScreen> createState() => _MyInvitesScreenState();
-}
-
-class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
-  List<BookingWithPopulatedRequest>? _bookings;
-
-  removeInviteFromState(BookingWithPopulatedRequest booking, BookingPopulatedRequest invite) {
-    final targetBooking = _bookings!.firstWhereOrNull(
-      (b) => b.id == booking.id,
-    );
-    if (targetBooking != null) {
-      targetBooking.requests.removeWhere((r) => r.playerId == invite.playerId);
-      setState(() {
-        _bookings = _bookings;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     final isLoggedIn = user.uid.isNotEmpty;
     final mobileView = isMobile(context);
@@ -46,24 +23,8 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
     if (!isLoggedIn) {
       return const NotFoundScreen();
     }
-    final cloudFunctions = ref.read(cloudFunctionsProvider.notifier);
 
-    if (_bookings == null) {
-      cloudFunctions.getActiveOpenBookings().then((result) {
-        if (result.responseStatus.code == CFResponseCode.ok) {
-          setState(() {
-            _bookings = result.data!;
-          });
-        }
-      });
-
-      return LoadingScreen(
-        message: 'Loading invites...',
-      );
-    }
-
-    _bookings ??= [];
-    final hasInvites = _bookings!.any((booking) => booking.requests.isNotEmpty);
+    final bookingsWithInvites = user.bookingsWithPopulatedRequests;
 
     return EventfulWidget(
       child: PopScope(
@@ -86,19 +47,19 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
                       ),
                     ),
                     const SizedBox(height: 40),
-                    if (hasInvites == false)
+                    if (bookingsWithInvites.isEmpty)
                       _NoInvitesView()
                     else
                       ListView.builder(
                         shrinkWrap: true,
-                        itemCount: _bookings!.length,
+                        itemCount: bookingsWithInvites.length,
                         itemBuilder: (context, index) {
-                          final booking = _bookings![index];
+                          final booking = bookingsWithInvites[index];
                           // * This scenario should happen when removing an invite from state
                           if (booking.requests.isEmpty) {
                             return const SizedBox.shrink();
                           }
-                          return BookingWithInvites(booking: booking, removeInviteFromState: removeInviteFromState);
+                          return BookingWithInvites(booking: booking);
                         },
                       ),
                     const SizedBox(height: 16.0),

@@ -17,7 +17,7 @@ class BookingWithPopulatedRequest extends Booking {
   @override
   // * Overriding the requests property to be of type List<BookingPopulatedRequest>
   // ignore: overridden_fields
-  final List<BookingPopulatedRequest> requests;
+  final List<PopulatedRequest> requests;
 
   BookingWithPopulatedRequest({
     required super.id,
@@ -76,8 +76,8 @@ class BookingWithPopulatedRequest extends Booking {
           verifyRequiredProp<String>(prop: json[BookingFields.courtName], propName: BookingFields.courtName, defaultValue: _defaultCourtName);
 
       // * Structure is different from regular booking request but property is named same
-      final List<BookingPopulatedRequest> populatedRequests = json[BookingFields.requests] != null
-          ? List<BookingPopulatedRequest>.from(json[BookingFields.requests].map((x) => BookingPopulatedRequest.fromJson(x)))
+      final List<PopulatedRequest> populatedRequests = json[BookingFields.requests] != null
+          ? List<PopulatedRequest>.from(json[BookingFields.requests].map((x) => PopulatedRequest.fromJson(x)))
           : [];
       final BookingRestrictions? restrictions =
           json[BookingFields.restrictions] != null ? BookingRestrictions.fromJson(json[BookingFields.restrictions]) : null;
@@ -151,6 +151,44 @@ class BookingWithPopulatedRequest extends Booking {
         clubName.hashCode ^
         courtName.hashCode ^
         title.hashCode;
+  }
+
+  // Create a copy of the current instance with modified fields
+  // Cannot override the requests field
+  BookingWithPopulatedRequest copyWith2({
+    String? id,
+    List<String>? confirmedPlayerIds,
+    String? courtId,
+    String? clubId,
+    BookingFormat? format,
+    int? startTime,
+    int? endTime,
+    bool? private,
+    String? ownerId,
+    BookingRestrictions? restrictions,
+    BookingStatus? status,
+    String? title,
+    String? clubName,
+    String? courtName,
+    List<PopulatedRequest>? requests,
+  }) {
+    return BookingWithPopulatedRequest(
+      id: id ?? this.id,
+      confirmedPlayerIds: confirmedPlayerIds ?? this.confirmedPlayerIds,
+      courtId: courtId ?? this.courtId,
+      clubId: clubId ?? this.clubId,
+      format: format ?? this.format,
+      requests: requests ?? this.requests,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+      private: private ?? this.private,
+      ownerId: ownerId ?? this.ownerId,
+      restrictions: restrictions ?? this.restrictions,
+      status: status ?? this.status,
+      title: title ?? this.title,
+      clubName: clubName ?? this.clubName,
+      courtName: courtName ?? this.courtName,
+    );
   }
 
   @override

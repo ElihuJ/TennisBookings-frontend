@@ -12,11 +12,10 @@ import '../../../state/index.dart';
 import '../../../theme/colors.dart';
 
 class RequestContainer extends HookConsumerWidget {
-  const RequestContainer({super.key, required this.request, required this.booking, required this.removeInviteFromState});
+  const RequestContainer({super.key, required this.request, required this.booking});
 
-  final BookingPopulatedRequest request;
+  final PopulatedRequest request;
   final BookingWithPopulatedRequest booking;
-  final Function removeInviteFromState;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -48,7 +47,7 @@ class RequestContainer extends HookConsumerWidget {
                   return const SizedBox.shrink();
                 }
 
-                return _PlayerData(playerData: playerData, request: request, booking: booking, removeInviteFromState: removeInviteFromState);
+                return _PlayerData(playerData: playerData, request: request, booking: booking);
               },
             ),
           ),
@@ -63,13 +62,11 @@ class _PlayerData extends StatelessWidget {
     required this.playerData,
     required this.request,
     required this.booking,
-    required this.removeInviteFromState,
   });
 
   final ConfirmedPlayerData playerData;
-  final BookingPopulatedRequest request;
+  final PopulatedRequest request;
   final BookingWithPopulatedRequest booking;
-  final Function removeInviteFromState;
 
   @override
   Widget build(BuildContext context) {
@@ -100,23 +97,36 @@ class _PlayerData extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16.0),
-        _ActionButtons(booking: booking, request: request, removeInviteFromState: removeInviteFromState),
+        _ActionButtons(booking: booking, request: request),
       ],
     );
   }
 }
 
 class _ActionButtons extends HookConsumerWidget {
-  const _ActionButtons({required this.booking, required this.request, required this.removeInviteFromState});
+  const _ActionButtons({required this.booking, required this.request});
 
   final BookingWithPopulatedRequest booking;
-  final BookingPopulatedRequest request;
-  final Function removeInviteFromState;
+  final PopulatedRequest request;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cloudFunctions = ref.read(cloudFunctionsProvider.notifier);
+    final userNotifier = ref.read(userProvider.notifier);
+    final bookingsWithPopulatedRequests = ref.watch(userProvider).bookingsWithPopulatedRequests;
     final eventNotifier = ref.read(eventProvider.notifier);
+
+    removeRequestFromState() {
+      bookingsWithPopulatedRequests.remove(booking);
+      final requests = booking.requests.where((r) => r.playerId != request.playerId).toList();
+      final updatedBooking = booking.copyWith2(requests: requests);
+      // * If the updated booking has no pending requests, remove it from the state
+      if (updatedBooking.requests.any((request) => request.status == BookingRequestStatus.pending)) {
+        bookingsWithPopulatedRequests.add(updatedBooking);
+      }
+      userNotifier.setBookingsWithPopulatedRequests(requests: bookingsWithPopulatedRequests);
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -129,11 +139,11 @@ class _ActionButtons extends HookConsumerWidget {
               targetPlayerId: request.playerId,
             );
             final result = await cloudFunctions.actionInvite(actionInvitePayload);
-            removeInviteFromState(booking, request);
             eventNotifier.hideLoading();
 
             if (result.data == true) {
               eventNotifier.showMessage(messageType: MessageType.success, message: "Invite accepted!");
+              removeRequestFromState();
             } else {
               eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
             }
@@ -156,11 +166,11 @@ class _ActionButtons extends HookConsumerWidget {
               targetPlayerId: request.playerId,
             );
             final result = await cloudFunctions.actionInvite(actionInvitePayload);
-            removeInviteFromState(booking, request);
             eventNotifier.hideLoading();
 
             if (result.data == true) {
               eventNotifier.showMessage(messageType: MessageType.success, message: "Invite declined!");
+              removeRequestFromState();
             } else {
               eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
             }

@@ -23,7 +23,7 @@ Future<void> main() async {
   Config(environment: Environment.dev);
   await Firebase.initializeApp(options: ProdDefaultFirebaseOptions.currentPlatform);
 
-  const host = '192.168.86.246';
+  const host = '192.168.4.44';
 
   FirebaseFirestore.instance.useFirestoreEmulator(host, 8080, sslEnabled: false);
   await FirebaseAuth.instance.useAuthEmulator(host, 9099);

@@ -35,11 +35,11 @@ definitions:
         script:
           - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
-
+          - flutter pub get
           - echo "Building Web App (UAT) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
           - flutter build web --dart-define=Dart2jsOptimization=00 --dart-define=ENV=uat
         artifacts:
-          - build/web
+          - build/web/**
 
     - step: &build_web_prod
         name: Build Web App (PROD)
@@ -49,11 +49,11 @@ definitions:
         script:
           - BUILD_NAME=${BITBUCKET_TAG:-"1.0.$BITBUCKET_BUILD_NUMBER"}
           - BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
-
+          - flutter pub get
           - echo "Building Web App (PROD) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
           - flutter build web --release --dart-define=Dart2jsOptimization=00 --dart-define=ENV=prod
         artifacts:
-          - build/web
+          - build/web/**
 
     - step: &deploy_prod
         name: Deploy Web App (PROD)
@@ -65,6 +65,9 @@ definitions:
           - node
           - node-globals
           - firebase-tools
+        artifacts:
+          download:
+            - build/web/**
         script:
           - echo "Creating Firebase service account key file..."
           - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json
@@ -72,7 +75,7 @@ definitions:
           - export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-service-account-key.json
 
           - echo "Installing Firebase CLI..."
-          - npm install -g firebase-tools
+          - npm install firebase-tools
 
           - firebase login:list # Should show the service account
           - firebase projects:list # Should list projects the SA has access to
@@ -92,6 +95,9 @@ definitions:
           - node
           - node-globals
           - firebase-tools
+        artifacts:
+          download:
+            - build/web/**
         script:
           - echo "Creating Firebase service account key file..."
           - echo $FIREBASE_SERVICE_ACCOUNT_KEY_JSON > $HOME/firebase-service-account-key.json
@@ -99,7 +105,7 @@ definitions:
           - export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-service-account-key.json
 
           - echo "Installing Firebase CLI..."
-          - npm install -g firebase-tools
+          - npm install firebase-tools
 
           - firebase login:list # Should show the service account
           - firebase projects:list # Should list projects the SA has access to

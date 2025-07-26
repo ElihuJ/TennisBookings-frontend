@@ -39,7 +39,7 @@ definitions:
           - echo "Building Web App (UAT) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
           - flutter build web --dart-define=Dart2jsOptimization=00 --dart-define=ENV=uat
         artifacts:
-          - ~/build/web
+          - build/web
 
     - step: &build_web_prod
         name: Build Web App (PROD)
@@ -53,7 +53,7 @@ definitions:
           - echo "Building Web App (PROD) --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER"
           - flutter build web --release --dart-define=Dart2jsOptimization=00 --dart-define=ENV=prod
         artifacts:
-          - ~/build/web
+          - build/web
 
     - step: &deploy_prod
         name: Deploy Web App (PROD)
@@ -62,6 +62,7 @@ definitions:
         image: atlassian/default-image:5
         caches:
           - firebase
+          - node
           - node-globals
           - firebase-tools
         script:
@@ -88,6 +89,7 @@ definitions:
         image: atlassian/default-image:5
         caches:
           - firebase
+          - node
           - node-globals
           - firebase-tools
         script:

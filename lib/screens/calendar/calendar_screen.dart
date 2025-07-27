@@ -25,6 +25,7 @@ class _ScheduleScreen extends ConsumerState<CalendarScreen> {
   Club? _clubSelected;
   String get paramClubId => widget.clubSelectedQueryParams.clubId;
   String? get paramCourtId => widget.clubSelectedQueryParams.courtId;
+  String? get paramBookingId => widget.clubSelectedQueryParams.bookingId;
   late DateTime _dateInView;
   void setDateInView(DateTime newDate) {
     setState(() {
@@ -91,7 +92,13 @@ class _ScheduleScreen extends ConsumerState<CalendarScreen> {
                       clubsNotifier.loadBookings(_clubSelected!, _courtSelected!, _dateInView, user.uid);
                     }),
                   ),
-                  CalendarView(clubSelected: _clubSelected!, courtSelected: _courtSelected!, dateInView: _dateInView, setDateInView: setDateInView),
+                  CalendarView(
+                    clubSelected: _clubSelected!,
+                    courtSelected: _courtSelected!,
+                    dateInView: _dateInView,
+                    setDateInView: setDateInView,
+                    bookingIdSelected: paramBookingId,
+                  ),
                 ],
               ),
             ),

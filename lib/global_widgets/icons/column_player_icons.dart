@@ -170,10 +170,7 @@ class _MobileView extends StatelessWidget {
       children: [
         FieldBox(
           width: iconSize,
-          child: PlayerIcon(
-            player: player,
-            size: iconSize,
-          ),
+          child: PlayerIcon(player: player, size: iconSize),
         ),
         if (player.name.isNotEmpty)
           Column(

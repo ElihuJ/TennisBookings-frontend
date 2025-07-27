@@ -20,6 +20,7 @@ class CalendarMobileView extends HookConsumerWidget {
     required this.clubSelected,
     required this.courtSelected,
     required this.calendarKey,
+    required this.bookingIdSelected,
   });
 
   final DateTime dateInView;
@@ -29,6 +30,7 @@ class CalendarMobileView extends HookConsumerWidget {
   final Club clubSelected;
   final Court courtSelected;
   final GlobalKey calendarKey;
+  final String? bookingIdSelected;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,7 +65,8 @@ class CalendarMobileView extends HookConsumerWidget {
       },
       controller: eventController,
       eventTileBuilder: (date, events, boundary, start, end) {
-        return EventContainer(events: events, club: clubSelected);
+        final openOnLoad = events.any((event) => event.event?.id == bookingIdSelected);
+        return EventContainer(events: events, club: clubSelected, openModalOnLoad: openOnLoad);
       },
       showLiveTimeLineInAllDays: true, // * To display live time line in all pages in day view.
       initialDay: dateInView,

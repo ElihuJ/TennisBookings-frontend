@@ -12,10 +12,11 @@ import '../../calendar/widgets/index.dart';
 
 // * This is the container that is displayed while in the main calendar view
 class EventContainer extends HookConsumerWidget {
-  const EventContainer({super.key, required this.events, required this.club});
+  const EventContainer({super.key, required this.events, required this.club, required this.openModalOnLoad});
 
   final List<CalendarEventData<Booking>> events;
   final Club club;
+  final bool openModalOnLoad;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -47,6 +48,7 @@ class EventContainer extends HookConsumerWidget {
       booking: booking,
       confirmedPlayerIds: confirmedPlayerIds,
       club: club,
+      openModalOnLoad: openModalOnLoad,
     );
   }
 }
@@ -61,6 +63,7 @@ class BookingContainer extends StatelessWidget {
     required this.booking,
     required this.confirmedPlayerIds,
     required this.club,
+    required this.openModalOnLoad,
   });
 
   final User user;
@@ -70,6 +73,7 @@ class BookingContainer extends StatelessWidget {
   final Booking booking;
   final List<String> confirmedPlayerIds;
   final Club club;
+  final bool openModalOnLoad;
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +88,19 @@ class BookingContainer extends StatelessWidget {
     final (mouseAction, isClickable) = _getPermissionToClick(bookingAndUserContext: bookingAndUserContext);
 
     final isCoaching = booking.format == BookingFormat.coaching;
+
+    if (openModalOnLoad) {
+      Future.delayed(Duration.zero, () {
+        if (context.mounted) {
+          _onTapAction(
+            booking: booking,
+            user: user,
+            bookingAndUserContext: bookingAndUserContext,
+            context: context,
+          );
+        }
+      });
+    }
 
     return LayoutBuilder(
       builder: (context, constraints) {

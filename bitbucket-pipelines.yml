@@ -75,15 +75,15 @@ definitions:
           - export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-service-account-key.json
 
           - echo "Installing Firebase CLI..."
-          - npm install -g firebase-tools
+          - npm install firebase-tools --save-dev
 
-          - firebase login:list # Should show the service account
-          - firebase projects:list # Should list projects the SA has access to
+          - npx firebase login:list # Should show the service account
+          - npx firebase projects:list # Should list projects the SA has access to
 
           - echo "Setting firebase config"
-          - firebase use tennisbookings
+          - npx firebase use tennisbookings
           - echo "Deploying Web App to Production..."
-          - firebase deploy --only hosting --non-interactive --force
+          - npx firebase deploy --only hosting --non-interactive --force
 
     - step: &deploy_uat
         name: Deploy Web App (UAT)
@@ -105,15 +105,15 @@ definitions:
           - export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-service-account-key.json
 
           - echo "Installing Firebase CLI..."
-          - npm install -g firebase-tools
+          - npm install firebase-tools --save-dev
 
-          - firebase login:list # Should show the service account
-          - firebase projects:list # Should list projects the SA has access to
+          - npx firebase login:list # Should show the service account
+          - npx firebase projects:list # Should list projects the SA has access to
 
           - echo "Setting firebase config"
-          - firebase use tennisbookings-uat
+          - npx firebase use tennisbookings-uat
           - echo "Deploying Web App to UAT..."
-          - firebase deploy --only hosting --non-interactive --force
+          - npx firebase deploy --only hosting --non-interactive --force
 
 pipelines:
   # Default pipeline: Runs on every push to any branch not explicitly defined below.

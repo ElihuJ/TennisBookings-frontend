@@ -54,29 +54,45 @@ class _RowOfPlayerIconsState extends ConsumerState<RowOfPlayerIcons> {
       future: playersDataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: confirmedPlayersPlusOwner.map((_) {
-              return const CircularProgressIndicator();
-            }).toList(),
+          return IntrinsicWidth(
+            child: Container(
+              alignment: Alignment.center,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: confirmedPlayersPlusOwner.map((_) {
+                    return const CircularProgressIndicator();
+                  }).toList(),
+                ),
+              ),
+            ),
           );
         }
 
         if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
           final players = snapshot.data!;
 
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: players.map((player) {
-              return Padding(
-                padding: const EdgeInsets.all(4),
-                child: Column(
-                  children: [
-                    PlayerIcon(player: player),
-                  ],
+          return IntrinsicWidth(
+            child: Container(
+              alignment: Alignment.center,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: players.map((player) {
+                    return Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Column(
+                        children: [
+                          PlayerIcon(player: player),
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ),
-              );
-            }).toList(),
+              ),
+            ),
           );
         }
 

@@ -1,6 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/screens/calendar/calendar_screen.dart';
+import 'package:web/web.dart' as web;
 
 import '../../../cloud_functions/dto/delete_booking.dart';
 import '../../../cloud_functions/dto/index.dart';
@@ -43,7 +46,7 @@ class BookingDetailsModal extends HookConsumerWidget {
   }
 }
 
-class _ContainerTitle extends StatelessWidget {
+class _ContainerTitle extends HookConsumerWidget {
   const _ContainerTitle({
     required this.booking,
     required this.fromInMilliseconds,
@@ -55,7 +58,9 @@ class _ContainerTitle extends StatelessWidget {
   final int toInMilliseconds;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final eventNotifier = ref.read(eventProvider.notifier);
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -64,8 +69,17 @@ class _ContainerTitle extends StatelessWidget {
           Padding(padding: const EdgeInsets.only(right: 8.0), child: PrettyText(booking.title, maxLines: 3)),
           Padding(padding: const EdgeInsets.only(right: 8.0), child: PrettyText(prettyDateLocalFromEpoch(fromInMilliseconds))),
           Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: PrettyText('${getLocalTimeFromEpoch(fromInMilliseconds)} - ${getLocalTimeFromEpoch(toInMilliseconds)}')),
+            padding: const EdgeInsets.only(right: 8.0),
+            child: PrettyText('${getLocalTimeFromEpoch(fromInMilliseconds)} - ${getLocalTimeFromEpoch(toInMilliseconds)}'),
+          ),
+          IconButton(
+            onPressed: () async {
+              final url = '${web.window.origin}#${CalendarScreen.route}?clubId=${booking.clubId}&courtId=${booking.courtId}&bookingId=${booking.id}';
+              await Clipboard.setData(ClipboardData(text: url));
+              eventNotifier.showMessage(messageType: MessageType.success, message: 'Booking link copied to clipboard');
+            },
+            icon: const Icon(Icons.share),
+          )
         ],
       ),
     );
@@ -86,19 +100,15 @@ class _BookingContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 15),
-            PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, type: PlayerIconsType.column),
-            const SizedBox(height: 15),
-            const SizedBox(height: 15),
-          ],
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 15),
+          PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, type: PlayerIconsType.column),
+          const SizedBox(height: 15),
+        ],
       ),
     );
   }

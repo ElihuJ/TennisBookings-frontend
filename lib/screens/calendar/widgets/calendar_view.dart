@@ -12,11 +12,19 @@ import 'loading_calendar.dart';
 import 'week_view.dart';
 
 class CalendarView extends StatefulHookConsumerWidget {
-  const CalendarView({super.key, required this.clubSelected, required this.courtSelected, required this.dateInView, required this.setDateInView});
+  const CalendarView({
+    super.key,
+    required this.clubSelected,
+    required this.courtSelected,
+    required this.dateInView,
+    required this.setDateInView,
+    required this.bookingIdSelected,
+  });
   final Court courtSelected;
   final Club clubSelected;
   final DateTime dateInView;
   final Function setDateInView;
+  final String? bookingIdSelected;
 
   @override
   ConsumerState<CalendarView> createState() => _CalendarView();
@@ -94,6 +102,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
                     clubSelected: widget.clubSelected,
                     courtSelected: widget.courtSelected,
                     calendarKey: _calendarKey,
+                    bookingIdSelected: widget.bookingIdSelected,
                   )
                 : CalendarWideView(
                     dateInView: dateInView,
@@ -103,6 +112,7 @@ class _CalendarView extends ConsumerState<CalendarView> {
                     clubSelected: widget.clubSelected,
                     courtSelected: widget.courtSelected,
                     calendarKey: _calendarKey,
+                    bookingIdSelected: widget.bookingIdSelected,
                   ),
           ),
         ),

@@ -28,12 +28,12 @@ class BookingDetailsModal extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fromInMilliseconds = booking.startTime;
-    final toInMilliseconds = booking.endTime;
+    final startInMilliseconds = booking.startTime;
+    final endInMilliseconds = booking.endTime;
 
     final alertDialog = AlertDialog(
-      title: _ContainerTitle(booking: booking, fromInMilliseconds: fromInMilliseconds, toInMilliseconds: toInMilliseconds),
-      content: _BookingContainer(booking: booking, fromInMilliseconds: fromInMilliseconds, toInMilliseconds: toInMilliseconds),
+      title: _ContainerTitle(booking: booking, startInMilliseconds: startInMilliseconds, endInMilliseconds: endInMilliseconds),
+      content: _BookingContainer(booking: booking, startInMilliseconds: startInMilliseconds, endInMilliseconds: endInMilliseconds),
       actions: _getActions(context: context, bookingDetailsType: bookingDetailsType, widgetRef: ref, booking: booking),
       actionsAlignment: MainAxisAlignment.center,
     );
@@ -49,13 +49,13 @@ class BookingDetailsModal extends HookConsumerWidget {
 class _ContainerTitle extends HookConsumerWidget {
   const _ContainerTitle({
     required this.booking,
-    required this.fromInMilliseconds,
-    required this.toInMilliseconds,
+    required this.startInMilliseconds,
+    required this.endInMilliseconds,
   });
 
   final Booking booking;
-  final int fromInMilliseconds;
-  final int toInMilliseconds;
+  final int startInMilliseconds;
+  final int endInMilliseconds;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -67,14 +67,15 @@ class _ContainerTitle extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(padding: const EdgeInsets.only(right: 8.0), child: PrettyText(booking.title, maxLines: 3)),
-          Padding(padding: const EdgeInsets.only(right: 8.0), child: PrettyText(prettyDateLocalFromEpoch(fromInMilliseconds))),
+          Padding(padding: const EdgeInsets.only(right: 8.0), child: PrettyText(prettyDateLocalFromEpoch(startInMilliseconds))),
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
-            child: PrettyText('${getLocalTimeFromEpoch(fromInMilliseconds)} - ${getLocalTimeFromEpoch(toInMilliseconds)}'),
+            child: PrettyText('${getLocalTimeFromEpoch(startInMilliseconds)} - ${getLocalTimeFromEpoch(endInMilliseconds)}'),
           ),
           IconButton(
             onPressed: () async {
-              final url = '${web.window.origin}#${CalendarScreen.route}?clubId=${booking.clubId}&courtId=${booking.courtId}&bookingId=${booking.id}';
+              final url =
+                  '${web.window.origin}#${CalendarScreen.route}?clubId=${booking.clubId}&courtId=${booking.courtId}&bookingId=${booking.id}&time=$startInMilliseconds';
               await Clipboard.setData(ClipboardData(text: url));
               eventNotifier.showMessage(messageType: MessageType.success, message: 'Booking link copied to clipboard');
             },
@@ -89,13 +90,13 @@ class _ContainerTitle extends HookConsumerWidget {
 class _BookingContainer extends StatelessWidget {
   const _BookingContainer({
     required this.booking,
-    required this.fromInMilliseconds,
-    required this.toInMilliseconds,
+    required this.startInMilliseconds,
+    required this.endInMilliseconds,
   });
 
   final Booking booking;
-  final int fromInMilliseconds;
-  final int toInMilliseconds;
+  final int startInMilliseconds;
+  final int endInMilliseconds;
 
   @override
   Widget build(BuildContext context) {

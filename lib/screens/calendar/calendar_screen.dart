@@ -26,6 +26,7 @@ class _ScheduleScreen extends ConsumerState<CalendarScreen> {
   String get paramClubId => widget.clubSelectedQueryParams.clubId;
   String? get paramCourtId => widget.clubSelectedQueryParams.courtId;
   String? get paramBookingId => widget.clubSelectedQueryParams.bookingId;
+  String? get paramTime => widget.clubSelectedQueryParams.time;
   late DateTime _dateInView;
   void setDateInView(DateTime newDate) {
     setState(() {
@@ -37,6 +38,9 @@ class _ScheduleScreen extends ConsumerState<CalendarScreen> {
   void initState() {
     super.initState();
     _dateInView = DateTime.now();
+    if (paramTime != null && int.tryParse(paramTime!) != null) {
+      _dateInView = DateTime.fromMillisecondsSinceEpoch(int.parse(paramTime!));
+    }
   }
 
   @override

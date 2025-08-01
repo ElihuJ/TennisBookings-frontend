@@ -47,8 +47,8 @@ class Config {
   // * VERSIONING
   static const majorVersion = 1;
   static const minorVersion = 2;
-  static const patchVersion = 7;
-  static const buildNumber = 42;
+  static const patchVersion = 8;
+  static const buildNumber = 43;
   static const latestNotes = 'Added notification bubble on "My Invites" tab';
 
   static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';

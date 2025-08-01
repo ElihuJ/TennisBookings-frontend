@@ -1,6 +1,7 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:web/web.dart';
 
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
@@ -53,7 +54,7 @@ class EventContainer extends HookConsumerWidget {
   }
 }
 
-class BookingContainer extends StatelessWidget {
+class BookingContainer extends StatefulWidget {
   const BookingContainer({
     super.key,
     required this.user,
@@ -76,25 +77,37 @@ class BookingContainer extends StatelessWidget {
   final bool openModalOnLoad;
 
   @override
+  State<BookingContainer> createState() => _BookingContainerState();
+}
+
+class _BookingContainerState extends State<BookingContainer> {
+  bool modalOpened = false;
+
+  @override
   Widget build(BuildContext context) {
     final mobileView = isMobile(context);
     final fontSize = getFontSize(mobileView);
 
-    final onlyMembers = club.onlyMembers;
+    final onlyMembers = widget.club.onlyMembers;
 
-    final isMemberOfClub = user.memberships.any((membership) => membership.clubId == club.id);
+    final isMemberOfClub = widget.user.memberships.any((membership) => membership.clubId == widget.club.id);
 
-    final bookingAndUserContext = getBookingAndUserContext(booking: booking, user: user, onlyMembers: onlyMembers, isMemberOfClub: isMemberOfClub);
+    final bookingAndUserContext =
+        getBookingAndUserContext(booking: widget.booking, user: widget.user, onlyMembers: onlyMembers, isMemberOfClub: isMemberOfClub);
     final (mouseAction, isClickable) = _getPermissionToClick(bookingAndUserContext: bookingAndUserContext);
 
-    final isCoaching = booking.format == BookingFormat.coaching;
+    final isCoaching = widget.booking.format == BookingFormat.coaching;
 
-    if (openModalOnLoad) {
+    if (widget.openModalOnLoad && !modalOpened) {
+      Uri baseUri = Uri.parse(Uri.base.toString());
+      String urlWithoutParams = baseUri.replace(queryParameters: {}).toString();
+      window.history.replaceState(null, '', urlWithoutParams);
       Future.delayed(Duration.zero, () {
+        modalOpened = true;
         if (context.mounted) {
           _onTapAction(
-            booking: booking,
-            user: user,
+            booking: widget.booking,
+            user: widget.user,
             bookingAndUserContext: bookingAndUserContext,
             context: context,
           );
@@ -120,8 +133,8 @@ class BookingContainer extends StatelessWidget {
           onHover: (event) {},
           child: GestureDetector(
             onTap: () => _onTapAction(
-              booking: booking,
-              user: user,
+              booking: widget.booking,
+              user: widget.user,
               bookingAndUserContext: bookingAndUserContext,
               context: context,
             ),
@@ -129,7 +142,7 @@ class BookingContainer extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: bookingColor,
+                color: widget.bookingColor,
                 border: Border.all(
                   color: Colors.black,
                   style: BorderStyle.solid,
@@ -146,14 +159,14 @@ class BookingContainer extends StatelessWidget {
                         SizedBox(
                           width: maxWidthToUse,
                           child: PrettyText(
-                            event.title,
-                            style: TextStyle(color: computedTextColor, fontSize: fontSize),
+                            widget.event.title,
+                            style: TextStyle(color: widget.computedTextColor, fontSize: fontSize),
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
                           ),
                         ),
-                        if (booking.private)
+                        if (widget.booking.private)
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: Align(
@@ -181,8 +194,8 @@ class BookingContainer extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     PlayerIcons(
-                      confirmedPlayerIds: confirmedPlayerIds,
-                      booking: booking,
+                      confirmedPlayerIds: widget.confirmedPlayerIds,
+                      booking: widget.booking,
                       type: PlayerIconsType.row,
                     ),
                   ],

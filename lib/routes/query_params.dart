@@ -24,27 +24,32 @@ class ClubSelectedQueryParams extends QueryParams {
   late String? _courtId;
   static const bookingIdParam = 'bookingId';
   late String? _bookingId;
+  static const timeParam = 'time';
+  late String? _time;
 
   ClubSelectedQueryParams(Map<String, String> queryParams) : super(queryParams) {
     try {
       _clubId = queryParams[clubIdParam]!;
       _courtId = queryParams[courtIdParam];
       _bookingId = queryParams[bookingIdParam];
+      _time = queryParams[timeParam];
     } catch (e) {
       e.tbLogger('Error in ClubSelectedQueryParams', DebugLevel.error);
       _clubId = '';
       _courtId = null;
       _bookingId = null;
+      _time = null;
     }
   }
 
   String get clubId => _clubId;
   String? get courtId => _courtId;
   String? get bookingId => _bookingId;
+  String? get time => _time;
 
   @override
   String toString() {
-    return 'ClubSelectedQueryParams{clubId: $_clubId, courtId: $_courtId, bookingId: $_bookingId}';
+    return 'ClubSelectedQueryParams{clubId: $_clubId, courtId: $_courtId, bookingId: $_bookingId, time: $_time}';
   }
 }
 

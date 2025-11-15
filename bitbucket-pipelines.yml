@@ -1,5 +1,5 @@
 # cspell: disable
-image: ghcr.io/cirruslabs/flutter:3.29.2
+image: ghcr.io/cirruslabs/flutter:3.35.7
 
 definitions:
   # Define caches to speed up subsequent builds

@@ -135,7 +135,7 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
           // ^ =============== FORMAT FIELD ===============
           DropdownButtonFormField<String>(
             key: const Key('formatField'),
-            value: _bookingFormat.name,
+            initialValue: _bookingFormat.name,
             decoration: const InputDecoration(labelText: 'Format'),
             items: [
               DropdownMenuItem(value: BookingFormat.singles.name, child: PrettyText(BookingFormat.singles.name)),
@@ -158,7 +158,7 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
           // ^ =============== VISIBILITY FIELD ===============
           DropdownButtonFormField<String>(
             key: const Key('visibilityField'),
-            value: _visibilityValue,
+            initialValue: _visibilityValue,
             decoration: const InputDecoration(labelText: 'Visibility'),
             items: const [
               DropdownMenuItem(value: 'Public', child: PrettyText('Public')),

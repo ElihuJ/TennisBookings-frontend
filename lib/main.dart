@@ -40,7 +40,7 @@ Environment _getEnvironment() {
 }
 
 Future<void> _initEmulators() async {
-  const host = '192.168.4.44';
+  const host = '192.168.4.58';
 
   FirebaseFirestore.instance.useFirestoreEmulator(host, 8080, sslEnabled: false);
   await FirebaseAuth.instance.useAuthEmulator(host, 9099);

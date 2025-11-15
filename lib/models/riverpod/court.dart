@@ -17,6 +17,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
   List<Booking>? publicBookings;
   List<Booking>? privateBookings;
   final List<GeneralUnavailability> generalUnavailability;
+  final String? lockId;
   @override
   final List<String> allFields = CourtFields.allFields;
 
@@ -30,6 +31,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
     this.privateBookings,
     required this.generalUnavailability,
     required this.name,
+    this.lockId,
   }) : super({
           CourtFields.id: id,
           CourtFields.clubId: clubId,
@@ -38,9 +40,19 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
           CourtFields.publicBookings: publicBookings,
           CourtFields.privateBookings: privateBookings,
           CourtFields.name: name,
+          CourtFields.lockId: lockId,
         });
 
-  Court.empty() : this(id: defaultCourtId, clubId: defaultCourtId, surface: 'unknown', name: defaultCourtName, generalUnavailability: []);
+  Court.empty()
+      : this(
+            id: defaultCourtId,
+            clubId: defaultCourtId,
+            surface: 'unknown',
+            name: defaultCourtName,
+            generalUnavailability: [],
+            publicBookings: [],
+            privateBookings: [],
+            lockId: null);
 
   // ^ ================================== Loaders ==================================
 
@@ -76,6 +88,9 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
           ? List<GeneralUnavailability>.from(json[CourtFields.generalUnavailability].map((x) => GeneralUnavailability.fromJson(x)))
           : [];
 
+      final lockId =
+          json[CourtFields.lockId] != null ? verifyNotRequiredProp<String>(prop: json[CourtFields.lockId], propName: CourtFields.lockId) : null;
+
       final List<Booking>? bookings =
           json[CourtFields.publicBookings] != null ? List<Booking>.from(json[CourtFields.publicBookings].map((x) => Booking.fromJson(x))) : null;
 
@@ -95,6 +110,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
         generalUnavailability: generalUnavailability,
         name: name,
         privateBookings: privateBookings,
+        lockId: lockId,
       );
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING COURT', DebugLevel.error);
@@ -111,6 +127,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
     List<GeneralUnavailability>? generalUnavailability,
     List<Booking>? privateBookings,
     String? name,
+    String? lockId,
   }) {
     return Court(
       id: id ?? this.id,
@@ -120,6 +137,7 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
       generalUnavailability: generalUnavailability ?? this.generalUnavailability,
       privateBookings: privateBookings ?? this.privateBookings,
       name: name ?? this.name,
+      lockId: lockId ?? this.lockId,
     );
   }
 
@@ -132,5 +150,6 @@ class Court extends MapView<String, dynamic> implements FirestoreModel, HasId, H
         CourtFields.generalUnavailability: generalUnavailability,
         CourtFields.privateBookings: privateBookings,
         CourtFields.name: name,
+        CourtFields.lockId: lockId,
       };
 }

@@ -14,5 +14,5 @@ class BookingsSubCollections {
 }
 
 class ConfigDocuments {
-  static const main = 'main';
+  static const versioning = 'versioning';
 }

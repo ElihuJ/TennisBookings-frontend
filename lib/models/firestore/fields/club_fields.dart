@@ -21,6 +21,7 @@ class ClubFields {
   static const String memberIds = 'memberIds';
   static const String currency = 'currency';
   static const String enabled = 'enabled';
+  static const String lockId = 'lockId';
 
   static const List<String> allFields = [
     id,
@@ -45,6 +46,7 @@ class ClubFields {
     contactEmail,
     contactPhone,
     enabled,
+    lockId,
   ];
 }
 
@@ -56,6 +58,7 @@ class CourtFields {
   static const String publicBookings = 'public_bookings';
   static const String privateBookings = 'private_bookings';
   static const String generalUnavailability = 'generalUnavailability';
+  static const String lockId = 'lockId';
 
   static const List<String> allFields = [
     id,
@@ -65,6 +68,7 @@ class CourtFields {
     publicBookings,
     privateBookings,
     generalUnavailability,
+    lockId,
   ];
 }
 

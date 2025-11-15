@@ -239,7 +239,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
                   borderRadius: BorderRadius.circular(5.0),
                   alignment: Alignment.center,
                   decoration: InputDecoration(labelText: 'Gender', floatingLabelAlignment: FloatingLabelAlignment.center),
-                  value: _selectedGender,
+                  initialValue: _selectedGender,
                   validator: (value) {
                     if (value == null || value == 'unknown') {
                       return 'Please select';

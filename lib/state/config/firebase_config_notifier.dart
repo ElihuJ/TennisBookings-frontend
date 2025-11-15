@@ -15,7 +15,7 @@ class FirebaseConfigNotifier extends StateNotifier<FirebaseConfig> {
   void loadConfig() async {
     try {
       if (state.loaded) return;
-      final doc = await configCollection.doc(ConfigDocuments.main).get();
+      final doc = await configCollection.doc(ConfigDocuments.versioning).get();
       if (doc.exists) {
         final data = doc.data() as FirestoreResponse;
         state = FirebaseConfig.fromJson(data);

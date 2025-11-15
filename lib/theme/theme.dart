@@ -34,7 +34,7 @@ final ThemeData selectedTheme = ThemeData(
   iconTheme: _theme.iconTheme.copyWith(
     color: AppColors.primaryGreen, // * Changes icon color as Back button in email login screen
   ),
-  cardTheme: const CardTheme(
+  cardTheme: const CardThemeData(
     color: AppColors.white,
     elevation: 5,
   ),

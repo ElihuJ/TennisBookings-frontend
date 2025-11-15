@@ -37,8 +37,13 @@ class Config {
       _publishableKey = _devPublishableKey;
       _firebaseOptions = UatDefaultFirebaseOptions.currentPlatform;
       _googleSignInConfig = GoogleSignIn(scopes: GoogleSignInConfig.scopes, clientId: GoogleSignInConfig.uatClientId);
-    } else if (environment == Environment.prod || environment == Environment.dev) {
+    } else if (environment == Environment.prod) {
       _publishableKey = _prodPublishableKey;
+      _firebaseOptions = ProdDefaultFirebaseOptions.currentPlatform;
+      _googleSignInConfig = GoogleSignIn(scopes: GoogleSignInConfig.scopes, clientId: GoogleSignInConfig.clientId);
+    } else {
+      // * Default to dev
+      _publishableKey = _devPublishableKey;
       _firebaseOptions = ProdDefaultFirebaseOptions.currentPlatform;
       _googleSignInConfig = GoogleSignIn(scopes: GoogleSignInConfig.scopes, clientId: GoogleSignInConfig.clientId);
     }
@@ -46,9 +51,9 @@ class Config {
 
   // * VERSIONING
   static const majorVersion = 1;
-  static const minorVersion = 2;
-  static const patchVersion = 8;
-  static const buildNumber = 43;
+  static const minorVersion = 3;
+  static const patchVersion = 1;
+  static const buildNumber = 45;
   static const latestNotes = 'Added notification bubble on "My Invites" tab';
 
   static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';

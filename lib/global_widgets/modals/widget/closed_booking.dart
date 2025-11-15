@@ -171,7 +171,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
             ),
             // ^ =============== FORMAT FIELD ===============
             DropdownButtonFormField<String>(
-              value: _bookingFormat.name,
+              initialValue: _bookingFormat.name,
               decoration: const InputDecoration(labelText: 'Format'),
               items: [
                 DropdownMenuItem(value: BookingFormat.singles.name, child: PrettyText(BookingFormat.singles.name)),
@@ -193,7 +193,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
             ),
             // ^ =============== VISIBILITY FIELD ===============
             DropdownButtonFormField<String>(
-              value: _visibilityValue,
+              initialValue: _visibilityValue,
               decoration: const InputDecoration(labelText: 'Visibility'),
               items: const [
                 DropdownMenuItem(value: 'Public', child: PrettyText('Public')),

@@ -176,7 +176,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
             ),
             // ^ =============== FORMAT FIELD ===============
             DropdownButtonFormField<String>(
-              value: _bookingFormat.name,
+              initialValue: _bookingFormat.name,
               decoration: const InputDecoration(labelText: 'Format'),
               items: [
                 DropdownMenuItem(value: BookingFormat.singles.name, child: PrettyText(BookingFormat.singles.name)),
@@ -198,7 +198,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
             ),
             // ^ =============== RESTRICTIONS FIELD ===============
             DropdownButtonFormField<bool>(
-              value: _withRestrictions,
+              initialValue: _withRestrictions,
               decoration: const InputDecoration(labelText: 'Restrictions'),
               items: [
                 DropdownMenuItem(value: true, child: PrettyText('Yes')),
@@ -361,7 +361,7 @@ class RestrictionsFieldState extends State<RestrictionsField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DropdownButtonFormField<bool>(
-          value: _utrVerified,
+          initialValue: _utrVerified,
           decoration: const InputDecoration(labelText: 'UTR Verified'),
           items: [
             DropdownMenuItem(value: true, child: PrettyText('Yes')),
@@ -377,7 +377,7 @@ class RestrictionsFieldState extends State<RestrictionsField> {
         ),
         // Gender filter dropdown
         DropdownButtonFormField<Gender?>(
-          value: _genderFilter,
+          initialValue: _genderFilter,
           decoration: const InputDecoration(labelText: 'Gender'),
           items: [
             DropdownMenuItem(value: null, child: PrettyText('Any')),

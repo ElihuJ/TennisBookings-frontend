@@ -34,6 +34,7 @@ class Club extends MapView<String, dynamic> implements HasId {
   final List<String> memberIds;
   final Currency currency;
   final bool enabled;
+  final String? lockId;
 
   Club({
     required this.id,
@@ -58,6 +59,7 @@ class Club extends MapView<String, dynamic> implements HasId {
     this.casualFee,
     this.contactEmail,
     this.contactPhone,
+    this.lockId,
   }) : super({
           ClubFields.id: id,
           ClubFields.name: name,
@@ -105,6 +107,7 @@ class Club extends MapView<String, dynamic> implements HasId {
           memberIds: [],
           currency: Currency.aud,
           enabled: true,
+          lockId: null,
         );
 
   // ^ ================================== Loaders ==================================
@@ -153,6 +156,7 @@ class Club extends MapView<String, dynamic> implements HasId {
     final casualFee = verifyNotRequiredProp<double>(prop: json[ClubFields.casualFee], propName: ClubFields.casualFee);
     final contactEmail = verifyNotRequiredProp<String>(prop: json[ClubFields.contactEmail], propName: ClubFields.contactEmail);
     final contactPhone = verifyNotRequiredProp<String>(prop: json[ClubFields.contactPhone], propName: ClubFields.contactPhone);
+    final lockId = verifyNotRequiredProp<String>(prop: json[ClubFields.lockId], propName: ClubFields.lockId);
 
     // * ================================== Courts to List ==================================
     List<Court> courts = json[ClubFields.courts] != null ? List<Court>.from(json[ClubFields.courts].map((x) => Court.fromJson(x))) : [];
@@ -186,6 +190,7 @@ class Club extends MapView<String, dynamic> implements HasId {
       contactPhone: contactPhone,
       memberIds: memberIds,
       enabled: enabled,
+      lockId: lockId,
     );
   }
 
@@ -212,31 +217,32 @@ class Club extends MapView<String, dynamic> implements HasId {
     String? contactPhone,
     Currency? currency,
     bool? enabled,
+    String? lockId,
   }) {
     return Club(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      adminIds: adminIds ?? this.adminIds,
-      hardCourts: hardCourts ?? this.hardCourts,
-      clayCourts: clayCourts ?? this.clayCourts,
-      grassCourts: grassCourts ?? this.grassCourts,
-      otherSurfaceCourts: otherSurfaceCourts ?? this.otherSurfaceCourts,
-      annualFee: annualFee ?? this.annualFee,
-      casualFee: casualFee ?? this.casualFee,
-      onlyMembers: onlyMembers ?? this.onlyMembers,
-      streetAddress: streetAddress ?? this.streetAddress,
-      suburb: suburb ?? this.suburb,
-      city: city ?? this.city,
-      postcode: postcode ?? this.postcode,
-      state: state ?? this.state,
-      courts: courts ?? this.courts,
-      clubLogoUrl: clubLogoUrl ?? this.clubLogoUrl,
-      contactEmail: contactEmail ?? this.contactEmail,
-      contactPhone: contactPhone ?? this.contactPhone,
-      memberIds: memberIds ?? this.memberIds,
-      currency: currency ?? this.currency,
-      enabled: enabled ?? this.enabled,
-    );
+        id: id ?? this.id,
+        name: name ?? this.name,
+        adminIds: adminIds ?? this.adminIds,
+        hardCourts: hardCourts ?? this.hardCourts,
+        clayCourts: clayCourts ?? this.clayCourts,
+        grassCourts: grassCourts ?? this.grassCourts,
+        otherSurfaceCourts: otherSurfaceCourts ?? this.otherSurfaceCourts,
+        annualFee: annualFee ?? this.annualFee,
+        casualFee: casualFee ?? this.casualFee,
+        onlyMembers: onlyMembers ?? this.onlyMembers,
+        streetAddress: streetAddress ?? this.streetAddress,
+        suburb: suburb ?? this.suburb,
+        city: city ?? this.city,
+        postcode: postcode ?? this.postcode,
+        state: state ?? this.state,
+        courts: courts ?? this.courts,
+        clubLogoUrl: clubLogoUrl ?? this.clubLogoUrl,
+        contactEmail: contactEmail ?? this.contactEmail,
+        contactPhone: contactPhone ?? this.contactPhone,
+        memberIds: memberIds ?? this.memberIds,
+        currency: currency ?? this.currency,
+        enabled: enabled ?? this.enabled,
+        lockId: lockId ?? this.lockId);
   }
 
   @override
@@ -263,6 +269,7 @@ class Club extends MapView<String, dynamic> implements HasId {
         'memberIds: $memberIds, \n'
         'currency: $currency, \n'
         'enabled: $enabled, \n'
+        'lockId: $lockId, \n'
         '=============================================== \n';
   }
 }

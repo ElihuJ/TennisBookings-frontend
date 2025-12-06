@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart' show Stripe;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../cloud_functions/index.dart';
@@ -72,16 +73,16 @@ class _PaymentView extends StatelessWidget {
                     noScaffold: true,
                   );
                 }
-                if (snapshot.hasError) {
+                if (snapshot.hasError || snapshot.data?.data == null) {
                   snapshot.error?.tbLogger('Error loading club payment data');
                   return const NotFoundScreen(
                     message: 'Error loading club payment data',
                     noScaffold: true,
                   );
                 }
-                final clientSecret = snapshot.data?.data;
 
-                if (clientSecret == null) {
+                final response = snapshot.data?.data;
+                if (response == null) {
                   'Client secret is null'.tbLogger();
                   return const NotFoundScreen(
                     message: 'Error loading club payment data',
@@ -89,25 +90,41 @@ class _PaymentView extends StatelessWidget {
                   );
                 }
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 50.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    spacing: 50,
-                    children: [
-                      CircleAvatar(
-                        radius: 60,
-                        backgroundImage: NetworkImage(clubSelected.clubLogoUrl),
-                        backgroundColor: Colors.grey[200],
+                final clientSecret = response.clientSecret;
+                final clubStripeAccountId = response.clubStripeAccountId;
+
+                Stripe.stripeAccountId = clubStripeAccountId;
+
+                return FutureBuilder(
+                  future: Stripe.instance.applySettings(),
+                  builder: (context, asyncSnapshot) {
+                    if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+                      return LoadingScreen(
+                        message: 'Initializing payment form...',
+                        noScaffold: true,
+                      );
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 50.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        spacing: 50,
+                        children: [
+                          CircleAvatar(
+                            radius: 60,
+                            backgroundImage: NetworkImage(clubSelected.clubLogoUrl),
+                            backgroundColor: Colors.grey[200],
+                          ),
+                          StripePaymentForm(
+                            clientSecret: clientSecret,
+                            club: clubSelected,
+                          ),
+                        ],
                       ),
-                      StripePaymentForm(
-                        clientSecret: clientSecret,
-                        club: clubSelected,
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 );
               },
             ),

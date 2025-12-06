@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart' show Stripe;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../cloud_functions/cloud_functions_provider.dart';
+import '../../../cloud_functions/dto/get_casual_payment_intent.dart';
 import '../../../cloud_functions/types.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
@@ -32,7 +34,7 @@ class CreateCasualBookingModal extends StatefulHookConsumerWidget {
 class _CreateCasualBookingModalState extends ConsumerState<CreateCasualBookingModal> {
   _ViewMode _viewMode = _ViewMode.booking;
   Booking? _booking;
-  late Future<CFResult<String>> getCasualPaymentIntent;
+  late Future<CFResult<GetCasualPaymentIntentResponseData>> getCasualPaymentIntent;
 
   @override
   void initState() {
@@ -87,8 +89,8 @@ class _CreateCasualBookingModalState extends ConsumerState<CreateCasualBookingMo
                         noScaffold: true,
                       );
                     }
-                    final clientSecret = snapshot.data?.data;
-                    if (clientSecret == null) {
+                    final response = snapshot.data?.data;
+                    if (response == null) {
                       'Client secret is null'.tbLogger();
                       return const NotFoundScreen(
                         message: 'Error loading club payment data',
@@ -96,11 +98,27 @@ class _CreateCasualBookingModalState extends ConsumerState<CreateCasualBookingMo
                       );
                     }
 
-                    return StripePaymentModalForm(
-                      clientSecret: clientSecret,
-                      club: widget.clubSelected,
-                      booking: _booking!,
-                      court: widget.courtSelected,
+                    Stripe.stripeAccountId = response.clubStripeAccountId; // Default account ID
+
+                    return FutureBuilder(
+                      future: Stripe.instance.applySettings(),
+                      builder: (context, asyncSnapshot) {
+                        if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+                          return SizedBox(
+                            height: 300,
+                            child: LoadingScreen(
+                              message: 'Initializing payment form...',
+                              noScaffold: true,
+                            ),
+                          );
+                        }
+                        return StripePaymentModalForm(
+                          clientSecret: response.clientSecret,
+                          club: widget.clubSelected,
+                          booking: _booking!,
+                          court: widget.courtSelected,
+                        );
+                      },
                     );
                   },
                 ),

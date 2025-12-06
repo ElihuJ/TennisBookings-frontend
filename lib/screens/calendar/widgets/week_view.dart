@@ -45,7 +45,7 @@ class CalendarWideView extends HookConsumerWidget {
       hourIndicatorSettings: HourIndicatorSettings(),
       timeLineWidth: 80,
       headerStringBuilder: (date, {DateTime? secondaryDate}) =>
-          '${prettyDateUtcFromEpoch(date.millisecondsSinceEpoch)}   ---   ${prettyDateUtcFromEpoch(secondaryDate!.millisecondsSinceEpoch)}',
+          '${prettyDateLocalFromEpoch(date.millisecondsSinceEpoch)}   |   ${prettyDateLocalFromEpoch(secondaryDate!.millisecondsSinceEpoch)}',
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(
           color: AppColors.primaryGreen,
@@ -70,6 +70,24 @@ class CalendarWideView extends HookConsumerWidget {
         return EventContainer(events: events, club: clubSelected, openModalOnLoad: openOnLoad);
       },
       showLiveTimeLineInAllDays: true, // * To display live time line in all pages in day view.
+      weekDayBuilder: (date) {
+        final dateString = _getWeekdayString(date);
+        bool isToday = false;
+        if (date.year == DateTime.now().year && date.month == DateTime.now().month && date.day == DateTime.now().day) {
+          isToday = true;
+        }
+        return Container(
+          color: isToday ? AppColors.primaryGreen.withValues(alpha: 0.2) : Colors.transparent,
+          alignment: Alignment.center,
+          child: Text(
+            (dateString),
+            style: TextStyle(
+              fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
+              color: isToday ? AppColors.primaryGreen : Colors.black,
+            ),
+          ),
+        );
+      },
       initialDay: dateInView,
       key: calendarKey,
       heightPerMinute: 2, // * height occupied by 1 minute time span.
@@ -82,5 +100,24 @@ class CalendarWideView extends HookConsumerWidget {
       endHour: 23, // * To set the end hour displayed
       keepScrollOffset: true, // * To maintain scroll offset when the page changes
     );
+  }
+}
+
+_getWeekdayString(DateTime date) {
+  switch (date.weekday) {
+    case DateTime.monday:
+      return 'Mon ${date.day}';
+    case DateTime.tuesday:
+      return 'Tue ${date.day}';
+    case DateTime.wednesday:
+      return 'Wed ${date.day}';
+    case DateTime.thursday:
+      return 'Thu ${date.day}';
+    case DateTime.friday:
+      return 'Fri ${date.day}';
+    case DateTime.saturday:
+      return 'Sat ${date.day}';
+    case DateTime.sunday:
+      return 'Sun ${date.day}';
   }
 }

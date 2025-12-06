@@ -48,22 +48,28 @@ class GetMembershipPaymentIntentResponse {
 // * ===========  Data  ===========
 class GetMembershipPaymentIntentResponseData {
   final String clientSecret;
+  final String clubStripeAccountId;
 
   GetMembershipPaymentIntentResponseData({
     required this.clientSecret,
+    required this.clubStripeAccountId,
   });
 
   factory GetMembershipPaymentIntentResponseData.fromJson(Map<dynamic, dynamic> map) {
-    return GetMembershipPaymentIntentResponseData(clientSecret: map[GetMembershipPaymentIntentResponseDataFields.clientSecret.name]);
+    return GetMembershipPaymentIntentResponseData(
+      clientSecret: map[GetMembershipPaymentIntentResponseDataFields.clientSecret.name],
+      clubStripeAccountId: map[GetMembershipPaymentIntentResponseDataFields.clubStripeAccountId.name],
+    );
   }
 
   @override
   String toString() {
-    return 'GetMembershipPaymentIntentResponseData{clientSecret: $clientSecret}';
+    return 'GetMembershipPaymentIntentResponseData{clientSecret: $clientSecret, clubStripeAccountId: $clubStripeAccountId}';
   }
 }
 
 // * ===========  Fields  ===========
 enum GetMembershipPaymentIntentResponseDataFields {
   clientSecret,
+  clubStripeAccountId,
 }

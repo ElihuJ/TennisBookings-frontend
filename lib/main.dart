@@ -40,10 +40,12 @@ Environment _getEnvironment() {
 }
 
 Future<void> _initEmulators() async {
-  const host = '192.168.4.58';
+  const host = '192.168.4.78';
 
-  FirebaseFirestore.instance.useFirestoreEmulator(host, 8080, sslEnabled: false);
+  FirebaseFirestore.instance
+      .useFirestoreEmulator(host, 8080, sslEnabled: false);
   await FirebaseAuth.instance.useAuthEmulator(host, 9099);
   await FirebaseStorage.instance.useStorageEmulator(host, 9199);
-  FirebaseFunctions.instanceFor(region: Config.functionsRegion).useFunctionsEmulator(host, 5001);
+  FirebaseFunctions.instanceFor(region: Config.functionsRegion)
+      .useFunctionsEmulator(host, 5001);
 }

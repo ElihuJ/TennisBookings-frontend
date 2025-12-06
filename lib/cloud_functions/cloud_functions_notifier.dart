@@ -196,7 +196,7 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
     }
   }
 
-  Future<CFResult<String>> getMembershipPaymentIntent({required String clubId}) async {
+  Future<CFResult<GetMembershipPaymentIntentResponseData>> getMembershipPaymentIntent({required String clubId}) async {
     try {
       final payload = GetMembershipPaymentIntentPayload(clubId: clubId);
       final HttpsCallableResult result = await cloudFunctions.httpsCallable(GetMembershipPaymentIntentPayload.endpoint).call(payload.toJson());
@@ -204,7 +204,7 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
       if (response.responseStatus.code != ResponseCodeEnum.success.value) {
         return CFResult.internalError(errorMessage: response.responseStatus.message);
       }
-      return CFResult.ok<String>(data: response.data.clientSecret);
+      return CFResult.ok<GetMembershipPaymentIntentResponseData>(data: response.data);
     } on FirebaseFunctionsException catch (error) {
       error.tbLogger('FirebaseFunctionsException getPaymentIntent', DebugLevel.error);
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);
@@ -214,7 +214,7 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
     }
   }
 
-  Future<CFResult<String>> getCasualPaymentIntent({required Booking booking}) async {
+  Future<CFResult<GetCasualPaymentIntentResponseData>> getCasualPaymentIntent({required Booking booking}) async {
     try {
       final payload = GetCasualPaymentIntentPayload(
           clubId: booking.clubId,
@@ -229,7 +229,7 @@ class CloudFunctionsNotifier extends StateNotifier<CloudFunctions> {
       if (response.responseStatus.code != ResponseCodeEnum.success.value) {
         return CFResult.internalError(errorMessage: response.responseStatus.message);
       }
-      return CFResult.ok<String>(data: response.data.clientSecret);
+      return CFResult.ok<GetCasualPaymentIntentResponseData>(data: response.data);
     } on FirebaseFunctionsException catch (error) {
       error.tbLogger('FirebaseFunctionsException getPaymentIntent', DebugLevel.error);
       return CFResult.internalError(errorMessage: FirebaseErrorStrings.somethingWentWrong);

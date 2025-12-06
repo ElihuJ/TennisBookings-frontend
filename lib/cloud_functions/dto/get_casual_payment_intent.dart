@@ -70,13 +70,18 @@ class GetCasualPaymentIntentResponse {
 // * ===========  Data  ===========
 class GetCasualPaymentIntentResponseData {
   final String clientSecret;
+  final String clubStripeAccountId;
 
   GetCasualPaymentIntentResponseData({
     required this.clientSecret,
+    required this.clubStripeAccountId,
   });
 
   factory GetCasualPaymentIntentResponseData.fromJson(Map<dynamic, dynamic> map) {
-    return GetCasualPaymentIntentResponseData(clientSecret: map[GetCasualPaymentIntentResponseDataFields.clientSecret.name]);
+    return GetCasualPaymentIntentResponseData(
+      clientSecret: map[GetCasualPaymentIntentResponseDataFields.clientSecret.name],
+      clubStripeAccountId: map[GetCasualPaymentIntentResponseDataFields.clubStripeAccountId.name],
+    );
   }
 
   @override
@@ -88,4 +93,5 @@ class GetCasualPaymentIntentResponseData {
 // * ===========  Fields  ===========
 enum GetCasualPaymentIntentResponseDataFields {
   clientSecret,
+  clubStripeAccountId,
 }

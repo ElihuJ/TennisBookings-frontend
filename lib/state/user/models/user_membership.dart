@@ -1,8 +1,8 @@
 import 'dart:collection';
 
-import '../../global_helpers/index.dart';
-import '../../global_types/index.dart';
-import '../../models/index.dart';
+import '../../../global_helpers/index.dart';
+import '../../../global_types/index.dart';
+import '../../../models/index.dart';
 
 final _defaultId = getUuid();
 
@@ -55,9 +55,10 @@ class UserMembership extends MapView<String, dynamic> implements FirestoreModel 
     try {
       // * Verify required props
 
-      final clubId =
-          verifyRequiredProp<String>(prop: json[UserMembershipFields.clubId], propName: UserMembershipFields.clubId, defaultValue: _defaultId);
-      final expiry = verifyRequiredProp<int>(prop: json[UserMembershipFields.expiry], propName: UserMembershipFields.expiry, defaultValue: 0);
+      final clubId = verifyRequiredProp<String>(
+          prop: json[UserMembershipFields.clubId], propName: UserMembershipFields.clubId, defaultValue: _defaultId);
+      final expiry =
+          verifyRequiredProp<int>(prop: json[UserMembershipFields.expiry], propName: UserMembershipFields.expiry, defaultValue: 0);
 
       verifyProps(json, UserMembershipFields.allFields);
 

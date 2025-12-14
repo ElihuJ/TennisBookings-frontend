@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/screens/calendar/calendar_screen.dart';
 import 'package:web/web.dart' as web;
 
 import '../../../cloud_functions/dto/delete_booking.dart';
@@ -13,6 +12,7 @@ import '../../../cloud_functions/index.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../models/index.dart';
+import '../../../screens/calendar/calendar_screen.dart';
 import '../../../screens/calendar/widgets/index.dart';
 import '../../../state/index.dart';
 import '../../index.dart';
@@ -158,13 +158,14 @@ _getParticipantActions({
     TbTextButton(
       onPressed: () async {
         eventNotifier.showLoading(message: "Withdrawing from booking...");
-        WithdrawFromBookingPayload payload =
-            WithdrawFromBookingPayload(payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
+        WithdrawFromBookingPayload payload = WithdrawFromBookingPayload(
+            payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
         final result = await cloudFunctions.withdrawFromBooking(payload);
         eventNotifier.hideLoading();
         if (result.data == true) {
           eventNotifier.showMessage(messageType: MessageType.success, message: "Successfully withdrawn!");
-          final updatedBooking = booking.copyWith(confirmedPlayerIds: booking.confirmedPlayerIds..remove(userId), status: BookingStatus.open);
+          final updatedBooking =
+              booking.copyWith(confirmedPlayerIds: booking.confirmedPlayerIds..remove(userId), status: BookingStatus.open);
           clubsNotifier.updateBooking(booking: updatedBooking, userId: userId);
           if (context.mounted) Navigator.of(context).pop();
           return;

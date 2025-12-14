@@ -37,7 +37,8 @@ class UserNotifier extends StateNotifier<User> {
     state = state.copyWith(bookingsWithPopulatedRequests: requests);
   }
 
-  FirestoreActionResult<Success> createUser({String? name, required String uid, required String? email, ResultHandler? resultHandler}) async {
+  FirestoreActionResult<Success> createUser(
+      {String? name, required String uid, required String? email, ResultHandler? resultHandler}) async {
     final errorHandler = resultHandler ?? ResultHandler(success: true);
     try {
       final dateNowAsInt = nowToEpochUtc();
@@ -53,7 +54,7 @@ class UserNotifier extends StateNotifier<User> {
         photoUrl: '',
         utrVerified: false,
         memberships: [],
-        stripeTransactionIds: [],
+        stripeClubDetails: [],
       );
       final FirestorePayload userPayload = user.toJson();
       await usersCollection.doc(uid).set(userPayload);

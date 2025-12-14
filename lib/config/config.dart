@@ -4,10 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../global_types/index.dart';
-
 import '../theme/index.dart';
 import 'firebase_options.dart';
-import 'firebase_options_uat..dart';
+import 'firebase_options_uat.dart';
 import 'google_sign_in.dart';
 
 // * SINGLETON
@@ -36,34 +35,28 @@ class Config {
     if (environment == Environment.uat) {
       _publishableKey = _devPublishableKey;
       _firebaseOptions = UatDefaultFirebaseOptions.currentPlatform;
-      _googleSignInConfig = GoogleSignIn(
-          scopes: GoogleSignInConfig.scopes,
-          clientId: GoogleSignInConfig.uatClientId);
+      _googleSignInConfig = GoogleSignIn(scopes: GoogleSignInConfig.scopes, clientId: GoogleSignInConfig.uatClientId);
     } else if (environment == Environment.prod) {
       _publishableKey = _prodPublishableKey;
       _firebaseOptions = ProdDefaultFirebaseOptions.currentPlatform;
-      _googleSignInConfig = GoogleSignIn(
-          scopes: GoogleSignInConfig.scopes,
-          clientId: GoogleSignInConfig.clientId);
+      _googleSignInConfig = GoogleSignIn(scopes: GoogleSignInConfig.scopes, clientId: GoogleSignInConfig.clientId);
     } else {
       // * Default to dev
       _publishableKey = _devPublishableKey;
       _firebaseOptions = ProdDefaultFirebaseOptions.currentPlatform;
-      _googleSignInConfig = GoogleSignIn(
-          scopes: GoogleSignInConfig.scopes,
-          clientId: GoogleSignInConfig.clientId);
+      _googleSignInConfig = GoogleSignIn(scopes: GoogleSignInConfig.scopes, clientId: GoogleSignInConfig.clientId);
     }
   }
 
   // * VERSIONING
   static const majorVersion = 1;
   static const minorVersion = 4;
-  static const patchVersion = 0;
-  static const buildNumber = 46;
-  static const latestNotes = 'Added notification bubble on "My Invites" tab';
+  static const patchVersion = 1;
+  static const buildNumber = 47;
+  static const latestNotes = 'Smart lock system integrated for bookings.\n'
+      'Current day is highlighted in the calendar.\n';
 
-  static const versionString =
-      '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';
+  static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';
 
   // * NOTIFIER DURATIONS
   static const toastDuration = Duration(seconds: 3);
@@ -74,19 +67,10 @@ class Config {
   // ^ ================== APP CONFIG ==================
   static const appName = "Tennis Bookings";
   static const functionsRegion = "australia-southeast2";
-  static const maxBookingDuration = 3600 *
-      1.5 *
-      1000; // 1.5 hours in milliseconds // * Keep synced with maxBookingHours
+  static const maxBookingDuration = 3600 * 1.5 * 1000; // 1.5 hours in milliseconds // * Keep synced with maxBookingHours
   static const maxBookingHoursString = 1.5;
-  static const bookingFutureLimit = 2 *
-      4 *
-      7 *
-      24 *
-      60 *
-      60 *
-      1000; // * 2 months in milliseconds// * Keep synced with BOOKING_FUTURE_LIMIT
-  static const minDuration =
-      (3600 / 2) * 1000; // 30 minutes // * Keep synced with minDurationMinutes
+  static const bookingFutureLimit = 2 * 4 * 7 * 24 * 60 * 60 * 1000; // * 2 months in milliseconds// * Keep synced with BOOKING_FUTURE_LIMIT
+  static const minDuration = (3600 / 2) * 1000; // 30 minutes // * Keep synced with minDurationMinutes
   static const minDurationMinutesString = 30;
 
   static const utrMaxRating = 16;

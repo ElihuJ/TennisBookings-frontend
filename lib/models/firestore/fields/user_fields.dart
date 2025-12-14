@@ -13,8 +13,7 @@ class UserFields {
   static const String utrVerified = 'utrVerified';
   static const String photoUrl = 'photoUrl';
   static const String memberships = 'memberships';
-  static const String stripeCustomerId = 'stripeCustomerId';
-  static const String stripeTransactionIds = 'stripeTransactionIds';
+  static const String stripeClubDetails = 'stripeClubDetails';
 
   static const List<String> allFields = [
     uid,
@@ -30,9 +29,8 @@ class UserFields {
     utrRating,
     utrVerified,
     photoUrl,
-    stripeTransactionIds,
+    stripeClubDetails,
     memberships,
-    stripeCustomerId,
   ];
 }
 
@@ -43,5 +41,17 @@ class UserMembershipFields {
   static const List<String> allFields = [
     clubId,
     expiry,
+  ];
+}
+
+class StripeClubDetailsFields {
+  static const String clubId = 'clubId';
+  static const String stripeCustomerId = 'stripeCustomerId';
+  static const String transactionIds = 'transactionIds';
+
+  static const List<String> allFields = [
+    clubId,
+    stripeCustomerId,
+    transactionIds,
   ];
 }

@@ -27,8 +27,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
   final List<UserMembership> memberships;
   final String? homeClubId;
   final double? utrRating;
-  final String? stripeCustomerId;
-  final List<String> stripeTransactionIds;
+  final List<StripeClubDetails>? stripeClubDetails;
   final List<BookingWithPopulatedRequest> bookingsWithPopulatedRequests;
   @override
   final List<String> allFields = UserFields.allFields;
@@ -45,10 +44,9 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
     required this.photoUrl,
     required this.utrVerified,
     required this.memberships,
-    required this.stripeTransactionIds,
+    required this.stripeClubDetails,
     this.bookingsWithPopulatedRequests = const [],
     this.utrRating,
-    this.stripeCustomerId,
     this.homeClubId,
   }) : super({
           UserFields.uid: uid,
@@ -64,8 +62,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
           UserFields.utrVerified: utrVerified,
           UserFields.photoUrl: photoUrl,
           UserFields.memberships: memberships,
-          UserFields.stripeCustomerId: stripeCustomerId,
-          UserFields.stripeTransactionIds: stripeTransactionIds,
+          UserFields.stripeClubDetails: stripeClubDetails,
         });
 
   User.empty()
@@ -81,8 +78,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
           bookings: [],
           dob: 0,
           email: _defaultEmail,
-          stripeCustomerId: null,
-          stripeTransactionIds: [],
+          stripeClubDetails: [],
           bookingsWithPopulatedRequests: [],
         );
 
@@ -95,34 +91,38 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       final bookingsRaw = verifyRequiredProp<List>(prop: json[UserFields.bookings], propName: UserFields.bookings, defaultValue: []);
       final dob = verifyRequiredProp<int>(prop: json[UserFields.dob], propName: UserFields.dob, defaultValue: 0);
       final email = verifyRequiredProp<String>(prop: json[UserFields.email], propName: UserFields.email, defaultValue: _defaultEmail);
-      final genderRaw = verifyRequiredProp<String>(prop: json[UserFields.gender], propName: UserFields.gender, defaultValue: Gender.unknown.name);
+      final genderRaw =
+          verifyRequiredProp<String>(prop: json[UserFields.gender], propName: UserFields.gender, defaultValue: Gender.unknown.name);
       final lastLogin = verifyRequiredProp<int>(prop: json[UserFields.lastLogin], propName: UserFields.lastLogin, defaultValue: 0);
       final name = verifyRequiredProp<String>(prop: json[UserFields.name], propName: UserFields.name, defaultValue: _defaultName);
-      final utrVerified = verifyRequiredProp<bool>(prop: json[UserFields.utrVerified], propName: UserFields.utrVerified, defaultValue: false);
+      final utrVerified =
+          verifyRequiredProp<bool>(prop: json[UserFields.utrVerified], propName: UserFields.utrVerified, defaultValue: false);
       final photoUrl = verifyRequiredProp<String>(prop: json[UserFields.photoUrl], propName: UserFields.photoUrl, defaultValue: '');
-      final membershipsRaw = verifyRequiredProp<List>(prop: json[UserFields.memberships], propName: UserFields.memberships, defaultValue: []);
-      final stripeTransactionIdsRaw =
-          verifyRequiredProp<List>(prop: json[UserFields.stripeTransactionIds], propName: UserFields.stripeTransactionIds, defaultValue: []);
+      final membershipsRaw =
+          verifyRequiredProp<List>(prop: json[UserFields.memberships], propName: UserFields.memberships, defaultValue: []);
+      final stripeClubDetailsRaw =
+          verifyRequiredProp<List>(prop: json[UserFields.stripeClubDetails], propName: UserFields.stripeClubDetails, defaultValue: []);
 
       // * ================================== Optional Props ==================================
       final homeClubId = verifyNotRequiredProp<String?>(prop: json[UserFields.homeClubId], propName: UserFields.homeClubId);
       final utrRating = verifyNotRequiredProp<double?>(prop: json[UserFields.utrRating], propName: UserFields.utrRating);
-      final stripeCustomerId = verifyNotRequiredProp<String?>(prop: json[UserFields.stripeCustomerId], propName: UserFields.stripeCustomerId);
 
       // * Transformations
       List<DocumentReference<Map<String, dynamic>>> bookings;
+      List<StripeClubDetails> stripeClubDetails;
       try {
         bookings = List<DocumentReference<Map<String, dynamic>>>.from(bookingsRaw);
+        stripeClubDetails = List<StripeClubDetails>.from(stripeClubDetailsRaw.map((x) => StripeClubDetails.fromJson(x)));
       } catch (e) {
         e.tbLogger('ERROR CONVERTING BOOKINGS', DebugLevel.warning);
         bookings = [];
+        stripeClubDetails = [];
       }
       final gender = Gender.values.firstWhere(
         (g) => g.name == genderRaw,
         orElse: () => Gender.unknown,
       );
       final memberships = List<UserMembership>.from(membershipsRaw.map((x) => UserMembership.fromJson(x)));
-      final stripeTransactionIds = List<String>.from(stripeTransactionIdsRaw);
 
       verifyProps(json, UserFields.allFields);
 
@@ -140,8 +140,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         utrVerified: utrVerified,
         photoUrl: photoUrl,
         memberships: memberships,
-        stripeCustomerId: stripeCustomerId,
-        stripeTransactionIds: stripeTransactionIds,
+        stripeClubDetails: stripeClubDetails,
         bookingsWithPopulatedRequests: [],
       );
     } catch (e) {
@@ -164,9 +163,8 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         UserFields.utrRating: utrRating,
         UserFields.utrVerified: utrVerified,
         UserFields.photoUrl: photoUrl,
-        UserFields.stripeCustomerId: stripeCustomerId,
         UserFields.memberships: memberships.map((e) => e.toJson()).toList(),
-        UserFields.stripeTransactionIds: stripeTransactionIds
+        UserFields.stripeClubDetails: stripeClubDetails?.map((e) => e.toJson()).toList() ?? [],
       };
 
   @override
@@ -184,10 +182,9 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
     double? utrRating,
     bool? utrVerified,
     String? photoUrl,
-    String? stripeCustomerId,
     List<UserMembership>? memberships,
-    List<String>? stripeTransactionIds,
     List<BookingWithPopulatedRequest>? bookingsWithPopulatedRequests,
+    List<StripeClubDetails>? stripeClubDetails,
   }) {
     return User(
       uid: uid ?? this.uid,
@@ -203,8 +200,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       utrVerified: utrVerified ?? this.utrVerified,
       photoUrl: photoUrl ?? this.photoUrl,
       memberships: memberships ?? this.memberships,
-      stripeCustomerId: stripeCustomerId ?? this.stripeCustomerId,
-      stripeTransactionIds: stripeTransactionIds ?? this.stripeTransactionIds,
+      stripeClubDetails: stripeClubDetails ?? this.stripeClubDetails,
       bookingsWithPopulatedRequests: bookingsWithPopulatedRequests ?? this.bookingsWithPopulatedRequests,
     );
   }
@@ -224,10 +220,9 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
         'utrRating: $utrRating \n'
         'utrVerified: $utrVerified \n'
         'photoUrl: $photoUrl \n'
-        'stripeCustomerId: $stripeCustomerId \n'
         'memberships: $memberships \n'
-        'stripeTransactionIds: $stripeTransactionIds \n'
         'bookingsWithPopulatedRequests: $bookingsWithPopulatedRequests \n'
+        'stripeClubDetails: $stripeClubDetails \n'
         '=============================================== \n';
   }
 }

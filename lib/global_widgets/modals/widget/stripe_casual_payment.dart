@@ -68,34 +68,28 @@ class _StripePaymentFormModalState extends ConsumerState<StripePaymentModalForm>
 
   @override
   Widget build(BuildContext context) {
-    final mobileView = isMobile(context);
-
-    return SizedBox(
-      width: mobileView ? 300 : 700,
-      child: SingleChildScrollView(
-        child: Column(
-          spacing: 50,
-          children: [
-            _Title(club: widget.club, booking: widget.booking),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: PaymentElement(
-                autofocus: true,
-                appearance: ElementAppearance(labels: ElementAppearanceLabels.floating),
-                clientSecret: widget.clientSecret,
-                onCardChanged: (input) {
-                  setState(() {
-                    formIsReady = input?.complete ?? false;
-                  });
-                },
-              ),
+    return SingleChildScrollView(
+      child: Column(
+        spacing: 50,
+        children: [
+          _Title(club: widget.club, booking: widget.booking),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: PaymentElement(
+              autofocus: true,
+              clientSecret: widget.clientSecret,
+              onCardChanged: (input) {
+                setState(() {
+                  formIsReady = input?.complete ?? false;
+                });
+              },
             ),
-            TbTextButton(
-              text: 'Pay \$${widget.club.casualFee} ${widget.club.currency.value.toUpperCase()}',
-              onPressed: formIsReady ? onPay : null,
-            )
-          ],
-        ),
+          ),
+          TbTextButton(
+            text: 'Pay \$${widget.club.casualFee} ${widget.club.currency.value.toUpperCase()}',
+            onPressed: formIsReady ? onPay : null,
+          )
+        ],
       ),
     );
   }

@@ -1,6 +1,5 @@
-import 'package:tennisbookings/global_types/enums.dart';
-
 import '../../global_helpers/index.dart';
+import '../../global_types/enums.dart';
 import 'index.dart';
 
 class GetCasualPaymentIntentPayload implements APIPayload {

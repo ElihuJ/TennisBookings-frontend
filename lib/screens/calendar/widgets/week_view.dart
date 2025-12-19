@@ -40,6 +40,7 @@ class CalendarWideView extends HookConsumerWidget {
     final isUserMember = user.memberships.any((membership) => membership.clubId == clubSelected.id);
     return WeekView<Booking>(
       startHour: 6,
+      backgroundColor: AppColors.almostWhite.withValues(alpha: 0.9),
       startDay: WeekDays.sunday,
       minuteSlotSize: MinuteSlotSize.minutes60,
       hourIndicatorSettings: HourIndicatorSettings(),
@@ -48,7 +49,7 @@ class CalendarWideView extends HookConsumerWidget {
           '${prettyDateLocalFromEpoch(date.millisecondsSinceEpoch)}   |   ${prettyDateLocalFromEpoch(secondaryDate!.millisecondsSinceEpoch)}',
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(
-          color: AppColors.primaryGreen,
+          color: AppColors.primaryGreenTranslucent,
           borderRadius: BorderRadius.circular(10),
         ),
       ),

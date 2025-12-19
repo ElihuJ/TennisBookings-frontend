@@ -67,10 +67,6 @@ class _ClubsTableState extends State<ClubsTable> {
                 fillColor: AppColors.white,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(
-                    color: AppColors.grey,
-                    width: 2,
-                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -101,11 +97,6 @@ class _ClubsTableState extends State<ClubsTable> {
                 child: Table(
                   defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                   defaultColumnWidth: const IntrinsicColumnWidth(),
-                  border: TableBorder.all(
-                    color: AppColors.black,
-                    width: 2,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
                   children: [
                     TableRow(
                       decoration: BoxDecoration(
@@ -138,9 +129,8 @@ class _ClubsTableState extends State<ClubsTable> {
                           if (!mobileView) _RowCellText(text: club.grassCourts.toString()),
                           if (!mobileView) _RowCellText(text: club.otherSurfaceCourts.toString()),
                           if (!mobileView)
-                            _RowCellText(
-                              text: 'See in Maps',
-                              isButton: true,
+                            IconButton(
+                              icon: Icon(Icons.location_on, color: AppColors.primaryGreen),
                               onPressed: () {
                                 final url =
                                     '$_googleUrl${Uri.encodeComponent('${club.streetAddress}, ${club.suburb}, ${club.state}, ${club.postcode}')}';
@@ -150,15 +140,13 @@ class _ClubsTableState extends State<ClubsTable> {
                           if (!mobileView) _RowCellText(text: club.suburb),
                           if (!mobileView) _RowCellText(text: '\$ ${club.annualFee.toString()} ${club.currency.value.toUpperCase()}'),
                           if (!mobileView) _RowCellText(text: '\$ ${club.casualFee.toString()} ${club.currency.value.toUpperCase()}'),
-                          _RowCellText(
-                            text: 'Book a court',
-                            isButton: true,
+                          IconButton(
+                            icon: Icon(Icons.calendar_month, color: AppColors.primaryGreen),
                             onPressed: () => Navigator.of(context).pushNamed('${CalendarScreen.route}?clubId=${club.id}'),
                           ),
                           if (!mobileView)
-                            _RowCellText(
-                              text: 'Get Membership',
-                              isButton: true,
+                            IconButton(
+                              icon: Icon(Icons.info, color: AppColors.primaryGreen),
                               onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}'),
                             ),
                         ],

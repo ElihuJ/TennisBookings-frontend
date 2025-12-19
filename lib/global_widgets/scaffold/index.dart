@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../global_helpers/index.dart';
 import '../drawer/drawer.dart';
 import '../header/index.dart';
 
@@ -31,18 +30,8 @@ class TbScaffold extends StatelessWidget {
     return Scaffold(
       appBar: appBar ?? Header(),
       body: body,
-      // floatingActionButton: floatingActionButton,
-      // floatingActionButtonLocation: floatingActionButtonLocation,
-      // bottomNavigationBar: bottomNavigationBar,
       drawer: TbDrawer(),
-      onDrawerChanged: (isOpen) {
-        // Handle drawer state changes if needed
-        ''.tbLogger('Drawer is ${isOpen ? 'open' : 'closed'}');
-      },
-      // endDrawer: endDrawer,
-      backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: backgroundColor ?? Colors.transparent,
     );
   }
 }
-  // Scaffold widget with a custom app bar and bottom navigation bar
-  

@@ -44,10 +44,11 @@ class CalendarMobileView extends HookConsumerWidget {
       minuteSlotSize: MinuteSlotSize.minutes60,
       hourIndicatorSettings: HourIndicatorSettings(),
       timeLineWidth: 80,
+      backgroundColor: AppColors.almostWhite.withValues(alpha: 0.9),
       dateStringBuilder: (date, {secondaryDate}) => prettyDateLocalFromEpoch(date.millisecondsSinceEpoch),
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(
-          color: AppColors.primaryGreen,
+          color: AppColors.primaryGreenTranslucent,
           borderRadius: BorderRadius.circular(10),
         ),
       ),

@@ -51,8 +51,8 @@ class Config {
   // * VERSIONING
   static const majorVersion = 1;
   static const minorVersion = 4;
-  static const patchVersion = 1;
-  static const buildNumber = 47;
+  static const patchVersion = 2;
+  static const buildNumber = 48;
   static const latestNotes = 'Smart lock system integrated for bookings.\n'
       'Current day is highlighted in the calendar.\n';
 

@@ -74,10 +74,7 @@ class NotFoundScreen extends StatelessWidget {
             child: PrettyText(
               message,
               maxLines: 4,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.grey[800],
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.white),
               textAlign: TextAlign.center,
             ),
           ),

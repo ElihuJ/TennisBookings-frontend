@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/screens/login/widgets/containers.dart';
 
+import '../../assets/index.dart';
 import '../../global_widgets/index.dart';
 import '../../state/index.dart';
 import 'options_content/options_content.dart';
@@ -37,11 +39,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       child: PopScope(
         canPop: false,
         child: TbScaffold(
-          body: Row(
-            children: [
-              OptionsDrawer(toggleSelectedOption: toggleSelectedOption),
-              OptionsContent(selectedOption: _selectedOption),
-            ],
+          body: ContainerWithBackground(
+            imagePath: homeBackgroundPng,
+            child: Row(
+              children: [
+                OptionsDrawer(toggleSelectedOption: toggleSelectedOption),
+                OptionsContent(selectedOption: _selectedOption),
+              ],
+            ),
           ),
         ),
       ),

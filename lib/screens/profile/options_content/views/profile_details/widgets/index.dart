@@ -29,7 +29,7 @@ class FieldWithPencil extends StatelessWidget {
         children: [
           mode != ProfileDetailsMode.edit
               ? IconButton(
-                  color: AppColors.grey,
+                  color: AppColors.almostWhite,
                   icon: const Icon(Icons.edit),
                   onPressed: onTap,
                 )

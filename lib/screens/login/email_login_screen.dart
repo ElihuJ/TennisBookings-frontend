@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tennisbookings/screens/login/widgets/containers.dart';
 
+import '../../assets/index.dart';
 import '../../global_widgets/index.dart';
 import 'forms/login_register_form.dart';
 import 'types.dart';
@@ -44,9 +46,8 @@ class EmailLoginScreenState extends State<EmailLoginScreen> {
   Widget build(BuildContext context) {
     return TbScaffold(
       body: EventfulWidget(
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16.0),
+        child: ContainerWithBackground(
+          imagePath: homeBackgroundPng,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

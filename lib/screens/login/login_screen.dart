@@ -9,6 +9,7 @@ import '../../strings/index.dart';
 import 'email_login_screen.dart';
 import 'forms/login_register_form.dart';
 import 'types.dart';
+import 'widgets/containers.dart';
 
 class LoginScreen extends HookConsumerWidget {
   const LoginScreen({super.key});
@@ -24,48 +25,48 @@ class LoginScreen extends HookConsumerWidget {
       child: PopScope(
         canPop: false,
         child: TbScaffold(
-            body: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                clipBehavior: Clip.antiAlias,
-                child: Image.asset(
-                  logoPgn,
-                  width: 300,
+          body: ContainerWithBackground(
+            imagePath: homeBackgroundPng,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  clipBehavior: Clip.antiAlias,
+                  child: Image.asset(
+                    logoPgn,
+                    width: 300,
+                  ),
                 ),
-              ),
-              // ^ ================== GOOGLE LOGIN ==================
-              Column(
-                children: [
-                  SocialsRegister(
-                    eventNotifier: eventNotifier,
-                    firebaseNotifier: firebaseAuthNotifier,
-                    userNotifier: userNotifier,
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    // ^ ================== EMAIL LOGIN ==================
-                    child: LoginButton(
-                      onTap: () {
-                        // * Handle email login
-                        Navigator.pushNamed(context, EmailLoginScreen.route, arguments: ScreenMode.login);
-                      },
-                      text: context.localeString(LoginScreenStrings.loginWithEmail),
-                      icon: const Icon(Icons.email),
+                // ^ ================== GOOGLE LOGIN ==================
+                Column(
+                  children: [
+                    SocialsRegister(
+                      eventNotifier: eventNotifier,
+                      firebaseNotifier: firebaseAuthNotifier,
+                      userNotifier: userNotifier,
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      // ^ ================== EMAIL LOGIN ==================
+                      child: LoginButton(
+                        onTap: () {
+                          // * Handle email login
+                          Navigator.pushNamed(context, EmailLoginScreen.route, arguments: ScreenMode.login);
+                        },
+                        text: context.localeString(LoginScreenStrings.loginWithEmail),
+                        icon: const Icon(Icons.email),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        )),
+        ),
       ),
     );
   }

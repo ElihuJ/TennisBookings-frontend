@@ -88,8 +88,8 @@ class MembershipDetails extends HookConsumerWidget {
                             const SizedBox(height: 4),
                             PrettyText(
                               'Membership Expiry: ${prettyDateLocalFromEpoch(membership.expiry)}',
-                              style:
-                                  TextStyle(color: AppColors.grey, fontWeight: FontWeight.w500, fontSize: fontSize - 2, fontStyle: FontStyle.italic),
+                              style: TextStyle(
+                                  color: AppColors.grey, fontWeight: FontWeight.w500, fontSize: fontSize - 2, fontStyle: FontStyle.italic),
                             ),
                             const SizedBox(height: 12),
                             Align(
@@ -131,7 +131,7 @@ class _NoMembershipView extends StatelessWidget {
           Icon(
             Icons.sentiment_dissatisfied,
             size: 100,
-            color: Colors.grey.shade600,
+            color: AppColors.almostWhite,
           ),
           const SizedBox(height: 10),
           PrettyText(
@@ -139,7 +139,7 @@ class _NoMembershipView extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: fontSize + 6,
-              color: Colors.grey.shade700,
+              color: AppColors.almostWhite,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -149,7 +149,7 @@ class _NoMembershipView extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: fontSize,
-              color: Colors.grey.shade600,
+              color: AppColors.almostWhite,
             ),
           ),
         ],

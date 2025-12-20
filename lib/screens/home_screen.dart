@@ -82,7 +82,9 @@ class HomeScreen extends HookConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             _featureTile(Icons.search, 'Quick search', 'Find courts and partners fast', smallScreen),
+                            SizedBox(width: 40),
                             _featureTile(Icons.group, 'Invite players', 'Share invites and confirm partners', smallScreen),
+                            SizedBox(width: 40),
                             _featureTile(Icons.payments, 'Payments', 'Secure casual & membership payments', smallScreen),
                           ],
                         ),

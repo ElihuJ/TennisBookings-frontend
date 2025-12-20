@@ -8,6 +8,7 @@ import '../../global_helpers/index.dart';
 import '../../global_widgets/index.dart';
 import '../../routes/index.dart';
 import '../../state/index.dart';
+import '../../theme/colors.dart';
 import 'stripe_membership_payment_form.dart';
 
 class ClubMembershipScreen extends HookConsumerWidget {
@@ -113,10 +114,7 @@ class _PaymentView extends StatelessWidget {
                         spacing: 50,
                         children: [
                           CircleAvatar(
-                            radius: 60,
-                            backgroundImage: NetworkImage(clubSelected.clubLogoUrl),
-                            backgroundColor: Colors.grey[200],
-                          ),
+                              radius: 60, backgroundImage: NetworkImage(clubSelected.clubLogoUrl), backgroundColor: AppColors.white),
                           StripePaymentForm(
                             clientSecret: clientSecret,
                             club: clubSelected,

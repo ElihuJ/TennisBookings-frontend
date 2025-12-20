@@ -20,141 +20,62 @@ class ClubsTable extends StatefulWidget {
 }
 
 class _ClubsTableState extends State<ClubsTable> {
-  final rowSelected = ValueNotifier<int>(-1);
-
-  final wideColumnTitles = [
-    'Club Name',
-    'Hard\nCourts',
-    'Clay\nCourts',
-    'Grass\nCourts',
-    'Other\nCourts',
-    'Address',
-    'Suburb',
-    'Annual\nFee',
-    'Casual\nFee',
-    'Club Schedule',
-    'More Info',
-  ];
-
-  final narrowColumnTitles = [
-    'Club\nDetails',
-    'Club\nSchedule',
-  ];
-
   String searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
-    final filteredClubs = widget.clubs.where((club) => club.name.toLowerCase().contains(searchQuery.toLowerCase())).toList();
-
     final mobileView = isMobile(context);
-    final fontSize = getFontSize(mobileView);
 
-    final titlesToDisplay = mobileView ? narrowColumnTitles : wideColumnTitles;
+    final filteredClubs = widget.clubs.where((club) {
+      final q = searchQuery.trim().toLowerCase();
+      if (q.isEmpty) return true;
+      return club.name.toLowerCase().contains(q) || club.suburb.toLowerCase().contains(q);
+    }).toList();
 
     return SizedBox(
       height: double.infinity,
       child: Column(
         children: [
+          // * Search
           Container(
-            width: mobileView ? 300 : 500,
-            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+            width: mobileView ? double.infinity : 700,
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             child: TextField(
               decoration: InputDecoration(
                 filled: true,
-                labelText: 'Search Clubs',
+                labelText: 'Search clubs or suburbs',
                 prefixIcon: Icon(Icons.search),
+                floatingLabelStyle: TextStyle(color: AppColors.primaryGreen),
                 fillColor: AppColors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(
-                    color: AppColors.primaryGreen,
-                    width: 2,
-                  ),
-                ),
-                labelStyle: TextStyle(
-                  color: AppColors.grey, // * Default color
-                ),
-                floatingLabelStyle: TextStyle(
-                  color: AppColors.primaryGreen, // * Change color when focused
-                  fontSize: fontSize,
-                ),
+                    borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: AppColors.primaryGreen, width: 2)),
               ),
-              onChanged: (value) {
-                setState(() {
-                  searchQuery = value;
-                });
-              },
+              onChanged: (value) => setState(() => searchQuery = value),
             ),
           ),
+
+          // * Cards
           Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SingleChildScrollView(
-                child: Table(
-                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                  defaultColumnWidth: const IntrinsicColumnWidth(),
-                  children: [
-                    TableRow(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                      ),
-                      children: titlesToDisplay
-                          .asMap()
-                          .map((index, title) {
-                            return MapEntry(index, _HeaderCell(text: title, first: index == 0, last: index == titlesToDisplay.length - 1));
-                          })
-                          .values
-                          .toList(growable: false),
-                    ),
-                    ...filteredClubs.map((club) {
-                      return TableRow(
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        children: [
-                          if (!mobileView) _RowCellText(text: club.name),
-                          if (mobileView)
-                            _RowCellText(
-                                text: club.name,
-                                isButton: true,
-                                onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}')),
-                          if (!mobileView) _RowCellText(text: club.hardCourts.toString()),
-                          if (!mobileView) _RowCellText(text: club.clayCourts.toString()),
-                          if (!mobileView) _RowCellText(text: club.grassCourts.toString()),
-                          if (!mobileView) _RowCellText(text: club.otherSurfaceCourts.toString()),
-                          if (!mobileView)
-                            IconButton(
-                              icon: Icon(Icons.location_on, color: AppColors.primaryGreen),
-                              onPressed: () {
-                                final url =
-                                    '$_googleUrl${Uri.encodeComponent('${club.streetAddress}, ${club.suburb}, ${club.state}, ${club.postcode}')}';
-                                launchUrl(Uri.parse(url));
-                              },
-                            ),
-                          if (!mobileView) _RowCellText(text: club.suburb),
-                          if (!mobileView) _RowCellText(text: '\$ ${club.annualFee.toString()} ${club.currency.value.toUpperCase()}'),
-                          if (!mobileView) _RowCellText(text: '\$ ${club.casualFee.toString()} ${club.currency.value.toUpperCase()}'),
-                          IconButton(
-                            icon: Icon(Icons.calendar_month, color: AppColors.primaryGreen),
-                            onPressed: () => Navigator.of(context).pushNamed('${CalendarScreen.route}?clubId=${club.id}'),
-                          ),
-                          if (!mobileView)
-                            IconButton(
-                              icon: Icon(Icons.info, color: AppColors.primaryGreen),
-                              onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}'),
-                            ),
-                        ],
-                      );
-                    }),
-                  ],
-                ),
-              ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: LayoutBuilder(builder: (context, constraints) {
+                final crossAxis = mobileView ? 1 : (constraints.maxWidth > 1200 ? 3 : (constraints.maxWidth > 800 ? 2 : 1));
+                if (filteredClubs.isEmpty) {
+                  return Center(child: PrettyText('No clubs found', style: TextStyle(color: AppColors.almostWhite)));
+                }
+
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxis,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 4.0,
+                  ),
+                  itemCount: filteredClubs.length,
+                  itemBuilder: (context, i) => _ClubCard(club: filteredClubs[i]),
+                );
+              }),
             ),
           ),
         ],
@@ -163,74 +84,82 @@ class _ClubsTableState extends State<ClubsTable> {
   }
 }
 
-class _RowCellText extends StatelessWidget {
-  const _RowCellText({required this.text, this.isButton = false, this.onPressed});
-
-  final String text;
-  final bool isButton;
-  final void Function()? onPressed;
+class _ClubCard extends StatelessWidget {
+  final Club club;
+  const _ClubCard({required this.club});
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final smallScreen = screenWidth < 600;
-    final fontSize = smallScreen ? 12.0 : 16.0;
-    return MouseRegion(
-      cursor: isButton ? SystemMouseCursors.click : MouseCursor.defer,
-      child: Padding(
-        padding: smallScreen ? const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0) : const EdgeInsets.all(20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            isButton
-                ? TbTextButton(
-                    onPressed: () => onPressed?.call(),
-                    text: text,
-                  )
-                : GestureDetector(
-                    onTap: onPressed,
-                    child: PrettyText(
-                      text,
-                      textAlign: TextAlign.center,
-                      fontSize: fontSize,
-                    ),
+    final mobile = isMobile(context);
+    return Material(
+      color: Colors.transparent,
+      child: Ink(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: AppColors.white.withValues(alpha: 0.5),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.4)),
+        ),
+        child: InkWell(
+          onTap: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}'),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: mobile ? 30 : 40,
+                  backgroundImage: NetworkImage(club.clubLogoUrl),
+                  backgroundColor: Colors.grey[200],
+                ),
+                SizedBox(width: mobile ? 12 : 20),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PrettyText(club.name,
+                          style: TextStyle(fontSize: mobile ? 14 : 16, fontWeight: FontWeight.w700, color: AppColors.black)),
+                      SizedBox(height: 4),
+                      PrettyText(club.suburb, style: TextStyle(color: AppColors.grey)),
+                      SizedBox(height: 6),
+                      PrettyText(
+                          '${club.hardCourts} Hard • ${club.clayCourts} Clay • ${club.grassCourts} Grass • ${club.otherSurfaceCourts} Others',
+                          style: TextStyle(color: AppColors.grey)),
+                    ],
                   ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _HeaderCell extends StatelessWidget {
-  final String text;
-  final bool first;
-  final bool last;
-
-  const _HeaderCell({required this.text, this.first = false, this.last = false});
-
-  @override
-  Widget build(BuildContext context) {
-    final mobileView = isMobile(context);
-    final fontSize = getFontSize(mobileView);
-    return Container(
-      alignment: Alignment.center,
-      height: mobileView ? 70 : 80,
-      padding: mobileView ? const EdgeInsets.all(12.0) : const EdgeInsets.all(20.0),
-      decoration: BoxDecoration(
-        color: AppColors.secondaryGreen,
-        borderRadius: BorderRadius.only(
-          topLeft: first ? Radius.circular(10) : Radius.zero,
-          topRight: last ? Radius.circular(10) : Radius.zero,
-        ),
-      ),
-      child: PrettyText(
-        text,
-        textAlign: TextAlign.center,
-        maxLines: 2,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: fontSize,
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Tooltip(
+                      message: 'Open in Maps',
+                      child: IconButton(
+                        icon: Icon(Icons.location_on, color: AppColors.primaryGreen),
+                        onPressed: () {
+                          final url =
+                              '$_googleUrl${Uri.encodeComponent('${club.streetAddress}, ${club.suburb}, ${club.state}, ${club.postcode}')}';
+                          launchUrl(Uri.parse(url));
+                        },
+                      ),
+                    ),
+                    Tooltip(
+                      message: 'Book a court',
+                      child: IconButton(
+                        icon: Icon(Icons.calendar_month, color: AppColors.primaryGreen),
+                        onPressed: () => Navigator.of(context).pushNamed('${CalendarScreen.route}?clubId=${club.id}'),
+                      ),
+                    ),
+                    Tooltip(
+                      message: 'More info',
+                      child: IconButton(
+                        icon: Icon(Icons.info_outline, color: AppColors.primaryGreen),
+                        onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

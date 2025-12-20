@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/screens/login/widgets/containers.dart';
 
+import '../../assets/index.dart';
 import '../../global_helpers/index.dart';
 import '../../global_widgets/index.dart';
 import '../../state/index.dart';
@@ -30,40 +32,43 @@ class MyInvitesScreen extends HookConsumerWidget {
       child: PopScope(
         canPop: false,
         child: TbScaffold(
-          body: Center(
-            child: SizedBox(
-              width: sectionWidth,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 40),
-                    PrettyText(
-                      'My Invites',
-                      style: TextStyle(
-                        fontSize: fontSize + 6,
-                        fontWeight: FontWeight.bold,
+          body: ContainerWithBackground(
+            imagePath: homeBackgroundPng,
+            child: Center(
+              child: SizedBox(
+                width: sectionWidth,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 40),
+                      PrettyText(
+                        'My Invites',
+                        style: TextStyle(
+                          fontSize: fontSize + 6,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 40),
-                    if (bookingsWithInvites.isEmpty)
-                      _NoInvitesView()
-                    else
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: bookingsWithInvites.length,
-                        itemBuilder: (context, index) {
-                          final booking = bookingsWithInvites[index];
-                          // * This scenario should happen when removing an invite from state
-                          if (booking.requests.isEmpty) {
-                            return const SizedBox.shrink();
-                          }
-                          return BookingWithInvites(booking: booking);
-                        },
-                      ),
-                    const SizedBox(height: 16.0),
-                  ],
+                      const SizedBox(height: 40),
+                      if (bookingsWithInvites.isEmpty)
+                        _NoInvitesView()
+                      else
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: bookingsWithInvites.length,
+                          itemBuilder: (context, index) {
+                            final booking = bookingsWithInvites[index];
+                            // * This scenario should happen when removing an invite from state
+                            if (booking.requests.isEmpty) {
+                              return const SizedBox.shrink();
+                            }
+                            return BookingWithInvites(booking: booking);
+                          },
+                        ),
+                      const SizedBox(height: 16.0),
+                    ],
+                  ),
                 ),
               ),
             ),

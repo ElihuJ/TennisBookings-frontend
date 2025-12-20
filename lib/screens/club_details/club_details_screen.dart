@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tennisbookings/assets/index.dart';
+import 'package:tennisbookings/screens/login/widgets/containers.dart';
 
 import '../../global_widgets/index.dart';
 import '../../routes/index.dart';
@@ -43,10 +45,8 @@ class ClubDetailsScreen extends HookConsumerWidget {
     }
 
     return TbScaffold(
-      body: Container(
-        padding: const EdgeInsets.all(20.0),
-        width: double.infinity,
-        height: double.infinity,
+      body: ContainerWithBackground(
+        imagePath: homeBackgroundPng,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

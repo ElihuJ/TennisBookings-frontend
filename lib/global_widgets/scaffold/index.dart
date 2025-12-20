@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../drawer/drawer.dart';
 import '../header/index.dart';
+import 'package:universal_html/html.dart' as html;
 
 class TbScaffold extends StatelessWidget {
   const TbScaffold({
@@ -29,7 +30,10 @@ class TbScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar ?? Header(),
-      body: body,
+      body: RefreshIndicator(
+        child: body ?? const SizedBox.shrink(),
+        onRefresh: () async => {html.window.location.reload()},
+      ),
       drawer: TbDrawer(),
       backgroundColor: backgroundColor ?? Colors.transparent,
     );

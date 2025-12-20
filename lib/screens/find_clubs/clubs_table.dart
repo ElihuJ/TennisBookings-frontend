@@ -70,7 +70,7 @@ class _ClubsTableState extends State<ClubsTable> {
                     crossAxisCount: crossAxis,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
-                    childAspectRatio: 4.0,
+                    childAspectRatio: 3.0,
                   ),
                   itemCount: filteredClubs.length,
                   itemBuilder: (context, i) => _ClubCard(club: filteredClubs[i]),
@@ -100,7 +100,7 @@ class _ClubCard extends StatelessWidget {
           border: Border.all(color: Colors.white.withValues(alpha: 0.4)),
         ),
         child: InkWell(
-          onTap: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}'),
+          onTap: () => Navigator.of(context).pushNamed('${CalendarScreen.route}?clubId=${club.id}'),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
             child: Row(
@@ -115,6 +115,7 @@ class _ClubCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
                       PrettyText(club.name,
                           style: TextStyle(fontSize: mobile ? 14 : 16, fontWeight: FontWeight.w700, color: AppColors.black)),
@@ -122,8 +123,10 @@ class _ClubCard extends StatelessWidget {
                       PrettyText(club.suburb, style: TextStyle(color: AppColors.grey)),
                       SizedBox(height: 6),
                       PrettyText(
-                          '${club.hardCourts} Hard • ${club.clayCourts} Clay • ${club.grassCourts} Grass • ${club.otherSurfaceCourts} Others',
-                          style: TextStyle(color: AppColors.grey)),
+                        '${club.hardCourts} Hard • ${club.clayCourts} Clay\n${club.grassCourts} Grass • ${club.otherSurfaceCourts} Others',
+                        style: TextStyle(color: AppColors.grey),
+                        maxLines: 3,
+                      ),
                     ],
                   ),
                 ),
@@ -149,9 +152,9 @@ class _ClubCard extends StatelessWidget {
                       ),
                     ),
                     Tooltip(
-                      message: 'More info',
+                      message: 'Membership & details',
                       child: IconButton(
-                        icon: Icon(Icons.info_outline, color: AppColors.primaryGreen),
+                        icon: Icon(Icons.credit_card, color: AppColors.primaryGreen),
                         onPressed: () => Navigator.of(context).pushNamed('${ClubDetailsScreen.route}?clubId=${club.id}'),
                       ),
                     ),

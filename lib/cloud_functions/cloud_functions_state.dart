@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 class CloudFunctions {
   final String? uid;
 
-  get isLoggedIn => uid != null;
+  bool get isLoggedIn => uid != null;
 
   const CloudFunctions({
     this.uid,

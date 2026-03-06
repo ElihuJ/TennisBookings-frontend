@@ -104,7 +104,7 @@ class CalendarWideView extends HookConsumerWidget {
   }
 }
 
-_getWeekdayString(DateTime date) {
+String _getWeekdayString(DateTime date) {
   switch (date.weekday) {
     case DateTime.monday:
       return 'Mon ${date.day}';
@@ -120,5 +120,7 @@ _getWeekdayString(DateTime date) {
       return 'Sat ${date.day}';
     case DateTime.sunday:
       return 'Sun ${date.day}';
+    default:
+      return '';
   }
 }

@@ -26,6 +26,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
   final String courtName;
   final BookingStatus status;
   final String title;
+  final String? clubPin; // * Only existing in private bookings objects
+  final String? courtPin; // * Only existing in private bookings objects
   final List<Booking> mergedBookings; // * Used for calendar view ONLY FRONTEND. No DB
 
   @override
@@ -47,6 +49,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     required this.clubName,
     required this.courtName,
     required this.title,
+    this.clubPin,
+    this.courtPin,
     this.mergedBookings = const [],
   }) : super({
           BookingFields.id: id,
@@ -64,6 +68,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
           BookingFields.title: title,
           BookingFields.clubName: clubName,
           BookingFields.courtName: courtName,
+          BookingFields.clubPin: clubPin,
+          BookingFields.courtPin: courtPin,
         });
 
   Booking.empty()
@@ -89,22 +95,29 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     try {
       // * Verify required props
       final id = verifyRequiredProp<String>(prop: json[BookingFields.id], propName: BookingFields.id, defaultValue: _defaultId);
-      final confirmedPlayerIdsRaw =
-          verifyRequiredProp<List>(prop: json[BookingFields.confirmedPlayerIds], propName: BookingFields.confirmedPlayerIds, defaultValue: []);
-      final courtId = verifyRequiredProp<String>(prop: json[BookingFields.courtId], propName: BookingFields.courtId, defaultValue: _defaultId);
+      final confirmedPlayerIdsRaw = verifyRequiredProp<List>(
+          prop: json[BookingFields.confirmedPlayerIds], propName: BookingFields.confirmedPlayerIds, defaultValue: []);
+      final courtId =
+          verifyRequiredProp<String>(prop: json[BookingFields.courtId], propName: BookingFields.courtId, defaultValue: _defaultId);
       final clubId = verifyRequiredProp<String>(prop: json[BookingFields.clubId], propName: BookingFields.clubId, defaultValue: _defaultId);
       final startTime = verifyRequiredProp<int>(prop: json[BookingFields.startTime], propName: BookingFields.startTime, defaultValue: 0);
       final endTime = verifyRequiredProp<int>(prop: json[BookingFields.endTime], propName: BookingFields.endTime, defaultValue: 0);
       final private = verifyRequiredProp<bool>(prop: json[BookingFields.private], propName: BookingFields.private, defaultValue: false);
-      final ownerId = verifyRequiredProp<String>(prop: json[BookingFields.ownerId], propName: BookingFields.ownerId, defaultValue: _defaultId);
+      final ownerId =
+          verifyRequiredProp<String>(prop: json[BookingFields.ownerId], propName: BookingFields.ownerId, defaultValue: _defaultId);
       final title = verifyRequiredProp<String>(prop: json[BookingFields.title], propName: BookingFields.title, defaultValue: _defaultName);
       final clubName =
           verifyRequiredProp<String>(prop: json[BookingFields.clubName], propName: BookingFields.clubName, defaultValue: _defaultClubName);
-      final courtName =
-          verifyRequiredProp<String>(prop: json[BookingFields.courtName], propName: BookingFields.courtName, defaultValue: _defaultCourtName);
+      final courtName = verifyRequiredProp<String>(
+          prop: json[BookingFields.courtName], propName: BookingFields.courtName, defaultValue: _defaultCourtName);
 
-      final List<BookingRequest> requests =
-          json[BookingFields.requests] != null ? List<BookingRequest>.from(json[BookingFields.requests].map((x) => BookingRequest.fromJson(x))) : [];
+      // * Optional props
+      final courtPin = verifyNotRequiredProp<String?>(prop: json[BookingFields.courtPin], propName: BookingFields.courtPin);
+      final clubPin = verifyNotRequiredProp<String?>(prop: json[BookingFields.clubPin], propName: BookingFields.clubPin);
+
+      final List<BookingRequest> requests = json[BookingFields.requests] != null
+          ? List<BookingRequest>.from(json[BookingFields.requests].map((x) => BookingRequest.fromJson(x)))
+          : [];
       final BookingRestrictions? restrictions =
           json[BookingFields.restrictions] != null ? BookingRestrictions.fromJson(json[BookingFields.restrictions]) : null;
       final status = json[BookingFields.status] != null ? BookingStatus.fromString(json[BookingFields.status]) : BookingStatus.unknown;
@@ -130,6 +143,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         title: title,
         clubName: clubName,
         courtName: courtName,
+        clubPin: clubPin,
+        courtPin: courtPin,
       );
     } catch (e) {
       e.tbLogger('ERROR CONSTRUCTING BOOKING', DebugLevel.error);
@@ -158,6 +173,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
     String? title,
     String? clubName,
     String? courtName,
+    String? clubPin,
+    String? courtPin,
   }) {
     return Booking(
       id: id ?? this.id,
@@ -175,6 +192,8 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
       title: title ?? this.title,
       clubName: clubName ?? this.clubName,
       courtName: courtName ?? this.courtName,
+      clubPin: clubPin ?? this.clubPin,
+      courtPin: courtPin ?? this.courtPin,
     );
   }
 
@@ -194,7 +213,11 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         other.requests == requests &&
         other.restrictions == restrictions &&
         other.status == status &&
-        other.title == title;
+        other.title == title &&
+        other.clubName == clubName &&
+        other.courtName == courtName &&
+        other.clubPin == clubPin &&
+        other.courtPin == courtPin;
   }
 
   @override
@@ -211,7 +234,11 @@ class Booking extends MapView<String, dynamic> implements FirestoreModel, HasId 
         requests.hashCode ^
         restrictions.hashCode ^
         status.hashCode ^
-        title.hashCode;
+        title.hashCode ^
+        clubName.hashCode ^
+        courtName.hashCode ^
+        clubPin.hashCode ^
+        courtPin.hashCode;
   }
 
   @override

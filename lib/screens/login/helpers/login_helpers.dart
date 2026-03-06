@@ -6,7 +6,7 @@ import '../../../global_helpers/index.dart';
 import '../../../state/index.dart';
 import '../../../strings/index.dart';
 
-signInWithGoogle({
+Future<void> signInWithGoogle({
   required EventNotifier eventNotifier,
   required FirebaseAuthNotifier firebaseAuthNotifier,
   required UserNotifier userNotifier,
@@ -31,7 +31,7 @@ signInWithGoogle({
   }
 }
 
-signInWithApple({
+Future<void> signInWithApple({
   required EventNotifier eventNotifier,
   required FirebaseAuthNotifier firebaseAuthNotifier,
   required UserNotifier userNotifier,

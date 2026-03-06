@@ -108,14 +108,16 @@ class _BookingContainer extends StatelessWidget {
         children: [
           const SizedBox(height: 15),
           PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, type: PlayerIconsType.column),
+          if (booking.courtPin != null) PrettyText('Court Pin: ${booking.courtPin ?? 'N/A'}'),
           const SizedBox(height: 15),
+          if (booking.clubPin != null) PrettyText('Club Pin: ${booking.clubPin ?? 'N/A'}'),
         ],
       ),
     );
   }
 }
 
-_getOwnerActions({
+List<TbTextButton> _getOwnerActions({
   required BuildContext context,
   required Booking booking,
   required WidgetRef widgetRef,
@@ -145,7 +147,7 @@ _getOwnerActions({
   ];
 }
 
-_getParticipantActions({
+List<TbTextButton> _getParticipantActions({
   required BuildContext context,
   required Booking booking,
   required WidgetRef widgetRef,
@@ -178,7 +180,7 @@ _getParticipantActions({
   ];
 }
 
-_getOpenForInvitesActions({
+List<TbTextButton> _getOpenForInvitesActions({
   required BuildContext context,
   required Booking booking,
   required WidgetRef widgetRef,
@@ -226,7 +228,7 @@ _getOpenForInvitesActions({
   ];
 }
 
-_getActions({
+List<TbTextButton>? _getActions({
   required BuildContext context,
   required BookingDetailsType bookingDetailsType,
   required Booking booking,
@@ -240,7 +242,7 @@ _getActions({
     case BookingDetailsType.openForInvites:
       return _getOpenForInvitesActions(context: context, widgetRef: widgetRef, booking: booking);
     case BookingDetailsType.notMineAndPublic:
-      return;
+      return null;
   }
 }
 

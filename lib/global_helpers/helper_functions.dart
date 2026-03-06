@@ -15,8 +15,8 @@ Future wait(int milliseconds) {
   return Future.delayed(Duration(milliseconds: milliseconds));
 }
 
-delayPrepare(Function prepareFunction, {Duration duration = const Duration(milliseconds: 1)}) {
-  Future.delayed(
+Future<void> delayPrepare(Function prepareFunction, {Duration duration = const Duration(milliseconds: 1)}) {
+  return Future.delayed(
     duration,
     () async {
       prepareFunction.call();

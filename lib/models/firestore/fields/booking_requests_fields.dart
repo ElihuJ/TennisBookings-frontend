@@ -13,6 +13,8 @@ class BookingFields {
   static const String title = 'title';
   static const String clubId = 'clubId';
   static const String clubName = 'clubName';
+  static const String courtPin = 'courtPin';
+  static const String clubPin = 'clubPin';
   static const String courtName = 'courtName';
 
   static const List<String> allFields = [
@@ -30,7 +32,9 @@ class BookingFields {
     title,
     clubId,
     clubName,
-    courtName
+    courtName,
+    courtPin,
+    clubPin,
   ];
 }
 

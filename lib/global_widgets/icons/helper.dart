@@ -49,7 +49,7 @@ class FieldBox extends StatelessWidget {
 class LoadingRow extends StatelessWidget {
   const LoadingRow({super.key});
 
-  getLoadingText() {
+  Widget getLoadingText() {
     return LoadingAnimationWidget.waveDots(color: AppColors.primaryGreen, size: 30);
   }
 

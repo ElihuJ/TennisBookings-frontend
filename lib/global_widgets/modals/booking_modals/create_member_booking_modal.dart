@@ -13,7 +13,12 @@ enum BookingMode { closed, open }
 
 class CreateMemberBookingModal extends StatefulHookConsumerWidget {
   const CreateMemberBookingModal(
-      {super.key, required this.clubSelected, required this.courtSelected, required this.date, required this.bookedTimes, required this.context});
+      {super.key,
+      required this.clubSelected,
+      required this.courtSelected,
+      required this.date,
+      required this.bookedTimes,
+      required this.context});
   final Club clubSelected;
   final Court courtSelected;
   final DateTime date;
@@ -116,7 +121,7 @@ class _CreateBookingModalState extends ConsumerState<CreateMemberBookingModal> {
   }
 }
 
-showCreateMemberBookingModal(
+void showCreateMemberBookingModal(
     {required BuildContext context,
     required Club clubSelected,
     required Court courtSelected,

@@ -168,7 +168,7 @@ class _ClubDetailsButton extends StatelessWidget {
   }
 }
 
-getSurfaceColor(String surface) {
+Color getSurfaceColor(String surface) {
   final surfaceString = surface.toLowerCase();
   switch (surfaceString) {
     case 'grass':

@@ -51,8 +51,8 @@ class Config {
   // * VERSIONING
   static const majorVersion = 1;
   static const minorVersion = 4;
-  static const patchVersion = 2;
-  static const buildNumber = 48;
+  static const patchVersion = 3;
+  static const buildNumber = 49;
   static const latestNotes = 'Smart lock system integrated for bookings.\n'
       'Current day is highlighted in the calendar.\n';
 
@@ -83,9 +83,9 @@ class Config {
   static const _prodPublishableKey =
       "pk_live_51RKduQAEUEBEyE19Q1YKTZlSOB0ytptc6knpktcvOerL6VNK9He5CbaHQKXMtqRJnJdoOVIeVtT7e74IphvSpWF1005OdOynTD";
 
-  get publishableKey => _publishableKey;
-  get firebaseOptions => _firebaseOptions;
-  get googleSignInConfig => _googleSignInConfig;
+  String get publishableKey => _publishableKey;
+  FirebaseOptions get firebaseOptions => _firebaseOptions;
+  GoogleSignIn get googleSignInConfig => _googleSignInConfig;
 
   @override
   String toString() => 'Config: $envString environment is running'

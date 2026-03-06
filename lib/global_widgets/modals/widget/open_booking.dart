@@ -318,7 +318,7 @@ class RestrictionsFieldState extends State<RestrictionsField> {
   TextEditingController utrLtController = TextEditingController();
   MouseCursor cursor = SystemMouseCursors.click;
 
-  utrGtListener() {
+  void utrGtListener() {
     final utrGreaterThan = double.tryParse(utrGtController.text);
     if (utrGreaterThan == null) {
       return;
@@ -327,7 +327,7 @@ class RestrictionsFieldState extends State<RestrictionsField> {
     widget.setBookingRestrictions(newBookingRestrictions);
   }
 
-  utrLtListener() {
+  void utrLtListener() {
     final utrLowerThan = double.tryParse(utrLtController.text);
     if (utrLowerThan == null) {
       return;
@@ -408,8 +408,8 @@ class RestrictionsFieldState extends State<RestrictionsField> {
             alignment: Alignment.center,
             margin: const EdgeInsets.symmetric(vertical: 15),
             child: GestureDetector(
-              onTap: () => launchUrl(Uri.parse(
-                  'https://www.utrsports.net/cdn/shop/files/Good-UTR-Rating-V03-1280x990-curve-of-utr-rating.png?v=1740085669')), // TODO: Add URL to asset file
+              onTap: () => launchUrl(
+                  Uri.parse('https://www.utrsports.net/cdn/shop/files/Good-UTR-Rating-V03-1280x990-curve-of-utr-rating.png?v=1740085669')),
               child: PrettyText('What UTR should I use?', style: TextStyle(color: AppColors.blue), textAlign: TextAlign.center),
             ),
           ),

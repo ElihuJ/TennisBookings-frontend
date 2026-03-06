@@ -6,7 +6,7 @@ import '../../../global_widgets/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
 
-onDateTap(
+void onDateTap(
     {required BuildContext context,
     required DateTime date,
     required Club clubSelected,
@@ -26,12 +26,15 @@ onDateTap(
     showGeneralForbiddenModal(context, title: 'Booking in the past', message: 'You cannot book a time in the past.');
   } else if (isAboveFutureLimit(date.millisecondsSinceEpoch)) {
     // ^ Booking too far in the future
-    showGeneralForbiddenModal(context, title: 'Booking too far in the future', message: 'You cannot book a time more than 8 weeks in the future.');
+    showGeneralForbiddenModal(context,
+        title: 'Booking too far in the future', message: 'You cannot book a time more than 8 weeks in the future.');
   } else if (!onlyMembers && !isUserMember) {
     // ^ User is not a member and can book
-    showCreateCasualBookingModal(context: context, clubSelected: clubSelected, courtSelected: courtSelected, date: date, bookedTimes: bookedTimes);
+    showCreateCasualBookingModal(
+        context: context, clubSelected: clubSelected, courtSelected: courtSelected, date: date, bookedTimes: bookedTimes);
   } else {
     // ^ User is member in and can book
-    showCreateMemberBookingModal(context: context, clubSelected: clubSelected, courtSelected: courtSelected, date: date, bookedTimes: bookedTimes);
+    showCreateMemberBookingModal(
+        context: context, clubSelected: clubSelected, courtSelected: courtSelected, date: date, bookedTimes: bookedTimes);
   }
 }

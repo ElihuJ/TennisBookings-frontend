@@ -2,8 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' show Stripe;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/assets/index.dart';
 
+import '../../assets/index.dart';
 import '../../cloud_functions/index.dart';
 import '../../global_helpers/index.dart';
 import '../../global_widgets/index.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/screens/find_clubs/find_clubs_screen.dart';
 
 import '../assets/index.dart';
 import '../global_widgets/index.dart';
 import '../theme/index.dart';
+import 'find_clubs/find_clubs_screen.dart';
 import 'login/widgets/containers.dart';
 
 class HomeScreen extends HookConsumerWidget {

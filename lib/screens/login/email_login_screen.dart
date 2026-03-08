@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tennisbookings/screens/login/widgets/containers.dart';
 
 import '../../assets/index.dart';
 import '../../global_widgets/index.dart';
 import 'forms/login_register_form.dart';
 import 'types.dart';
+import 'widgets/containers.dart';
 import 'widgets/footer.dart';
 import 'widgets/welcome_header.dart';
 

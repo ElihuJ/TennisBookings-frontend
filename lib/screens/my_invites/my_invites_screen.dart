@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tennisbookings/screens/login/widgets/containers.dart';
 
 import '../../assets/index.dart';
 import '../../global_helpers/index.dart';
 import '../../global_widgets/index.dart';
 import '../../state/index.dart';
+import '../login/widgets/containers.dart';
 import 'widgets/booking_with_invites_container.dart';
 
 const sectionWidth = 600.0;

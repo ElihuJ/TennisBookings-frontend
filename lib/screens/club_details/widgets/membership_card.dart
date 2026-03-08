@@ -5,13 +5,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_widgets/index.dart';
 import '../../../state/index.dart';
-import '../../club_membership/club_membership_screen.dart';
+import '../../payments/membership_payment_screen.dart';
 import 'card.dart';
 
 double _fontTitleSize = 24.0;
 
 void _navigateToMembershipScreen({required BuildContext context, required Club clubSelected}) {
-  Navigator.of(context).pushNamed('${ClubMembershipScreen.route}?clubId=${clubSelected.id}');
+  Navigator.of(context).pushNamed('${MembershipPaymentScreen.route}?clubId=${clubSelected.id}');
 }
 
 class MembershipCard extends HookConsumerWidget {

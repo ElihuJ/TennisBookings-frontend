@@ -5,6 +5,7 @@ import '../../../config/config.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../models/index.dart';
+import '../../../screens/payments/casual_payment_screen.dart';
 import '../../../state/index.dart';
 import '../../../theme/index.dart';
 import '../../index.dart';
@@ -17,14 +18,12 @@ class CasualBooking extends StatefulHookConsumerWidget {
     required this.date,
     required this.context,
     required this.confirmedBookedTimes,
-    required this.proceedToPayment,
   });
   final Club clubSelected;
   final Court courtSelected;
   final DateTime date;
   final BuildContext context;
   final List<BookedTimeEpoch> confirmedBookedTimes;
-  final void Function(Booking booking) proceedToPayment;
 
   @override
   ConsumerState<CasualBooking> createState() => _CasualBookingState();
@@ -73,7 +72,7 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
             clubName: widget.clubSelected.name,
             courtName: widget.courtSelected.name,
           );
-          submitFunction = () => widget.proceedToPayment(defaultBooking);
+          submitFunction = () => Navigator.of(context).pushNamed(CasualPaymentScreen.route, arguments: defaultBooking);
         });
       }
     });
@@ -103,7 +102,7 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
             clubName: widget.clubSelected.name,
             courtName: widget.courtSelected.name,
           );
-          submitFunction = () => widget.proceedToPayment(booking);
+          submitFunction = () => Navigator.of(context).pushNamed(CasualPaymentScreen.route, arguments: booking);
         } else {
           submitFunction = null;
         }

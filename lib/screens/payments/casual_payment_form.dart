@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe_web/flutter_stripe_web.dart';
+import 'package:flutter_stripe_web/flutter_stripe_web.dart' hide Card;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:web/web.dart' as web;
 
 import '../../global_helpers/index.dart';
 import '../../global_types/index.dart';
 import '../../global_widgets/index.dart';
+import '../../models/index.dart';
 import '../../state/index.dart';
 import 'payment_result_screen.dart';
 
 String getUrlPort() => web.window.location.port;
 
-String getReturnUrl(String clubId) => '${web.window.origin}#${PaymentResultScreen.route}?clubId=$clubId';
+String getReturnUrl(String clubId, String courtId) => '${web.window.origin}#${PaymentResultScreen.route}?clubId=$clubId&courtId=$courtId';
 
-Future<void> pay({required String clubId}) async {
+Future<void> pay({required String clubId, required String courtId}) async {
   try {
     final paymentIntent = await WebStripe.instance.confirmPaymentElement(
       ConfirmPaymentElementOptions(
-        confirmParams: ConfirmPaymentParams(return_url: getReturnUrl(clubId)),
+        confirmParams: ConfirmPaymentParams(return_url: getReturnUrl(clubId, courtId)),
       ),
     );
     paymentIntent.tbLogger('PaymentIntent', DebugLevel.warning);
@@ -31,17 +33,19 @@ Future<void> pay({required String clubId}) async {
   }
 }
 
-class StripePaymentForm extends StatefulHookConsumerWidget {
-  const StripePaymentForm({super.key, required this.clientSecret, required this.club});
+class CasualPaymentForm extends StatefulHookConsumerWidget {
+  const CasualPaymentForm({super.key, required this.clientSecret, required this.club, required this.booking, required this.court});
 
   final String clientSecret;
   final Club club;
+  final Court court;
+  final Booking booking;
 
   @override
-  ConsumerState<StripePaymentForm> createState() => _StripePaymentFormState();
+  ConsumerState<CasualPaymentForm> createState() => _StripePaymentFormModalState();
 }
 
-class _StripePaymentFormState extends ConsumerState<StripePaymentForm> {
+class _StripePaymentFormModalState extends ConsumerState<CasualPaymentForm> {
   bool formIsReady = false;
 
   Future<void> onPay() async {
@@ -49,7 +53,7 @@ class _StripePaymentFormState extends ConsumerState<StripePaymentForm> {
     bool success = true;
     if (formIsReady) {
       eventNotifier.showLoading(title: 'Processing payment');
-      await pay(clubId: widget.club.id).catchError((_) {
+      await pay(clubId: widget.club.id, courtId: widget.court.id).catchError((_) {
         eventNotifier.hideLoading();
         eventNotifier.showMessage(message: 'Payment failed', messageType: MessageType.error);
         success = false;
@@ -66,15 +70,12 @@ class _StripePaymentFormState extends ConsumerState<StripePaymentForm> {
   @override
   Widget build(BuildContext context) {
     final mobileView = isMobile(context);
-
-    widget.club.currency.tbLogger('Currency', DebugLevel.warning);
-
     return SizedBox(
       width: mobileView ? 300 : 700,
       child: Column(
         spacing: 50,
         children: [
-          _Title(club: widget.club),
+          _Title(booking: widget.booking),
           Padding(
             padding: const EdgeInsets.all(20),
             child: PaymentElement(
@@ -89,7 +90,7 @@ class _StripePaymentFormState extends ConsumerState<StripePaymentForm> {
             ),
           ),
           TbTextButton(
-            text: 'Pay \$${widget.club.annualFee} ${widget.club.currency.value.toUpperCase()}',
+            text: 'Pay \$${widget.club.casualFee} ${widget.club.currency.value.toUpperCase()}',
             onPressed: formIsReady ? onPay : null,
           )
         ],
@@ -100,34 +101,49 @@ class _StripePaymentFormState extends ConsumerState<StripePaymentForm> {
 
 class _Title extends StatelessWidget {
   const _Title({
-    required this.club,
+    required this.booking,
   });
 
-  final Club club;
+  final Booking booking;
 
   @override
   Widget build(BuildContext context) {
+    final date = DateTime.fromMillisecondsSinceEpoch(booking.startTime);
+    final month = DateFormat.MMM().format(date);
+    final startTimeString = getLocalTimeFromEpoch(booking.startTime);
+    final endTimeString = getLocalTimeFromEpoch(booking.endTime);
     final mobileView = isMobile(context);
-    final now = DateTime.now();
-    final aYearFromNow = DateTime(now.year + 1, now.month, now.day);
-    final aYearFromNowString = prettyDateLocalFromEpoch(aYearFromNow.millisecondsSinceEpoch);
-    return Column(
-      children: [
-        PrettyText(
-          '${club.name}'
-          '\nAnnual membership fee',
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          fontSize: getFontSize(mobileView) + 4,
+
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            PrettyText(
+              '${booking.title}'
+              '\n${booking.clubName}'
+              '\n${booking.courtName}'
+              '\n${date.day}/$month/${date.year}'
+              '\nFrom: $startTimeString to $endTimeString',
+              textAlign: TextAlign.center,
+              maxLines: 7,
+              fontSize: getFontSize(mobileView) + 4,
+            ),
+            SizedBox(height: 10),
+            PrettyText(
+              'Booking details are: ${booking.private ? 'Private' : 'Public'}',
+              textAlign: TextAlign.center,
+              fontSize: getFontSize(mobileView),
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ],
         ),
-        SizedBox(height: 10),
-        PrettyText(
-          'Valid until $aYearFromNowString',
-          textAlign: TextAlign.center,
-          fontSize: getFontSize(mobileView),
-          style: TextStyle(fontStyle: FontStyle.italic),
-        ),
-      ],
+      ),
     );
   }
 }

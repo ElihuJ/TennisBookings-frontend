@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../models/index.dart';
 import '../screens/calendar/calendar_screen.dart';
 import '../screens/club_details/club_details_screen.dart';
-import '../screens/club_membership/club_membership_screen.dart';
-import '../screens/club_membership/payment_result_screen.dart';
+import '../screens/payments/membership_payment_screen.dart';
+import '../screens/payments/casual_payment_screen.dart';
+import '../screens/payments/payment_result_screen.dart';
 import '../screens/find_clubs/find_clubs_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/login/email_login_screen.dart';
@@ -55,9 +57,14 @@ Route<dynamic> generateLoginRoutes(RouteSettings settings) {
       final clubSelectedQueryParams = ClubSelectedQueryParams(queryParams.queryParams);
       page = ClubDetailsScreen(clubSelectedQueryParams: clubSelectedQueryParams);
       break;
-    case ClubMembershipScreen.route:
+    case MembershipPaymentScreen.route:
       final clubSelectedQueryParams = ClubSelectedQueryParams(queryParams.queryParams);
-      page = ClubMembershipScreen(clubSelectedQueryParams: clubSelectedQueryParams);
+      page = MembershipPaymentScreen(clubSelectedQueryParams: clubSelectedQueryParams);
+      break;
+
+    case CasualPaymentScreen.route:
+      final booking = settings.arguments as Booking;
+      page = CasualPaymentScreen(booking: booking);
       break;
     case PaymentResultScreen.route:
       final uriQuery = Uri.base.queryParameters;

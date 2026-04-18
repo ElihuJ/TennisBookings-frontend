@@ -1,11 +1,13 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
+import '../../../strings/index.dart';
 import '../../../theme/index.dart';
 import 'booking_container.dart';
 import 'helper.dart';
@@ -72,7 +74,7 @@ class CalendarWideView extends HookConsumerWidget {
       },
       showLiveTimeLineInAllDays: true, // * To display live time line in all pages in day view.
       weekDayBuilder: (date) {
-        final dateString = _getWeekdayString(date);
+        final dateString = _getWeekdayString(date, context);
         bool isToday = false;
         if (date.year == DateTime.now().year && date.month == DateTime.now().month && date.day == DateTime.now().day) {
           isToday = true;
@@ -104,22 +106,22 @@ class CalendarWideView extends HookConsumerWidget {
   }
 }
 
-String _getWeekdayString(DateTime date) {
+String _getWeekdayString(DateTime date, BuildContext context) {
   switch (date.weekday) {
     case DateTime.monday:
-      return 'Mon ${date.day}';
+      return '${context.localeString(CalendarStrings.dayMon)} ${date.day}';
     case DateTime.tuesday:
-      return 'Tue ${date.day}';
+      return '${context.localeString(CalendarStrings.dayTue)} ${date.day}';
     case DateTime.wednesday:
-      return 'Wed ${date.day}';
+      return '${context.localeString(CalendarStrings.dayWed)} ${date.day}';
     case DateTime.thursday:
-      return 'Thu ${date.day}';
+      return '${context.localeString(CalendarStrings.dayThu)} ${date.day}';
     case DateTime.friday:
-      return 'Fri ${date.day}';
+      return '${context.localeString(CalendarStrings.dayFri)} ${date.day}';
     case DateTime.saturday:
-      return 'Sat ${date.day}';
+      return '${context.localeString(CalendarStrings.daySat)} ${date.day}';
     case DateTime.sunday:
-      return 'Sun ${date.day}';
+      return '${context.localeString(CalendarStrings.daySun)} ${date.day}';
     default:
       return '';
   }

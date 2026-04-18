@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 
+import '../../../strings/index.dart';
 import '../../index.dart';
 
 class GeneralForbiddenModal extends StatelessWidget {
@@ -11,7 +13,7 @@ class GeneralForbiddenModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: TitleText(
-        title ?? 'Not allowed',
+        title ?? context.localeString(GeneralStrings.notAllowed),
         textAlign: TextAlign.center,
       ),
       content: PrettyText(

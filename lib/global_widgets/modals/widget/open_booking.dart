@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -10,6 +11,7 @@ import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
+import '../../../strings/index.dart';
 import '../../../theme/index.dart';
 import '../../index.dart';
 
@@ -93,8 +95,11 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
       isOpenBooking: true, // * This is the only difference between open and closed booking
     );
 
+    final creatingMsg = context.localeString(BookingFormStrings.creating);
+    final createdMsg = context.localeString(BookingFormStrings.created);
+    final errorMsg = context.localeString(BookingFormStrings.errorCreating);
     Navigator.of(context).pop();
-    eventsNotifier.showLoading(title: "Creating booking...");
+    eventsNotifier.showLoading(title: creatingMsg);
     final result = await cloudFunctionsNotifier.createBooking(payload);
     eventsNotifier.hideLoading();
     final newBookingId = result.data;
@@ -102,9 +107,9 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
     if (success) {
       final updatedBooking = newBooking.copyWith(id: newBookingId);
       clubsNotifier.addBooking(court: widget.courtSelected, booking: updatedBooking, isPrivate: false);
-      eventsNotifier.showMessage(messageType: MessageType.success, message: 'Booking created');
+      eventsNotifier.showMessage(messageType: MessageType.success, message: createdMsg);
     } else {
-      eventsNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage ?? 'Error creating booking');
+      eventsNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage ?? errorMsg);
     }
 
     return result;
@@ -147,12 +152,12 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   TbTextButton(
-                    text: 'Booking',
+                    text: context.localeString(BookingFormStrings.bookingTab),
                     onPressed: widget.switchBookingMode,
                     color: AppColors.grey,
                   ),
                   TbTextButton(
-                    text: 'Look for a player',
+                    text: context.localeString(BookingFormStrings.lookForPlayer),
                     color: AppColors.primaryGreen,
                     onPressed: () {},
                   ),
@@ -162,8 +167,8 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
             // ^ =============== TITLE FIELD ===============
             TextFormField(
               initialValue: widget.titleValue,
-              decoration: const InputDecoration(
-                labelText: 'Title',
+              decoration: InputDecoration(
+                labelText: context.localeString(BookingFormStrings.titleLabel),
               ),
               onChanged: (value) => widget.setTitleValue(value),
               validator: (value) {
@@ -177,10 +182,10 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
             // ^ =============== FORMAT FIELD ===============
             DropdownButtonFormField<String>(
               initialValue: _bookingFormat.name,
-              decoration: const InputDecoration(labelText: 'Format'),
+              decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.formatLabel)),
               items: [
-                DropdownMenuItem(value: BookingFormat.singles.name, child: PrettyText(BookingFormat.singles.name)),
-                DropdownMenuItem(value: BookingFormat.doubles.name, child: PrettyText(BookingFormat.doubles.name)),
+                DropdownMenuItem(value: BookingFormat.singles.name, child: PrettyText(context.localeString(BookingFormStrings.singles))),
+                DropdownMenuItem(value: BookingFormat.doubles.name, child: PrettyText(context.localeString(BookingFormStrings.doubles))),
               ],
               onChanged: (value) {
                 setState(() {
@@ -191,7 +196,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
                 String? validationError;
                 if (value == null || value.isEmpty) {
                   submitFunction = null;
-                  validationError = 'Please enter a format';
+                  validationError = context.localeString(BookingFormStrings.pleaseEnterFormat);
                 }
                 return validationError;
               },
@@ -199,10 +204,10 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
             // ^ =============== RESTRICTIONS FIELD ===============
             DropdownButtonFormField<bool>(
               initialValue: _withRestrictions,
-              decoration: const InputDecoration(labelText: 'Restrictions'),
+              decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.restrictionsLabel)),
               items: [
-                DropdownMenuItem(value: true, child: PrettyText('Yes')),
-                DropdownMenuItem(value: false, child: PrettyText('No')),
+                DropdownMenuItem(value: true, child: PrettyText(context.localeString(GeneralStrings.yes))),
+                DropdownMenuItem(value: false, child: PrettyText(context.localeString(GeneralStrings.no))),
               ],
               onChanged: (withRestrictions) {
                 setState(() {
@@ -218,7 +223,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
                 String? validationError;
                 if (value == null) {
                   submitFunction = null;
-                  validationError = 'Please enter a restriction';
+                  validationError = context.localeString(BookingFormStrings.pleaseEnterRestriction);
                 }
                 return validationError;
               },
@@ -232,7 +237,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
             // ^ =============== START DATE FIELD ===============
             TextFormField(
               controller: widget.startTimeController,
-              decoration: const InputDecoration(labelText: 'Start Time'),
+              decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.startTime)),
               onTap: () async {
                 TimeOfDay? picked = await showTimePicker(
                   context: context,
@@ -249,7 +254,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
             // ^ =============== END DATE FIELD ===============
             TextFormField(
               controller: widget.endTimeController,
-              decoration: const InputDecoration(labelText: 'End Time'),
+              decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.endTime)),
               onTap: () async {
                 TimeOfDay? picked = await showTimePicker(
                   context: context,
@@ -267,6 +272,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
                   startDateEpoch: widget.startDateEpoch,
                   endDateEpoch: widget.endDateEpoch,
                   bookedTimes: widget.confirmedBookedTimes,
+                  context: context,
                 );
                 if (validationError != null) {
                   submitFunction = null;
@@ -281,11 +287,11 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
               children: <Widget>[
                 TbTextButton(
                   color: AppColors.red,
-                  text: 'Cancel',
+                  text: context.localeString(GeneralStrings.cancel),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
                 TbTextButton(
-                  text: 'Create Booking',
+                  text: context.localeString(BookingFormStrings.createBooking),
                   onPressed: submitFunction,
                   color: AppColors.primaryGreen,
                 ),
@@ -362,10 +368,10 @@ class RestrictionsFieldState extends State<RestrictionsField> {
       children: [
         DropdownButtonFormField<bool>(
           initialValue: _utrVerified,
-          decoration: const InputDecoration(labelText: 'UTR Verified'),
+          decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.utrVerified)),
           items: [
-            DropdownMenuItem(value: true, child: PrettyText('Yes')),
-            DropdownMenuItem(value: false, child: PrettyText('No')),
+            DropdownMenuItem(value: true, child: PrettyText(context.localeString(GeneralStrings.yes))),
+            DropdownMenuItem(value: false, child: PrettyText(context.localeString(GeneralStrings.no))),
           ],
           onChanged: (value) {
             setState(() {
@@ -378,11 +384,11 @@ class RestrictionsFieldState extends State<RestrictionsField> {
         // Gender filter dropdown
         DropdownButtonFormField<Gender?>(
           initialValue: _genderFilter,
-          decoration: const InputDecoration(labelText: 'Gender'),
+          decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.genderLabel)),
           items: [
-            DropdownMenuItem(value: null, child: PrettyText('Any')),
-            DropdownMenuItem(value: Gender.male, child: PrettyText('Male')),
-            DropdownMenuItem(value: Gender.female, child: PrettyText('Female')),
+            DropdownMenuItem(value: null, child: PrettyText(context.localeString(BookingFormStrings.anyOption))),
+            DropdownMenuItem(value: Gender.male, child: PrettyText(context.localeString(BookingFormStrings.maleOption))),
+            DropdownMenuItem(value: Gender.female, child: PrettyText(context.localeString(BookingFormStrings.femaleOption))),
           ],
           onChanged: (value) {
             setState(() {
@@ -410,12 +416,12 @@ class RestrictionsFieldState extends State<RestrictionsField> {
             child: GestureDetector(
               onTap: () => launchUrl(
                   Uri.parse('https://www.utrsports.net/cdn/shop/files/Good-UTR-Rating-V03-1280x990-curve-of-utr-rating.png?v=1740085669')),
-              child: PrettyText('What UTR should I use?', style: TextStyle(color: AppColors.blue), textAlign: TextAlign.center),
+              child: PrettyText(context.localeString(BookingFormStrings.whatUtr), style: TextStyle(color: AppColors.blue), textAlign: TextAlign.center),
             ),
           ),
         ),
         TextFormField(
-          decoration: const InputDecoration(labelText: 'UTR Lower Than'),
+          decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.utrLowerThan)),
           keyboardType: TextInputType.number,
           validator: (value) {
             if (value == null) return null;
@@ -431,7 +437,7 @@ class RestrictionsFieldState extends State<RestrictionsField> {
           controller: utrLtController,
         ),
         TextFormField(
-          decoration: const InputDecoration(labelText: 'UTR Greater Than'),
+          decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.utrGreaterThan)),
           keyboardType: TextInputType.number,
           validator: (value) {
             if (value == null) return null;

@@ -3,6 +3,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 
 import '../config/config.dart';
 import '../global_types/index.dart';
+import '../strings/index.dart';
 
 String? notEmptyStringValidator(String? value, BuildContext context) {
   if (value == null || value.isEmpty) {
@@ -19,29 +20,33 @@ String? utrValueValidator(String? value, BuildContext context) {
     return null;
   }
   if (double.tryParse(value) == null) {
-    return '${Config.utrMinRating}-${Config.utrMaxRating}';
+    return context.localeString(ValidatorStrings.invalidUtr);
   }
   if (double.parse(value) < Config.utrMinRating || double.parse(value) > Config.utrMaxRating) {
-    return '${Config.utrMinRating}-${Config.utrMaxRating}';
+    return context.localeString(ValidatorStrings.invalidUtr);
   }
 
   return null;
 }
 
-String? validateNewTime({required int startDateEpoch, required int endDateEpoch, required List<BookedTimeEpoch> bookedTimes}) {
+String? validateNewTime({
+  required int startDateEpoch,
+  required int endDateEpoch,
+  required List<BookedTimeEpoch> bookedTimes,
+  required BuildContext context,
+}) {
   String? validationError;
   if (endDateEpoch <= startDateEpoch) {
-    validationError = 'End time must be after start time';
+    validationError = context.localeString(ValidatorStrings.endAfterStart);
   }
   if ((endDateEpoch - startDateEpoch) > Config.maxBookingDuration) {
-    validationError = 'Max duration per booking is ${Config.maxBookingHoursString} hour';
+    validationError = context.localeString(ValidatorStrings.maxDuration).replaceAll('{hours}', Config.maxBookingHoursString.toString());
   }
-
   if ((endDateEpoch - startDateEpoch) < Config.minDuration) {
-    validationError = 'Min duration per booking is ${Config.minDurationMinutesString} minutes';
+    validationError = context.localeString(ValidatorStrings.minDuration).replaceAll('{minutes}', Config.minDurationMinutesString.toString());
   }
   if (!validateTime(startTimeEpoch: startDateEpoch, bookedTimes: bookedTimes, endTimeEpoch: endDateEpoch)) {
-    validationError = 'Time slot is already booked';
+    validationError = context.localeString(ValidatorStrings.timeBooked);
   }
   return validationError;
 }
@@ -74,11 +79,11 @@ String? validateUtrComparison({required String utrGt, required String utrLt, req
   final double? utrLtDouble = double.tryParse(utrLt);
 
   if (utrGtDouble == null || utrLtDouble == null) {
-    return 'Invalid UTR';
+    return context.localeString(ValidatorStrings.invalidUtr);
   }
 
   if (utrGtDouble > utrLtDouble) {
-    return 'UTR must be greater than or equal to Lower Limit';
+    return context.localeString(ValidatorStrings.utrComparison);
   }
   return null;
 }

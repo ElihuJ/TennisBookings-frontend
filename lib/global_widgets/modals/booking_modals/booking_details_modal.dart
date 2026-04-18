@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:web/web.dart' as web;
 
@@ -15,6 +16,7 @@ import '../../../models/index.dart';
 import '../../../screens/calendar/calendar_screen.dart';
 import '../../../screens/calendar/widgets/index.dart';
 import '../../../state/index.dart';
+import '../../../strings/index.dart';
 import '../../index.dart';
 
 enum BookingDetailsType { owner, participant, openForInvites, notMineAndPublic }
@@ -77,7 +79,7 @@ class _ContainerTitle extends HookConsumerWidget {
               final url =
                   '${web.window.origin}#${CalendarScreen.route}?clubId=${booking.clubId}&courtId=${booking.courtId}&bookingId=${booking.id}&time=$startInMilliseconds';
               await Clipboard.setData(ClipboardData(text: url));
-              eventNotifier.showMessage(messageType: MessageType.success, message: 'Booking link copied to clipboard');
+              eventNotifier.showMessage(messageType: MessageType.success, message: context.localeString(BookingModalStrings.linkCopied));
             },
             icon: const Icon(Icons.share),
           )
@@ -108,9 +110,9 @@ class _BookingContainer extends StatelessWidget {
         children: [
           const SizedBox(height: 15),
           PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, type: PlayerIconsType.column),
-          if (booking.courtPin != null) PrettyText('Court Pin: ${booking.courtPin ?? 'N/A'}'),
+          if (booking.courtPin != null) PrettyText('${context.localeString(BookingModalStrings.courtPin)}: ${booking.courtPin}'),
           const SizedBox(height: 15),
-          if (booking.clubPin != null) PrettyText('Club Pin: ${booking.clubPin ?? 'N/A'}'),
+          if (booking.clubPin != null) PrettyText('${context.localeString(BookingModalStrings.clubPin)}: ${booking.clubPin}'),
         ],
       ),
     );
@@ -129,12 +131,12 @@ List<TbTextButton> _getOwnerActions({
   return [
     TbTextButton(
       onPressed: () async {
-        eventNotifier.showLoading(message: "Deleting event...");
+        eventNotifier.showLoading(message: context.localeString(BookingModalStrings.deleting));
         BasicBookingPayload payload = BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId);
         final result = await cloudFunctions.deleteBooking(DeleteBookingPayload(payload: payload));
         eventNotifier.hideLoading();
         if (result.data == true) {
-          eventNotifier.showMessage(messageType: MessageType.success, message: "Event deleted");
+          eventNotifier.showMessage(messageType: MessageType.success, message: context.localeString(BookingModalStrings.eventDeleted));
           clubsNotifier.removeBooking(booking: booking);
           if (context.mounted) Navigator.of(context).pop();
           return;
@@ -142,7 +144,7 @@ List<TbTextButton> _getOwnerActions({
         eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
       },
       color: Colors.red,
-      text: 'Delete',
+      text: context.localeString(GeneralStrings.delete),
     ),
   ];
 }
@@ -159,13 +161,13 @@ List<TbTextButton> _getParticipantActions({
   return [
     TbTextButton(
       onPressed: () async {
-        eventNotifier.showLoading(message: "Withdrawing from booking...");
+        eventNotifier.showLoading(message: context.localeString(BookingModalStrings.withdrawing));
         WithdrawFromBookingPayload payload = WithdrawFromBookingPayload(
             payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
         final result = await cloudFunctions.withdrawFromBooking(payload);
         eventNotifier.hideLoading();
         if (result.data == true) {
-          eventNotifier.showMessage(messageType: MessageType.success, message: "Successfully withdrawn!");
+          eventNotifier.showMessage(messageType: MessageType.success, message: context.localeString(BookingModalStrings.withdrawn));
           final updatedBooking =
               booking.copyWith(confirmedPlayerIds: booking.confirmedPlayerIds..remove(userId), status: BookingStatus.open);
           clubsNotifier.updateBooking(booking: updatedBooking, userId: userId);
@@ -175,7 +177,7 @@ List<TbTextButton> _getParticipantActions({
         eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
       },
       color: Colors.red,
-      text: 'Withdraw',
+      text: context.localeString(BookingModalStrings.withdrawBtn),
     ),
   ];
 }
@@ -195,14 +197,14 @@ List<TbTextButton> _getOpenForInvitesActions({
   final onTapAction = requestAlreadySent || inThePast
       ? null
       : () async {
-          eventNotifier.showLoading(message: "Sending request to join...");
+          eventNotifier.showLoading(message: context.localeString(BookingModalStrings.sendingRequest));
           SendInvitePayload payload =
               SendInvitePayload(payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
           final result = await cloudFunctions.sendInvite(payload);
           eventNotifier.hideLoading();
           if (result.data == true) {
             booking.requests.add(BookingRequest(playerId: userId, status: BookingRequestStatus.pending));
-            eventNotifier.showMessage(messageType: MessageType.success, message: "Request sent!");
+            eventNotifier.showMessage(messageType: MessageType.success, message: context.localeString(BookingModalStrings.requestSentMsg));
             if (context.mounted) Navigator.of(context).pop();
             return;
           }
@@ -212,11 +214,11 @@ List<TbTextButton> _getOpenForInvitesActions({
   String buttonText = '';
 
   if (inThePast) {
-    buttonText = 'Booking closed';
+    buttonText = context.localeString(BookingModalStrings.bookingClosed);
   } else if (requestAlreadySent) {
-    buttonText = 'Request sent';
+    buttonText = context.localeString(BookingModalStrings.requestSentBtn);
   } else {
-    buttonText = 'Request to join';
+    buttonText = context.localeString(BookingModalStrings.requestToJoin);
   }
 
   return [

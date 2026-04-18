@@ -1,3 +1,11 @@
+export './booking/index.dart';
+export './calendar/index.dart';
+export './clubs/index.dart';
 export './firebase/index.dart';
+export './general/index.dart';
+export './home/index.dart';
+export './invites/index.dart';
 export './login/index.dart';
+export './payment/index.dart';
+export './profile/index.dart';
 export './settings/index.dart';

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 
 import '../../../screens/login/email_login_screen.dart';
 import '../../../screens/login/login_screen.dart';
 import '../../../screens/login/types.dart';
+import '../../../strings/index.dart';
 import '../../../theme/index.dart';
 import '../../index.dart';
 
@@ -12,16 +14,16 @@ class LoginRegisterModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: PrettyText('Welcome'),
-      content: PrettyText('Please log in or create a new account to continue.'),
+      title: PrettyText(context.localeString(BookingModalStrings.welcome)),
+      content: PrettyText(context.localeString(BookingModalStrings.loginToContinue)),
       actions: <Widget>[
         TbTextButton(
-          text: 'Login',
+          text: context.localeString(LoginScreenStrings.loginWithEmail),
           onPressed: () => Navigator.of(context).pushNamed(LoginScreen.route),
           color: AppColors.secondaryGreen,
         ),
         TbTextButton(
-          text: 'Register',
+          text: context.localeString(EmailLoginScreenStrings.register),
           color: AppColors.darkGreen,
           onPressed: () => Navigator.of(context).pushNamed(EmailLoginScreen.route, arguments: ScreenMode.register),
         ),
@@ -44,11 +46,11 @@ void showOnlyMembersModal({required BuildContext context, String? message}) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const TitleText('Members only', textAlign: TextAlign.center),
-        content: PrettyText(message ?? 'This feature is only available to members of this club.'),
+        title: TitleText(context.localeString(BookingModalStrings.membersOnly), textAlign: TextAlign.center),
+        content: PrettyText(message ?? context.localeString(BookingModalStrings.membersOnlyMessage)),
         actions: <Widget>[
           TextButton(
-            child: const PrettyText('Close'),
+            child: PrettyText(context.localeString(GeneralStrings.close)),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],

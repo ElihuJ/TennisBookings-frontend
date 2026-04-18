@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../cloud_functions/dto/index.dart';
@@ -9,6 +10,7 @@ import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
+import '../../../strings/index.dart';
 import '../../../theme/index.dart';
 import '../../index.dart';
 
@@ -88,8 +90,10 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
       isOpenBooking: false, // * This is the only difference between open and closed booking
     );
 
+    final creatingMsg = context.localeString(BookingFormStrings.creating);
+    final createdMsg = context.localeString(BookingFormStrings.created);
     Navigator.of(context).pop();
-    eventsNotifier.showLoading(title: "Creating booking...");
+    eventsNotifier.showLoading(title: creatingMsg);
     final result = await cloudFunctionsNotifier.createBooking(payload);
     eventsNotifier.hideLoading();
     final newBookingId = result.data;
@@ -97,7 +101,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     if (success) {
       final updatedBooking = newBooking.copyWith(id: newBookingId);
       clubsNotifier.addBooking(court: widget.courtSelected, booking: updatedBooking, isPrivate: private);
-      eventsNotifier.showMessage(messageType: MessageType.success, message: 'Booking created');
+      eventsNotifier.showMessage(messageType: MessageType.success, message: createdMsg);
     } else {
       eventsNotifier.showMessage(messageType: MessageType.error, message: result.responseStatus.message.name);
     }
@@ -146,25 +150,25 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 TbTextButton(
-                  text: 'Booking',
+                  text: context.localeString(BookingFormStrings.bookingTab),
                   color: AppColors.primaryGreen,
                   onPressed: () {},
                 ),
-                TbTextButton(text: 'Look for a player', onPressed: widget.switchBookingMode, color: AppColors.grey),
+                TbTextButton(text: context.localeString(BookingFormStrings.lookForPlayer), onPressed: widget.switchBookingMode, color: AppColors.grey),
               ],
             ),
             // ^ =============== TITLE FIELD ===============
             TextFormField(
               style: TextStyle(fontSize: fontSize),
               initialValue: widget.titleValue,
-              decoration: const InputDecoration(
-                labelText: 'Title',
+              decoration: InputDecoration(
+                labelText: context.localeString(BookingFormStrings.titleLabel),
               ),
               onChanged: (value) => widget.setTitleValue(value),
               validator: (value) {
                 String? validationError;
                 if (value == null || value.isEmpty) {
-                  validationError = 'Please enter a title';
+                  validationError = context.localeString(BookingFormStrings.pleaseEnterTitle);
                 }
                 return validationError;
               },
@@ -172,10 +176,10 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
             // ^ =============== FORMAT FIELD ===============
             DropdownButtonFormField<String>(
               initialValue: _bookingFormat.name,
-              decoration: const InputDecoration(labelText: 'Format'),
+              decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.formatLabel)),
               items: [
-                DropdownMenuItem(value: BookingFormat.singles.name, child: PrettyText(BookingFormat.singles.name)),
-                DropdownMenuItem(value: BookingFormat.doubles.name, child: PrettyText(BookingFormat.doubles.name)),
+                DropdownMenuItem(value: BookingFormat.singles.name, child: PrettyText(context.localeString(BookingFormStrings.singles))),
+                DropdownMenuItem(value: BookingFormat.doubles.name, child: PrettyText(context.localeString(BookingFormStrings.doubles))),
               ],
               onChanged: (value) {
                 setState(() {
@@ -186,7 +190,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                 String? validationError;
                 if (value == null || value.isEmpty) {
                   submitFunction = null;
-                  validationError = 'Please enter a format';
+                  validationError = context.localeString(BookingFormStrings.pleaseEnterFormat);
                 }
                 return validationError;
               },
@@ -194,10 +198,10 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
             // ^ =============== VISIBILITY FIELD ===============
             DropdownButtonFormField<String>(
               initialValue: _visibilityValue,
-              decoration: const InputDecoration(labelText: 'Visibility'),
-              items: const [
-                DropdownMenuItem(value: 'Public', child: PrettyText('Public')),
-                DropdownMenuItem(value: 'Private', child: PrettyText('Private')),
+              decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.visibilityLabel)),
+              items: [
+                DropdownMenuItem(value: 'Public', child: PrettyText(context.localeString(BookingFormStrings.publicOption))),
+                DropdownMenuItem(value: 'Private', child: PrettyText(context.localeString(BookingFormStrings.privateOption))),
               ],
               onChanged: (value) {
                 setState(() {
@@ -208,7 +212,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                 String? validationError;
                 if (value == null || value.isEmpty) {
                   submitFunction = null;
-                  validationError = 'Please select a visibility';
+                  validationError = context.localeString(BookingFormStrings.pleaseSelectVisibility);
                 }
                 return validationError;
               },
@@ -217,7 +221,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
             TextFormField(
               style: TextStyle(fontSize: fontSize),
               controller: widget.startTimeController,
-              decoration: const InputDecoration(labelText: 'Start Time'),
+              decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.startTime)),
               onTap: () async {
                 TimeOfDay? picked = await showTimePicker(
                   context: context,
@@ -235,7 +239,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
             TextFormField(
               style: TextStyle(fontSize: fontSize),
               controller: widget.endTimeController,
-              decoration: const InputDecoration(labelText: 'End Time'),
+              decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.endTime)),
               onTap: () async {
                 TimeOfDay? picked = await showTimePicker(
                   context: context,
@@ -253,6 +257,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
                   startDateEpoch: widget.startDateEpoch,
                   endDateEpoch: widget.endDateEpoch,
                   bookedTimes: widget.confirmedBookedTimes,
+                  context: context,
                 );
                 if (validationError != null) {
                   submitFunction = null;
@@ -267,11 +272,11 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
               children: <Widget>[
                 TbTextButton(
                   color: AppColors.red,
-                  text: 'Cancel',
+                  text: context.localeString(GeneralStrings.cancel),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
                 TbTextButton(
-                  text: 'Create Booking',
+                  text: context.localeString(BookingFormStrings.createBooking),
                   onPressed: submitFunction,
                   color: AppColors.primaryGreen,
                 ),

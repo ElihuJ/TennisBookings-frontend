@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 
+import '../../../strings/index.dart';
 import '../../text/index.dart';
 
 void showPrivateWallModal({required BuildContext context, String? message}) {
@@ -7,11 +9,11 @@ void showPrivateWallModal({required BuildContext context, String? message}) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const PrettyText('Private booking'),
-        content: PrettyText(message ?? 'This booking is private and only visible to the owner.'),
+        title: PrettyText(context.localeString(BookingModalStrings.privateBooking)),
+        content: PrettyText(message ?? context.localeString(BookingModalStrings.privateBookingMessage)),
         actions: <Widget>[
           TextButton(
-            child: const PrettyText('Close'),
+            child: PrettyText(context.localeString(GeneralStrings.close)),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],

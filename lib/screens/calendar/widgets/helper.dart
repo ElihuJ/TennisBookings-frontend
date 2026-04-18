@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../global_widgets/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
+import '../../../strings/index.dart';
 
 void onDateTap(
     {required BuildContext context,
@@ -20,14 +22,17 @@ void onDateTap(
     showLoginRegisterModal(context);
   } else if (onlyMembers && !isUserMember) {
     // ^ User is not a member
-    showOnlyMembersModal(context: context, message: 'Only members can book in this club');
+    showOnlyMembersModal(context: context, message: context.localeString(CalendarStrings.onlyMembersMessage));
   } else if (isInThePast(date.millisecondsSinceEpoch)) {
     // ^ Booking in the past
-    showGeneralForbiddenModal(context, title: 'Booking in the past', message: 'You cannot book a time in the past.');
+    showGeneralForbiddenModal(context,
+        title: context.localeString(CalendarStrings.bookingPastTitle),
+        message: context.localeString(CalendarStrings.bookingPastMessage));
   } else if (isAboveFutureLimit(date.millisecondsSinceEpoch)) {
     // ^ Booking too far in the future
     showGeneralForbiddenModal(context,
-        title: 'Booking too far in the future', message: 'You cannot book a time more than 8 weeks in the future.');
+        title: context.localeString(CalendarStrings.bookingFutureTitle),
+        message: context.localeString(CalendarStrings.bookingFutureMessage));
   } else if (!onlyMembers && !isUserMember) {
     // ^ User is not a member and can book
     showCreateCasualBookingModal(

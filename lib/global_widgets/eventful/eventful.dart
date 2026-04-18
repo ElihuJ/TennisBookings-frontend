@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../../state/config/index.dart';
 import '../../state/event_status/event_provider.dart';
 import '../../state/event_status/event_state.dart';
+import '../../strings/index.dart';
 import '../containers/loading_box.dart';
 import '../containers/message.dart';
 
@@ -35,9 +37,9 @@ class EventfulWidget extends HookConsumerWidget {
           ),
         if (requireUpdate)
           MessageWithAction(
-              message: 'A new version of the app is available. Please update to continue.',
-              title: 'Update Required',
-              buttonText: 'Update',
+              message: context.localeString(GeneralStrings.updateRequiredMessage),
+              title: context.localeString(GeneralStrings.updateRequiredTitle),
+              buttonText: context.localeString(GeneralStrings.updateRequiredButton),
               onPressed: () {
                 html.window.location.reload();
               }),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../config/config.dart';
+import '../../../strings/index.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../models/index.dart';
@@ -117,8 +119,8 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
           TextFormField(
             key: const Key('titleField'),
             initialValue: titleValue,
-            decoration: const InputDecoration(
-              labelText: 'Title',
+            decoration: InputDecoration(
+              labelText: context.localeString(BookingFormStrings.titleLabel),
             ),
             onChanged: (value) {
               titleValue = value;
@@ -126,7 +128,7 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
             validator: (value) {
               String? validationError;
               if (value == null || value.isEmpty) {
-                validationError = 'Please enter a title';
+                validationError = context.localeString(BookingFormStrings.pleaseEnterTitle);
               }
               return validationError;
             },
@@ -135,10 +137,10 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
           DropdownButtonFormField<String>(
             key: const Key('formatField'),
             initialValue: _bookingFormat.name,
-            decoration: const InputDecoration(labelText: 'Format'),
+            decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.formatLabel)),
             items: [
-              DropdownMenuItem(value: BookingFormat.singles.name, child: PrettyText(BookingFormat.singles.name)),
-              DropdownMenuItem(value: BookingFormat.doubles.name, child: PrettyText(BookingFormat.doubles.name)),
+              DropdownMenuItem(value: BookingFormat.singles.name, child: PrettyText(context.localeString(BookingFormStrings.singles))),
+              DropdownMenuItem(value: BookingFormat.doubles.name, child: PrettyText(context.localeString(BookingFormStrings.doubles))),
             ],
             onChanged: (value) {
               setState(() {
@@ -149,7 +151,7 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
               String? validationError;
               if (value == null || value.isEmpty) {
                 submitFunction = null;
-                validationError = 'Please enter a format';
+                validationError = context.localeString(BookingFormStrings.pleaseEnterFormat);
               }
               return validationError;
             },
@@ -158,10 +160,10 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
           DropdownButtonFormField<String>(
             key: const Key('visibilityField'),
             initialValue: _visibilityValue,
-            decoration: const InputDecoration(labelText: 'Visibility'),
-            items: const [
-              DropdownMenuItem(value: 'Public', child: PrettyText('Public')),
-              DropdownMenuItem(value: 'Private', child: PrettyText('Private')),
+            decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.visibilityLabel)),
+            items: [
+              DropdownMenuItem(value: 'Public', child: PrettyText(context.localeString(BookingFormStrings.publicOption))),
+              DropdownMenuItem(value: 'Private', child: PrettyText(context.localeString(BookingFormStrings.privateOption))),
             ],
             onChanged: (value) {
               setState(() {
@@ -172,7 +174,7 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
               String? validationError;
               if (value == null || value.isEmpty) {
                 submitFunction = null;
-                validationError = 'Please select a visibility';
+                validationError = context.localeString(BookingFormStrings.pleaseSelectVisibility);
               }
               return validationError;
             },
@@ -181,7 +183,7 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
           TextFormField(
             key: const Key('startTimeField'),
             controller: startTimeController,
-            decoration: const InputDecoration(labelText: 'Start Time'),
+            decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.startTime)),
             onTap: () async {
               TimeOfDay? picked = await showTimePicker(
                 context: context,
@@ -199,7 +201,7 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
           TextFormField(
             key: const Key('endTimeField'),
             controller: endTimeController,
-            decoration: const InputDecoration(labelText: 'End Time'),
+            decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.endTime)),
             readOnly: true,
             onTap: () async {
               TimeOfDay? picked = await showTimePicker(
@@ -219,6 +221,7 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
                 startDateEpoch: startDateEpoch,
                 endDateEpoch: endDateEpoch,
                 bookedTimes: widget.confirmedBookedTimes,
+                context: context,
               );
               if (validationError != null) {}
 
@@ -232,11 +235,11 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
             children: <Widget>[
               TbTextButton(
                 color: AppColors.red,
-                text: 'Cancel',
+                text: context.localeString(GeneralStrings.cancel),
                 onPressed: () => Navigator.of(context).pop(),
               ),
               TbTextButton(
-                text: 'Proceed to payment',
+                text: context.localeString(BookingFormStrings.proceedToPayment),
                 onPressed: submitFunction,
                 color: AppColors.primaryGreen,
               ),

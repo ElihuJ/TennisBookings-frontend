@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../models/index.dart';
 import '../../../screens/calendar/widgets/index.dart';
 import '../../../state/index.dart';
+import '../../../strings/index.dart';
 import '../../../theme/index.dart';
 import '../../index.dart';
 
@@ -20,7 +22,7 @@ class MultipleBookingsModal extends HookConsumerWidget {
     final isMemberOfClub = user.memberships.any((membership) => membership.clubId == booking.clubId);
     return EventfulWidget(
       child: AlertDialog(
-        title: const PrettyText('Multiple Open bookings (Swipe across)', textAlign: TextAlign.center),
+        title: PrettyText(context.localeString(BookingModalStrings.multipleTitle), textAlign: TextAlign.center),
         content: Container(
           color: AppColors.blue.withAlpha(30),
           width: 700,
@@ -45,7 +47,7 @@ class MultipleBookingsModal extends HookConsumerWidget {
         ),
         actions: <Widget>[
           TbTextButton(
-            text: 'Close',
+            text: context.localeString(GeneralStrings.close),
             onPressed: () => Navigator.of(context).pop(),
             color: AppColors.grey,
           ),

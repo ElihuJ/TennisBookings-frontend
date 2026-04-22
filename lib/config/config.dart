@@ -49,14 +49,11 @@ class Config {
   }
 
   // * VERSIONING
-  static const majorVersion = 1;
-  static const minorVersion = 4;
-  static const patchVersion = 3;
-  static const buildNumber = 50;
-  static const latestNotes = 'Smart lock system integrated for bookings.\n'
-      'Current day is highlighted in the calendar.\n'
-      'Casual booking flow improved with new screen.'
-      'Pin codes are displayed in the booking details screen for easy access';
+  static const majorVersion = 2;
+  static const minorVersion = 0;
+  static const patchVersion = 0;
+  static const buildNumber = 51;
+  static const latestNotes = 'Major UI Re-design';
 
   static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';
 

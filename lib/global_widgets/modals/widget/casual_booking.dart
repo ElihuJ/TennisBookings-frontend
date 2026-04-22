@@ -3,14 +3,13 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../config/config.dart';
-import '../../../strings/index.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../models/index.dart';
 import '../../../screens/payments/casual_payment_screen.dart';
 import '../../../state/index.dart';
+import '../../../strings/index.dart';
 import '../../../theme/colors.dart';
-import '../../index.dart';
 import 'modal_shell.dart';
 
 class CasualBooking extends StatefulHookConsumerWidget {
@@ -122,7 +121,8 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
           DropdownButtonFormField<String>(
             key: const Key('visibilityField'),
             initialValue: _visibilityValue,
-            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.visibilityLabel), prefixIcon: Icons.visibility_outlined),
+            decoration: modalFieldDecoration(
+                label: context.localeString(BookingFormStrings.visibilityLabel), prefixIcon: Icons.visibility_outlined),
             items: [
               DropdownMenuItem(value: 'Public', child: Text(context.localeString(BookingFormStrings.publicOption))),
               DropdownMenuItem(value: 'Private', child: Text(context.localeString(BookingFormStrings.privateOption))),

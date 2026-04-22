@@ -7,7 +7,6 @@ import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
-import '../../../strings/index.dart';
 import '../../index.dart';
 import '../widget/casual_booking.dart';
 import '../widget/modal_shell.dart';

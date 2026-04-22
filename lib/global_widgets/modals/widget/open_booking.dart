@@ -13,7 +13,6 @@ import '../../../models/index.dart';
 import '../../../state/index.dart';
 import '../../../strings/index.dart';
 import '../../../theme/colors.dart';
-import '../../index.dart';
 import 'modal_shell.dart';
 
 class OpenBooking extends StatefulHookConsumerWidget {
@@ -160,7 +159,8 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
           const SizedBox(height: 12),
           DropdownButtonFormField<bool>(
             initialValue: _withRestrictions,
-            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.restrictionsLabel), prefixIcon: Icons.tune_outlined),
+            decoration:
+                modalFieldDecoration(label: context.localeString(BookingFormStrings.restrictionsLabel), prefixIcon: Icons.tune_outlined),
             items: [
               DropdownMenuItem(value: true, child: Text(context.localeString(GeneralStrings.yes))),
               DropdownMenuItem(value: false, child: Text(context.localeString(GeneralStrings.no))),
@@ -309,7 +309,8 @@ class RestrictionsFieldState extends State<RestrictionsField> {
         children: [
           DropdownButtonFormField<bool>(
             initialValue: _utrVerified,
-            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.utrVerified), prefixIcon: Icons.verified_outlined),
+            decoration:
+                modalFieldDecoration(label: context.localeString(BookingFormStrings.utrVerified), prefixIcon: Icons.verified_outlined),
             items: [
               DropdownMenuItem(value: true, child: Text(context.localeString(GeneralStrings.yes))),
               DropdownMenuItem(value: false, child: Text(context.localeString(GeneralStrings.no))),
@@ -339,15 +340,16 @@ class RestrictionsFieldState extends State<RestrictionsField> {
           ),
           const SizedBox(height: 10),
           TextButton.icon(
-            onPressed: () => launchUrl(Uri.parse(
-                'https://www.utrsports.net/cdn/shop/files/Good-UTR-Rating-V03-1280x990-curve-of-utr-rating.png?v=1740085669')),
+            onPressed: () => launchUrl(
+                Uri.parse('https://www.utrsports.net/cdn/shop/files/Good-UTR-Rating-V03-1280x990-curve-of-utr-rating.png?v=1740085669')),
             icon: const Icon(Icons.help_outline, size: 16),
             label: Text(context.localeString(BookingFormStrings.whatUtr)),
             style: TextButton.styleFrom(foregroundColor: AppColors.primaryGreen, textStyle: const TextStyle(fontSize: 13)),
           ),
           const SizedBox(height: 6),
           TextFormField(
-            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.utrLowerThan), prefixIcon: Icons.arrow_downward),
+            decoration:
+                modalFieldDecoration(label: context.localeString(BookingFormStrings.utrLowerThan), prefixIcon: Icons.arrow_downward),
             keyboardType: TextInputType.number,
             controller: utrLtController,
             validator: (v) {
@@ -359,7 +361,8 @@ class RestrictionsFieldState extends State<RestrictionsField> {
           ),
           const SizedBox(height: 10),
           TextFormField(
-            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.utrGreaterThan), prefixIcon: Icons.arrow_upward),
+            decoration:
+                modalFieldDecoration(label: context.localeString(BookingFormStrings.utrGreaterThan), prefixIcon: Icons.arrow_upward),
             keyboardType: TextInputType.number,
             controller: utrGtController,
             validator: (v) => v == null ? null : utrValueValidator(v, context),

@@ -12,7 +12,6 @@ import '../../../models/index.dart';
 import '../../../state/index.dart';
 import '../../../strings/index.dart';
 import '../../../theme/colors.dart';
-import '../../index.dart';
 import 'modal_shell.dart';
 
 class ClosedBooking extends StatefulHookConsumerWidget {
@@ -155,7 +154,8 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
           ),
           DropdownButtonFormField<String>(
             initialValue: _visibilityValue,
-            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.visibilityLabel), prefixIcon: Icons.visibility_outlined),
+            decoration: modalFieldDecoration(
+                label: context.localeString(BookingFormStrings.visibilityLabel), prefixIcon: Icons.visibility_outlined),
             items: [
               DropdownMenuItem(value: 'Public', child: Text(context.localeString(BookingFormStrings.publicOption))),
               DropdownMenuItem(value: 'Private', child: Text(context.localeString(BookingFormStrings.privateOption))),

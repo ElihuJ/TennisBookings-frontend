@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'package:flutter_locales/flutter_locales.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../state/index.dart';
 import '../../strings/index.dart';
@@ -184,9 +183,7 @@ class _NavItem extends StatelessWidget {
             decoration: BoxDecoration(
               color: selected ? activeColor.withValues(alpha: 0.10) : Colors.transparent,
               borderRadius: BorderRadius.circular(12),
-              border: selected
-                  ? Border(left: BorderSide(color: activeColor, width: 3))
-                  : null,
+              border: selected ? Border(left: BorderSide(color: activeColor, width: 3)) : null,
             ),
             child: smallScreen
                 ? Center(child: Icon(icon, size: 22, color: iconColor))

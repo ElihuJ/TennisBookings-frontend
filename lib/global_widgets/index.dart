@@ -1,6 +1,6 @@
 export './drawer/index.dart';
-export './logo/tb_logo.dart';
 export './icons/index.dart';
+export './logo/tb_logo.dart';
 export './scaffold/index.dart';
 export 'buttons/index.dart';
 export 'cards/index.dart';

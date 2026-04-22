@@ -180,8 +180,8 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
                 child: OutlinedButton(
                   onPressed: () => Navigator.of(context).pop(),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFF6B7B6E),
-                    side: const BorderSide(color: Color(0xFFCCCCCC)),
+                    foregroundColor: AppColors.textSubtle,
+                    side: const BorderSide(color: AppColors.borderCancel),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
@@ -194,7 +194,7 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
                   onPressed: submitFunction,
                   style: FilledButton.styleFrom(
                     backgroundColor: AppColors.primaryGreen,
-                    disabledBackgroundColor: const Color(0xFFB0C8BB),
+                    disabledBackgroundColor: AppColors.disabledGreen,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),

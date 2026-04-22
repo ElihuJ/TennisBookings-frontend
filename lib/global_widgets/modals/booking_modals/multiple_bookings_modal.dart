@@ -53,7 +53,7 @@ class MultipleBookingsModal extends HookConsumerWidget {
             onPressed: () => Navigator.of(context).pop(),
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.grey,
-              side: const BorderSide(color: Color(0xFFCCCCCC)),
+              side: const BorderSide(color: AppColors.borderCancel),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               padding: const EdgeInsets.symmetric(vertical: 14),
             ),

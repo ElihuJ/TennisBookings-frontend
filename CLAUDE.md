@@ -294,7 +294,40 @@ class MyScreenQueryParams {
 
 ## Theming & Styling
 
-- Colors: always use `AppColors.*` — never raw hex in widgets
+### Colors — NEVER use raw hex values
+
+All colors **must** come from `AppColors` (defined in `lib/theme/colors.dart`). Raw hex literals (`Color(0xFF...)`) and `Colors.*` shades (`Colors.red.shade600`) are **forbidden** in widget files.
+
+**Why:** Every color change needs to propagate app-wide. Named constants in one file make that a one-line edit; scattered hex values turn it into a multi-file search-and-replace with high risk of misses.
+
+**How to apply:**
+1. Before using any color, look it up in `AppColors` first.
+2. If the color you need doesn't exist, **add it to `AppColors` with a descriptive name** before using it.
+3. Never pass `Color(0x...)` directly to a widget property — not even "just once".
+
+Key palette entries:
+| Token | Hex | Usage |
+|---|---|---|
+| `courtGreen` | `#1F6B4A` | Gradient headers, logo, hero sections |
+| `primaryGreen` | `#478966` | Buttons, focus rings, interactive elements |
+| `darkGreen` | `#1B3427` | Dark headings, gradient endpoint |
+| `tealGreen` | `#2E8B5F` | Background accent blobs |
+| `mintLight` | `#DFF0E4` | Success badge bg, card accents |
+| `mintBase` | `#F2F6F2` | App background base |
+| `fieldFill` | `#F5F7F5` | Form field fill |
+| `surfaceGreen` | `#F0F4F1` | Tab switcher, light card surfaces |
+| `textBody` | `#4A5C50` | Muted body text |
+| `textSubtle` | `#6B7B6E` | Labels, hints, placeholders |
+| `borderLight` | `#DDE0DD` | Default field border |
+| `borderCancel` | `#CCCCCC` | Cancel/neutral button border |
+| `disabledGreen` | `#B0C8BB` | Disabled green button fill |
+| `dangerRed` | `#E53935` | Delete/withdraw action buttons |
+| `errorRed` | `#B71C1C` | Error icon/text |
+| `warningOrange` | `#E65100` | Warning icon/text |
+| `infoBlue` | `#1565C0` | Info icon/text |
+
+### Other style rules
+
 - Spacing: use `SizedBox(height/width: N)` — no magic numbers, prefer multiples of 4/8
 - Fonts: FredokaOne is the only font — set via theme, not inline
 - Responsive: use `isMobile()` helper and `MediaQuery.of(context).size.width < 800` breakpoint

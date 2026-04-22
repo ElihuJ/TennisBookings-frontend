@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/index.dart';
+import '../../theme/colors.dart';
 
 class LoadingBox extends StatelessWidget {
   final String title;
@@ -11,16 +11,16 @@ class LoadingBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black.withValues(alpha: 0.45),
+      color: AppColors.black.withValues(alpha: 0.45),
       child: Center(
         child: Container(
           width: 260,
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 32),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
-              BoxShadow(color: Colors.black.withValues(alpha: 0.12), blurRadius: 24, offset: const Offset(0, 8)),
+              BoxShadow(color: AppColors.black.withValues(alpha: 0.12), blurRadius: 24, offset: const Offset(0, 8)),
             ],
           ),
           child: Column(
@@ -29,7 +29,7 @@ class LoadingBox extends StatelessWidget {
               Container(
                 width: 64,
                 height: 64,
-                decoration: const BoxDecoration(color: Color(0xFFDFF0E4), shape: BoxShape.circle),
+                decoration: const BoxDecoration(color: AppColors.mintLight, shape: BoxShape.circle),
                 child: const Padding(
                   padding: EdgeInsets.all(14),
                   child: CircularProgressIndicator(
@@ -43,7 +43,7 @@ class LoadingBox extends StatelessWidget {
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Color(0xFF1A2E22)),
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textDark),
                 ),
               ],
               if (message.isNotEmpty) ...[
@@ -51,7 +51,7 @@ class LoadingBox extends StatelessWidget {
                 Text(
                   message,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 13, color: Color(0xFF4A5C50), height: 1.4),
+                  style: const TextStyle(fontSize: 13, color: AppColors.textBody, height: 1.4),
                 ),
               ],
             ],

@@ -81,7 +81,7 @@ class _BookingCard extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF1F6B4A), Color(0xFF1B3427)],
+                colors: [AppColors.courtGreen, AppColors.darkGreen],
               ),
             ),
             child: Column(
@@ -180,15 +180,15 @@ class _PinRow extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xFFF0F6F2),
+        color: AppColors.surfaceGreenAlt,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFFDDE8E2)),
+        border: Border.all(color: AppColors.borderGreen),
       ),
       child: Row(
         children: [
           Icon(icon, size: 18, color: AppColors.primaryGreen),
           const SizedBox(width: 10),
-          Text('$label: ', style: const TextStyle(color: Color(0xFF4A5C50), fontWeight: FontWeight.w500, fontSize: 13)),
+          Text('$label: ', style: const TextStyle(color: AppColors.textBody, fontWeight: FontWeight.w500, fontSize: 13)),
           Text(value, style: const TextStyle(color: AppColors.darkGreen, fontWeight: FontWeight.w700, fontSize: 13)),
         ],
       ),
@@ -224,7 +224,7 @@ List<Widget> _getOwnerActions({
         eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
       },
       style: FilledButton.styleFrom(
-        backgroundColor: Colors.red.shade600,
+        backgroundColor: AppColors.dangerRed,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         padding: const EdgeInsets.symmetric(vertical: 14),
       ),
@@ -264,7 +264,7 @@ List<Widget> _getParticipantActions({
         eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
       },
       style: FilledButton.styleFrom(
-        backgroundColor: Colors.red.shade600,
+        backgroundColor: AppColors.dangerRed,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         padding: const EdgeInsets.symmetric(vertical: 14),
       ),
@@ -313,7 +313,7 @@ List<Widget> _getOpenForInvitesActions({
       onPressed: onTap,
       style: FilledButton.styleFrom(
         backgroundColor: AppColors.primaryGreen,
-        disabledBackgroundColor: const Color(0xFFB0C8BB),
+        disabledBackgroundColor: AppColors.disabledGreen,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         padding: const EdgeInsets.symmetric(vertical: 14),
       ),

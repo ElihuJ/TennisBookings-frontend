@@ -230,8 +230,8 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
                 child: OutlinedButton(
                   onPressed: () => Navigator.of(context).pop(),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFF6B7B6E),
-                    side: const BorderSide(color: Color(0xFFCCCCCC)),
+                    foregroundColor: AppColors.textSubtle,
+                    side: const BorderSide(color: AppColors.borderCancel),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
@@ -244,7 +244,7 @@ class _OpenBookingState extends ConsumerState<OpenBooking> {
                   onPressed: submitFunction,
                   style: FilledButton.styleFrom(
                     backgroundColor: AppColors.primaryGreen,
-                    disabledBackgroundColor: const Color(0xFFB0C8BB),
+                    disabledBackgroundColor: AppColors.disabledGreen,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
@@ -300,9 +300,9 @@ class RestrictionsFieldState extends State<RestrictionsField> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFFF0F6F2),
+        color: AppColors.surfaceGreenAlt,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFDDE8E2)),
+        border: Border.all(color: AppColors.borderGreen),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

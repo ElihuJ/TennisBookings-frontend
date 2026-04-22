@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../global_types/index.dart';
+import '../../theme/colors.dart';
 
 class _MessageStyle {
   const _MessageStyle({required this.icon, required this.iconColor, required this.iconBg, required this.accentColor});
@@ -20,32 +21,32 @@ class Message extends StatelessWidget {
   _MessageStyle get _style {
     switch (messageType) {
       case MessageType.success:
-        return _MessageStyle(
+        return const _MessageStyle(
           icon: Icons.check_circle_outline_rounded,
-          iconColor: const Color(0xFF1F6B4A),
-          iconBg: const Color(0xFFDFF0E4),
-          accentColor: const Color(0xFF1F6B4A),
+          iconColor: AppColors.courtGreen,
+          iconBg: AppColors.mintLight,
+          accentColor: AppColors.courtGreen,
         );
       case MessageType.error:
-        return _MessageStyle(
+        return const _MessageStyle(
           icon: Icons.error_outline_rounded,
-          iconColor: const Color(0xFFB71C1C),
-          iconBg: const Color(0xFFFFEBEE),
-          accentColor: const Color(0xFFB71C1C),
+          iconColor: AppColors.errorRed,
+          iconBg: AppColors.errorRedBg,
+          accentColor: AppColors.errorRed,
         );
       case MessageType.warning:
-        return _MessageStyle(
+        return const _MessageStyle(
           icon: Icons.warning_amber_rounded,
-          iconColor: const Color(0xFFE65100),
-          iconBg: const Color(0xFFFFF3E0),
-          accentColor: const Color(0xFFE65100),
+          iconColor: AppColors.warningOrange,
+          iconBg: AppColors.warningOrangeBg,
+          accentColor: AppColors.warningOrange,
         );
       case MessageType.info:
-        return _MessageStyle(
+        return const _MessageStyle(
           icon: Icons.info_outline_rounded,
-          iconColor: const Color(0xFF1565C0),
-          iconBg: const Color(0xFFE3F2FD),
-          accentColor: const Color(0xFF1565C0),
+          iconColor: AppColors.infoBlue,
+          iconBg: AppColors.infoBlueBg,
+          accentColor: AppColors.infoBlue,
         );
     }
   }
@@ -55,16 +56,16 @@ class Message extends StatelessWidget {
     final s = _style;
 
     return Container(
-      color: Colors.black.withValues(alpha: 0.45),
+      color: AppColors.black.withValues(alpha: 0.45),
       child: Center(
         child: Container(
           width: 300,
           padding: const EdgeInsets.all(28),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
-              BoxShadow(color: Colors.black.withValues(alpha: 0.12), blurRadius: 24, offset: const Offset(0, 8)),
+              BoxShadow(color: AppColors.black.withValues(alpha: 0.12), blurRadius: 24, offset: const Offset(0, 8)),
             ],
           ),
           child: Column(
@@ -81,7 +82,7 @@ class Message extends StatelessWidget {
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Color(0xFF1A2E22)),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.textDark),
                 ),
               ],
               if (message.isNotEmpty) ...[
@@ -89,7 +90,7 @@ class Message extends StatelessWidget {
                 Text(
                   message,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 13, color: Color(0xFF4A5C50), height: 1.45),
+                  style: const TextStyle(fontSize: 13, color: AppColors.textBody, height: 1.45),
                 ),
               ],
               const SizedBox(height: 20),
@@ -120,16 +121,16 @@ class MessageWithAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black.withValues(alpha: 0.45),
+      color: AppColors.black.withValues(alpha: 0.45),
       child: Center(
         child: Container(
           width: 320,
           padding: const EdgeInsets.all(28),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
-              BoxShadow(color: Colors.black.withValues(alpha: 0.12), blurRadius: 24, offset: const Offset(0, 8)),
+              BoxShadow(color: AppColors.black.withValues(alpha: 0.12), blurRadius: 24, offset: const Offset(0, 8)),
             ],
           ),
           child: Column(
@@ -138,15 +139,15 @@ class MessageWithAction extends StatelessWidget {
               Container(
                 width: 64,
                 height: 64,
-                decoration: const BoxDecoration(color: Color(0xFFDFF0E4), shape: BoxShape.circle),
-                child: const Icon(Icons.system_update_outlined, color: Color(0xFF1F6B4A), size: 32),
+                decoration: const BoxDecoration(color: AppColors.mintLight, shape: BoxShape.circle),
+                child: const Icon(Icons.system_update_outlined, color: AppColors.courtGreen, size: 32),
               ),
               if (title.isNotEmpty) ...[
                 const SizedBox(height: 16),
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Color(0xFF1A2E22)),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.textDark),
                 ),
               ],
               if (message.isNotEmpty) ...[
@@ -154,7 +155,7 @@ class MessageWithAction extends StatelessWidget {
                 Text(
                   message,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 13, color: Color(0xFF4A5C50), height: 1.45),
+                  style: const TextStyle(fontSize: 13, color: AppColors.textBody, height: 1.45),
                 ),
               ],
               const SizedBox(height: 20),
@@ -163,7 +164,7 @@ class MessageWithAction extends StatelessWidget {
                 child: FilledButton(
                   onPressed: onPressed,
                   style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFF1F6B4A),
+                    backgroundColor: AppColors.courtGreen,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),

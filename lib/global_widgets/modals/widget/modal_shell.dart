@@ -74,7 +74,7 @@ class _ModalHeader extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF1F6B4A), Color(0xFF1B3427)],
+          colors: [AppColors.courtGreen, AppColors.darkGreen],
         ),
       ),
       child: Column(
@@ -84,17 +84,17 @@ class _ModalHeader extends StatelessWidget {
             width: 52,
             height: 52,
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.15),
+              color: AppColors.white.withValues(alpha: 0.15),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: Colors.white, size: 26),
+            child: Icon(icon, color: AppColors.white, size: 26),
           ),
           const SizedBox(height: 12),
           Text(
             title,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              color: Colors.white,
+              color: AppColors.white,
               fontSize: 18,
               fontWeight: FontWeight.w700,
               letterSpacing: -0.2,
@@ -106,7 +106,7 @@ class _ModalHeader extends StatelessWidget {
               subtitle!,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.78),
+                color: AppColors.white.withValues(alpha: 0.78),
                 fontSize: 13,
               ),
             ),
@@ -123,15 +123,15 @@ InputDecoration modalFieldDecoration({required String label, IconData? prefixIco
     labelText: label,
     prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: AppColors.primaryGreen, size: 20) : null,
     filled: true,
-    fillColor: const Color(0xFFF5F7F5),
+    fillColor: AppColors.fieldFill,
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: Color(0xFFDDE0DD)),
+      borderSide: const BorderSide(color: AppColors.borderLight),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: Color(0xFFDDE0DD)),
+      borderSide: const BorderSide(color: AppColors.borderLight),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
@@ -139,13 +139,13 @@ InputDecoration modalFieldDecoration({required String label, IconData? prefixIco
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: Colors.red, width: 1),
+      borderSide: const BorderSide(color: AppColors.errorRed, width: 1),
     ),
     focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: Colors.red, width: 2),
+      borderSide: const BorderSide(color: AppColors.errorRed, width: 2),
     ),
-    labelStyle: const TextStyle(color: Color(0xFF6B7B6E)),
+    labelStyle: const TextStyle(color: AppColors.textSubtle),
   );
 }
 
@@ -170,9 +170,9 @@ class ModalTabRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFF0F4F1),
+        color: AppColors.surfaceGreen,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFFDDE0DD)),
+        border: Border.all(color: AppColors.borderLight),
       ),
       child: Row(
         children: [
@@ -200,14 +200,14 @@ class _Tab extends StatelessWidget {
         margin: const EdgeInsets.all(3),
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: active ? AppColors.primaryGreen : Colors.transparent,
+          color: active ? AppColors.primaryGreen : AppColors.transparent,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           label,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: active ? Colors.white : const Color(0xFF6B7B6E),
+            color: active ? AppColors.white : AppColors.textSubtle,
             fontWeight: active ? FontWeight.w600 : FontWeight.w400,
             fontSize: 14,
           ),

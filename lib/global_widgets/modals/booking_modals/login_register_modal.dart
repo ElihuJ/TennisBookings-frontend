@@ -62,7 +62,7 @@ void showOnlyMembersModal({required BuildContext context, String? message}) {
         body: Text(
           message ?? context.localeString(BookingModalStrings.membersOnlyMessage),
           textAlign: TextAlign.center,
-          style: const TextStyle(color: Color(0xFF4A5C50), fontSize: 14, height: 1.5),
+          style: const TextStyle(color: AppColors.textBody, fontSize: 14, height: 1.5),
         ),
         actions: [
           FilledButton(

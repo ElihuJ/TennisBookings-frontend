@@ -270,9 +270,7 @@ class _BookingCardState extends ConsumerState<_BookingCard> {
     final fontSize = getFontSize(mobileView);
     final statusColor = _statusColor(widget.booking.status);
 
-    final confirmedCount = widget.booking.confirmedPlayerIds.contains(widget.booking.ownerId)
-        ? widget.booking.confirmedPlayerIds.length
-        : widget.booking.confirmedPlayerIds.length + 1;
+    final confirmedCount = widget.booking.confirmedPlayerIds.length + 1;
     final maxPlayers = widget.booking.format == BookingFormat.singles ? 2 : 4;
 
     return Center(

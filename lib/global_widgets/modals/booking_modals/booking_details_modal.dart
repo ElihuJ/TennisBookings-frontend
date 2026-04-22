@@ -17,7 +17,9 @@ import '../../../screens/calendar/calendar_screen.dart';
 import '../../../screens/calendar/widgets/index.dart';
 import '../../../state/index.dart';
 import '../../../strings/index.dart';
+import '../../../theme/colors.dart';
 import '../../index.dart';
+import '../widget/modal_shell.dart';
 
 enum BookingDetailsType { owner, participant, openForInvites, notMineAndPublic }
 
@@ -30,96 +32,171 @@ class BookingDetailsModal extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final startInMilliseconds = booking.startTime;
-    final endInMilliseconds = booking.endTime;
-
-    final alertDialog = AlertDialog(
-      title: _ContainerTitle(booking: booking, startInMilliseconds: startInMilliseconds, endInMilliseconds: endInMilliseconds),
-      content: _BookingContainer(booking: booking, startInMilliseconds: startInMilliseconds, endInMilliseconds: endInMilliseconds),
-      actions: _getActions(context: context, bookingDetailsType: bookingDetailsType, widgetRef: ref, booking: booking),
-      actionsAlignment: MainAxisAlignment.center,
-    );
+    final startMs = booking.startTime;
+    final endMs = booking.endTime;
+    final actions = _getActions(context: context, bookingDetailsType: bookingDetailsType, widgetRef: ref, booking: booking);
 
     if (multipleBookingsView) {
-      return alertDialog;
+      return _BookingCard(booking: booking, startMs: startMs, endMs: endMs, actions: actions);
     }
 
-    return EventfulWidget(child: alertDialog);
-  }
-}
-
-class _ContainerTitle extends HookConsumerWidget {
-  const _ContainerTitle({
-    required this.booking,
-    required this.startInMilliseconds,
-    required this.endInMilliseconds,
-  });
-
-  final Booking booking;
-  final int startInMilliseconds;
-  final int endInMilliseconds;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final eventNotifier = ref.read(eventProvider.notifier);
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(padding: const EdgeInsets.only(right: 8.0), child: PrettyText(booking.title, maxLines: 3)),
-          Padding(padding: const EdgeInsets.only(right: 8.0), child: PrettyText(prettyDateLocalFromEpoch(startInMilliseconds))),
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: PrettyText('${getLocalTimeFromEpoch(startInMilliseconds)} - ${getLocalTimeFromEpoch(endInMilliseconds)}'),
-          ),
-          IconButton(
-            onPressed: () async {
-              final url =
-                  '${web.window.origin}#${CalendarScreen.route}?clubId=${booking.clubId}&courtId=${booking.courtId}&bookingId=${booking.id}&time=$startInMilliseconds';
-              await Clipboard.setData(ClipboardData(text: url));
-              eventNotifier.showMessage(messageType: MessageType.success, message: context.localeString(BookingModalStrings.linkCopied));
-            },
-            icon: const Icon(Icons.share),
-          )
-        ],
+    return EventfulWidget(
+      child: ModalShell(
+        icon: Icons.sports_tennis,
+        title: booking.title,
+        subtitle: '${prettyDateLocalFromEpoch(startMs)}  ·  ${getLocalTimeFromEpoch(startMs)} – ${getLocalTimeFromEpoch(endMs)}',
+        body: _BookingBody(booking: booking, startMs: startMs, endMs: endMs),
+        actions: actions,
       ),
     );
   }
 }
 
-class _BookingContainer extends StatelessWidget {
-  const _BookingContainer({
+class _BookingCard extends StatelessWidget {
+  const _BookingCard({
     required this.booking,
-    required this.startInMilliseconds,
-    required this.endInMilliseconds,
+    required this.startMs,
+    required this.endMs,
+    required this.actions,
   });
 
   final Booking booking;
-  final int startInMilliseconds;
-  final int endInMilliseconds;
+  final int startMs;
+  final int endMs;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      clipBehavior: Clip.antiAlias,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: 15),
-          PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, type: PlayerIconsType.column),
-          if (booking.courtPin != null) PrettyText('${context.localeString(BookingModalStrings.courtPin)}: ${booking.courtPin}'),
-          const SizedBox(height: 15),
-          if (booking.clubPin != null) PrettyText('${context.localeString(BookingModalStrings.clubPin)}: ${booking.clubPin}'),
+          Container(
+            padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF1F6B4A), Color(0xFF1B3427)],
+              ),
+            ),
+            child: Column(
+              children: [
+                Text(
+                  booking.title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${prettyDateLocalFromEpoch(startMs)}  ·  ${getLocalTimeFromEpoch(startMs)} – ${getLocalTimeFromEpoch(endMs)}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: _BookingBody(booking: booking, startMs: startMs, endMs: endMs),
+          ),
+          if (actions != null && actions!.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              child: Row(
+                children: [
+                  for (int i = 0; i < actions!.length; i++) ...[
+                    if (i > 0) const SizedBox(width: 8),
+                    Expanded(child: actions![i]),
+                  ],
+                ],
+              ),
+            ),
         ],
       ),
     );
   }
 }
 
-List<TbTextButton> _getOwnerActions({
+class _BookingBody extends HookConsumerWidget {
+  const _BookingBody({required this.booking, required this.startMs, required this.endMs});
+
+  final Booking booking;
+  final int startMs;
+  final int endMs;
+
+  @override
+  Widget build(BuildContext context, WidgetRef widgetRef) {
+    final eventNotifier = widgetRef.read(eventProvider.notifier);
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        PlayerIcons(confirmedPlayerIds: booking.confirmedPlayerIds, booking: booking, type: PlayerIconsType.column),
+        const SizedBox(height: 12),
+        if (booking.courtPin != null)
+          _PinRow(
+            icon: Icons.meeting_room_outlined,
+            label: context.localeString(BookingModalStrings.courtPin),
+            value: booking.courtPin!,
+          ),
+        if (booking.clubPin != null)
+          _PinRow(
+            icon: Icons.lock_open_outlined,
+            label: context.localeString(BookingModalStrings.clubPin),
+            value: booking.clubPin!,
+          ),
+        const SizedBox(height: 8),
+        TextButton.icon(
+          onPressed: () async {
+            final url =
+                '${web.window.origin}#${CalendarScreen.route}?clubId=${booking.clubId}&courtId=${booking.courtId}&bookingId=${booking.id}&time=$startMs';
+            await Clipboard.setData(ClipboardData(text: url));
+            eventNotifier.showMessage(messageType: MessageType.success, message: context.localeString(BookingModalStrings.linkCopied));
+          },
+          icon: const Icon(Icons.share_outlined, size: 16),
+          label: const Text('Share booking'),
+          style: TextButton.styleFrom(foregroundColor: AppColors.primaryGreen, textStyle: const TextStyle(fontSize: 13)),
+        ),
+      ],
+    );
+  }
+}
+
+class _PinRow extends StatelessWidget {
+  const _PinRow({required this.icon, required this.label, required this.value});
+
+  final IconData icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF0F6F2),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFFDDE8E2)),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: AppColors.primaryGreen),
+          const SizedBox(width: 10),
+          Text('$label: ', style: const TextStyle(color: Color(0xFF4A5C50), fontWeight: FontWeight.w500, fontSize: 13)),
+          Text(value, style: const TextStyle(color: AppColors.darkGreen, fontWeight: FontWeight.w700, fontSize: 13)),
+        ],
+      ),
+    );
+  }
+}
+
+List<Widget> _getOwnerActions({
   required BuildContext context,
   required Booking booking,
   required WidgetRef widgetRef,
@@ -130,11 +207,12 @@ List<TbTextButton> _getOwnerActions({
   final userNotifier = widgetRef.read(userProvider.notifier);
 
   return [
-    TbTextButton(
+    FilledButton(
       onPressed: () async {
         eventNotifier.showLoading(message: context.localeString(BookingModalStrings.deleting));
-        BasicBookingPayload payload = BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId);
-        final result = await cloudFunctions.deleteBooking(DeleteBookingPayload(payload: payload));
+        final payload = DeleteBookingPayload(
+            payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
+        final result = await cloudFunctions.deleteBooking(payload);
         eventNotifier.hideLoading();
         if (result.data == true) {
           eventNotifier.showMessage(messageType: MessageType.success, message: context.localeString(BookingModalStrings.eventDeleted));
@@ -145,13 +223,17 @@ List<TbTextButton> _getOwnerActions({
         }
         eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
       },
-      color: Colors.red,
-      text: context.localeString(GeneralStrings.delete),
+      style: FilledButton.styleFrom(
+        backgroundColor: Colors.red.shade600,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.symmetric(vertical: 14),
+      ),
+      child: Text(context.localeString(GeneralStrings.delete)),
     ),
   ];
 }
 
-List<TbTextButton> _getParticipantActions({
+List<Widget> _getParticipantActions({
   required BuildContext context,
   required Booking booking,
   required WidgetRef widgetRef,
@@ -161,11 +243,12 @@ List<TbTextButton> _getParticipantActions({
   final clubsNotifier = widgetRef.read(clubsProvider.notifier);
   final userNotifier = widgetRef.read(userProvider.notifier);
   final userId = widgetRef.read(userProvider).uid;
+
   return [
-    TbTextButton(
+    FilledButton(
       onPressed: () async {
         eventNotifier.showLoading(message: context.localeString(BookingModalStrings.withdrawing));
-        WithdrawFromBookingPayload payload = WithdrawFromBookingPayload(
+        final payload = WithdrawFromBookingPayload(
             payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
         final result = await cloudFunctions.withdrawFromBooking(payload);
         eventNotifier.hideLoading();
@@ -180,13 +263,17 @@ List<TbTextButton> _getParticipantActions({
         }
         eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
       },
-      color: Colors.red,
-      text: context.localeString(BookingModalStrings.withdrawBtn),
+      style: FilledButton.styleFrom(
+        backgroundColor: Colors.red.shade600,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.symmetric(vertical: 14),
+      ),
+      child: Text(context.localeString(BookingModalStrings.withdrawBtn)),
     ),
   ];
 }
 
-List<TbTextButton> _getOpenForInvitesActions({
+List<Widget> _getOpenForInvitesActions({
   required BuildContext context,
   required Booking booking,
   required WidgetRef widgetRef,
@@ -195,15 +282,15 @@ List<TbTextButton> _getOpenForInvitesActions({
   final cloudFunctions = widgetRef.read(cloudFunctionsProvider.notifier);
   final userId = widgetRef.watch(userProvider).uid;
 
-  final requestAlreadySent = booking.requests.firstWhereOrNull((request) => request.playerId == userId) != null;
+  final requestAlreadySent = booking.requests.firstWhereOrNull((r) => r.playerId == userId) != null;
   final inThePast = isInThePast(booking.startTime);
 
-  final onTapAction = requestAlreadySent || inThePast
+  final onTap = requestAlreadySent || inThePast
       ? null
       : () async {
           eventNotifier.showLoading(message: context.localeString(BookingModalStrings.sendingRequest));
-          SendInvitePayload payload =
-              SendInvitePayload(payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
+          final payload = SendInvitePayload(
+              payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
           final result = await cloudFunctions.sendInvite(payload);
           eventNotifier.hideLoading();
           if (result.data == true) {
@@ -215,26 +302,27 @@ List<TbTextButton> _getOpenForInvitesActions({
           eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
         };
 
-  String buttonText = '';
-
-  if (inThePast) {
-    buttonText = context.localeString(BookingModalStrings.bookingClosed);
-  } else if (requestAlreadySent) {
-    buttonText = context.localeString(BookingModalStrings.requestSentBtn);
-  } else {
-    buttonText = context.localeString(BookingModalStrings.requestToJoin);
-  }
+  final buttonText = inThePast
+      ? context.localeString(BookingModalStrings.bookingClosed)
+      : requestAlreadySent
+          ? context.localeString(BookingModalStrings.requestSentBtn)
+          : context.localeString(BookingModalStrings.requestToJoin);
 
   return [
-    TbTextButton(
-      onPressed: onTapAction,
-      color: Colors.green,
-      text: buttonText,
+    FilledButton(
+      onPressed: onTap,
+      style: FilledButton.styleFrom(
+        backgroundColor: AppColors.primaryGreen,
+        disabledBackgroundColor: const Color(0xFFB0C8BB),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.symmetric(vertical: 14),
+      ),
+      child: Text(buttonText),
     ),
   ];
 }
 
-List<TbTextButton>? _getActions({
+List<Widget>? _getActions({
   required BuildContext context,
   required BookingDetailsType bookingDetailsType,
   required Booking booking,

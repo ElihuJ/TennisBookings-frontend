@@ -9,8 +9,9 @@ import '../../../global_types/index.dart';
 import '../../../models/index.dart';
 import '../../../screens/payments/casual_payment_screen.dart';
 import '../../../state/index.dart';
-import '../../../theme/index.dart';
+import '../../../theme/colors.dart';
 import '../../index.dart';
+import 'modal_shell.dart';
 
 class CasualBooking extends StatefulHookConsumerWidget {
   const CasualBooking({
@@ -41,7 +42,6 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
   String titleValue = 'Casual Booking';
   late int endDateEpoch;
   late int startDateEpoch;
-
   void Function()? submitFunction;
   Config config = Config();
 
@@ -57,28 +57,30 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_formKey.currentState?.validate() ?? false) {
         setState(() {
-          final defaultBooking = Booking(
-            id: getUuid(),
-            confirmedPlayerIds: [],
-            courtId: widget.courtSelected.id,
-            format: _bookingFormat,
-            startTime: startDateEpoch,
-            endTime: endDateEpoch,
-            private: _visibilityValue == 'Private',
-            ownerId: ref.read(userProvider).uid,
-            requests: [],
-            restrictions: null,
-            status: BookingStatus.confirmed,
-            title: titleValue,
-            clubId: widget.clubSelected.id,
-            clubName: widget.clubSelected.name,
-            courtName: widget.courtSelected.name,
-          );
+          final defaultBooking = _buildBooking();
           submitFunction = () => Navigator.of(context).pushNamed(CasualPaymentScreen.route, arguments: defaultBooking);
         });
       }
     });
   }
+
+  Booking _buildBooking() => Booking(
+        id: getUuid(),
+        confirmedPlayerIds: [],
+        courtId: widget.courtSelected.id,
+        format: _bookingFormat,
+        startTime: startDateEpoch,
+        endTime: endDateEpoch,
+        private: _visibilityValue == 'Private',
+        ownerId: ref.read(userProvider).uid,
+        requests: [],
+        restrictions: null,
+        status: BookingStatus.confirmed,
+        title: titleValue,
+        clubId: widget.clubSelected.id,
+        clubName: widget.clubSelected.name,
+        courtName: widget.courtSelected.name,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -87,23 +89,7 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
       autovalidateMode: AutovalidateMode.disabled,
       onChanged: () {
         if (_formKey.currentState?.validate() ?? false) {
-          final booking = Booking(
-            id: getUuid(),
-            confirmedPlayerIds: [],
-            courtId: widget.courtSelected.id,
-            format: _bookingFormat,
-            startTime: startDateEpoch,
-            endTime: endDateEpoch,
-            private: _visibilityValue == 'Private',
-            ownerId: ref.read(userProvider).uid,
-            requests: [],
-            restrictions: null,
-            status: BookingStatus.confirmed,
-            title: titleValue,
-            clubId: widget.clubSelected.id,
-            clubName: widget.clubSelected.name,
-            courtName: widget.courtSelected.name,
-          );
+          final booking = _buildBooking();
           submitFunction = () => Navigator.of(context).pushNamed(CasualPaymentScreen.route, arguments: booking);
         } else {
           submitFunction = null;
@@ -111,79 +97,44 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
         setState(() {});
       },
       child: Column(
-        spacing: 15,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        spacing: 12,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: [
           TextFormField(
             key: const Key('titleField'),
             initialValue: titleValue,
-            decoration: InputDecoration(
-              labelText: context.localeString(BookingFormStrings.titleLabel),
-            ),
-            onChanged: (value) {
-              titleValue = value;
-            },
-            validator: (value) {
-              String? validationError;
-              if (value == null || value.isEmpty) {
-                validationError = context.localeString(BookingFormStrings.pleaseEnterTitle);
-              }
-              return validationError;
-            },
+            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.titleLabel), prefixIcon: Icons.title),
+            onChanged: (v) => titleValue = v,
+            validator: (v) => (v == null || v.isEmpty) ? context.localeString(BookingFormStrings.pleaseEnterTitle) : null,
           ),
-          // ^ =============== FORMAT FIELD ===============
           DropdownButtonFormField<String>(
             key: const Key('formatField'),
             initialValue: _bookingFormat.name,
-            decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.formatLabel)),
+            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.formatLabel), prefixIcon: Icons.people_outline),
             items: [
-              DropdownMenuItem(value: BookingFormat.singles.name, child: PrettyText(context.localeString(BookingFormStrings.singles))),
-              DropdownMenuItem(value: BookingFormat.doubles.name, child: PrettyText(context.localeString(BookingFormStrings.doubles))),
+              DropdownMenuItem(value: BookingFormat.singles.name, child: Text(context.localeString(BookingFormStrings.singles))),
+              DropdownMenuItem(value: BookingFormat.doubles.name, child: Text(context.localeString(BookingFormStrings.doubles))),
             ],
-            onChanged: (value) {
-              setState(() {
-                _bookingFormat = BookingFormat.fromString(value!);
-              });
-            },
-            validator: (value) {
-              String? validationError;
-              if (value == null || value.isEmpty) {
-                submitFunction = null;
-                validationError = context.localeString(BookingFormStrings.pleaseEnterFormat);
-              }
-              return validationError;
-            },
+            onChanged: (v) => setState(() => _bookingFormat = BookingFormat.fromString(v!)),
+            validator: (v) => (v == null || v.isEmpty) ? context.localeString(BookingFormStrings.pleaseEnterFormat) : null,
           ),
-          // ^ =============== VISIBILITY FIELD ===============
           DropdownButtonFormField<String>(
             key: const Key('visibilityField'),
             initialValue: _visibilityValue,
-            decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.visibilityLabel)),
+            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.visibilityLabel), prefixIcon: Icons.visibility_outlined),
             items: [
-              DropdownMenuItem(value: 'Public', child: PrettyText(context.localeString(BookingFormStrings.publicOption))),
-              DropdownMenuItem(value: 'Private', child: PrettyText(context.localeString(BookingFormStrings.privateOption))),
+              DropdownMenuItem(value: 'Public', child: Text(context.localeString(BookingFormStrings.publicOption))),
+              DropdownMenuItem(value: 'Private', child: Text(context.localeString(BookingFormStrings.privateOption))),
             ],
-            onChanged: (value) {
-              setState(() {
-                _visibilityValue = value!;
-              });
-            },
-            validator: (value) {
-              String? validationError;
-              if (value == null || value.isEmpty) {
-                submitFunction = null;
-                validationError = context.localeString(BookingFormStrings.pleaseSelectVisibility);
-              }
-              return validationError;
-            },
+            onChanged: (v) => setState(() => _visibilityValue = v!),
+            validator: (v) => (v == null || v.isEmpty) ? context.localeString(BookingFormStrings.pleaseSelectVisibility) : null,
           ),
-          // ^ =============== START TIME FIELD ===============
           TextFormField(
             key: const Key('startTimeField'),
             controller: startTimeController,
-            decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.startTime)),
+            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.startTime), prefixIcon: Icons.schedule),
+            readOnly: true,
             onTap: () async {
               TimeOfDay? picked = await showTimePicker(
                 context: context,
@@ -197,11 +148,10 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
               }
             },
           ),
-          // ^ =============== END TIME FIELD ===============
           TextFormField(
             key: const Key('endTimeField'),
             controller: endTimeController,
-            decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.endTime)),
+            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.endTime), prefixIcon: Icons.schedule_outlined),
             readOnly: true,
             onTap: () async {
               TimeOfDay? picked = await showTimePicker(
@@ -216,32 +166,40 @@ class _CasualBookingState extends ConsumerState<CasualBooking> {
                 _formKey.currentState?.validate();
               }
             },
-            validator: (String? _) {
-              final validationError = validateNewTime(
-                startDateEpoch: startDateEpoch,
-                endDateEpoch: endDateEpoch,
-                bookedTimes: widget.confirmedBookedTimes,
-                context: context,
-              );
-              if (validationError != null) {}
-
-              return validationError;
-            },
+            validator: (_) => validateNewTime(
+              startDateEpoch: startDateEpoch,
+              endDateEpoch: endDateEpoch,
+              bookedTimes: widget.confirmedBookedTimes,
+              context: context,
+            ),
           ),
-          const SizedBox(height: 10),
-          // ^ =============== BUTTONS ===============
+          const SizedBox(height: 4),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              TbTextButton(
-                color: AppColors.red,
-                text: context.localeString(GeneralStrings.cancel),
-                onPressed: () => Navigator.of(context).pop(),
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: const Color(0xFF6B7B6E),
+                    side: const BorderSide(color: Color(0xFFCCCCCC)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  child: Text(context.localeString(GeneralStrings.cancel)),
+                ),
               ),
-              TbTextButton(
-                text: context.localeString(BookingFormStrings.proceedToPayment),
-                onPressed: submitFunction,
-                color: AppColors.primaryGreen,
+              const SizedBox(width: 10),
+              Expanded(
+                child: FilledButton(
+                  onPressed: submitFunction,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.primaryGreen,
+                    disabledBackgroundColor: const Color(0xFFB0C8BB),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  child: Text(context.localeString(BookingFormStrings.proceedToPayment)),
+                ),
               ),
             ],
           ),

@@ -11,8 +11,9 @@ import '../../../global_types/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
 import '../../../strings/index.dart';
-import '../../../theme/index.dart';
+import '../../../theme/colors.dart';
 import '../../index.dart';
+import 'modal_shell.dart';
 
 class ClosedBooking extends StatefulHookConsumerWidget {
   const ClosedBooking({
@@ -56,9 +57,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
 
   String _visibilityValue = 'Public';
   BookingFormat _bookingFormat = BookingFormat.singles;
-
   void Function()? submitFunction;
-  bool isValid = false;
   Config config = Config();
 
   Future<CFResult> onSubmit() async {
@@ -86,10 +85,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
       courtName: widget.courtSelected.name,
     );
 
-    final payload = CreateMemberBookingPayload(
-      booking: newBooking,
-      isOpenBooking: false, // * This is the only difference between open and closed booking
-    );
+    final payload = CreateMemberBookingPayload(booking: newBooking, isOpenBooking: false);
 
     final creatingMsg = context.localeString(BookingFormStrings.creating);
     final createdMsg = context.localeString(BookingFormStrings.created);
@@ -107,7 +103,6 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     } else {
       eventsNotifier.showMessage(messageType: MessageType.error, message: result.responseStatus.message.name);
     }
-
     return result;
   }
 
@@ -116,176 +111,133 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_formKey.currentState?.validate() ?? false) {
-        setState(() {
-          submitFunction = onSubmit;
-        });
+        setState(() => submitFunction = onSubmit);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final mobileView = isMobile(context);
-    final fontSize = getFontSize(mobileView);
-
     return Form(
       key: _formKey,
       autovalidateMode: AutovalidateMode.always,
       onChanged: () {
         _formKey.currentState!.save();
-        if (_formKey.currentState!.validate()) {
-          submitFunction = onSubmit;
-        } else {
-          submitFunction = null;
-        }
-        setState(() {});
+        setState(() => submitFunction = _formKey.currentState!.validate() ? onSubmit : null);
       },
-      child: SizedBox(
-        width: 500,
-        child: Column(
-          spacing: 15,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                TbTextButton(
-                  text: context.localeString(BookingFormStrings.bookingTab),
-                  color: AppColors.primaryGreen,
-                  onPressed: () {},
-                ),
-                TbTextButton(text: context.localeString(BookingFormStrings.lookForPlayer), onPressed: widget.switchBookingMode, color: AppColors.grey),
-              ],
-            ),
-            // ^ =============== TITLE FIELD ===============
-            TextFormField(
-              style: TextStyle(fontSize: fontSize),
-              initialValue: widget.titleValue,
-              decoration: InputDecoration(
-                labelText: context.localeString(BookingFormStrings.titleLabel),
-              ),
-              onChanged: (value) => widget.setTitleValue(value),
-              validator: (value) {
-                String? validationError;
-                if (value == null || value.isEmpty) {
-                  validationError = context.localeString(BookingFormStrings.pleaseEnterTitle);
-                }
-                return validationError;
-              },
-            ),
-            // ^ =============== FORMAT FIELD ===============
-            DropdownButtonFormField<String>(
-              initialValue: _bookingFormat.name,
-              decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.formatLabel)),
-              items: [
-                DropdownMenuItem(value: BookingFormat.singles.name, child: PrettyText(context.localeString(BookingFormStrings.singles))),
-                DropdownMenuItem(value: BookingFormat.doubles.name, child: PrettyText(context.localeString(BookingFormStrings.doubles))),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  _bookingFormat = BookingFormat.fromString(value!);
-                });
-              },
-              validator: (value) {
-                String? validationError;
-                if (value == null || value.isEmpty) {
-                  submitFunction = null;
-                  validationError = context.localeString(BookingFormStrings.pleaseEnterFormat);
-                }
-                return validationError;
-              },
-            ),
-            // ^ =============== VISIBILITY FIELD ===============
-            DropdownButtonFormField<String>(
-              initialValue: _visibilityValue,
-              decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.visibilityLabel)),
-              items: [
-                DropdownMenuItem(value: 'Public', child: PrettyText(context.localeString(BookingFormStrings.publicOption))),
-                DropdownMenuItem(value: 'Private', child: PrettyText(context.localeString(BookingFormStrings.privateOption))),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  _visibilityValue = value!;
-                });
-              },
-              validator: (value) {
-                String? validationError;
-                if (value == null || value.isEmpty) {
-                  submitFunction = null;
-                  validationError = context.localeString(BookingFormStrings.pleaseSelectVisibility);
-                }
-                return validationError;
-              },
-            ),
-            // ^ =============== START TIME FIELD ===============
-            TextFormField(
-              style: TextStyle(fontSize: fontSize),
-              controller: widget.startTimeController,
-              decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.startTime)),
-              onTap: () async {
-                TimeOfDay? picked = await showTimePicker(
-                  context: context,
-                  initialTime: TimeOfDay.fromDateTime(widget.date),
-                  initialEntryMode: TimePickerEntryMode.dial,
-                );
-                if (picked != null && context.mounted) {
-                  picked = roundToNearestQuarter(picked);
-                  widget.setStartDateEpoch(timeOfDayToEpochUtc(picked, widget.date));
-                  widget.startTimeController.text = picked.format(context);
-                }
-              },
-            ),
-            // ^ =============== END TIME FIELD ===============
-            TextFormField(
-              style: TextStyle(fontSize: fontSize),
-              controller: widget.endTimeController,
-              decoration: InputDecoration(labelText: context.localeString(BookingFormStrings.endTime)),
-              onTap: () async {
-                TimeOfDay? picked = await showTimePicker(
-                  context: context,
-                  initialTime: TimeOfDay.fromDateTime(widget.date.add(const Duration(hours: 1))),
-                  initialEntryMode: TimePickerEntryMode.dial,
-                );
-                if (picked != null && context.mounted) {
-                  picked = roundToNearestQuarter(picked);
-                  widget.setEndDateEpoch(timeOfDayToEpochUtc(picked, widget.date));
-                  widget.endTimeController.text = picked.format(context);
-                }
-              },
-              validator: (String? _) {
-                final validationError = validateNewTime(
-                  startDateEpoch: widget.startDateEpoch,
-                  endDateEpoch: widget.endDateEpoch,
-                  bookedTimes: widget.confirmedBookedTimes,
-                  context: context,
-                );
-                if (validationError != null) {
-                  submitFunction = null;
-                }
-                return validationError;
-              },
-            ),
-            const SizedBox(height: 10),
-            // ^ =============== BUTTONS ===============
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                TbTextButton(
-                  color: AppColors.red,
-                  text: context.localeString(GeneralStrings.cancel),
+      child: Column(
+        spacing: 12,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ModalTabRow(
+            leftLabel: context.localeString(BookingFormStrings.bookingTab),
+            rightLabel: context.localeString(BookingFormStrings.lookForPlayer),
+            leftActive: true,
+            onLeftTap: () {},
+            onRightTap: widget.switchBookingMode,
+          ),
+          TextFormField(
+            initialValue: widget.titleValue,
+            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.titleLabel), prefixIcon: Icons.title),
+            onChanged: widget.setTitleValue,
+            validator: (v) => (v == null || v.isEmpty) ? context.localeString(BookingFormStrings.pleaseEnterTitle) : null,
+          ),
+          DropdownButtonFormField<String>(
+            initialValue: _bookingFormat.name,
+            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.formatLabel), prefixIcon: Icons.people_outline),
+            items: [
+              DropdownMenuItem(value: BookingFormat.singles.name, child: Text(context.localeString(BookingFormStrings.singles))),
+              DropdownMenuItem(value: BookingFormat.doubles.name, child: Text(context.localeString(BookingFormStrings.doubles))),
+            ],
+            onChanged: (v) => setState(() => _bookingFormat = BookingFormat.fromString(v!)),
+            validator: (v) => (v == null || v.isEmpty) ? context.localeString(BookingFormStrings.pleaseEnterFormat) : null,
+          ),
+          DropdownButtonFormField<String>(
+            initialValue: _visibilityValue,
+            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.visibilityLabel), prefixIcon: Icons.visibility_outlined),
+            items: [
+              DropdownMenuItem(value: 'Public', child: Text(context.localeString(BookingFormStrings.publicOption))),
+              DropdownMenuItem(value: 'Private', child: Text(context.localeString(BookingFormStrings.privateOption))),
+            ],
+            onChanged: (v) => setState(() => _visibilityValue = v!),
+            validator: (v) => (v == null || v.isEmpty) ? context.localeString(BookingFormStrings.pleaseSelectVisibility) : null,
+          ),
+          TextFormField(
+            controller: widget.startTimeController,
+            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.startTime), prefixIcon: Icons.schedule),
+            readOnly: true,
+            onTap: () async {
+              TimeOfDay? picked = await showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.fromDateTime(widget.date),
+                initialEntryMode: TimePickerEntryMode.dial,
+              );
+              if (picked != null && context.mounted) {
+                picked = roundToNearestQuarter(picked);
+                widget.setStartDateEpoch(timeOfDayToEpochUtc(picked, widget.date));
+                widget.startTimeController.text = picked.format(context);
+              }
+            },
+          ),
+          TextFormField(
+            controller: widget.endTimeController,
+            decoration: modalFieldDecoration(label: context.localeString(BookingFormStrings.endTime), prefixIcon: Icons.schedule_outlined),
+            readOnly: true,
+            onTap: () async {
+              TimeOfDay? picked = await showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.fromDateTime(widget.date.add(const Duration(hours: 1))),
+                initialEntryMode: TimePickerEntryMode.dial,
+              );
+              if (picked != null && context.mounted) {
+                picked = roundToNearestQuarter(picked);
+                widget.setEndDateEpoch(timeOfDayToEpochUtc(picked, widget.date));
+                widget.endTimeController.text = picked.format(context);
+              }
+            },
+            validator: (_) {
+              final err = validateNewTime(
+                startDateEpoch: widget.startDateEpoch,
+                endDateEpoch: widget.endDateEpoch,
+                bookedTimes: widget.confirmedBookedTimes,
+                context: context,
+              );
+              if (err != null) submitFunction = null;
+              return err;
+            },
+          ),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
                   onPressed: () => Navigator.of(context).pop(),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: const Color(0xFF6B7B6E),
+                    side: const BorderSide(color: Color(0xFFCCCCCC)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  child: Text(context.localeString(GeneralStrings.cancel)),
                 ),
-                TbTextButton(
-                  text: context.localeString(BookingFormStrings.createBooking),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: FilledButton(
                   onPressed: submitFunction,
-                  color: AppColors.primaryGreen,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.primaryGreen,
+                    disabledBackgroundColor: const Color(0xFFB0C8BB),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  child: Text(context.localeString(BookingFormStrings.createBooking)),
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

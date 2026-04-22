@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/index.dart';
-import '../index.dart';
 
 class LoadingBox extends StatelessWidget {
   final String title;
@@ -11,29 +10,50 @@ class LoadingBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = Theme.of(context).textTheme.bodyLarge;
-    final messageStyle = Theme.of(context).textTheme.bodySmall;
-
     return Container(
-      color: Colors.black.withValues(alpha: 0.5),
+      color: Colors.black.withValues(alpha: 0.45),
       child: Center(
         child: Container(
-          padding: const EdgeInsets.all(16.0),
+          width: 260,
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 32),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(color: Colors.black.withValues(alpha: 0.12), blurRadius: 24, offset: const Offset(0, 8)),
+            ],
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (title.isNotEmpty) PrettyText(title, style: titleStyle, textAlign: TextAlign.center),
-              if (message.isNotEmpty) const SizedBox(height: 20.0),
-              if (message.isNotEmpty) PrettyText(message, style: messageStyle, textAlign: TextAlign.center),
-              const SizedBox(height: 20.0),
-              const CircularProgressIndicator(
-                color: AppColors.primaryGreen,
+              Container(
+                width: 64,
+                height: 64,
+                decoration: const BoxDecoration(color: Color(0xFFDFF0E4), shape: BoxShape.circle),
+                child: const Padding(
+                  padding: EdgeInsets.all(14),
+                  child: CircularProgressIndicator(
+                    color: AppColors.primaryGreen,
+                    strokeWidth: 3,
+                  ),
+                ),
               ),
-              const SizedBox(height: 20.0),
+              if (title.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Color(0xFF1A2E22)),
+                ),
+              ],
+              if (message.isNotEmpty) ...[
+                const SizedBox(height: 6),
+                Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 13, color: Color(0xFF4A5C50), height: 1.4),
+                ),
+              ],
             ],
           ),
         ),

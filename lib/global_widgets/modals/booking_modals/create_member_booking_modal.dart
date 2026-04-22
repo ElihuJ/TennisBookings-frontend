@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
-import '../../text/index.dart';
+import '../../../strings/index.dart';
 import '../widget/closed_booking.dart';
+import '../widget/modal_shell.dart';
 import '../widget/open_booking.dart';
 
 enum BookingMode { closed, open }
@@ -23,7 +25,7 @@ class CreateMemberBookingModal extends StatefulHookConsumerWidget {
   final Court courtSelected;
   final DateTime date;
   final List<BookedTimeEpoch> bookedTimes;
-  final BuildContext context; // This is a workaround to avoid passing context in the constructor
+  final BuildContext context;
 
   @override
   ConsumerState<CreateMemberBookingModal> createState() => _CreateBookingModalState();
@@ -54,27 +56,16 @@ class _CreateBookingModalState extends ConsumerState<CreateMemberBookingModal> {
     });
   }
 
-  void setTitleValue(String value) {
-    setState(() {
-      _titleValue = value;
-    });
-  }
-
-  void setStartDateEpoch(int value) {
-    setState(() {
-      startDateEpoch = value;
-    });
-  }
-
-  void setEndDateEpoch(int value) {
-    setState(() {
-      endDateEpoch = value;
-    });
-  }
+  void setTitleValue(String value) => setState(() => _titleValue = value);
+  void setStartDateEpoch(int value) => setState(() => startDateEpoch = value);
+  void setEndDateEpoch(int value) => setState(() => endDateEpoch = value);
 
   @override
   Widget build(BuildContext context) {
-    final content = _bookingMode == BookingMode.closed
+    final dateString = prettyDateUtcFromEpoch(widget.date.millisecondsSinceEpoch);
+    final isClosed = _bookingMode == BookingMode.closed;
+
+    final content = isClosed
         ? ClosedBooking(
             clubSelected: widget.clubSelected,
             courtSelected: widget.courtSelected,
@@ -108,15 +99,11 @@ class _CreateBookingModalState extends ConsumerState<CreateMemberBookingModal> {
             setEndDateEpoch: setEndDateEpoch,
           );
 
-    final dateString = prettyDateUtcFromEpoch(widget.date.millisecondsSinceEpoch);
-    final bookingModeString = _bookingMode == BookingMode.open ? 'Searching for a player' : 'Booking';
-
-    return AlertDialog(
-      title: PrettyText(
-        '${widget.courtSelected.name} $bookingModeString \n$dateString',
-        textAlign: TextAlign.center,
-      ),
-      content: content,
+    return ModalShell(
+      icon: isClosed ? Icons.event_available_outlined : Icons.person_search_outlined,
+      title: '${widget.courtSelected.name}  ·  ${isClosed ? context.localeString(BookingFormStrings.bookingTab) : context.localeString(BookingFormStrings.lookForPlayer)}',
+      subtitle: dateString,
+      body: content,
     );
   }
 }

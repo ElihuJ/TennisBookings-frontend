@@ -5,27 +5,38 @@ import '../../../screens/login/email_login_screen.dart';
 import '../../../screens/login/login_screen.dart';
 import '../../../screens/login/types.dart';
 import '../../../strings/index.dart';
-import '../../../theme/index.dart';
-import '../../index.dart';
+import '../../../theme/colors.dart';
+import '../widget/modal_shell.dart';
 
 class LoginRegisterModal extends StatelessWidget {
   const LoginRegisterModal({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: PrettyText(context.localeString(BookingModalStrings.welcome)),
-      content: PrettyText(context.localeString(BookingModalStrings.loginToContinue)),
-      actions: <Widget>[
-        TbTextButton(
-          text: context.localeString(EmailLoginScreenStrings.login),
+    return ModalShell(
+      icon: Icons.sports_tennis,
+      title: context.localeString(BookingModalStrings.welcome),
+      subtitle: context.localeString(BookingModalStrings.loginToContinue),
+      body: const SizedBox.shrink(),
+      actions: [
+        OutlinedButton(
           onPressed: () => Navigator.of(context).pushNamed(LoginScreen.route),
-          color: AppColors.secondaryGreen,
+          style: OutlinedButton.styleFrom(
+            foregroundColor: AppColors.primaryGreen,
+            side: const BorderSide(color: AppColors.primaryGreen),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            padding: const EdgeInsets.symmetric(vertical: 14),
+          ),
+          child: Text(context.localeString(EmailLoginScreenStrings.login)),
         ),
-        TbTextButton(
-          text: context.localeString(EmailLoginScreenStrings.register),
-          color: AppColors.darkGreen,
+        FilledButton(
           onPressed: () => Navigator.of(context).pushNamed(EmailLoginScreen.route, arguments: ScreenMode.register),
+          style: FilledButton.styleFrom(
+            backgroundColor: AppColors.primaryGreen,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            padding: const EdgeInsets.symmetric(vertical: 14),
+          ),
+          child: Text(context.localeString(EmailLoginScreenStrings.register)),
         ),
       ],
     );
@@ -45,13 +56,23 @@ void showOnlyMembersModal({required BuildContext context, String? message}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        title: TitleText(context.localeString(BookingModalStrings.membersOnly), textAlign: TextAlign.center),
-        content: PrettyText(message ?? context.localeString(BookingModalStrings.membersOnlyMessage)),
-        actions: <Widget>[
-          TextButton(
-            child: PrettyText(context.localeString(GeneralStrings.close)),
+      return ModalShell(
+        icon: Icons.card_membership_outlined,
+        title: context.localeString(BookingModalStrings.membersOnly),
+        body: Text(
+          message ?? context.localeString(BookingModalStrings.membersOnlyMessage),
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Color(0xFF4A5C50), fontSize: 14, height: 1.5),
+        ),
+        actions: [
+          FilledButton(
             onPressed: () => Navigator.of(context).pop(),
+            style: FilledButton.styleFrom(
+              backgroundColor: AppColors.primaryGreen,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              padding: const EdgeInsets.symmetric(vertical: 14),
+            ),
+            child: Text(context.localeString(GeneralStrings.close)),
           ),
         ],
       );

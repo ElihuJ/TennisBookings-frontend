@@ -7,8 +7,10 @@ import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
+import '../../../strings/index.dart';
 import '../../index.dart';
 import '../widget/casual_booking.dart';
+import '../widget/modal_shell.dart';
 
 class CreateCasualBookingModal extends StatefulHookConsumerWidget {
   const CreateCasualBookingModal(
@@ -22,7 +24,7 @@ class CreateCasualBookingModal extends StatefulHookConsumerWidget {
   final Court courtSelected;
   final DateTime date;
   final List<BookedTimeEpoch> bookedTimes;
-  final BuildContext context; // This is a workaround to avoid passing context in the constructor
+  final BuildContext context;
 
   @override
   ConsumerState<CreateCasualBookingModal> createState() => _CreateCasualBookingModalState();
@@ -32,29 +34,20 @@ class _CreateCasualBookingModalState extends ConsumerState<CreateCasualBookingMo
   late Future<CFResult<GetCasualPaymentIntentResponseData>> getCasualPaymentIntent;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final dateString = prettyDateUtcFromEpoch(widget.date.millisecondsSinceEpoch);
 
     return EventfulWidget(
-      child: AlertDialog(
-        title: PrettyText(
-          '${widget.courtSelected.name} Casual Booking \n$dateString',
-          textAlign: TextAlign.center,
-        ),
-        content: SizedBox(
-          width: 500,
-          child: CasualBooking(
-            clubSelected: widget.clubSelected,
-            courtSelected: widget.courtSelected,
-            date: widget.date,
-            confirmedBookedTimes: widget.bookedTimes,
-            context: context,
-          ),
+      child: ModalShell(
+        icon: Icons.credit_card_outlined,
+        title: 'Casual Booking',
+        subtitle: '${widget.courtSelected.name}  ·  $dateString',
+        body: CasualBooking(
+          clubSelected: widget.clubSelected,
+          courtSelected: widget.courtSelected,
+          date: widget.date,
+          confirmedBookedTimes: widget.bookedTimes,
+          context: context,
         ),
       ),
     );

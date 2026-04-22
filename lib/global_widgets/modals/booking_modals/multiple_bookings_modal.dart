@@ -7,8 +7,9 @@ import '../../../models/index.dart';
 import '../../../screens/calendar/widgets/index.dart';
 import '../../../state/index.dart';
 import '../../../strings/index.dart';
-import '../../../theme/index.dart';
+import '../../../theme/colors.dart';
 import '../../index.dart';
+import '../widget/modal_shell.dart';
 
 class MultipleBookingsModal extends HookConsumerWidget {
   const MultipleBookingsModal({super.key, required this.booking});
@@ -19,37 +20,44 @@ class MultipleBookingsModal extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     final club = ref.watch(clubsProvider).firstWhere((club) => club.id == booking.clubId);
-    final isMemberOfClub = user.memberships.any((membership) => membership.clubId == booking.clubId);
+    final isMemberOfClub = user.memberships.any((m) => m.clubId == booking.clubId);
+
     return EventfulWidget(
-      child: AlertDialog(
-        title: PrettyText(context.localeString(BookingModalStrings.multipleTitle), textAlign: TextAlign.center),
-        content: Container(
-          color: AppColors.blue.withAlpha(30),
-          width: 700,
-          height: 400,
+      child: ModalShell(
+        icon: Icons.calendar_month_outlined,
+        title: context.localeString(BookingModalStrings.multipleTitle),
+        maxWidth: 720,
+        body: SizedBox(
+          height: 420,
           child: CarouselSlider(
             options: CarouselOptions(
               autoPlay: true,
               enlargeCenterPage: true,
-              height: 800, // * Max Height of content box in carousel, not including title and buttons
+              height: 420,
+              viewportFraction: 0.88,
             ),
-            items: booking.mergedBookings.map((booking) {
+            items: booking.mergedBookings.map((b) {
               final bookingAndUserContext =
-                  getBookingAndUserContext(booking: booking, user: user, onlyMembers: club.onlyMembers, isMemberOfClub: isMemberOfClub);
+                  getBookingAndUserContext(booking: b, user: user, onlyMembers: club.onlyMembers, isMemberOfClub: isMemberOfClub);
               final bookingDetailsType = getBookingDetailsType(bookingAndUserContext);
               return BookingDetailsModal(
-                booking: booking,
+                booking: b,
                 bookingDetailsType: bookingDetailsType,
                 multipleBookingsView: true,
               );
             }).toList(),
           ),
         ),
-        actions: <Widget>[
-          TbTextButton(
-            text: context.localeString(GeneralStrings.close),
+        actions: [
+          OutlinedButton(
             onPressed: () => Navigator.of(context).pop(),
-            color: AppColors.grey,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.grey,
+              side: const BorderSide(color: Color(0xFFCCCCCC)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              padding: const EdgeInsets.symmetric(vertical: 14),
+            ),
+            child: Text(context.localeString(GeneralStrings.close)),
           ),
         ],
       ),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:web/web.dart' as web;
 
 import '../../global_widgets/index.dart';
 import '../../routes/index.dart';
+import '../../strings/index.dart';
 import '../../theme/index.dart';
 import '../calendar/calendar_screen.dart';
 
@@ -28,11 +30,11 @@ class _PaymentResultScreenState extends ConsumerState<PaymentResultScreen> {
   String getPaymentStatus(StripePaymentRedirectStatus status) {
     switch (status) {
       case StripePaymentRedirectStatus.succeeded:
-        return 'Payment succeeded';
+        return context.localeString(PaymentStrings.succeeded);
       case StripePaymentRedirectStatus.requiresAction:
-        return 'Payment incomplete, requires action';
+        return context.localeString(PaymentStrings.statusRequiresAction);
       case StripePaymentRedirectStatus.requiresPaymentMethod:
-        return 'Payment failed, requires payment method';
+        return context.localeString(PaymentStrings.statusRequiresPaymentMethod);
     }
   }
 
@@ -69,17 +71,15 @@ class PaymentSuccessful extends StatelessWidget {
           children: [
             Icon(Icons.check_circle, color: Colors.green, size: 100),
             const SizedBox(height: 20),
+            PrettyText(context.localeString(PaymentStrings.successfulTitle)),
             PrettyText(
-              'Payment Successful!',
-            ),
-            PrettyText(
-              'Thank you for your payment. Your transaction was successful.',
+              context.localeString(PaymentStrings.successfulMessage),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
             TbTextButton(
               onPressed: () => Navigator.of(context).pushNamed('${CalendarScreen.route}?clubId=${params.clubId}&courtId=${params.courtId}'),
-              text: 'Go to Club Calendar',
+              text: context.localeString(PaymentStrings.goToCalendar),
             ),
           ],
         ),
@@ -103,17 +103,15 @@ class PaymentFailed extends StatelessWidget {
           children: [
             Icon(Icons.error, color: Colors.red, size: 100),
             const SizedBox(height: 20),
+            PrettyText(context.localeString(PaymentStrings.failedTitle)),
             PrettyText(
-              'Payment Failed',
-            ),
-            PrettyText(
-              'Please try again or contact support.',
+              context.localeString(PaymentStrings.failedSupport),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
             TbTextButton(
               onPressed: () => Navigator.of(context).pop(),
-              text: 'Go Back',
+              text: context.localeString(GeneralStrings.goBack),
               color: AppColors.red,
             ),
           ],

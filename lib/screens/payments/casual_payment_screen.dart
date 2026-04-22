@@ -1,14 +1,15 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' show Stripe;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../assets/index.dart';
 import '../../cloud_functions/index.dart';
 import '../../global_helpers/index.dart';
 import '../../global_widgets/index.dart';
 import '../../models/index.dart';
 import '../../state/index.dart';
+import '../../strings/index.dart';
 import '../../theme/colors.dart';
 import '../login/widgets/containers.dart';
 import 'casual_payment_form.dart';
@@ -39,23 +40,18 @@ class _PaymentView extends HookConsumerWidget {
     final clubSelected = clubs.firstWhereOrNull((club) => club.id == booking.clubId);
 
     if (clubSelected == null) {
-      return const NotFoundScreen(
-        message: 'The club you are looking for does not exist.',
-      );
+      return NotFoundScreen(message: context.localeString(PaymentStrings.clubNotFound));
     }
 
     final court = clubSelected.courts.firstWhereOrNull((court) => court.id == booking.courtId);
 
     if (court == null) {
-      return const NotFoundScreen(
-        message: 'The court you are looking for does not exist.',
-      );
+      return NotFoundScreen(message: context.localeString(PaymentStrings.courtNotFound));
     }
 
     return EventfulWidget(
       child: TbScaffold(
         body: ContainerWithBackground(
-          imagePath: homeBackgroundPng,
           child: SizedBox(
             width: double.infinity,
             height: double.infinity,
@@ -65,14 +61,14 @@ class _PaymentView extends HookConsumerWidget {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return LoadingScreen(
-                      message: 'Loading payment data...',
+                      message: context.localeString(PaymentStrings.loadingData),
                       noScaffold: true,
                     );
                   }
                   if (snapshot.hasError || snapshot.data?.data == null) {
                     snapshot.error?.tbLogger('Error loading club payment data');
-                    return const NotFoundScreen(
-                      message: 'Error loading casual payment data',
+                    return NotFoundScreen(
+                      message: context.localeString(PaymentStrings.errorLoadingCasual),
                       noScaffold: true,
                     );
                   }
@@ -80,8 +76,8 @@ class _PaymentView extends HookConsumerWidget {
                   final response = snapshot.data?.data;
                   if (response == null) {
                     'Client secret is null'.tbLogger();
-                    return const NotFoundScreen(
-                      message: 'Error loading casual payment data',
+                    return NotFoundScreen(
+                      message: context.localeString(PaymentStrings.errorLoadingCasual),
                       noScaffold: true,
                     );
                   }
@@ -96,7 +92,7 @@ class _PaymentView extends HookConsumerWidget {
                     builder: (context, asyncSnapshot) {
                       if (asyncSnapshot.connectionState == ConnectionState.waiting) {
                         return LoadingScreen(
-                          message: 'Initializing payment form...',
+                          message: context.localeString(PaymentStrings.initializingForm),
                           noScaffold: true,
                         );
                       }

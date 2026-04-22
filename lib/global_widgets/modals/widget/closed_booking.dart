@@ -64,6 +64,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
   Future<CFResult> onSubmit() async {
     final eventsNotifier = ref.read(eventProvider.notifier);
     final clubsNotifier = ref.read(clubsProvider.notifier);
+    final userNotifier = ref.read(userProvider.notifier);
     final cloudFunctionsNotifier = ref.read(cloudFunctionsProvider.notifier);
     final user = ref.read(userProvider);
     final private = _visibilityValue == 'Private';
@@ -101,6 +102,7 @@ class _ClosedBookingState extends ConsumerState<ClosedBooking> {
     if (success) {
       final updatedBooking = newBooking.copyWith(id: newBookingId);
       clubsNotifier.addBooking(court: widget.courtSelected, booking: updatedBooking, isPrivate: private);
+      userNotifier.addUserBooking(updatedBooking);
       eventsNotifier.showMessage(messageType: MessageType.success, message: createdMsg);
     } else {
       eventsNotifier.showMessage(messageType: MessageType.error, message: result.responseStatus.message.name);

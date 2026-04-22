@@ -1,7 +1,6 @@
 class UserFields {
   static const String uid = 'uid';
   static const String accountCreationDate = 'accountCreationDate';
-  static const String bookings = 'bookings';
   static const String clubIds = 'clubIds';
   static const String dob = 'dob';
   static const String email = 'email';
@@ -18,7 +17,6 @@ class UserFields {
   static const List<String> allFields = [
     uid,
     accountCreationDate,
-    bookings,
     clubIds,
     dob,
     email,

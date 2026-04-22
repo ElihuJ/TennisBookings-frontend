@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_stripe_web/flutter_stripe_web.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:web/web.dart' as web;
@@ -7,6 +8,7 @@ import '../../global_helpers/index.dart';
 import '../../global_types/index.dart';
 import '../../global_widgets/index.dart';
 import '../../state/index.dart';
+import '../../strings/index.dart';
 import 'payment_result_screen.dart';
 
 String getUrlPort() => web.window.location.port;
@@ -48,16 +50,16 @@ class _StripePaymentFormState extends ConsumerState<MembershipPaymentForm> {
     final eventNotifier = ref.read(eventProvider.notifier);
     bool success = true;
     if (formIsReady) {
-      eventNotifier.showLoading(title: 'Processing payment');
+      eventNotifier.showLoading(title: context.localeString(PaymentStrings.processing));
       await pay(clubId: widget.club.id).catchError((_) {
         eventNotifier.hideLoading();
-        eventNotifier.showMessage(message: 'Payment failed', messageType: MessageType.error);
+        eventNotifier.showMessage(message: context.localeString(PaymentStrings.failed), messageType: MessageType.error);
         success = false;
         return;
       }).then((_) {
         if (success) {
           eventNotifier.hideLoading();
-          eventNotifier.showMessage(message: 'Payment succeeded', messageType: MessageType.success);
+          eventNotifier.showMessage(message: context.localeString(PaymentStrings.succeeded), messageType: MessageType.success);
         }
       });
     }
@@ -114,15 +116,14 @@ class _Title extends StatelessWidget {
     return Column(
       children: [
         PrettyText(
-          '${club.name}'
-          '\nAnnual membership fee',
+          '${club.name}\n${context.localeString(PaymentStrings.annualFee)}',
           textAlign: TextAlign.center,
           maxLines: 2,
           fontSize: getFontSize(mobileView) + 4,
         ),
         SizedBox(height: 10),
         PrettyText(
-          'Valid until $aYearFromNowString',
+          '${context.localeString(PaymentStrings.validUntil)} $aYearFromNowString',
           textAlign: TextAlign.center,
           fontSize: getFontSize(mobileView),
           style: TextStyle(fontStyle: FontStyle.italic),

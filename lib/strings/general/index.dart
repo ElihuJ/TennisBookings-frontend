@@ -13,6 +13,10 @@ class GeneralStrings {
   static const updateRequiredButton = 'update_required_button';
   static const headerVersionTitle = 'header_version_dialog_title';
   static const headerVersionButton = 'header_version_dialog_button';
+  static const headerBookings = 'header_bookings';
+  static const headerMyInvites = 'header_my_invites';
+  static const headerLogin = 'header_login';
+  static const headerRegister = 'header_register';
 
   GeneralStrings._();
 }

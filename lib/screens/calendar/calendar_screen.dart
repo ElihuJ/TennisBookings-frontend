@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../assets/index.dart';
 import '../../global_helpers/index.dart';
 import '../../global_widgets/index.dart';
 import '../../models/index.dart';
 import '../../routes/index.dart';
 import '../../state/index.dart';
+import '../../strings/index.dart';
 import '../login/widgets/containers.dart';
 import 'widgets/calendar_view.dart';
 import 'widgets/schedule_header.dart';
@@ -53,7 +54,7 @@ class _ScheduleScreen extends ConsumerState<CalendarScreen> {
     // ^ ============================== If clubs are not loaded  ==============================
     if (clubs.isEmpty) {
       clubsNotifier.loadClub(paramClubId);
-      return const LoadingScreen(message: 'Loading clubs...');
+      return LoadingScreen(message: context.localeString(ClubsStrings.loading));
     }
 
     // ^ ============================== If club is not found  ==============================
@@ -67,7 +68,7 @@ class _ScheduleScreen extends ConsumerState<CalendarScreen> {
 
     if (courts.isEmpty) {
       clubsNotifier.loadCourts(_clubSelected!);
-      return const LoadingScreen(message: 'Loading courts..');
+      return LoadingScreen(message: context.localeString(CalendarStrings.loadingCourts));
     }
 
     // ^ ============================== Setting default court ==============================
@@ -78,7 +79,6 @@ class _ScheduleScreen extends ConsumerState<CalendarScreen> {
 
     return TbScaffold(
       body: ContainerWithBackground(
-        imagePath: homeBackgroundPng,
         child: EventfulWidget(
           child: SingleChildScrollView(
             child: Container(

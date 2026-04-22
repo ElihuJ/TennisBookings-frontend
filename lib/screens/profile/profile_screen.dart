@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../assets/index.dart';
 import '../../global_widgets/index.dart';
 import '../../state/index.dart';
 import '../login/widgets/containers.dart';
@@ -40,10 +39,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         canPop: false,
         child: TbScaffold(
           body: ContainerWithBackground(
-            imagePath: homeBackgroundPng,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                OptionsDrawer(toggleSelectedOption: toggleSelectedOption),
+                OptionsDrawer(
+                  toggleSelectedOption: toggleSelectedOption,
+                  selectedOption: _selectedOption,
+                ),
                 OptionsContent(selectedOption: _selectedOption),
               ],
             ),
@@ -58,4 +60,5 @@ enum ProfileOptions {
   profileDetails,
   settings,
   memberships,
+  myBookings,
 }

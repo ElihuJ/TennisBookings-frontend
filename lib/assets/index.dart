@@ -11,6 +11,9 @@ final logoPgn = '$_iconsPrefix/logo.png';
 
 // * SVGs
 final googleSvg = '$_iconsPrefix/google.svg';
+final logoWhiteSvg = '$_iconsPrefix/logo_white.svg';
+final logoIconSvg = '$_iconsPrefix/logo_icon.svg';
+final logoPrimarySvg = '$_iconsPrefix/logo_primary.svg';
 
 // * Images
 final homeBackgroundPng = '$_imagesPrefix/home_background.jpg';

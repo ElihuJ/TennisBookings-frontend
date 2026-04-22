@@ -2,12 +2,11 @@
   "about_screen_eula": "Acuerdo de licencia de usuario final",
   "about_screen_about": "Acerca de",
   "about_screen_privacy_policy": "Política de privacidad",
-
   "ai_comments": "Comentarios de IA",
   "ai_feedback": "Comentarios de IA",
-  "ai_explained": "¡Obtén comentarios sobre tu receta de nuestro modelo de IA! \nIncluso puedes hacer preguntas usando la sección de comentarios",
+  "ai_explained": "¡Obtén comentarios sobre tu receta de nuestro modelo de IA! 
+Incluso puedes hacer preguntas usando la sección de comentarios",
   "ai_locked_message": "Desbloquea el feedback de IA suscribiéndote a premium",
-
   "aroma_category_strings_berry": "Frutos",
   "aroma_category_strings_fruity": "Frutal",
   "aroma_category_strings_dried_fruit": "Fruta seca",
@@ -21,7 +20,6 @@
   "aroma_category_strings_green": "Verde",
   "aroma_category_strings_herb_vegetal": "Hierbas y vegetales",
   "aroma_category_strings_floral": "Floral",
-
   "aroma_note_strawberry": "Fresa",
   "aroma_note_raspberry": "Frambuesa",
   "aroma_note_blueberry": "Arándano",
@@ -96,7 +94,6 @@
   "aroma_note_hibiscus": "Hibisco",
   "aroma_note_rose": "Rosa",
   "aroma_note_lavender": "Lavanda",
-
   "baskets_strings_baskets": "Canastas",
   "baskets_strings_add_new_basket": "Añadir nueva canasta",
   "baskets_strings_search_basket": "Busca canasta por nombre",
@@ -111,11 +108,13 @@
   "baskets_strings_basket_created": "Canasta creada",
   "baskets_strings_basket_updated": "Canasta actualizada",
   "baskets_strings_basket_deleted": "Canasta eliminada",
-  "baskets_strings_confirm_delete_basket": "¿Estás seguro de que quieres eliminar esta canasta?\nTambién se eliminarán todas las recetas asociadas",
+  "baskets_strings_confirm_delete_basket": "¿Estás seguro de que quieres eliminar esta canasta?
+También se eliminarán todas las recetas asociadas",
   "baskets_strings_edit_basket": "Editar canasta",
   "baskets_strings_capacity": "Capacidad",
-  "baskets_strings_limit_warning": "Has alcanzado el límite de canastas.\n\nPor favor, considera premium para canastas ilimitadas",
+  "baskets_strings_limit_warning": "Has alcanzado el límite de canastas.
 
+Por favor, considera premium para canastas ilimitadas",
   "beans_strings_beans": "Granos",
   "beans_strings_add_new_bean": "Añadir nuevo grano",
   "beans_strings_search_bean": "Buscar grano por nombre",
@@ -127,7 +126,8 @@
   "beans_strings_bean_created": "Grano creado",
   "beans_strings_bean_updated": "Grano actualizado",
   "beans_strings_bean_deleted": "Grano eliminado",
-  "beans_strings_confirm_delete_bean": "¿Estás seguro de que quieres eliminar este grano?\nTambién se eliminarán todas las recetas asociadas",
+  "beans_strings_confirm_delete_bean": "¿Estás seguro de que quieres eliminar este grano?
+También se eliminarán todas las recetas asociadas",
   "beans_strings_edit_bean": "Editar grano",
   "beans_notes_strings_notes": "Notas",
   "beans_notes_strings_add_note": "Añadir nota",
@@ -138,10 +138,11 @@
   "beans_strings_average_score": "Puntuación media",
   "beans_strings_last_used": "Último uso",
   "beans_strings_failed_to_update_bean": "Error al actualizar el grano",
-  "beans_strings_limit_warning": "Has alcanzado el límite de granos.\n\nPor favor, considera premium para granos ilimitados",
+  "beans_strings_limit_warning": "Has alcanzado el límite de granos.
+
+Por favor, considera premium para granos ilimitados",
   "beans_strings_origin": "Origen",
   "beans_notes_strings_manage_notes": "Administrar notas",
-
   "brew_strings_bean": "Grano",
   "brew_strings_dose": "Dosis",
   "brew_strings_machine": "Máquina",
@@ -158,11 +159,10 @@
   "brew_strings_score": "Puntuación",
   "brew_strings_setup": "Configuración 🛠️",
   "brew_strings_brew": "Preparar ☕️",
-  "brew_strings_rate": "Calificar ⭐️",
+  "brew_strings_rate": "Calificar",
   "brew_strings_next": "Siguiente",
   "brew_strings_recipe_saved": "Receta guardada",
   "brew_strings_saving_recipe": "Guardando receta...",
-
   "drawer_strings_baskets": "Canastas",
   "drawer_strings_beans": "Granos",
   "drawer_strings_grinders": "Moledoras",
@@ -170,7 +170,6 @@
   "drawer_strings_my_equipment": "Mi equipo",
   "drawer_strings_settings": "Ajustes",
   "drawer_strings_about": "Acerca de",
-
   "email_login_screen_already_have_an_account": "¿Ya tienes una cuenta? Inicia sesión",
   "email_login_screen_confirm_password": "Confirmar contraseña",
   "email_login_screen_create_account": "Crear cuenta",
@@ -187,12 +186,10 @@
   "email_login_screen_verification_email_sent": "Email de verificación enviado",
   "email_login_screen_welcome_back": "¡Bienvenido de nuevo!",
   "email_login_screen_or_continue_with": "O continuar con",
-
   "empty_list_no_machines": "Presiona el botón ➕ para añadir una máquina",
   "empty_list_no_beans": "Presiona el botón ➕ para añadir un grano",
   "empty_list_no_baskets": "Presiona el botón ➕ para añadir una canasta",
   "empty_list_no_grinders": "Presiona el botón ➕ para añadir una moledora",
-
   "enum_strings_light": "Claro",
   "enum_strings_medium": "Medio",
   "enum_strings_medium_dark": "Medio oscuro",
@@ -205,7 +202,6 @@
   "enum_strings_triple": "Triple",
   "enum_strings_yes": "Sí",
   "enum_strings_no": "No",
-
   "firebase_error_email_already_in_use": "Email ya en uso",
   "firebase_error_invalid_email": "Email inválido",
   "firebase_error_login_failed": "Inicio de sesión fallido",
@@ -213,7 +209,6 @@
   "firebase_error_something_went_wrong": "Algo salió mal",
   "firebase_error_user_disabled": "Tu cuenta ha sido deshabilitada",
   "firebase_error_weak_password": "Contraseña débil",
-
   "filters_sort": "Organizar",
   "filters_filter": "Filtrar",
   "filters_descending": "Descendente",
@@ -222,12 +217,10 @@
   "filters_average_score": "Puntuación media",
   "filters_name": "Name",
   "filters_total_recipes": "Total de recetas",
-
   "forgot_password_description": "Ingresa tu Email y te enviaremos un enlace para restablecer tu contraseña",
   "forgot_password_password_reset_email_sent": "Si existe una cuenta con ese Email, te hemos enviado un enlace para restablecer tu contraseña",
   "forgot_password_request_password_reset": "Solicitar restablecimiento de contraseña",
   "forgot_password_title": "Solicitud de restablecimiento de contraseña",
-
   "general_name": "Nombre",
   "general_save": "Guardar",
   "general_cancel": "Cancelar",
@@ -252,7 +245,6 @@
   "general_close": "Cerrar",
   "general_quick_glance": "Vistazo rápido",
   "general_apply": "Aplicar",
-
   "grinders_strings_grinders": "Moledoras",
   "grinders_strings_add_new_grinder": "Añadir nueva moledora",
   "grinders_strings_search_grinder": "Buscar moledora por nombre",
@@ -262,26 +254,25 @@
   "grinders_strings_grinder_created": "Moledora creada",
   "grinders_strings_grinder_updated": "Moledora actualizada",
   "grinders_strings_grinder_deleted": "Moledora eliminada",
-  "grinders_strings_confirm_delete_grinder": "¿Estás seguro de que quieres eliminar esta moledora?\nTambién se eliminarán todas las recetas asociadas",
+  "grinders_strings_confirm_delete_grinder": "¿Estás seguro de que quieres eliminar esta moledora?
+También se eliminarán todas las recetas asociadas",
   "grinders_strings_edit_grinder": "Editar moledora",
-  "grinders_strings_limit_warning": "Has alcanzado el límite de moledoras.\n\nPor favor, considera premium para moledoras ilimitadas",
+  "grinders_strings_limit_warning": "Has alcanzado el límite de moledoras.
 
+Por favor, considera premium para moledoras ilimitadas",
   "home_screen_screen_app_title": "Plantilla de Flutter",
   "home_screen_screen_welcome_message": "¡Bienvenido a la pantalla de inicio!",
-
   "login_screen_login_with_apple": "Iniciar sesión con Apple",
   "login_screen_login_with_email": "Iniciar sesión con Email",
   "login_screen_login_with_google": "Iniciar sesión con Google",
   "login_screen_logout": "Cerrar sesión",
   "login_screen_logging_in": "Iniciando sesión...",
-
   "login_sign_up_validator_confirm_password_invalid": "Las contraseñas no coinciden",
   "login_sign_up_validator_confirm_password_required": "Por favor, confirma tu contraseña",
   "login_sign_up_validator_email_invalid": "Por favor, ingresa un Email válido",
   "login_sign_up_validator_email_required": "Por favor, ingresa tu Email",
   "login_sign_up_validator_password_invalid": "La contraseña debe tener al menos 6 caracteres",
   "login_sign_up_validator_password_required": "Por favor, ingresa tu contraseña",
-
   "machines_strings_machines": "Máquinas",
   "machines_strings_add_new_machine": "Añadir nueva máquina",
   "machines_strings_search_machine": "Buscar máquina",
@@ -296,10 +287,12 @@
   "machines_strings_machine_created": "Máquina creada",
   "machines_strings_machine_updated": "Máquina actualizada",
   "machines_strings_machine_deleted": "Máquina eliminada",
-  "machines_strings_confirm_delete_machine": "¿Estás seguro de que quieres eliminar esta máquina?\nTambién se eliminarán todas las recetas asociadas",
+  "machines_strings_confirm_delete_machine": "¿Estás seguro de que quieres eliminar esta máquina?
+También se eliminarán todas las recetas asociadas",
   "machines_strings_edit_machine": "Editar máquina",
-  "machines_strings_limit_warning": "Has alcanzado el límite de máquinas.\n\nPor favor, considera premium para máquinas ilimitadas",
+  "machines_strings_limit_warning": "Has alcanzado el límite de máquinas.
 
+Por favor, considera premium para máquinas ilimitadas",
   "placeholders_missing_equipment": "Necesitaras añadir equipo para empezar",
   "placeholders_no_history": "No hay historial",
   "placeholders_no_recipes": "No hay recetas",
@@ -307,7 +300,6 @@
   "placeholders_add_a_bean": "Añadir un grano",
   "placeholders_add_a_basket": "Añadir una canasta",
   "placeholders_add_a_grinder": "Añadir una moledora",
-
   "recipes_screen_strings_ratio": "Relacion",
   "recipes_screen_strings_edit_recipe": "Editar receta",
   "recipes_screen_strings_recipe_deleted": "Receta eliminada",
@@ -315,7 +307,6 @@
   "recipes_screen_strings_recipe_details": "Detalles de la receta",
   "recipes_screen_strings_updating_recipe": "Actualizando receta...",
   "recipes_screen_strings_recipe_updated": "Receta actualizada",
-
   "settings_language_dialog_select_language": "Selecciona un idioma",
   "settings_language_dialog_english": "Inglés",
   "settings_language_dialog_spanish": "Español",
@@ -323,19 +314,32 @@
   "settings_language_dialog_french": "Francés",
   "settings_language_dialog_german": "Alemán",
   "settings_language_dialog_portuguese": "Portugués",
-
   "settings_screen_logging_out": "Cerrando sesión...",
   "settings_screen_logout": "Cerrar sesión",
   "settings_screen_select_language": "Seleccionar idioma",
   "settings_screen_settings": "Ajustes",
   "settings_screen_delete_account": "Eliminar cuenta",
   "settings_screen_deleting_account": "Eliminando cuenta...",
-  "settings_screen_confirm_delete": "¿Estás seguro de que quieres eliminar tu cuenta?\nEsta acción no se puede deshacer",
-
+  "settings_screen_confirm_delete": "¿Estás seguro de que quieres eliminar tu cuenta?
+Esta acción no se puede deshacer",
   "subscription_screen_monthly": "Mensual",
   "subscription_screen_annual": "Anual",
-  "subscription_screen_monthly_description": "Por el precio de 1 café\n\n\nObtén recetas ilimitadas 📝\n\nObtén equipo ilimitado ☕️\n\nPor un mes",
-  "subscription_screen_annual_description": "Por el precio de 10 meses\n\n\nObtén recetas ilimitadas 📝\n\nObtén equipo ilimitado ☕️\n\nPor un año!",
+  "subscription_screen_monthly_description": "Por el precio de 1 café
+
+
+Obtén recetas ilimitadas 📝
+
+Obtén equipo ilimitado ☕️
+
+Por un mes",
+  "subscription_screen_annual_description": "Por el precio de 10 meses
+
+
+Obtén recetas ilimitadas 📝
+
+Obtén equipo ilimitado ☕️
+
+Por un año!",
   "subscription_screen_choose_a_subscription": "Elige una suscripción",
   "subscription_screen_support_message": "¡Gracias por apoyar a My Espresso",
   "subscription_screen_subscription": "Suscripción",
@@ -350,18 +354,14 @@
   "subscription_screen_free_user_explained": "Como usuario gratuito, puedes usar la aplicación con equipos y recetas limitadas. Para desbloquear todas las funciones, suscríbete.",
   "subscription_screen_manage_subscriptions": "Administrar suscripciones",
   "subscription_screen_cancel_subscription_explained": "Puedes cancelar tu suscripción en cualquier momento. Tu suscripción permanecerá activa hasta el final del ciclo de facturación actual.",
-
   "tab_bar_history": "Historial",
   "tab_bar_espresso": "Espresso",
   "tab_bar_recipes": "Recetas",
-
   "versioning_update_available": "Actualización disponible",
   "versioning_please_update": "Actualiza a la última versión",
   "general_contact_us": "Contáctenos",
-
   "warnings_you_have_reached_the_limit": "Has alcanzado el límite de",
   "warnings_please_consider_premium": "Por favor, considera premium para añadir más",
-
   "general_not_allowed": "No permitido",
   "general_go_back": "Volver",
   "not_found_title": "Página no encontrada",
@@ -492,5 +492,62 @@
   "update_required_title": "Actualización requerida",
   "update_required_button": "Actualizar",
   "header_version_dialog_title": "Versión",
-  "header_version_dialog_button": "¡Genial!"
+  "header_version_dialog_button": "¡Genial!",
+  "header_bookings": "Reservas",
+  "header_my_invites": "Mis Invitaciones",
+  "header_login": "Iniciar sesión",
+  "header_register": "Registrarse",
+  "profile_my_bookings": "Mis Reservas",
+  "profile_my_bookings_upcoming": "Próximas",
+  "profile_my_bookings_past": "Pasadas",
+  "profile_my_bookings_no_upcoming": "Sin reservas próximas",
+  "profile_my_bookings_no_upcoming_sub": "Tus próximas reservas aparecerán aquí",
+  "profile_my_bookings_no_past": "Sin reservas pasadas",
+  "profile_my_bookings_no_past_sub": "Tu historial de reservas aparecerá aquí",
+  "profile_my_bookings_loading": "Cargando tus reservas...",
+  "profile_my_bookings_no_players": "Sin jugadores aún",
+  "profile_email_label": "Correo",
+  "profile_edit": "Editar Perfil",
+  "profile_save": "Guardar Cambios",
+  "profile_discard": "Descartar",
+  "profile_language": "Idioma",
+  "clubs_is_member": "Eres Miembro 🎾",
+  "clubs_you_are_a_member": "Eres Miembro",
+  "clubs_not_a_member": "No eres miembro",
+  "clubs_join_this_club": "Únete a este club",
+  "clubs_login_for_details": "Inicia sesión para más detalles",
+  "clubs_login_for_details_msg": "Necesitas iniciar sesión para ver los detalles de membresía",
+  "clubs_expiry_date": "Fecha de Expiración:",
+  "clubs_details_title": "Detalles del Club",
+  "clubs_hard_courts": "Canchas Duras:",
+  "clubs_clay_courts": "Canchas de Arcilla:",
+  "clubs_grass_courts": "Canchas de Césped:",
+  "clubs_other_courts": "Otras Canchas:",
+  "clubs_public_bookings_allowed": "Reservas Públicas Permitidas:",
+  "clubs_annual_membership_fee": "Cuota Anual de Membresía:",
+  "clubs_casual_booking": "Reserva Casual:",
+  "clubs_total_members": "Miembros Totales:",
+  "clubs_contact_title": "Contacto",
+  "clubs_contact_email": "Correo",
+  "clubs_contact_phone": "Teléfono",
+  "clubs_find_subtitle": "Encuentra clubes cerca de ti",
+  "invites_club": "Club",
+  "invites_court": "Cancha",
+  "invites_from": "Desde",
+  "invites_to": "Hasta",
+  "profile_membership_details": "Detalles de Membresía",
+  "profile_membership_address": "Dirección:",
+  "profile_membership_annual_fee": "Cuota Anual de Membresía:",
+  "profile_membership_expiry": "Vencimiento de Membresía:",
+  "profile_view_club_details": "Ver Detalles del Club",
+  "profile_no_memberships": "Sin Membresías de Club",
+  "profile_no_memberships_msg": "Parece que aún no eres miembro de ningún club.",
+  "calendar_loading_courts": "Cargando canchas...",
+  "payment_loading_data": "Cargando datos de pago...",
+  "payment_error_loading": "Error al cargar los datos de pago del club",
+  "payment_error_loading_casual": "Error al cargar los datos de pago casual",
+  "payment_initializing_form": "Inicializando formulario de pago...",
+  "payment_club_not_found": "El club que buscas no existe.",
+  "payment_court_not_found": "La cancha que buscas no existe.",
+  "payment_already_member": "Ya eres miembro de este club. Por favor revisa los detalles de tu membresía en la sección de perfil."
 }

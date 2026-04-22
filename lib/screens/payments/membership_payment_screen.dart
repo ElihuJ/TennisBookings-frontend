@@ -1,14 +1,15 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' show Stripe;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../assets/index.dart';
 import '../../cloud_functions/index.dart';
 import '../../global_helpers/index.dart';
 import '../../global_widgets/index.dart';
 import '../../routes/index.dart';
 import '../../state/index.dart';
+import '../../strings/index.dart';
 import '../../theme/colors.dart';
 import '../login/widgets/containers.dart';
 import 'membership_payment_form.dart';
@@ -30,20 +31,18 @@ class MembershipPaymentScreen extends HookConsumerWidget {
     // * This will execute when refreshing page or loading specific URL directly
     if (clubs.isEmpty) {
       clubsNotifier.loadClubs();
-      return const LoadingScreen(message: 'Loading Payment Data...');
+      return LoadingScreen(message: context.localeString(PaymentStrings.loadingData));
     }
 
     if (clubSelected == null) {
-      return const NotFoundScreen(
-        message: 'The club you are looking for does not exist.',
-      );
+      return NotFoundScreen(message: context.localeString(PaymentStrings.clubNotFound));
     }
 
     final cloudFunctions = ref.read(cloudFunctionsProvider.notifier);
     final alreadyMember = user.memberships.any((membership) => membership.clubId == clubSelected.id);
 
     if (alreadyMember) {
-      return NotFoundScreen(message: 'You are already a member of this club. Please check your membership details in the profile section.');
+      return NotFoundScreen(message: context.localeString(PaymentStrings.alreadyMember));
     }
 
     return _PaymentView(cloudFunctions: cloudFunctions, clubSelected: clubSelected);
@@ -64,7 +63,6 @@ class _PaymentView extends StatelessWidget {
     return EventfulWidget(
       child: TbScaffold(
         body: ContainerWithBackground(
-          imagePath: homeBackgroundPng,
           child: SizedBox(
             width: double.infinity,
             height: double.infinity,
@@ -74,14 +72,14 @@ class _PaymentView extends StatelessWidget {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return LoadingScreen(
-                      message: 'Loading payment data...',
+                      message: context.localeString(PaymentStrings.loadingData),
                       noScaffold: true,
                     );
                   }
                   if (snapshot.hasError || snapshot.data?.data == null) {
                     snapshot.error?.tbLogger('Error loading club payment data');
-                    return const NotFoundScreen(
-                      message: 'Error loading club payment data',
+                    return NotFoundScreen(
+                      message: context.localeString(PaymentStrings.errorLoading),
                       noScaffold: true,
                     );
                   }
@@ -89,8 +87,8 @@ class _PaymentView extends StatelessWidget {
                   final response = snapshot.data?.data;
                   if (response == null) {
                     'Client secret is null'.tbLogger();
-                    return const NotFoundScreen(
-                      message: 'Error loading club payment data',
+                    return NotFoundScreen(
+                      message: context.localeString(PaymentStrings.errorLoading),
                       noScaffold: true,
                     );
                   }
@@ -105,7 +103,7 @@ class _PaymentView extends StatelessWidget {
                     builder: (context, asyncSnapshot) {
                       if (asyncSnapshot.connectionState == ConnectionState.waiting) {
                         return LoadingScreen(
-                          message: 'Initializing payment form...',
+                          message: context.localeString(PaymentStrings.initializingForm),
                           noScaffold: true,
                         );
                       }

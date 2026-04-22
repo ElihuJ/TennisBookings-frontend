@@ -1,59 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 
 import '../../../../../../global_widgets/index.dart';
+import '../../../../../../strings/index.dart';
 import '../../../../../../theme/index.dart';
-import '../profile_details.dart';
-
-class FieldWithPencil extends StatelessWidget {
-  final Function() onTap;
-  final Widget child;
-  final ProfileDetailsMode mode;
-
-  const FieldWithPencil({
-    super.key,
-    required this.child,
-    required this.onTap,
-    required this.mode,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final smallScreen = screenWidth < 600;
-
-    return Padding(
-      padding: smallScreen ? const EdgeInsets.only(right: 20) : const EdgeInsets.only(right: 40),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          mode != ProfileDetailsMode.edit
-              ? IconButton(
-                  color: AppColors.almostWhite,
-                  icon: const Icon(Icons.edit),
-                  onPressed: onTap,
-                )
-              : const SizedBox(width: 40),
-          Container(
-            width: 200,
-            height: 100,
-            padding: const EdgeInsets.all(16),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(10.0),
-              color: Colors.white,
-            ),
-            child: child,
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class ActionButtons extends StatelessWidget {
-  final Function() onCancel;
+  final VoidCallback onCancel;
   final void Function()? onSave;
 
   const ActionButtons({
@@ -66,17 +19,16 @@ class ActionButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         TbTextButton(
           onPressed: onCancel,
           color: AppColors.grey,
-          text: 'Discard',
+          text: context.localeString(ProfileStrings.discardChanges),
         ),
-        SizedBox(width: 20),
+        const SizedBox(width: 16),
         TbTextButton(
           onPressed: onSave,
-          text: 'Save\nchanges',
+          text: context.localeString(ProfileStrings.saveChanges),
         ),
       ],
     );

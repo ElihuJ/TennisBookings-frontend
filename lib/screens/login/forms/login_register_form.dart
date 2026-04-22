@@ -10,16 +10,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../assets/index.dart';
 import '../../../global_helpers/index.dart';
 import '../../../global_types/index.dart';
-import '../../../global_widgets/index.dart';
 import '../../../state/index.dart';
 import '../../../strings/login/index.dart';
+import '../../../theme/colors.dart';
 import '../../home_screen.dart';
 import '../helpers/form_helpers.dart';
 import '../helpers/helper.dart';
 import '../types.dart';
 import '../widgets/text_field.dart';
-
-const double _margin = 15;
 
 class LoginRegisterForm extends StatefulHookConsumerWidget {
   const LoginRegisterForm({
@@ -42,8 +40,6 @@ class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
 
   String password = '';
   String confirmPassword = '';
-
-  // * ================== Controllers ================
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -71,8 +67,6 @@ class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
     confirmPasswordController.clear();
   }
 
-  // * ================== View ==================
-
   @override
   Widget build(BuildContext context) {
     final isLogin = widget.isLogin;
@@ -83,13 +77,14 @@ class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
 
     void onSubmit() async {
       bool success = formKey.currentState!.validate();
-      if (!success) {
-        return;
-      }
-      eventStatusNotifier.showLoading(
-          message: isLogin ? context.localeString(EmailLoginScreenStrings.loggingIn) : context.localeString(EmailLoginScreenStrings.creatingAccount));
+      if (!success) return;
 
-      // * Login or create account
+      eventStatusNotifier.showLoading(
+        message: isLogin
+            ? context.localeString(EmailLoginScreenStrings.loggingIn)
+            : context.localeString(EmailLoginScreenStrings.creatingAccount),
+      );
+
       ErrorInfo? errorInfo;
       fb_auth.User? user;
 
@@ -99,15 +94,12 @@ class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
         (user, errorInfo) = await firebaseNotifier.createAccount(email: widget.email, password: password);
       }
 
-      // * Clear fields if no errorInfo
       if (errorInfo == null) {
         clearFields();
         if (!isLogin && user != null) {
           (success, errorInfo) = await userNotifier.createUser(name: user.displayName, uid: user.uid, email: user.email);
         }
       }
-
-      // * Message handling
 
       final messageType = errorInfo != null ? errorInfo.$1 : MessageType.success;
       final message = errorInfo != null
@@ -143,8 +135,7 @@ class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
       child: Form(
         key: formKey,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             LoginTextField(
               controller: emailController,
@@ -162,19 +153,41 @@ class _LoginRegisterFormState extends ConsumerState<LoginRegisterForm> {
                 fieldType: FieldType.confirmPassword,
                 validator: (value) => confirmPasswordValidator(value, password, context),
               ),
-            TbTextButton(
-              text: (isLogin ? context.localeString(EmailLoginScreenStrings.login) : context.localeString(EmailLoginScreenStrings.createAccount)),
+            FilledButton(
               onPressed: onSubmit,
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.primaryGreen,
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: Text(
+                isLogin ? context.localeString(EmailLoginScreenStrings.login) : context.localeString(EmailLoginScreenStrings.createAccount),
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+              ),
             ),
-            const SizedBox(height: _margin),
-            if (!isLogin)
-              Column(
+            if (!isLogin) ...[
+              const SizedBox(height: 20),
+              Row(
                 children: [
-                  PrettyText(context.localeString(EmailLoginScreenStrings.orContinueWith)),
-                  const SizedBox(height: _margin),
-                  SocialsRegister(eventNotifier: eventNotifier, firebaseNotifier: firebaseNotifier, userNotifier: userNotifier),
+                  Expanded(child: Divider(color: Colors.grey.shade300)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Text(
+                      context.localeString(EmailLoginScreenStrings.orContinueWith),
+                      style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                    ),
+                  ),
+                  Expanded(child: Divider(color: Colors.grey.shade300)),
                 ],
-              )
+              ),
+              const SizedBox(height: 16),
+              SocialsRegister(
+                eventNotifier: eventNotifier,
+                firebaseNotifier: firebaseNotifier,
+                userNotifier: userNotifier,
+              ),
+            ],
+            const SizedBox(height: 8),
           ],
         ),
       ),
@@ -196,26 +209,38 @@ class SocialsRegister extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        LoginButton(
-          onTap: () async {
-            final resultHandler = ResultHandler();
-            await signInWithGoogle(
-              context: context,
-              eventNotifier: eventNotifier,
-              firebaseAuthNotifier: firebaseNotifier,
-              userNotifier: userNotifier,
-              resultHandler: resultHandler,
-            );
-            if (resultHandler.error == null && context.mounted) {
-              Navigator.pushNamedAndRemoveUntil(context, HomeScreen.route, (route) => false);
-            }
-          },
-          icon: SvgPicture.asset(googleSvg),
-          text: context.localeString(LoginScreenStrings.loginWithGoogle),
-        ),
-      ],
+    return OutlinedButton(
+      onPressed: () async {
+        final resultHandler = ResultHandler();
+        await signInWithGoogle(
+          context: context,
+          eventNotifier: eventNotifier,
+          firebaseAuthNotifier: firebaseNotifier,
+          userNotifier: userNotifier,
+          resultHandler: resultHandler,
+        );
+        if (resultHandler.error == null && context.mounted) {
+          Navigator.pushNamedAndRemoveUntil(context, HomeScreen.route, (route) => false);
+        }
+      },
+      style: OutlinedButton.styleFrom(
+        minimumSize: const Size(double.infinity, 50),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        side: BorderSide(color: Colors.grey.shade300),
+        foregroundColor: Colors.black87,
+        backgroundColor: Colors.white,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(googleSvg, width: 20, height: 20),
+          const SizedBox(width: 10),
+          Text(
+            context.localeString(LoginScreenStrings.loginWithGoogle),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black87),
+          ),
+        ],
+      ),
     );
   }
 }

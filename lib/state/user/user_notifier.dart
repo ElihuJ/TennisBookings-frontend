@@ -25,6 +25,11 @@ class UserNotifier extends StateNotifier<User> {
     if (doc.exists) {
       final data = doc.data() as FirestoreResponse;
       state = User.fromJson(data);
+
+      final bookingsSnap = await usersCollection.doc(uid).collection(UserSubCollections.bookings).get();
+      final bookings = bookingsSnap.docs.map((doc) => Booking.fromJson(Map<String, dynamic>.from(doc.data()))).toList();
+      state = state.copyWith(bookings: bookings);
+
       cloudFunctionsNotifier.getActiveOpenBookings().then((result) {
         if (result.responseStatus.code == CFResponseCode.ok) {
           setBookingsWithPopulatedRequests(requests: result.data!);
@@ -93,5 +98,21 @@ class UserNotifier extends StateNotifier<User> {
   void updateUser({required User user}) async {
     final dateNowAsInt = nowToEpochUtc();
     state = user.copyWith(gender: user.gender, dob: user.dob, name: user.name, photoUrl: user.photoUrl, lastLogin: dateNowAsInt);
+  }
+
+  void addUserBooking(Booking booking) {
+    state = state.copyWith(bookings: [...state.bookings, booking]);
+  }
+
+  void updateUserBooking(Booking booking) {
+    state = state.copyWith(
+      bookings: state.bookings.map((b) => b.id == booking.id ? booking : b).toList(),
+    );
+  }
+
+  void removeBooking(String bookingId) {
+    state = state.copyWith(
+      bookings: state.bookings.where((b) => b.id != bookingId).toList(),
+    );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_stripe_web/flutter_stripe_web.dart' hide Card;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,7 @@ import '../../global_types/index.dart';
 import '../../global_widgets/index.dart';
 import '../../models/index.dart';
 import '../../state/index.dart';
+import '../../strings/index.dart';
 import 'payment_result_screen.dart';
 
 String getUrlPort() => web.window.location.port;
@@ -52,16 +54,16 @@ class _StripePaymentFormModalState extends ConsumerState<CasualPaymentForm> {
     final eventNotifier = ref.read(eventProvider.notifier);
     bool success = true;
     if (formIsReady) {
-      eventNotifier.showLoading(title: 'Processing payment');
+      eventNotifier.showLoading(title: context.localeString(PaymentStrings.processing));
       await pay(clubId: widget.club.id, courtId: widget.court.id).catchError((_) {
         eventNotifier.hideLoading();
-        eventNotifier.showMessage(message: 'Payment failed', messageType: MessageType.error);
+        eventNotifier.showMessage(message: context.localeString(PaymentStrings.failed), messageType: MessageType.error);
         success = false;
         return;
       }).then((_) {
         if (success) {
           eventNotifier.hideLoading();
-          eventNotifier.showMessage(message: 'Payment succeeded', messageType: MessageType.success);
+          eventNotifier.showMessage(message: context.localeString(PaymentStrings.succeeded), messageType: MessageType.success);
         }
       });
     }
@@ -136,7 +138,7 @@ class _Title extends StatelessWidget {
             ),
             SizedBox(height: 10),
             PrettyText(
-              'Booking details are: ${booking.private ? 'Private' : 'Public'}',
+              '${context.localeString(PaymentStrings.bookingDetailsLabel)} ${booking.private ? context.localeString(PaymentStrings.bookingPrivate) : context.localeString(PaymentStrings.bookingPublic)}',
               textAlign: TextAlign.center,
               fontSize: getFontSize(mobileView),
               style: TextStyle(fontStyle: FontStyle.italic),

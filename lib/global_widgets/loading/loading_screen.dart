@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 
 import '../../global_helpers/index.dart';
 import '../../screens/home_screen.dart';
+import '../../strings/index.dart';
 import '../../theme/colors.dart';
 import '../containers/bordered_box.dart';
 import '../index.dart';
@@ -81,7 +83,7 @@ class NotFoundScreen extends StatelessWidget {
           const SizedBox(height: 20),
           TbTextButton(
             onPressed: () => Navigator.of(context).pushNamed(HomeScreen.route),
-            text: 'Go Back',
+            text: context.localeString(GeneralStrings.goBack),
             color: AppColors.red,
           ),
         ],

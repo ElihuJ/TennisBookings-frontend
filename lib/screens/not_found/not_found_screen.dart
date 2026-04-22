@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 
 import '../../global_widgets/index.dart';
+import '../../strings/index.dart';
 
 class NotFoundScreen extends StatelessWidget {
   const NotFoundScreen({super.key});
@@ -26,7 +28,7 @@ class NotFoundScreen extends StatelessWidget {
             ),
             SizedBox(height: 10.0),
             PrettyText(
-              'Page Not Found',
+              context.localeString(GeneralStrings.notFoundTitle),
               style: TextStyle(fontSize: 20.0),
             ),
             SizedBox(height: 20.0),
@@ -34,7 +36,7 @@ class NotFoundScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: PrettyText('Go Back'),
+              child: PrettyText(context.localeString(GeneralStrings.goBack)),
             ),
           ],
         ),

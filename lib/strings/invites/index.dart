@@ -9,6 +9,10 @@ class InvitesStrings {
   static const declined = 'invites_declined';
   static const decline = 'invites_decline';
   static const genderLabel = 'invites_gender_label';
+  static const club = 'invites_club';
+  static const court = 'invites_court';
+  static const from = 'invites_from';
+  static const to = 'invites_to';
 
   InvitesStrings._();
 }

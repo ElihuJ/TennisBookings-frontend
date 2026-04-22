@@ -14,6 +14,13 @@ class PaymentStrings {
   static const bookingDetailsLabel = 'payment_booking_details_label';
   static const annualFee = 'payment_annual_fee';
   static const validUntil = 'payment_valid_until';
+  static const loadingData = 'payment_loading_data';
+  static const errorLoading = 'payment_error_loading';
+  static const errorLoadingCasual = 'payment_error_loading_casual';
+  static const initializingForm = 'payment_initializing_form';
+  static const clubNotFound = 'payment_club_not_found';
+  static const courtNotFound = 'payment_court_not_found';
+  static const alreadyMember = 'payment_already_member';
 
   PaymentStrings._();
 }

@@ -1,6 +1,5 @@
 import 'dart:collection';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../global_helpers/index.dart';
@@ -18,7 +17,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
   final String name;
   final String email;
   final int accountCreationDate;
-  final List<DocumentReference<Map<String, dynamic>>> bookings;
+  final List<Booking> bookings;
   final int dob; // date of birth in epoch milliseconds
   final Gender gender;
   final int lastLogin;
@@ -29,6 +28,10 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
   final double? utrRating;
   final List<StripeClubDetails>? stripeClubDetails;
   final List<BookingWithPopulatedRequest> bookingsWithPopulatedRequests;
+
+  // Alias kept for UI compatibility — bookings already contains full Booking data
+  List<Booking> get userBookings => bookings;
+
   @override
   final List<String> allFields = UserFields.allFields;
 
@@ -51,7 +54,6 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
   }) : super({
           UserFields.uid: uid,
           UserFields.accountCreationDate: accountCreationDate,
-          UserFields.bookings: bookings,
           UserFields.dob: dob,
           UserFields.email: email,
           UserFields.gender: gender,
@@ -88,7 +90,6 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       final uid = verifyRequiredProp<String>(prop: json[UserFields.uid], propName: UserFields.uid, defaultValue: _defaultId);
       final accountCreationDate =
           verifyRequiredProp<int>(prop: json[UserFields.accountCreationDate], propName: UserFields.accountCreationDate, defaultValue: 0);
-      final bookingsRaw = verifyRequiredProp<List>(prop: json[UserFields.bookings], propName: UserFields.bookings, defaultValue: []);
       final dob = verifyRequiredProp<int>(prop: json[UserFields.dob], propName: UserFields.dob, defaultValue: 0);
       final email = verifyRequiredProp<String>(prop: json[UserFields.email], propName: UserFields.email, defaultValue: _defaultEmail);
       final genderRaw =
@@ -108,14 +109,11 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       final utrRating = verifyNotRequiredProp<double?>(prop: json[UserFields.utrRating], propName: UserFields.utrRating);
 
       // * Transformations
-      List<DocumentReference<Map<String, dynamic>>> bookings;
       List<StripeClubDetails> stripeClubDetails;
       try {
-        bookings = List<DocumentReference<Map<String, dynamic>>>.from(bookingsRaw);
         stripeClubDetails = List<StripeClubDetails>.from(stripeClubDetailsRaw.map((x) => StripeClubDetails.fromJson(x)));
       } catch (e) {
-        e.tbLogger('ERROR CONVERTING BOOKINGS', DebugLevel.warning);
-        bookings = [];
+        e.tbLogger('ERROR CONVERTING STRIPE DETAILS', DebugLevel.warning);
         stripeClubDetails = [];
       }
       final gender = Gender.values.firstWhere(
@@ -129,7 +127,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
       return User(
         uid: uid,
         accountCreationDate: accountCreationDate,
-        bookings: bookings,
+        bookings: [],
         dob: dob,
         email: email,
         gender: gender,
@@ -153,7 +151,6 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
   FirestorePayload toJson() => {
         UserFields.uid: uid,
         UserFields.accountCreationDate: accountCreationDate,
-        UserFields.bookings: bookings,
         UserFields.dob: dob,
         UserFields.email: email,
         UserFields.gender: gender.name,
@@ -171,7 +168,7 @@ class User extends MapView<String, dynamic> implements FirestoreModel {
   User copyWith({
     String? uid,
     int? accountCreationDate,
-    List<DocumentReference<Map<String, dynamic>>>? bookings,
+    List<Booking>? bookings,
     List<String>? clubIds,
     int? dob,
     String? email,

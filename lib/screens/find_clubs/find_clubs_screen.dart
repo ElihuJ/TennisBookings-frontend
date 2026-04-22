@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../assets/index.dart';
 import '../../global_widgets/index.dart';
 import '../../state/clubs/index.dart';
+import '../../strings/index.dart';
 import '../login/widgets/containers.dart';
 import 'clubs_table.dart';
 
@@ -19,9 +20,9 @@ class FindClubsScreen extends HookConsumerWidget {
     // * This will execute when refreshing page or loading specific URL directly
     if (clubs.isEmpty) {
       clubsNotifier.loadClubs();
-      return const TbScaffold(
+      return TbScaffold(
         body: Center(
-          child: PrettyText('Loading clubs...'),
+          child: PrettyText(context.localeString(ClubsStrings.loading)),
         ),
       );
     }
@@ -35,7 +36,6 @@ class FindClubsScreen extends HookConsumerWidget {
         canPop: false,
         child: TbScaffold(
           body: ContainerWithBackground(
-            imagePath: homeBackgroundPng,
             child: ClubsTable(clubs: uniqueClubs),
           ),
         ),

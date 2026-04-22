@@ -127,6 +127,7 @@ List<TbTextButton> _getOwnerActions({
   final eventNotifier = widgetRef.read(eventProvider.notifier);
   final cloudFunctions = widgetRef.read(cloudFunctionsProvider.notifier);
   final clubsNotifier = widgetRef.read(clubsProvider.notifier);
+  final userNotifier = widgetRef.read(userProvider.notifier);
 
   return [
     TbTextButton(
@@ -138,6 +139,7 @@ List<TbTextButton> _getOwnerActions({
         if (result.data == true) {
           eventNotifier.showMessage(messageType: MessageType.success, message: context.localeString(BookingModalStrings.eventDeleted));
           clubsNotifier.removeBooking(booking: booking);
+          userNotifier.removeBooking(booking.id);
           if (context.mounted) Navigator.of(context).pop();
           return;
         }
@@ -157,6 +159,7 @@ List<TbTextButton> _getParticipantActions({
   final eventNotifier = widgetRef.read(eventProvider.notifier);
   final cloudFunctions = widgetRef.read(cloudFunctionsProvider.notifier);
   final clubsNotifier = widgetRef.read(clubsProvider.notifier);
+  final userNotifier = widgetRef.read(userProvider.notifier);
   final userId = widgetRef.read(userProvider).uid;
   return [
     TbTextButton(
@@ -171,6 +174,7 @@ List<TbTextButton> _getParticipantActions({
           final updatedBooking =
               booking.copyWith(confirmedPlayerIds: booking.confirmedPlayerIds..remove(userId), status: BookingStatus.open);
           clubsNotifier.updateBooking(booking: updatedBooking, userId: userId);
+          userNotifier.removeBooking(booking.id);
           if (context.mounted) Navigator.of(context).pop();
           return;
         }

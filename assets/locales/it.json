@@ -2,12 +2,11 @@
   "about_screen_eula": "Contratto di licenza per l'utente finale",
   "about_screen_about": "Informazioni",
   "about_screen_privacy_policy": "Informativa sulla privacy",
-
   "ai_comments": "Commenti IA",
   "ai_feedback": "Feedback IA",
-  "ai_explained": "Ricevi feedback sulla tua ricetta dal nostro modello di IA! \nPuoi anche fare domande usando la sezione commenti",
+  "ai_explained": "Ricevi feedback sulla tua ricetta dal nostro modello di IA! 
+Puoi anche fare domande usando la sezione commenti",
   "ai_locked_message": "Sblocca il feedback IA iscrivendoti a Premium",
-
   "aroma_category_strings_berry": "Frutti di bosco",
   "aroma_category_strings_fruity": "Fruttato",
   "aroma_category_strings_dried_fruit": "Frutta secca",
@@ -21,7 +20,6 @@
   "aroma_category_strings_green": "Verde",
   "aroma_category_strings_herb_vegetal": "Erbe e vegetali",
   "aroma_category_strings_floral": "Floreale",
-
   "aroma_note_strawberry": "Fragola",
   "aroma_note_raspberry": "Lampone",
   "aroma_note_blueberry": "Mirtillo",
@@ -96,7 +94,6 @@
   "aroma_note_hibiscus": "Ibisco",
   "aroma_note_rose": "Rosa",
   "aroma_note_lavender": "Lavanda",
-
   "baskets_strings_baskets": "Cestini",
   "baskets_strings_add_new_basket": "Aggiungi nuovo cestino",
   "baskets_strings_search_basket": "Cerca per nome del cestino",
@@ -111,11 +108,13 @@
   "baskets_strings_basket_created": "Cestino creato",
   "baskets_strings_basket_updated": "Cestino aggiornato",
   "baskets_strings_basket_deleted": "Cestino eliminato",
-  "baskets_strings_confirm_delete_basket": "Sei sicuro di voler eliminare questo cestino?\nVerranno eliminati anche tutte le ricette che utilizzano questo cestino.",
+  "baskets_strings_confirm_delete_basket": "Sei sicuro di voler eliminare questo cestino?
+Verranno eliminati anche tutte le ricette che utilizzano questo cestino.",
   "baskets_strings_edit_basket": "Modifica cestino",
   "baskets_strings_capacity": "Capacità",
-  "baskets_strings_limit_warning": "Hai raggiunto il limite di cestini.\n\nConsidera l'opzione premium per cestini illimitati.",
+  "baskets_strings_limit_warning": "Hai raggiunto il limite di cestini.
 
+Considera l'opzione premium per cestini illimitati.",
   "beans_strings_beans": "Caffè",
   "beans_strings_add_new_bean": "Aggiungi nuovo caffè",
   "beans_strings_search_bean": "Cerca per nome del caffè",
@@ -127,7 +126,8 @@
   "beans_strings_bean_created": "Caffè creato",
   "beans_strings_bean_updated": "Caffè aggiornato",
   "beans_strings_bean_deleted": "Caffè eliminato",
-  "beans_strings_confirm_delete_bean": "Sei sicuro di voler eliminare questo caffè?\nVerranno eliminate anche tutte le ricette che utilizzano questo caffè.",
+  "beans_strings_confirm_delete_bean": "Sei sicuro di voler eliminare questo caffè?
+Verranno eliminate anche tutte le ricette che utilizzano questo caffè.",
   "beans_strings_edit_bean": "Modifica caffè",
   "beans_notes_strings_notes": "Note",
   "beans_notes_strings_add_note": "Aggiungi nota",
@@ -138,10 +138,11 @@
   "beans_strings_average_score": "Punteggio medio",
   "beans_strings_last_used": "Ultimo utilizzo",
   "beans_strings_failed_to_update_bean": "Impossibile aggiornare il caffè",
-  "beans_strings_limit_warning": "Hai raggiunto il limite di caffè.\n\nConsidera l'opzione premium per caffè illimitati.",
+  "beans_strings_limit_warning": "Hai raggiunto il limite di caffè.
+
+Considera l'opzione premium per caffè illimitati.",
   "beans_strings_origin": "Origine",
   "beans_notes_strings_manage_notes": "Gestisci note",
-
   "brew_strings_bean": "Caffè",
   "brew_strings_dose": "Dose",
   "brew_strings_machine": "Macchina",
@@ -158,11 +159,10 @@
   "brew_strings_score": "Punteggio",
   "brew_strings_setup": "Configurazione 🛠️",
   "brew_strings_brew": "Preparazione ☕️",
-  "brew_strings_rate": "Vota ⭐️",
+  "brew_strings_rate": "Vota",
   "brew_strings_next": "Avanti",
   "brew_strings_recipe_saved": "Ricetta salvata",
   "brew_strings_saving_recipe": "Salvataggio ricetta...",
-
   "drawer_strings_baskets": "Cestini",
   "drawer_strings_beans": "Caffè",
   "drawer_strings_grinders": "Macinacaffè",
@@ -170,7 +170,6 @@
   "drawer_strings_my_equipment": "Il mio equipaggiamento",
   "drawer_strings_settings": "Impostazioni",
   "drawer_strings_about": "Informazioni",
-
   "email_login_screen_already_have_an_account": "Hai già un account? Accedi",
   "email_login_screen_confirm_password": "Conferma password",
   "email_login_screen_create_account": "Crea account",
@@ -186,12 +185,10 @@
   "email_login_screen_sign_up": "Registrati",
   "email_login_screen_verification_email_sent": "Email di verifica inviata",
   "email_login_screen_welcome_back": "Bentornato!",
-
   "empty_list_no_machines": "Premi il pulsante ➕ qui sotto per aggiungere una macchina",
   "empty_list_no_beans": "Premi il pulsante ➕ qui sotto per aggiungere un caffè",
   "empty_list_no_baskets": "Premi il pulsante ➕ qui sotto per aggiungere un cestino",
   "empty_list_no_grinders": "Premi il pulsante ➕ qui sotto per aggiungere un macinacaffè",
-
   "enum_strings_light": "Leggero",
   "enum_strings_medium": "Medio",
   "enum_strings_medium_dark": "Medio scuro",
@@ -204,7 +201,6 @@
   "enum_strings_triple": "Triplo",
   "enum_strings_yes": "Sì",
   "enum_strings_no": "No",
-
   "firebase_error_email_already_in_use": "Email già in uso",
   "firebase_error_invalid_email": "Email non valida",
   "firebase_error_login_failed": "Accesso non riuscito",
@@ -212,7 +208,6 @@
   "firebase_error_something_went_wrong": "Qualcosa è andato storto",
   "firebase_error_user_disabled": "Il tuo account è stato disabilitato",
   "firebase_error_weak_password": "Password debole",
-
   "filters_sort": "Ordina",
   "filters_filter": "Filtra",
   "filters_descending": "Decrescente",
@@ -221,12 +216,10 @@
   "filters_average_score": "Punteggio medio",
   "filters_name": "Nome",
   "filters_total_recipes": "Ricette totali",
-
   "forgot_password_description": "Inserisci la tua email e ti invieremo un link per reimpostare la password",
   "forgot_password_password_reset_email_sent": "Se esiste un account con quella email, ti abbiamo inviato un link per reimpostare la password",
   "forgot_password_request_password_reset": "Richiedi reimpostazione password",
   "forgot_password_title": "Richiesta reimpostazione password",
-
   "general_name": "Nome",
   "general_save": "Salva",
   "general_cancel": "Annulla",
@@ -251,7 +244,6 @@
   "general_close": "Chiudi",
   "general_quick_glance": "Occhiata veloce",
   "general_apply": "Applica",
-
   "grinders_strings_grinders": "Macinacaffè",
   "grinders_strings_add_new_grinder": "Aggiungi nuovo macinacaffè",
   "grinders_strings_search_grinder": "Cerca per nome del macinacaffè",
@@ -261,26 +253,25 @@
   "grinders_strings_grinder_created": "Macinacaffè creato",
   "grinders_strings_grinder_updated": "Macinacaffè aggiornato",
   "grinders_strings_grinder_deleted": "Macinacaffè eliminato",
-  "grinders_strings_confirm_delete_grinder": "Sei sicuro di voler eliminare questo macinacaffè?\nVerranno eliminate anche tutte le ricette che utilizzano questo macinacaffè.",
+  "grinders_strings_confirm_delete_grinder": "Sei sicuro di voler eliminare questo macinacaffè?
+Verranno eliminate anche tutte le ricette che utilizzano questo macinacaffè.",
   "grinders_strings_edit_grinder": "Modifica macinacaffè",
-  "grinders_strings_limit_warning": "Hai raggiunto il limite di macinacaffè.\n\nConsidera l'opzione premium per macinacaffè illimitati.",
+  "grinders_strings_limit_warning": "Hai raggiunto il limite di macinacaffè.
 
+Considera l'opzione premium per macinacaffè illimitati.",
   "home_screen_screen_app_title": "My Espresso",
   "home_screen_screen_welcome_message": "Benvenuto nella schermata principale!",
-
   "login_screen_login_with_apple": "Accedi con Apple",
   "login_screen_login_with_email": "Accedi con Email",
   "login_screen_login_with_google": "Accedi con Google",
   "login_screen_logout": "Esci",
   "login_screen_logging_in": "Accesso in corso...",
-
   "login_sign_up_validator_confirm_password_invalid": "Le password non corrispondono",
   "login_sign_up_validator_confirm_password_required": "Conferma la tua password",
   "login_sign_up_validator_email_invalid": "Inserisci un'email valida",
   "login_sign_up_validator_email_required": "Inserisci la tua email",
   "login_sign_up_validator_password_invalid": "La password deve contenere almeno 6 caratteri",
   "login_sign_up_validator_password_required": "Inserisci la tua password",
-
   "machines_strings_machines": "Macchine",
   "machines_strings_add_new_machine": "Aggiungi nuova macchina",
   "machines_strings_search_machine": "Cerca per nome della macchina",
@@ -295,10 +286,12 @@
   "machines_strings_machine_created": "Macchina creata",
   "machines_strings_machine_updated": "Macchina aggiornata",
   "machines_strings_machine_deleted": "Macchina eliminata",
-  "machines_strings_confirm_delete_machine": "Sei sicuro di voler eliminare questa macchina?\nVerranno eliminate anche tutte le ricette che utilizzano questa macchina.",
+  "machines_strings_confirm_delete_machine": "Sei sicuro di voler eliminare questa macchina?
+Verranno eliminate anche tutte le ricette che utilizzano questa macchina.",
   "machines_strings_edit_machine": "Modifica macchina",
-  "machines_strings_limit_warning": "Hai raggiunto il limite di macchine.\n\nConsidera l'opzione premium per macchine illimitate.",
+  "machines_strings_limit_warning": "Hai raggiunto il limite di macchine.
 
+Considera l'opzione premium per macchine illimitate.",
   "placeholders_missing_equipment": "Dovrai aggiungere un po' di attrezzatura prima di preparare il caffè",
   "placeholders_no_history": "Ancora nessuna cronologia",
   "placeholders_no_recipes": "Ancora nessuna ricetta",
@@ -306,7 +299,6 @@
   "placeholders_add_a_bean": "Aggiungi un caffè",
   "placeholders_add_a_basket": "Aggiungi un cestino",
   "placeholders_add_a_grinder": "Aggiungi un macinacaffè",
-
   "recipes_screen_strings_ratio": "Rapporto",
   "recipes_screen_strings_edit_recipe": "Modifica ricetta",
   "recipes_screen_strings_recipe_deleted": "Ricetta eliminata",
@@ -314,7 +306,6 @@
   "recipes_screen_strings_recipe_details": "Dettagli ricetta",
   "recipes_screen_strings_updating_recipe": "Aggiornamento ricetta...",
   "recipes_screen_strings_recipe_updated": "Ricetta aggiornata",
-
   "settings_language_dialog_select_language": "Seleziona lingua",
   "settings_language_dialog_english": "Inglese",
   "settings_language_dialog_spanish": "Spagnolo",
@@ -322,21 +313,28 @@
   "settings_language_dialog_french": "Francese",
   "settings_language_dialog_german": "Tedesco",
   "settings_language_dialog_portuguese": "Portoghese",
-
   "settings_screen_logging_out": "Disconnessione in corso...",
   "settings_screen_logout": "Esci",
   "settings_screen_select_language": "Seleziona lingua",
   "settings_screen_settings": "Impostazioni",
   "settings_screen_delete_account": "Elimina account",
   "settings_screen_deleting_account": "Eliminazione account...",
-  "settings_screen_confirm_delete": "Sei sicuro di voler eliminare il tuo account?\nQuesta azione non può essere annullata.",
-
+  "settings_screen_confirm_delete": "Sei sicuro di voler eliminare il tuo account?
+Questa azione non può essere annullata.",
   "subscription_screen_monthly": "Mensile",
   "subscription_screen_annual": "Annuale",
   "subscription_screen_premium": "Premium 👑",
   "subscription_screen_you_are_premium_already": "Sei già premium 👑",
-  "subscription_screen_monthly_description": "Al prezzo di un caffè ☕️\n\nOttieni ricette illimitate 📝\nOttieni attrezzatura illimitata\nPer un mese",
-  "subscription_screen_annual_description": "Al prezzo di 10 mesi ☕️\n\nOttieni ricette illimitate 📝\nOttieni attrezzatura illimitata\nPer un anno!",
+  "subscription_screen_monthly_description": "Al prezzo di un caffè ☕️
+
+Ottieni ricette illimitate 📝
+Ottieni attrezzatura illimitata
+Per un mese",
+  "subscription_screen_annual_description": "Al prezzo di 10 mesi ☕️
+
+Ottieni ricette illimitate 📝
+Ottieni attrezzatura illimitata
+Per un anno!",
   "subscription_screen_choose_a_subscription": "Scegli un abbonamento",
   "subscription_screen_support_message": "Grazie per il tuo supporto a My Espresso",
   "subscription_screen_subscription": "Abbonamento",
@@ -349,18 +347,14 @@
   "subscription_screen_free_user_explained": "Come utente gratuito, puoi utilizzare l'app con equipaggiamento e ricette limitate. Per sbloccare tutte le funzionalità, iscriviti.",
   "subscription_screen_manage_subscriptions": "Gestisci abbonamenti",
   "subscription_screen_cancel_subscription_explained": "Puoi cancellare l'abbonamento in qualsiasi momento. L'abbonamento rimarrà attivo fino alla fine del ciclo di fatturazione corrente.",
-
   "tab_bar_history": "Cronologia",
   "tab_bar_espresso": "Espresso",
   "tab_bar_recipes": "Ricette",
-
   "versioning_update_available": "Aggiornamento disponibile",
-  "versioning_please_update" : "Aggiorna all'ultima versione",
+  "versioning_please_update": "Aggiorna all'ultima versione",
   "general_contact_us": "Contattaci",
-
   "warnings_you_have_reached_the_limit": "Hai raggiunto il limite di",
   "warnings_please_consider_premium": "Considera l'opzione premium per",
-
   "general_not_allowed": "Non consentito",
   "general_go_back": "Indietro",
   "not_found_title": "Pagina non trovata",
@@ -491,5 +485,62 @@
   "update_required_title": "Aggiornamento richiesto",
   "update_required_button": "Aggiorna",
   "header_version_dialog_title": "Versione",
-  "header_version_dialog_button": "Figo!"
+  "header_version_dialog_button": "Figo!",
+  "header_bookings": "Prenotazioni",
+  "header_my_invites": "I Miei Inviti",
+  "header_login": "Accedi",
+  "header_register": "Registrati",
+  "profile_my_bookings": "Le Mie Prenotazioni",
+  "profile_my_bookings_upcoming": "In arrivo",
+  "profile_my_bookings_past": "Passate",
+  "profile_my_bookings_no_upcoming": "Nessuna prenotazione in arrivo",
+  "profile_my_bookings_no_upcoming_sub": "Le tue prossime prenotazioni appariranno qui",
+  "profile_my_bookings_no_past": "Nessuna prenotazione passata",
+  "profile_my_bookings_no_past_sub": "La tua cronologia delle prenotazioni apparirà qui",
+  "profile_my_bookings_loading": "Caricamento delle prenotazioni...",
+  "profile_my_bookings_no_players": "Nessun giocatore ancora",
+  "profile_email_label": "Email",
+  "profile_edit": "Modifica Profilo",
+  "profile_save": "Salva Modifiche",
+  "profile_discard": "Annulla",
+  "profile_language": "Lingua",
+  "clubs_is_member": "Sei Membro 🎾",
+  "clubs_you_are_a_member": "Sei Membro",
+  "clubs_not_a_member": "Non sei membro",
+  "clubs_join_this_club": "Unisciti a questo club",
+  "clubs_login_for_details": "Accedi per maggiori dettagli",
+  "clubs_login_for_details_msg": "Devi accedere per vedere i dettagli dell'abbonamento",
+  "clubs_expiry_date": "Data di Scadenza:",
+  "clubs_details_title": "Dettagli del Club",
+  "clubs_hard_courts": "Campi in Cemento:",
+  "clubs_clay_courts": "Campi in Terra:",
+  "clubs_grass_courts": "Campi in Erba:",
+  "clubs_other_courts": "Altri Campi:",
+  "clubs_public_bookings_allowed": "Prenotazioni Pubbliche Consentite:",
+  "clubs_annual_membership_fee": "Quota Annuale di Iscrizione:",
+  "clubs_casual_booking": "Prenotazione Occasionale:",
+  "clubs_total_members": "Totale Iscritti:",
+  "clubs_contact_title": "Contatto",
+  "clubs_contact_email": "Email",
+  "clubs_contact_phone": "Telefono",
+  "clubs_find_subtitle": "Trova club vicino a te",
+  "invites_club": "Club",
+  "invites_court": "Campo",
+  "invites_from": "Da",
+  "invites_to": "A",
+  "profile_membership_details": "Dettagli Abbonamento",
+  "profile_membership_address": "Indirizzo:",
+  "profile_membership_annual_fee": "Quota Annuale di Iscrizione:",
+  "profile_membership_expiry": "Scadenza Abbonamento:",
+  "profile_view_club_details": "Vedi Dettagli del Club",
+  "profile_no_memberships": "Nessun Abbonamento a Club",
+  "profile_no_memberships_msg": "Sembra che tu non sia ancora membro di nessun club.",
+  "calendar_loading_courts": "Caricamento campi...",
+  "payment_loading_data": "Caricamento dati di pagamento...",
+  "payment_error_loading": "Errore nel caricamento dei dati di pagamento del club",
+  "payment_error_loading_casual": "Errore nel caricamento dei dati di pagamento casual",
+  "payment_initializing_form": "Inizializzazione del modulo di pagamento...",
+  "payment_club_not_found": "Il club che stai cercando non esiste.",
+  "payment_court_not_found": "Il campo che stai cercando non esiste.",
+  "payment_already_member": "Sei già membro di questo club. Controlla i dettagli del tuo abbonamento nella sezione profilo."
 }

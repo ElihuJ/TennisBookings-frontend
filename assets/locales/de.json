@@ -2,12 +2,11 @@
   "about_screen_eula": "Endbenutzer-Lizenzvereinbarung",
   "about_screen_about": "Über",
   "about_screen_privacy_policy": "Datenschutzrichtlinie",
-
   "ai_comments": "KI-Kommentare",
   "ai_feedback": "KI-Feedback",
-  "ai_explained": "Erhalten Sie Feedback zu Ihrem Rezept von unserem KI-Modell! \nIm Kommentarbereich können Sie sogar Fragen stellen",
+  "ai_explained": "Erhalten Sie Feedback zu Ihrem Rezept von unserem KI-Modell! 
+Im Kommentarbereich können Sie sogar Fragen stellen",
   "ai_locked_message": "Schalte KI-Feedback durch ein Premium-Abonnement frei",
-
   "aroma_category_strings_berry": "Beeren",
   "aroma_category_strings_fruity": "Fruchtig",
   "aroma_category_strings_dried_fruit": "Getrocknete Früchte",
@@ -21,7 +20,6 @@
   "aroma_category_strings_green": "Grün",
   "aroma_category_strings_herb_vegetal": "Kräuter und Pflanzlich",
   "aroma_category_strings_floral": "Blumig",
-
   "aroma_note_strawberry": "Erdbeere",
   "aroma_note_raspberry": "Himbeere",
   "aroma_note_blueberry": "Blaubeere",
@@ -96,7 +94,6 @@
   "aroma_note_hibiscus": "Hibiskus",
   "aroma_note_rose": "Rose",
   "aroma_note_lavender": "Lavendel",
-
   "baskets_strings_baskets": "Körbe",
   "baskets_strings_add_new_basket": "Neuen Korb hinzufügen",
   "baskets_strings_search_basket": "Nach Korbname suchen",
@@ -111,11 +108,13 @@
   "baskets_strings_basket_created": "Korb erstellt",
   "baskets_strings_basket_updated": "Korb aktualisiert",
   "baskets_strings_basket_deleted": "Korb gelöscht",
-  "baskets_strings_confirm_delete_basket": "Möchten Sie diesen Korb wirklich löschen?\nEs werden auch alle Rezepte gelöscht, die diesen Korb verwenden.",
+  "baskets_strings_confirm_delete_basket": "Möchten Sie diesen Korb wirklich löschen?
+Es werden auch alle Rezepte gelöscht, die diesen Korb verwenden.",
   "baskets_strings_edit_basket": "Korb bearbeiten",
   "baskets_strings_capacity": "Kapazität",
-  "baskets_strings_limit_warning": "Sie haben die maximale Anzahl von Körben erreicht.\n\nBitte erwägen Sie den Kauf von Premium für unbegrenzte Körbe.",
+  "baskets_strings_limit_warning": "Sie haben die maximale Anzahl von Körben erreicht.
 
+Bitte erwägen Sie den Kauf von Premium für unbegrenzte Körbe.",
   "beans_strings_beans": "Bohnen",
   "beans_strings_add_new_bean": "Neue Bohne hinzufügen",
   "beans_strings_search_bean": "Nach Bohnennamen suchen",
@@ -127,7 +126,8 @@
   "beans_strings_bean_created": "Bohne erstellt",
   "beans_strings_bean_updated": "Bohne aktualisiert",
   "beans_strings_bean_deleted": "Bohne gelöscht",
-  "beans_strings_confirm_delete_bean": "Möchten Sie diese Bohne wirklich löschen?\nEs werden auch alle Rezepte gelöscht, die diese Bohne verwenden.",
+  "beans_strings_confirm_delete_bean": "Möchten Sie diese Bohne wirklich löschen?
+Es werden auch alle Rezepte gelöscht, die diese Bohne verwenden.",
   "beans_strings_edit_bean": "Bohne bearbeiten",
   "beans_notes_strings_notes": "Notizen",
   "beans_notes_strings_add_note": "Notiz hinzufügen",
@@ -138,10 +138,11 @@
   "beans_strings_average_score": "Durchschnittliche Bewertung",
   "beans_strings_last_used": "Zuletzt verwendet",
   "beans_strings_failed_to_update_bean": "Fehler beim Aktualisieren der Bohne",
-  "beans_strings_limit_warning": "Sie haben die maximale Anzahl von Bohnen erreicht.\n\nBitte erwägen Sie den Kauf von Premium für unbegrenzte Bohnen.",
+  "beans_strings_limit_warning": "Sie haben die maximale Anzahl von Bohnen erreicht.
+
+Bitte erwägen Sie den Kauf von Premium für unbegrenzte Bohnen.",
   "beans_strings_origin": "Herkunft",
   "beans_notes_strings_manage_notes": "Notizen verwalten",
-
   "brew_strings_bean": "Bohne",
   "brew_strings_dose": "Dosierung",
   "brew_strings_machine": "Maschine",
@@ -158,11 +159,10 @@
   "brew_strings_score": "Bewertung",
   "brew_strings_setup": "Setup 🛠️",
   "brew_strings_brew": "Brühen ☕️",
-  "brew_strings_rate": "Bewerten ⭐️",
+  "brew_strings_rate": "Bewerten",
   "brew_strings_next": "Weiter",
   "brew_strings_recipe_saved": "Rezept gespeichert",
   "brew_strings_saving_recipe": "Rezept wird gespeichert...",
-
   "drawer_strings_baskets": "Körbe",
   "drawer_strings_beans": "Bohnen",
   "drawer_strings_grinders": "Mühlen",
@@ -170,7 +170,6 @@
   "drawer_strings_my_equipment": "Meine Ausrüstung",
   "drawer_strings_settings": "Einstellungen",
   "drawer_strings_about": "Über",
-
   "email_login_screen_already_have_an_account": "Bereits einen Account? Einloggen",
   "email_login_screen_confirm_password": "Passwort bestätigen",
   "email_login_screen_create_account": "Account erstellen",
@@ -186,12 +185,10 @@
   "email_login_screen_sign_up": "Registrieren",
   "email_login_screen_verification_email_sent": "Bestätigungs-E-Mail gesendet",
   "email_login_screen_welcome_back": "Willkommen zurück!",
-
   "empty_list_no_machines": "Drücken Sie die ➕-Taste unten, um eine Maschine hinzuzufügen",
   "empty_list_no_beans": "Drücken Sie die ➕-Taste unten, um eine Bohne hinzuzufügen",
   "empty_list_no_baskets": "Drücken Sie die ➕-Taste unten, um einen Korb hinzuzufügen",
   "empty_list_no_grinders": "Drücken Sie die ➕-Taste unten, um eine Mühle hinzuzufügen",
-
   "enum_strings_light": "Hell",
   "enum_strings_medium": "Mittel",
   "enum_strings_medium_dark": "Mittel-Dunkel",
@@ -204,7 +201,6 @@
   "enum_strings_triple": "Dreifach",
   "enum_strings_yes": "Ja",
   "enum_strings_no": "Nein",
-
   "firebase_error_email_already_in_use": "E-Mail bereits in Verwendung",
   "firebase_error_invalid_email": "Ungültige E-Mail",
   "firebase_error_login_failed": "Anmeldung fehlgeschlagen",
@@ -212,7 +208,6 @@
   "firebase_error_something_went_wrong": "Etwas ist schief gelaufen",
   "firebase_error_user_disabled": "Ihr Account wurde deaktiviert",
   "firebase_error_weak_password": "Schwaches Passwort",
-
   "filters_sort": "Sortieren",
   "filters_filter": "Filtern",
   "filters_descending": "Absteigend",
@@ -221,12 +216,10 @@
   "filters_average_score": "Durchschnittliche Bewertung",
   "filters_name": "Name",
   "filters_total_recipes": "Gesamtanzahl der Rezepte",
-
   "forgot_password_description": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts",
   "forgot_password_password_reset_email_sent": "Wenn ein Konto mit dieser E-Mail-Adresse existiert, haben wir Ihnen einen Link zum Zurücksetzen Ihres Passworts gesendet",
   "forgot_password_request_password_reset": "Passwort zurücksetzen anfordern",
   "forgot_password_title": "Passwort zurücksetzen anfordern",
-
   "general_name": "Name",
   "general_save": "Speichern",
   "general_cancel": "Abbrechen",
@@ -251,7 +244,6 @@
   "general_close": "Schließen",
   "general_quick_glance": "Schneller Überblick",
   "general_apply": "Anwenden",
-
   "grinders_strings_grinders": "Mühlen",
   "grinders_strings_add_new_grinder": "Neue Mühle hinzufügen",
   "grinders_strings_search_grinder": "Nach Mühlenname suchen",
@@ -261,26 +253,25 @@
   "grinders_strings_grinder_created": "Mühle erstellt",
   "grinders_strings_grinder_updated": "Mühle aktualisiert",
   "grinders_strings_grinder_deleted": "Mühle gelöscht",
-  "grinders_strings_confirm_delete_grinder": "Möchten Sie diese Mühle wirklich löschen?\nEs werden auch alle Rezepte gelöscht, die diese Mühle verwenden.",
+  "grinders_strings_confirm_delete_grinder": "Möchten Sie diese Mühle wirklich löschen?
+Es werden auch alle Rezepte gelöscht, die diese Mühle verwenden.",
   "grinders_strings_edit_grinder": "Mühle bearbeiten",
-  "grinders_strings_limit_warning": "Sie haben die maximale Anzahl von Mühlen erreicht.\n\nBitte erwägen Sie den Kauf von Premium für unbegrenzte Mühlen.",
+  "grinders_strings_limit_warning": "Sie haben die maximale Anzahl von Mühlen erreicht.
 
+Bitte erwägen Sie den Kauf von Premium für unbegrenzte Mühlen.",
   "home_screen_screen_app_title": "My Espresso",
   "home_screen_screen_welcome_message": "Willkommen auf dem Startbildschirm!",
-
   "login_screen_login_with_apple": "Mit Apple anmelden",
   "login_screen_login_with_email": "Mit E-Mail anmelden",
   "login_screen_login_with_google": "Mit Google anmelden",
   "login_screen_logout": "Ausloggen",
   "login_screen_logging_in": "Einloggen...",
-
   "login_sign_up_validator_confirm_password_invalid": "Passwörter stimmen nicht überein",
   "login_sign_up_validator_confirm_password_required": "Bitte bestätigen Sie Ihr Passwort",
   "login_sign_up_validator_email_invalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
   "login_sign_up_validator_email_required": "Bitte geben Sie Ihre E-Mail-Adresse ein",
   "login_sign_up_validator_password_invalid": "Das Passwort muss mindestens 6 Zeichen lang sein",
   "login_sign_up_validator_password_required": "Bitte geben Sie Ihr Passwort ein",
-
   "machines_strings_machines": "Maschinen",
   "machines_strings_add_new_machine": "Neue Maschine hinzufügen",
   "machines_strings_search_machine": "Nach Maschinenname suchen",
@@ -295,10 +286,12 @@
   "machines_strings_machine_created": "Maschine erstellt",
   "machines_strings_machine_updated": "Maschine aktualisiert",
   "machines_strings_machine_deleted": "Maschine gelöscht",
-  "machines_strings_confirm_delete_machine": "Möchten Sie diese Maschine wirklich löschen?\nEs werden auch alle Rezepte gelöscht, die diese Maschine verwenden.",
+  "machines_strings_confirm_delete_machine": "Möchten Sie diese Maschine wirklich löschen?
+Es werden auch alle Rezepte gelöscht, die diese Maschine verwenden.",
   "machines_strings_edit_machine": "Maschine bearbeiten",
-  "machines_strings_limit_warning": "Sie haben die maximale Anzahl von Maschinen erreicht.\n\nBitte erwägen Sie den Kauf von Premium für unbegrenzte Maschinen.",
+  "machines_strings_limit_warning": "Sie haben die maximale Anzahl von Maschinen erreicht.
 
+Bitte erwägen Sie den Kauf von Premium für unbegrenzte Maschinen.",
   "placeholders_missing_equipment": "Sie müssen etwas Equipment hinzufügen, bevor Sie brühen können",
   "placeholders_no_history": "Noch keine Historie",
   "placeholders_no_recipes": "Noch keine Rezepte",
@@ -306,7 +299,6 @@
   "placeholders_add_a_bean": "Bohne hinzufügen",
   "placeholders_add_a_basket": "Korb hinzufügen",
   "placeholders_add_a_grinder": "Mühle hinzufügen",
-
   "recipes_screen_strings_ratio": "Verhältnis",
   "recipes_screen_strings_edit_recipe": "Rezept bearbeiten",
   "recipes_screen_strings_recipe_deleted": "Rezept gelöscht",
@@ -314,7 +306,6 @@
   "recipes_screen_strings_recipe_details": "Rezeptdetails",
   "recipes_screen_strings_updating_recipe": "Rezept wird aktualisiert...",
   "recipes_screen_strings_recipe_updated": "Rezept aktualisiert",
-
   "settings_language_dialog_select_language": "Sprache auswählen",
   "settings_language_dialog_english": "Englisch",
   "settings_language_dialog_spanish": "Spanisch",
@@ -322,21 +313,28 @@
   "settings_language_dialog_french": "Französisch",
   "settings_language_dialog_german": "Deutsch",
   "settings_language_dialog_portuguese": "Portugiesisch",
-
   "settings_screen_logging_out": "Abmelden...",
   "settings_screen_logout": "Abmelden",
   "settings_screen_select_language": "Sprache auswählen",
   "settings_screen_settings": "Einstellungen",
   "settings_screen_delete_account": "Account löschen",
   "settings_screen_deleting_account": "Account wird gelöscht...",
-  "settings_screen_confirm_delete": "Möchten Sie Ihren Account wirklich löschen?\nDiese Aktion kann nicht rückgängig gemacht werden.",
-
+  "settings_screen_confirm_delete": "Möchten Sie Ihren Account wirklich löschen?
+Diese Aktion kann nicht rückgängig gemacht werden.",
   "subscription_screen_monthly": "Monatlich",
   "subscription_screen_annual": "Jährlich",
   "subscription_screen_you_are_premium_already": "Sie sind bereits Premium 👑",
   "subscription_screen_premium": "Premium 👑",
-  "subscription_screen_monthly_description": "Für den Preis eines Kaffees ☕️\n\nErhalten Sie unbegrenzte Rezepte 📝\nErhalten Sie unbegrenztes Equipment\nFür einen Monat",
-  "subscription_screen_annual_description": "Für den Preis von 10 Monaten ☕️\n\nErhalten Sie unbegrenzte Rezepte 📝\nErhalten Sie unbegrenztes Equipment\nFür ein Jahr!",
+  "subscription_screen_monthly_description": "Für den Preis eines Kaffees ☕️
+
+Erhalten Sie unbegrenzte Rezepte 📝
+Erhalten Sie unbegrenztes Equipment
+Für einen Monat",
+  "subscription_screen_annual_description": "Für den Preis von 10 Monaten ☕️
+
+Erhalten Sie unbegrenzte Rezepte 📝
+Erhalten Sie unbegrenztes Equipment
+Für ein Jahr!",
   "subscription_screen_choose_a_subscription": "Wählen Sie ein Abonnement",
   "subscription_screen_support_message": "Vielen Dank, dass Sie My Espresso unterstützen",
   "subscription_screen_subscription": "Abonnement",
@@ -349,18 +347,14 @@
   "subscription_screen_free_user_explained": "Als kostenloser Benutzer kannst du die App mit eingeschränkter Ausstattung und eingeschränkten Rezepten verwenden. Um alle Funktionen freizuschalten, abonniere bitte.",
   "subscription_screen_manage_subscriptions": "Abonnements verwalten",
   "subscription_screen_cancel_subscription_explained": "Du kannst dein Abonnement jederzeit kündigen. Dein Abonnement bleibt bis zum Ende des aktuellen Abrechnungszyklus aktiv.",
-
   "tab_bar_history": "Historie",
   "tab_bar_espresso": "Espresso",
   "tab_bar_recipes": "Rezepte",
-
   "versioning_update_available": "Update verfügbar",
-  "versioning_please_update" : "Bitte auf die neueste Version aktualisieren",
+  "versioning_please_update": "Bitte auf die neueste Version aktualisieren",
   "general_contact_us": "Kontaktiere uns",
-
   "warnings_you_have_reached_the_limit": "Sie haben das Limit von",
   "pleaseConsiderPremium": "Bitte erwägen Sie Premium für unbegrenzte",
-
   "general_not_allowed": "Nicht erlaubt",
   "general_go_back": "Zurück",
   "not_found_title": "Seite nicht gefunden",
@@ -491,5 +485,62 @@
   "update_required_title": "Update erforderlich",
   "update_required_button": "Aktualisieren",
   "header_version_dialog_title": "Version",
-  "header_version_dialog_button": "Cool!"
+  "header_version_dialog_button": "Cool!",
+  "header_bookings": "Buchungen",
+  "header_my_invites": "Meine Einladungen",
+  "header_login": "Anmelden",
+  "header_register": "Registrieren",
+  "profile_my_bookings": "Meine Buchungen",
+  "profile_my_bookings_upcoming": "Bevorstehend",
+  "profile_my_bookings_past": "Vergangen",
+  "profile_my_bookings_no_upcoming": "Keine bevorstehenden Buchungen",
+  "profile_my_bookings_no_upcoming_sub": "Ihre bevorstehenden Buchungen werden hier angezeigt",
+  "profile_my_bookings_no_past": "Keine vergangenen Buchungen",
+  "profile_my_bookings_no_past_sub": "Ihr Buchungsverlauf wird hier angezeigt",
+  "profile_my_bookings_loading": "Buchungen werden geladen...",
+  "profile_my_bookings_no_players": "Noch keine Spieler",
+  "profile_email_label": "E-Mail",
+  "profile_edit": "Profil bearbeiten",
+  "profile_save": "Änderungen speichern",
+  "profile_discard": "Verwerfen",
+  "profile_language": "Sprache",
+  "clubs_is_member": "Sie sind Mitglied 🎾",
+  "clubs_you_are_a_member": "Sie sind Mitglied",
+  "clubs_not_a_member": "Sie sind kein Mitglied",
+  "clubs_join_this_club": "Diesem Club beitreten",
+  "clubs_login_for_details": "Anmelden für mehr Details",
+  "clubs_login_for_details_msg": "Sie müssen sich anmelden, um Mitgliedschaftsdetails anzuzeigen",
+  "clubs_expiry_date": "Ablaufdatum:",
+  "clubs_details_title": "Club-Details",
+  "clubs_hard_courts": "Hartplätze:",
+  "clubs_clay_courts": "Sandplätze:",
+  "clubs_grass_courts": "Rasenplätze:",
+  "clubs_other_courts": "Andere Plätze:",
+  "clubs_public_bookings_allowed": "Öffentliche Buchungen Erlaubt:",
+  "clubs_annual_membership_fee": "Jahresbeitrag:",
+  "clubs_casual_booking": "Gelegenheitsbuchung:",
+  "clubs_total_members": "Gesamtmitglieder:",
+  "clubs_contact_title": "Kontakt",
+  "clubs_contact_email": "E-Mail",
+  "clubs_contact_phone": "Telefon",
+  "clubs_find_subtitle": "Clubs in Ihrer Nähe finden",
+  "invites_club": "Club",
+  "invites_court": "Platz",
+  "invites_from": "Von",
+  "invites_to": "Bis",
+  "profile_membership_details": "Mitgliedschaftsdetails",
+  "profile_membership_address": "Adresse:",
+  "profile_membership_annual_fee": "Jahresbeitrag:",
+  "profile_membership_expiry": "Mitgliedschaft läuft ab:",
+  "profile_view_club_details": "Club-Details anzeigen",
+  "profile_no_memberships": "Keine Club-Mitgliedschaften",
+  "profile_no_memberships_msg": "Sie sind noch kein Mitglied in einem Club.",
+  "calendar_loading_courts": "Plätze werden geladen...",
+  "payment_loading_data": "Zahlungsdaten werden geladen...",
+  "payment_error_loading": "Fehler beim Laden der Club-Zahlungsdaten",
+  "payment_error_loading_casual": "Fehler beim Laden der Casual-Zahlungsdaten",
+  "payment_initializing_form": "Zahlungsformular wird initialisiert...",
+  "payment_club_not_found": "Der gesuchte Club existiert nicht.",
+  "payment_court_not_found": "Der gesuchte Platz existiert nicht.",
+  "payment_already_member": "Sie sind bereits Mitglied dieses Clubs. Bitte überprüfen Sie Ihre Mitgliedschaftsdetails im Profilbereich."
 }

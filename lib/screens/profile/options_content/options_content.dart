@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../global_widgets/index.dart';
 import '../profile_screen.dart';
 import 'views/membership_details/membership_details.dart';
+import 'views/my_bookings/my_bookings_view.dart';
 import 'views/profile_details/profile_details.dart';
 import 'views/settings.dart';
 
@@ -30,6 +31,8 @@ class _OptionsContentState extends ConsumerState<OptionsContent> {
       widgetInDisplay = const SettingsContent();
     } else if (widget.selectedOption == ProfileOptions.memberships) {
       widgetInDisplay = const MembershipDetails();
+    } else if (widget.selectedOption == ProfileOptions.myBookings) {
+      widgetInDisplay = const MyBookingsView();
     } else {
       widgetInDisplay = const NotFoundScreen();
     }

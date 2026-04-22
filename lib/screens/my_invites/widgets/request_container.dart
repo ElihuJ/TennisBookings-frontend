@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../cloud_functions/cloud_functions_provider.dart';
@@ -9,6 +10,7 @@ import '../../../global_widgets/icons/helper.dart';
 import '../../../global_widgets/index.dart';
 import '../../../models/index.dart';
 import '../../../state/index.dart';
+import '../../../strings/index.dart';
 import '../../../theme/colors.dart';
 
 class RequestContainer extends HookConsumerWidget {
@@ -21,38 +23,32 @@ class RequestContainer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final clubsNotifier = ref.read(clubsProvider.notifier);
 
-    return Align(
-      alignment: Alignment.center,
-      child: Container(
-        width: 350.0,
-        margin: const EdgeInsets.only(bottom: 14.0),
-        child: Card(
-          elevation: 3,
-          shadowColor: AppColors.primaryGreen,
-          surfaceTintColor: AppColors.primaryGreen,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: FutureBuilder<String>(
-              future: clubsNotifier.getPlayerPhotoUrl(playerId: request.playerId),
-              builder: (context, snapshot) {
-                final photoUrl = snapshot.data ?? '';
-                final playerData =
-                    ConfirmedPlayerData(id: request.playerId, name: request.playerName, utrVerified: request.playerUtrVerified, photoUrl: photoUrl);
+    return FutureBuilder<String>(
+      future: clubsNotifier.getPlayerPhotoUrl(playerId: request.playerId),
+      builder: (context, snapshot) {
+        final photoUrl = snapshot.data ?? '';
+        final playerData = ConfirmedPlayerData(
+          id: request.playerId,
+          name: request.playerName,
+          utrVerified: request.playerUtrVerified,
+          photoUrl: photoUrl,
+        );
 
-                if (request.status != BookingRequestStatus.pending) {
-                  // if(true){}
-                  return const SizedBox.shrink();
-                }
+        if (request.status != BookingRequestStatus.pending) {
+          return const SizedBox.shrink();
+        }
 
-                return _PlayerData(playerData: playerData, request: request, booking: booking);
-              },
-            ),
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppColors.primaryGreen.withValues(alpha: 0.04),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: AppColors.primaryGreen.withValues(alpha: 0.15)),
           ),
-        ),
-      ),
+          child: _PlayerData(playerData: playerData, request: request, booking: booking),
+        );
+      },
     );
   }
 }
@@ -89,7 +85,7 @@ class _PlayerData extends StatelessWidget {
                   verified: request.playerUtrVerified,
                 ),
                 PrettyText(
-                  'Gender: ${capitalizeFirstLetter(request.playerGender.name)}',
+                  '${context.localeString(InvitesStrings.genderLabel)}: ${capitalizeFirstLetter(request.playerGender.name)}',
                   style: const TextStyle(fontSize: 14.0, color: AppColors.grey),
                 ),
               ],
@@ -128,59 +124,68 @@ class _ActionButtons extends HookConsumerWidget {
     }
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        ElevatedButton.icon(
-          onPressed: () async {
-            eventNotifier.showLoading(message: "Accepting Invite...");
-            final actionInvitePayload = ActionInvitePayload(
-              basicBookingPayload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId),
-              inviteAction: InviteAction.accept,
-              targetPlayerId: request.playerId,
-            );
-            final result = await cloudFunctions.actionInvite(actionInvitePayload);
-            eventNotifier.hideLoading();
+        Expanded(
+          child: FilledButton.icon(
+            onPressed: () async {
+              eventNotifier.showLoading(message: context.localeString(InvitesStrings.accepting));
+              final actionInvitePayload = ActionInvitePayload(
+                basicBookingPayload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId),
+                inviteAction: InviteAction.accept,
+                targetPlayerId: request.playerId,
+              );
+              final result = await cloudFunctions.actionInvite(actionInvitePayload);
+              eventNotifier.hideLoading();
 
-            if (result.data == true) {
-              eventNotifier.showMessage(messageType: MessageType.success, message: "Invite accepted!");
-              removeRequestFromState();
-            } else {
-              eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
-            }
-          },
-          icon: const Icon(Icons.check),
-          label: const PrettyText('Accept'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+              if (result.data == true) {
+                eventNotifier.showMessage(messageType: MessageType.success, message: context.localeString(InvitesStrings.accepted));
+                final updatedIds = [...booking.confirmedPlayerIds, request.playerId];
+                final isFull = booking.format == BookingFormat.singles ? updatedIds.isNotEmpty : updatedIds.length >= 3;
+                userNotifier.updateUserBooking(booking.copyWith(
+                  confirmedPlayerIds: updatedIds,
+                  status: isFull ? BookingStatus.confirmed : BookingStatus.open,
+                ));
+                removeRequestFromState();
+              } else {
+                eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
+              }
+            },
+            icon: const Icon(Icons.check, size: 16),
+            label: Text(context.localeString(InvitesStrings.accept)),
+            style: FilledButton.styleFrom(
+              backgroundColor: AppColors.primaryGreen,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              padding: const EdgeInsets.symmetric(vertical: 10),
             ),
           ),
         ),
-        ElevatedButton.icon(
-          onPressed: () async {
-            eventNotifier.showLoading(message: "Declining Invite...");
-            final actionInvitePayload = ActionInvitePayload(
-              basicBookingPayload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId),
-              inviteAction: InviteAction.reject,
-              targetPlayerId: request.playerId,
-            );
-            final result = await cloudFunctions.actionInvite(actionInvitePayload);
-            eventNotifier.hideLoading();
+        const SizedBox(width: 10),
+        Expanded(
+          child: OutlinedButton.icon(
+            onPressed: () async {
+              eventNotifier.showLoading(message: context.localeString(InvitesStrings.declining));
+              final actionInvitePayload = ActionInvitePayload(
+                basicBookingPayload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId),
+                inviteAction: InviteAction.reject,
+                targetPlayerId: request.playerId,
+              );
+              final result = await cloudFunctions.actionInvite(actionInvitePayload);
+              eventNotifier.hideLoading();
 
-            if (result.data == true) {
-              eventNotifier.showMessage(messageType: MessageType.success, message: "Invite declined!");
-              removeRequestFromState();
-            } else {
-              eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
-            }
-          },
-          icon: const Icon(Icons.close),
-          label: const PrettyText('Decline'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+              if (result.data == true) {
+                eventNotifier.showMessage(messageType: MessageType.success, message: context.localeString(InvitesStrings.declined));
+                removeRequestFromState();
+              } else {
+                eventNotifier.showMessage(messageType: MessageType.error, message: result.errorMessage!);
+              }
+            },
+            icon: const Icon(Icons.close, size: 16),
+            label: Text(context.localeString(InvitesStrings.decline)),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.red,
+              side: BorderSide(color: AppColors.red.withValues(alpha: 0.5)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              padding: const EdgeInsets.symmetric(vertical: 10),
             ),
           ),
         ),

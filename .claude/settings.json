@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -)",
+      "Read(//tmp/**)",
+      "Read(//private/tmp/**)",
+      "Bash(curl -s -X POST http://127.0.0.1:9100/api/reloadSources)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3)",
+      "Bash(xargs cat *)",
+      "Read(//Users/elihudelvalle/Projects/TennisBookings/backend/**)"
+    ],
+    "additionalDirectories": [
+      "/Users/elihudelvalle/Projects/TennisBookings/backend",
+      "/Users/elihudelvalle/Projects/TennisBookings/backend/.claude"
+    ]
+  }
+}

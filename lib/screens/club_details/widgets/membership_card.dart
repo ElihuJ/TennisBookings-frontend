@@ -1,10 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../global_helpers/index.dart';
 import '../../../global_widgets/index.dart';
 import '../../../state/index.dart';
+import '../../../strings/index.dart';
 import '../../payments/membership_payment_screen.dart';
 import 'card.dart';
 
@@ -49,14 +51,14 @@ class _MemberContainer extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         PrettyText(
-          'You are a Member ⭐️',
+          context.localeString(ClubsStrings.youAreAMember),
           fontSize: _fontTitleSize,
           textAlign: TextAlign.center,
         ),
         const Divider(),
         if (membershipExpiryDate != null)
           PrettyText(
-            'Expiry Date: ${prettyDateLocalFromEpoch(membershipExpiryDate!)}',
+            '${context.localeString(ClubsStrings.expiryDate)} ${prettyDateLocalFromEpoch(membershipExpiryDate!)}',
             style: TextStyle(fontStyle: FontStyle.italic),
           ),
       ],
@@ -75,13 +77,13 @@ class _NotMemberContainer extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         PrettyText(
-          'You are not a member',
+          context.localeString(ClubsStrings.notAMember),
           fontSize: _fontTitleSize,
           textAlign: TextAlign.center,
         ),
         const Divider(),
         TbTextButton(
-          text: 'Join this club',
+          text: context.localeString(ClubsStrings.joinThisClub),
           onPressed: () {
             _navigateToMembershipScreen(context: context, clubSelected: clubSelected);
           },
@@ -100,13 +102,13 @@ class _NotLoggedInContainer extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         PrettyText(
-          'Login for more details',
+          context.localeString(ClubsStrings.loginForDetails),
           fontSize: _fontTitleSize,
           textAlign: TextAlign.center,
         ),
         const Divider(),
         PrettyText(
-          'You need to login to see membership details',
+          context.localeString(ClubsStrings.loginForDetailsMsg),
         ),
       ],
     );

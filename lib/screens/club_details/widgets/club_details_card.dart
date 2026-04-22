@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 
 import '../../../global_widgets/index.dart';
 import '../../../state/index.dart';
+import '../../../strings/index.dart';
 import '../../../theme/index.dart';
 import 'card.dart';
 
@@ -23,53 +25,53 @@ class ClubDetailsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           PrettyText(
-            'Club Details',
+            context.localeString(ClubsStrings.detailsTitle),
             textAlign: TextAlign.center,
             fontSize: _fontTitleSize,
             color: _fontColor,
           ),
           const Divider(),
           PrettyText(
-            'Hard Courts: ${clubSelected.hardCourts}',
+            '${context.localeString(ClubsStrings.hardCourts)} ${clubSelected.hardCourts}',
             fontSize: _fontSize,
             color: _fontColor,
           ),
           PrettyText(
-            'Clay Courts: ${clubSelected.clayCourts}',
+            '${context.localeString(ClubsStrings.clayCourts)} ${clubSelected.clayCourts}',
             fontSize: _fontSize,
             color: _fontColor,
           ),
           PrettyText(
-            'Grass Courts: ${clubSelected.grassCourts}',
+            '${context.localeString(ClubsStrings.grassCourts)} ${clubSelected.grassCourts}',
             fontSize: _fontSize,
             color: _fontColor,
           ),
           PrettyText(
-            'Other Surface Courts: ${clubSelected.otherSurfaceCourts}',
-            fontSize: _fontSize,
-            color: _fontColor,
-          ),
-          space,
-          PrettyText(
-            'Public Bookings Allowed: ${clubSelected.onlyMembers ? "No" : "Yes"}',
+            '${context.localeString(ClubsStrings.otherCourts)} ${clubSelected.otherSurfaceCourts}',
             fontSize: _fontSize,
             color: _fontColor,
           ),
           space,
           PrettyText(
-            'Annual Membership Fee: \$${clubSelected.annualFee.toStringAsFixed(2)}',
+            '${context.localeString(ClubsStrings.publicBookingsAllowed)} ${clubSelected.onlyMembers ? context.localeString(GeneralStrings.no) : context.localeString(GeneralStrings.yes)}',
+            fontSize: _fontSize,
+            color: _fontColor,
+          ),
+          space,
+          PrettyText(
+            '${context.localeString(ClubsStrings.annualMembershipFee)} \$${clubSelected.annualFee.toStringAsFixed(2)}',
             fontSize: _fontSize,
             color: _fontColor,
           ),
           if (clubSelected.casualFee != null)
             PrettyText(
-              'Casual Booking: \$${clubSelected.casualFee!.toStringAsFixed(2)}',
+              '${context.localeString(ClubsStrings.casualBooking)} \$${clubSelected.casualFee!.toStringAsFixed(2)}',
               fontSize: _fontSize,
               color: _fontColor,
             ),
           space,
           PrettyText(
-            'Total Members: ${clubSelected.memberIds.length}',
+            '${context.localeString(ClubsStrings.totalMembers)} ${clubSelected.memberIds.length}',
             fontSize: _fontSize,
             color: _fontColor,
           ),

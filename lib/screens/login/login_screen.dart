@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../assets/index.dart';
 import '../../global_widgets/index.dart';
 import '../../state/index.dart';
-import '../../strings/index.dart';
+import '../../strings/login/index.dart';
+import '../../theme/colors.dart';
 import 'email_login_screen.dart';
 import 'forms/login_register_form.dart';
 import 'types.dart';
@@ -26,44 +26,95 @@ class LoginScreen extends HookConsumerWidget {
         canPop: false,
         child: TbScaffold(
           body: ContainerWithBackground(
-            imagePath: homeBackgroundPng,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0),
-                  clipBehavior: Clip.antiAlias,
-                  child: Image.asset(
-                    logoPgn,
-                    width: 300,
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 420),
+                  child: Card(
+                    elevation: 20,
+                    shadowColor: Colors.black.withValues(alpha: 0.25),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Gradient hero with logo
+                        Container(
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [AppColors.primaryGreen, AppColors.darkGreen],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+                          child: Column(
+                            children: [
+                              TbLogoWhite(width: 200),
+                              const SizedBox(height: 20),
+                              Text(
+                                context.localeString(EmailLoginScreenStrings.welcomeBack),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Buttons section
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(28, 28, 28, 32),
+                          child: Column(
+                            children: [
+                              SocialsRegister(
+                                eventNotifier: eventNotifier,
+                                firebaseNotifier: firebaseAuthNotifier,
+                                userNotifier: userNotifier,
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  Expanded(child: Divider(color: Colors.grey.shade300)),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                                    child: Text(
+                                      context.localeString(EmailLoginScreenStrings.orContinueWith),
+                                      style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                                    ),
+                                  ),
+                                  Expanded(child: Divider(color: Colors.grey.shade300)),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              OutlinedButton.icon(
+                                onPressed: () => Navigator.pushNamed(
+                                  context,
+                                  EmailLoginScreen.route,
+                                  arguments: ScreenMode.login,
+                                ),
+                                icon: const Icon(Icons.email_outlined, size: 20),
+                                label: Text(context.localeString(LoginScreenStrings.loginWithEmail)),
+                                style: OutlinedButton.styleFrom(
+                                  minimumSize: const Size(double.infinity, 50),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                  side: BorderSide(color: AppColors.primaryGreen.withValues(alpha: 0.5)),
+                                  foregroundColor: AppColors.primaryGreen,
+                                  backgroundColor: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                // ^ ================== GOOGLE LOGIN ==================
-                Column(
-                  children: [
-                    SocialsRegister(
-                      eventNotifier: eventNotifier,
-                      firebaseNotifier: firebaseAuthNotifier,
-                      userNotifier: userNotifier,
-                    ),
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      // ^ ================== EMAIL LOGIN ==================
-                      child: LoginButton(
-                        onTap: () {
-                          // * Handle email login
-                          Navigator.pushNamed(context, EmailLoginScreen.route, arguments: ScreenMode.login);
-                        },
-                        text: context.localeString(LoginScreenStrings.loginWithEmail),
-                        icon: const Icon(Icons.email),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              ),
             ),
           ),
         ),

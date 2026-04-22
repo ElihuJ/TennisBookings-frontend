@@ -11,6 +11,7 @@ class CalendarStrings {
   static const dayFri = 'calendar_day_fri';
   static const daySat = 'calendar_day_sat';
   static const daySun = 'calendar_day_sun';
+  static const loadingCourts = 'calendar_loading_courts';
 
   CalendarStrings._();
 }

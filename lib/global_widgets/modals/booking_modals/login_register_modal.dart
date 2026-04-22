@@ -18,7 +18,7 @@ class LoginRegisterModal extends StatelessWidget {
       content: PrettyText(context.localeString(BookingModalStrings.loginToContinue)),
       actions: <Widget>[
         TbTextButton(
-          text: context.localeString(LoginScreenStrings.loginWithEmail),
+          text: context.localeString(EmailLoginScreenStrings.login),
           onPressed: () => Navigator.of(context).pushNamed(LoginScreen.route),
           color: AppColors.secondaryGreen,
         ),

@@ -5,15 +5,13 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../global_types/index.dart';
-import '../../../global_widgets/index.dart';
 import '../../../state/event_status/event_provider.dart';
 import '../../../state/firebase/firebase_provider.dart';
 import '../../../strings/login/index.dart';
+import '../../../theme/colors.dart';
 import '../helpers/form_helpers.dart';
 import '../types.dart';
 import '../widgets/text_field.dart';
-
-const double _margin = 15;
 
 class ForgotPasswordForm extends StatefulHookConsumerWidget {
   const ForgotPasswordForm({
@@ -31,8 +29,6 @@ class _ForgotPasswordForm extends ConsumerState<ForgotPasswordForm> {
   final formKey = GlobalKey<FormState>();
 
   String email = '';
-
-  // * ================== Controllers ================
 
   final emailController = TextEditingController();
 
@@ -54,8 +50,6 @@ class _ForgotPasswordForm extends ConsumerState<ForgotPasswordForm> {
     emailController.clear();
   }
 
-  // * ================== View ==================
-
   @override
   Widget build(BuildContext context) {
     final eventStatusNotifier = ref.watch(eventProvider.notifier);
@@ -64,6 +58,7 @@ class _ForgotPasswordForm extends ConsumerState<ForgotPasswordForm> {
     return Form(
       key: formKey,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           LoginTextField(
             controller: emailController,
@@ -71,21 +66,16 @@ class _ForgotPasswordForm extends ConsumerState<ForgotPasswordForm> {
             validator: (value) => emailValidator(value, context),
             initialValue: email,
           ),
-          const SizedBox(height: _margin),
-          TbTextButton(
+          const SizedBox(height: 4),
+          FilledButton(
             onPressed: () async {
-              // * Validate form
               final success = formKey.currentState!.validate();
-              if (!success) {
-                return;
-              }
+              if (!success) return;
               eventStatusNotifier.showLoading();
 
-              // * Login or create account
               ErrorInfo? error;
               error = await firebaseNotifier.resetPassword(email: email);
 
-              // * Message handling
               final messageType = error != null ? error.$1 : MessageType.success;
               final message = error != null ? error.$2 : context.localeString(ForgotPasswordScreenStrings.passwordResetEmailSent);
               eventStatusNotifier.hideLoading();
@@ -95,14 +85,18 @@ class _ForgotPasswordForm extends ConsumerState<ForgotPasswordForm> {
                 title: messageType.name,
               );
 
-              // * Clear fields if no error and pop context
-              if (error == null) {
-                clearFields();
-              }
+              if (error == null) clearFields();
             },
-            text: context.localeString(ForgotPasswordScreenStrings.requestPasswordReset),
+            style: FilledButton.styleFrom(
+              backgroundColor: AppColors.primaryGreen,
+              minimumSize: const Size(double.infinity, 50),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+            child: Text(
+              context.localeString(ForgotPasswordScreenStrings.requestPasswordReset),
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            ),
           ),
-          const SizedBox(height: _margin),
         ],
       ),
     );

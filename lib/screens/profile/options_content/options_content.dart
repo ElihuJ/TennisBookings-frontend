@@ -6,7 +6,6 @@ import '../profile_screen.dart';
 import 'views/membership_details/membership_details.dart';
 import 'views/my_bookings/my_bookings_view.dart';
 import 'views/profile_details/profile_details.dart';
-import 'views/settings.dart';
 
 class OptionsContent extends StatefulHookConsumerWidget {
   const OptionsContent({
@@ -27,8 +26,6 @@ class _OptionsContentState extends ConsumerState<OptionsContent> {
 
     if (widget.selectedOption == ProfileOptions.profileDetails) {
       widgetInDisplay = const ProfileDetails();
-    } else if (widget.selectedOption == ProfileOptions.settings) {
-      widgetInDisplay = const SettingsContent();
     } else if (widget.selectedOption == ProfileOptions.memberships) {
       widgetInDisplay = const MembershipDetails();
     } else if (widget.selectedOption == ProfileOptions.myBookings) {

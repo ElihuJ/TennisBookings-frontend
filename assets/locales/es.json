@@ -4,8 +4,7 @@
   "about_screen_privacy_policy": "Política de privacidad",
   "ai_comments": "Comentarios de IA",
   "ai_feedback": "Comentarios de IA",
-  "ai_explained": "¡Obtén comentarios sobre tu receta de nuestro modelo de IA! 
-Incluso puedes hacer preguntas usando la sección de comentarios",
+  "ai_explained": "¡Obtén comentarios sobre tu receta de nuestro modelo de IA! \nIncluso puedes hacer preguntas usando la sección de comentarios",
   "ai_locked_message": "Desbloquea el feedback de IA suscribiéndote a premium",
   "aroma_category_strings_berry": "Frutos",
   "aroma_category_strings_fruity": "Frutal",
@@ -108,13 +107,10 @@ Incluso puedes hacer preguntas usando la sección de comentarios",
   "baskets_strings_basket_created": "Canasta creada",
   "baskets_strings_basket_updated": "Canasta actualizada",
   "baskets_strings_basket_deleted": "Canasta eliminada",
-  "baskets_strings_confirm_delete_basket": "¿Estás seguro de que quieres eliminar esta canasta?
-También se eliminarán todas las recetas asociadas",
+  "baskets_strings_confirm_delete_basket": "¿Estás seguro de que quieres eliminar esta canasta?\nTambién se eliminarán todas las recetas asociadas",
   "baskets_strings_edit_basket": "Editar canasta",
   "baskets_strings_capacity": "Capacidad",
-  "baskets_strings_limit_warning": "Has alcanzado el límite de canastas.
-
-Por favor, considera premium para canastas ilimitadas",
+  "baskets_strings_limit_warning": "Has alcanzado el límite de canastas.\n\nPor favor, considera premium para canastas ilimitadas",
   "beans_strings_beans": "Granos",
   "beans_strings_add_new_bean": "Añadir nuevo grano",
   "beans_strings_search_bean": "Buscar grano por nombre",
@@ -126,8 +122,7 @@ Por favor, considera premium para canastas ilimitadas",
   "beans_strings_bean_created": "Grano creado",
   "beans_strings_bean_updated": "Grano actualizado",
   "beans_strings_bean_deleted": "Grano eliminado",
-  "beans_strings_confirm_delete_bean": "¿Estás seguro de que quieres eliminar este grano?
-También se eliminarán todas las recetas asociadas",
+  "beans_strings_confirm_delete_bean": "¿Estás seguro de que quieres eliminar este grano?\nTambién se eliminarán todas las recetas asociadas",
   "beans_strings_edit_bean": "Editar grano",
   "beans_notes_strings_notes": "Notas",
   "beans_notes_strings_add_note": "Añadir nota",
@@ -138,9 +133,7 @@ También se eliminarán todas las recetas asociadas",
   "beans_strings_average_score": "Puntuación media",
   "beans_strings_last_used": "Último uso",
   "beans_strings_failed_to_update_bean": "Error al actualizar el grano",
-  "beans_strings_limit_warning": "Has alcanzado el límite de granos.
-
-Por favor, considera premium para granos ilimitados",
+  "beans_strings_limit_warning": "Has alcanzado el límite de granos.\n\nPor favor, considera premium para granos ilimitados",
   "beans_strings_origin": "Origen",
   "beans_notes_strings_manage_notes": "Administrar notas",
   "brew_strings_bean": "Grano",
@@ -254,12 +247,9 @@ Por favor, considera premium para granos ilimitados",
   "grinders_strings_grinder_created": "Moledora creada",
   "grinders_strings_grinder_updated": "Moledora actualizada",
   "grinders_strings_grinder_deleted": "Moledora eliminada",
-  "grinders_strings_confirm_delete_grinder": "¿Estás seguro de que quieres eliminar esta moledora?
-También se eliminarán todas las recetas asociadas",
+  "grinders_strings_confirm_delete_grinder": "¿Estás seguro de que quieres eliminar esta moledora?\nTambién se eliminarán todas las recetas asociadas",
   "grinders_strings_edit_grinder": "Editar moledora",
-  "grinders_strings_limit_warning": "Has alcanzado el límite de moledoras.
-
-Por favor, considera premium para moledoras ilimitadas",
+  "grinders_strings_limit_warning": "Has alcanzado el límite de moledoras.\n\nPor favor, considera premium para moledoras ilimitadas",
   "home_screen_screen_app_title": "Plantilla de Flutter",
   "home_screen_screen_welcome_message": "¡Bienvenido a la pantalla de inicio!",
   "login_screen_login_with_apple": "Iniciar sesión con Apple",
@@ -287,12 +277,9 @@ Por favor, considera premium para moledoras ilimitadas",
   "machines_strings_machine_created": "Máquina creada",
   "machines_strings_machine_updated": "Máquina actualizada",
   "machines_strings_machine_deleted": "Máquina eliminada",
-  "machines_strings_confirm_delete_machine": "¿Estás seguro de que quieres eliminar esta máquina?
-También se eliminarán todas las recetas asociadas",
+  "machines_strings_confirm_delete_machine": "¿Estás seguro de que quieres eliminar esta máquina?\nTambién se eliminarán todas las recetas asociadas",
   "machines_strings_edit_machine": "Editar máquina",
-  "machines_strings_limit_warning": "Has alcanzado el límite de máquinas.
-
-Por favor, considera premium para máquinas ilimitadas",
+  "machines_strings_limit_warning": "Has alcanzado el límite de máquinas.\n\nPor favor, considera premium para máquinas ilimitadas",
   "placeholders_missing_equipment": "Necesitaras añadir equipo para empezar",
   "placeholders_no_history": "No hay historial",
   "placeholders_no_recipes": "No hay recetas",
@@ -320,26 +307,11 @@ Por favor, considera premium para máquinas ilimitadas",
   "settings_screen_settings": "Ajustes",
   "settings_screen_delete_account": "Eliminar cuenta",
   "settings_screen_deleting_account": "Eliminando cuenta...",
-  "settings_screen_confirm_delete": "¿Estás seguro de que quieres eliminar tu cuenta?
-Esta acción no se puede deshacer",
+  "settings_screen_confirm_delete": "¿Estás seguro de que quieres eliminar tu cuenta?\nEsta acción no se puede deshacer",
   "subscription_screen_monthly": "Mensual",
   "subscription_screen_annual": "Anual",
-  "subscription_screen_monthly_description": "Por el precio de 1 café
-
-
-Obtén recetas ilimitadas 📝
-
-Obtén equipo ilimitado ☕️
-
-Por un mes",
-  "subscription_screen_annual_description": "Por el precio de 10 meses
-
-
-Obtén recetas ilimitadas 📝
-
-Obtén equipo ilimitado ☕️
-
-Por un año!",
+  "subscription_screen_monthly_description": "Por el precio de 1 café\n\n\nObtén recetas ilimitadas 📝\n\nObtén equipo ilimitado ☕️\n\nPor un mes",
+  "subscription_screen_annual_description": "Por el precio de 10 meses\n\n\nObtén recetas ilimitadas 📝\n\nObtén equipo ilimitado ☕️\n\nPor un año!",
   "subscription_screen_choose_a_subscription": "Elige una suscripción",
   "subscription_screen_support_message": "¡Gracias por apoyar a My Espresso",
   "subscription_screen_subscription": "Suscripción",
@@ -549,5 +521,6 @@ Por un año!",
   "payment_initializing_form": "Inicializando formulario de pago...",
   "payment_club_not_found": "El club que buscas no existe.",
   "payment_court_not_found": "La cancha que buscas no existe.",
-  "payment_already_member": "Ya eres miembro de este club. Por favor revisa los detalles de tu membresía en la sección de perfil."
+  "payment_already_member": "Ya eres miembro de este club. Por favor revisa los detalles de tu membresía en la sección de perfil.",
+  "booking_modal_share_booking": "Compartir reserva"
 }

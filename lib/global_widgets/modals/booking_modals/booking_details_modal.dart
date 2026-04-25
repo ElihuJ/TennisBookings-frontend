@@ -151,16 +151,37 @@ class _BookingBody extends HookConsumerWidget {
             value: booking.clubPin!,
           ),
         const SizedBox(height: 8),
-        TextButton.icon(
-          onPressed: () async {
-            final url =
-                '${web.window.origin}#${CalendarScreen.route}?clubId=${booking.clubId}&courtId=${booking.courtId}&bookingId=${booking.id}&time=$startMs';
-            await Clipboard.setData(ClipboardData(text: url));
-            eventNotifier.showMessage(messageType: MessageType.success, message: context.localeString(BookingModalStrings.linkCopied));
-          },
-          icon: const Icon(Icons.share_outlined, size: 16),
-          label: const Text('Share booking'),
-          style: TextButton.styleFrom(foregroundColor: AppColors.primaryGreen, textStyle: const TextStyle(fontSize: 13)),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Material(
+            color: AppColors.surfaceGreenAlt,
+            child: InkWell(
+              onTap: () async {
+                final url =
+                    '${web.window.origin}#${CalendarScreen.route}?clubId=${booking.clubId}&courtId=${booking.courtId}&bookingId=${booking.id}&time=$startMs';
+                await Clipboard.setData(ClipboardData(text: url));
+                eventNotifier.showMessage(messageType: MessageType.success, message: context.localeString(BookingModalStrings.linkCopied));
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.borderGreen),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        context.localeString(BookingModalStrings.shareBooking),
+                        style: const TextStyle(color: AppColors.textBody, fontWeight: FontWeight.w500, fontSize: 13),
+                      ),
+                    ),
+                    const Icon(Icons.content_copy_outlined, size: 15, color: AppColors.textSubtle),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       ],
     );
@@ -210,8 +231,8 @@ List<Widget> _getOwnerActions({
     FilledButton(
       onPressed: () async {
         eventNotifier.showLoading(message: context.localeString(BookingModalStrings.deleting));
-        final payload = DeleteBookingPayload(
-            payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
+        final payload =
+            DeleteBookingPayload(payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
         final result = await cloudFunctions.deleteBooking(payload);
         eventNotifier.hideLoading();
         if (result.data == true) {
@@ -289,8 +310,8 @@ List<Widget> _getOpenForInvitesActions({
       ? null
       : () async {
           eventNotifier.showLoading(message: context.localeString(BookingModalStrings.sendingRequest));
-          final payload = SendInvitePayload(
-              payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
+          final payload =
+              SendInvitePayload(payload: BasicBookingPayload(bookingId: booking.id, clubId: booking.clubId, courtId: booking.courtId));
           final result = await cloudFunctions.sendInvite(payload);
           eventNotifier.hideLoading();
           if (result.data == true) {

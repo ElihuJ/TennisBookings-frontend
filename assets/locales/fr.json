@@ -4,8 +4,7 @@
   "about_screen_privacy_policy": "Politique de confidentialité",
   "ai_comments": "Commentaires IA",
   "ai_feedback": "Avis IA",
-  "ai_explained": "Obtenez des commentaires sur votre recette grâce à notre modèle d'IA ! 
-Vous pouvez même poser des questions en utilisant la section commentaires",
+  "ai_explained": "Obtenez des commentaires sur votre recette grâce à notre modèle d'IA ! \nVous pouvez même poser des questions en utilisant la section commentaires",
   "ai_locked_message": "Déverrouillez les commentaires IA en vous abonnant à la version premium",
   "aroma_category_strings_berry": "Baies",
   "aroma_category_strings_fruity": "Fruité",
@@ -108,13 +107,10 @@ Vous pouvez même poser des questions en utilisant la section commentaires",
   "baskets_strings_basket_created": "Panier créé",
   "baskets_strings_basket_updated": "Panier mis à jour",
   "baskets_strings_basket_deleted": "Panier supprimé",
-  "baskets_strings_confirm_delete_basket": "Êtes-vous sûr de vouloir supprimer ce panier ?
-Toutes les recettes associées seront également supprimées",
+  "baskets_strings_confirm_delete_basket": "Êtes-vous sûr de vouloir supprimer ce panier ?\nToutes les recettes associées seront également supprimées",
   "baskets_strings_edit_basket": "Modifier le panier",
   "baskets_strings_capacity": "Capacité",
-  "baskets_strings_limit_warning": "Vous avez atteint la limite de paniers.
-
-Veuillez envisager la version premium pour des paniers illimités",
+  "baskets_strings_limit_warning": "Vous avez atteint la limite de paniers.\n\nVeuillez envisager la version premium pour des paniers illimités",
   "beans_strings_beans": "Grains",
   "beans_strings_add_new_bean": "Ajouter un nouveau grain",
   "beans_strings_search_bean": "Rechercher un grain par nom",
@@ -126,8 +122,7 @@ Veuillez envisager la version premium pour des paniers illimités",
   "beans_strings_bean_created": "Grain créé",
   "beans_strings_bean_updated": "Grain mis à jour",
   "beans_strings_bean_deleted": "Grain supprimé",
-  "beans_strings_confirm_delete_bean": "Êtes-vous sûr de vouloir supprimer ce grain ?
-Toutes les recettes associées seront également supprimées",
+  "beans_strings_confirm_delete_bean": "Êtes-vous sûr de vouloir supprimer ce grain ?\nToutes les recettes associées seront également supprimées",
   "beans_strings_edit_bean": "Modifier le grain",
   "beans_notes_strings_notes": "Notes",
   "beans_notes_strings_add_note": "Ajouter une note",
@@ -138,9 +133,7 @@ Toutes les recettes associées seront également supprimées",
   "beans_strings_average_score": "Score moyen",
   "beans_strings_last_used": "Dernière utilisation",
   "beans_strings_failed_to_update_bean": "Échec de la mise à jour du grain",
-  "beans_strings_limit_warning": "Vous avez atteint la limite de grains.
-
-Veuillez envisager la version premium pour des grains illimités",
+  "beans_strings_limit_warning": "Vous avez atteint la limite de grains.\n\nVeuillez envisager la version premium pour des grains illimités",
   "beans_strings_origin": "Origine",
   "beans_notes_strings_manage_notes": "Gérer les notes",
   "brew_strings_bean": "Grain",
@@ -253,12 +246,9 @@ Veuillez envisager la version premium pour des grains illimités",
   "grinders_strings_grinder_created": "Moulin créé",
   "grinders_strings_grinder_updated": "Moulin mis à jour",
   "grinders_strings_grinder_deleted": "Moulin supprimé",
-  "grinders_strings_confirm_delete_grinder": "Êtes-vous sûr de vouloir supprimer ce moulin ?
-Toutes les recettes associées seront également supprimées",
+  "grinders_strings_confirm_delete_grinder": "Êtes-vous sûr de vouloir supprimer ce moulin ?\nToutes les recettes associées seront également supprimées",
   "grinders_strings_edit_grinder": "Modifier le moulin",
-  "grinders_strings_limit_warning": "Vous avez atteint la limite de moulins.
-
-Veuillez envisager la version premium pour des moulins illimités",
+  "grinders_strings_limit_warning": "Vous avez atteint la limite de moulins.\n\nVeuillez envisager la version premium pour des moulins illimités",
   "home_screen_screen_app_title": "Modèle Flutter",
   "home_screen_screen_welcome_message": "Bienvenue sur l'écran d'accueil !",
   "login_screen_login_with_apple": "Se connecter avec Apple",
@@ -286,12 +276,9 @@ Veuillez envisager la version premium pour des moulins illimités",
   "machines_strings_machine_created": "Machine créée",
   "machines_strings_machine_updated": "Machine mise à jour",
   "machines_strings_machine_deleted": "Machine supprimée",
-  "machines_strings_confirm_delete_machine": "Êtes-vous sûr de vouloir supprimer cette machine ?
-Toutes les recettes associées seront également supprimées",
+  "machines_strings_confirm_delete_machine": "Êtes-vous sûr de vouloir supprimer cette machine ?\nToutes les recettes associées seront également supprimées",
   "machines_strings_edit_machine": "Modifier la machine",
-  "machines_strings_limit_warning": "Vous avez atteint la limite de machines.
-
-Veuillez envisager la version premium pour des machines illimitées",
+  "machines_strings_limit_warning": "Vous avez atteint la limite de machines.\n\nVeuillez envisager la version premium pour des machines illimitées",
   "placeholders_missing_equipment": "Vous devez ajouter de l'équipement pour commencer",
   "placeholders_no_history": "Aucun historique",
   "placeholders_no_recipes": "Aucune recette",
@@ -319,26 +306,11 @@ Veuillez envisager la version premium pour des machines illimitées",
   "settings_screen_settings": "Paramètres",
   "settings_screen_delete_account": "Supprimer le compte",
   "settings_screen_deleting_account": "Suppression du compte...",
-  "settings_screen_confirm_delete": "Êtes-vous sûr de vouloir supprimer votre compte ?
-Cette action est irréversible",
+  "settings_screen_confirm_delete": "Êtes-vous sûr de vouloir supprimer votre compte ?\nCette action est irréversible",
   "subscription_screen_monthly": "Mensuel",
   "subscription_screen_annual": "Annuel",
-  "subscription_screen_monthly_description": "Pour le prix d'un café
-
-
-Obtenez des recettes illimitées 📝
-
-Obtenez un équipement illimité ☕️
-
-Pour un mois",
-  "subscription_screen_annual_description": "Pour le prix de 10 mois
-
-
-Obtenez des recettes illimitées 📝
-
-Obtenez un équipement illimité ☕️
-
-Pour un an !",
+  "subscription_screen_monthly_description": "Pour le prix d'un café\n\n\nObtenez des recettes illimitées 📝\n\nObtenez un équipement illimité ☕️\n\nPour un mois",
+  "subscription_screen_annual_description": "Pour le prix de 10 mois\n\n\nObtenez des recettes illimitées 📝\n\nObtenez un équipement illimité ☕️\n\nPour un an !",
   "subscription_screen_choose_a_subscription": "Choisissez un abonnement",
   "subscription_screen_support_message": "Merci de soutenir My Espresso",
   "subscription_screen_subscription": "Abonnement",
@@ -548,5 +520,6 @@ Pour un an !",
   "payment_initializing_form": "Initialisation du formulaire de paiement...",
   "payment_club_not_found": "Le club que vous recherchez n'existe pas.",
   "payment_court_not_found": "Le terrain que vous recherchez n'existe pas.",
-  "payment_already_member": "Vous êtes déjà membre de ce club. Veuillez vérifier vos détails d'adhésion dans la section profil."
+  "payment_already_member": "Vous êtes déjà membre de ce club. Veuillez vérifier vos détails d'adhésion dans la section profil.",
+  "booking_modal_share_booking": "Partager la réservation"
 }

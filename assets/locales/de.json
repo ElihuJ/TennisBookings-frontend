@@ -4,8 +4,7 @@
   "about_screen_privacy_policy": "Datenschutzrichtlinie",
   "ai_comments": "KI-Kommentare",
   "ai_feedback": "KI-Feedback",
-  "ai_explained": "Erhalten Sie Feedback zu Ihrem Rezept von unserem KI-Modell! 
-Im Kommentarbereich können Sie sogar Fragen stellen",
+  "ai_explained": "Erhalten Sie Feedback zu Ihrem Rezept von unserem KI-Modell! \nIm Kommentarbereich können Sie sogar Fragen stellen",
   "ai_locked_message": "Schalte KI-Feedback durch ein Premium-Abonnement frei",
   "aroma_category_strings_berry": "Beeren",
   "aroma_category_strings_fruity": "Fruchtig",
@@ -108,13 +107,10 @@ Im Kommentarbereich können Sie sogar Fragen stellen",
   "baskets_strings_basket_created": "Korb erstellt",
   "baskets_strings_basket_updated": "Korb aktualisiert",
   "baskets_strings_basket_deleted": "Korb gelöscht",
-  "baskets_strings_confirm_delete_basket": "Möchten Sie diesen Korb wirklich löschen?
-Es werden auch alle Rezepte gelöscht, die diesen Korb verwenden.",
+  "baskets_strings_confirm_delete_basket": "Möchten Sie diesen Korb wirklich löschen?\nEs werden auch alle Rezepte gelöscht, die diesen Korb verwenden.",
   "baskets_strings_edit_basket": "Korb bearbeiten",
   "baskets_strings_capacity": "Kapazität",
-  "baskets_strings_limit_warning": "Sie haben die maximale Anzahl von Körben erreicht.
-
-Bitte erwägen Sie den Kauf von Premium für unbegrenzte Körbe.",
+  "baskets_strings_limit_warning": "Sie haben die maximale Anzahl von Körben erreicht.\n\nBitte erwägen Sie den Kauf von Premium für unbegrenzte Körbe.",
   "beans_strings_beans": "Bohnen",
   "beans_strings_add_new_bean": "Neue Bohne hinzufügen",
   "beans_strings_search_bean": "Nach Bohnennamen suchen",
@@ -126,8 +122,7 @@ Bitte erwägen Sie den Kauf von Premium für unbegrenzte Körbe.",
   "beans_strings_bean_created": "Bohne erstellt",
   "beans_strings_bean_updated": "Bohne aktualisiert",
   "beans_strings_bean_deleted": "Bohne gelöscht",
-  "beans_strings_confirm_delete_bean": "Möchten Sie diese Bohne wirklich löschen?
-Es werden auch alle Rezepte gelöscht, die diese Bohne verwenden.",
+  "beans_strings_confirm_delete_bean": "Möchten Sie diese Bohne wirklich löschen?\nEs werden auch alle Rezepte gelöscht, die diese Bohne verwenden.",
   "beans_strings_edit_bean": "Bohne bearbeiten",
   "beans_notes_strings_notes": "Notizen",
   "beans_notes_strings_add_note": "Notiz hinzufügen",
@@ -138,9 +133,7 @@ Es werden auch alle Rezepte gelöscht, die diese Bohne verwenden.",
   "beans_strings_average_score": "Durchschnittliche Bewertung",
   "beans_strings_last_used": "Zuletzt verwendet",
   "beans_strings_failed_to_update_bean": "Fehler beim Aktualisieren der Bohne",
-  "beans_strings_limit_warning": "Sie haben die maximale Anzahl von Bohnen erreicht.
-
-Bitte erwägen Sie den Kauf von Premium für unbegrenzte Bohnen.",
+  "beans_strings_limit_warning": "Sie haben die maximale Anzahl von Bohnen erreicht.\n\nBitte erwägen Sie den Kauf von Premium für unbegrenzte Bohnen.",
   "beans_strings_origin": "Herkunft",
   "beans_notes_strings_manage_notes": "Notizen verwalten",
   "brew_strings_bean": "Bohne",
@@ -253,12 +246,9 @@ Bitte erwägen Sie den Kauf von Premium für unbegrenzte Bohnen.",
   "grinders_strings_grinder_created": "Mühle erstellt",
   "grinders_strings_grinder_updated": "Mühle aktualisiert",
   "grinders_strings_grinder_deleted": "Mühle gelöscht",
-  "grinders_strings_confirm_delete_grinder": "Möchten Sie diese Mühle wirklich löschen?
-Es werden auch alle Rezepte gelöscht, die diese Mühle verwenden.",
+  "grinders_strings_confirm_delete_grinder": "Möchten Sie diese Mühle wirklich löschen?\nEs werden auch alle Rezepte gelöscht, die diese Mühle verwenden.",
   "grinders_strings_edit_grinder": "Mühle bearbeiten",
-  "grinders_strings_limit_warning": "Sie haben die maximale Anzahl von Mühlen erreicht.
-
-Bitte erwägen Sie den Kauf von Premium für unbegrenzte Mühlen.",
+  "grinders_strings_limit_warning": "Sie haben die maximale Anzahl von Mühlen erreicht.\n\nBitte erwägen Sie den Kauf von Premium für unbegrenzte Mühlen.",
   "home_screen_screen_app_title": "My Espresso",
   "home_screen_screen_welcome_message": "Willkommen auf dem Startbildschirm!",
   "login_screen_login_with_apple": "Mit Apple anmelden",
@@ -286,12 +276,9 @@ Bitte erwägen Sie den Kauf von Premium für unbegrenzte Mühlen.",
   "machines_strings_machine_created": "Maschine erstellt",
   "machines_strings_machine_updated": "Maschine aktualisiert",
   "machines_strings_machine_deleted": "Maschine gelöscht",
-  "machines_strings_confirm_delete_machine": "Möchten Sie diese Maschine wirklich löschen?
-Es werden auch alle Rezepte gelöscht, die diese Maschine verwenden.",
+  "machines_strings_confirm_delete_machine": "Möchten Sie diese Maschine wirklich löschen?\nEs werden auch alle Rezepte gelöscht, die diese Maschine verwenden.",
   "machines_strings_edit_machine": "Maschine bearbeiten",
-  "machines_strings_limit_warning": "Sie haben die maximale Anzahl von Maschinen erreicht.
-
-Bitte erwägen Sie den Kauf von Premium für unbegrenzte Maschinen.",
+  "machines_strings_limit_warning": "Sie haben die maximale Anzahl von Maschinen erreicht.\n\nBitte erwägen Sie den Kauf von Premium für unbegrenzte Maschinen.",
   "placeholders_missing_equipment": "Sie müssen etwas Equipment hinzufügen, bevor Sie brühen können",
   "placeholders_no_history": "Noch keine Historie",
   "placeholders_no_recipes": "Noch keine Rezepte",
@@ -319,22 +306,13 @@ Bitte erwägen Sie den Kauf von Premium für unbegrenzte Maschinen.",
   "settings_screen_settings": "Einstellungen",
   "settings_screen_delete_account": "Account löschen",
   "settings_screen_deleting_account": "Account wird gelöscht...",
-  "settings_screen_confirm_delete": "Möchten Sie Ihren Account wirklich löschen?
-Diese Aktion kann nicht rückgängig gemacht werden.",
+  "settings_screen_confirm_delete": "Möchten Sie Ihren Account wirklich löschen?\nDiese Aktion kann nicht rückgängig gemacht werden.",
   "subscription_screen_monthly": "Monatlich",
   "subscription_screen_annual": "Jährlich",
   "subscription_screen_you_are_premium_already": "Sie sind bereits Premium 👑",
   "subscription_screen_premium": "Premium 👑",
-  "subscription_screen_monthly_description": "Für den Preis eines Kaffees ☕️
-
-Erhalten Sie unbegrenzte Rezepte 📝
-Erhalten Sie unbegrenztes Equipment
-Für einen Monat",
-  "subscription_screen_annual_description": "Für den Preis von 10 Monaten ☕️
-
-Erhalten Sie unbegrenzte Rezepte 📝
-Erhalten Sie unbegrenztes Equipment
-Für ein Jahr!",
+  "subscription_screen_monthly_description": "Für den Preis eines Kaffees ☕️\n\nErhalten Sie unbegrenzte Rezepte 📝\nErhalten Sie unbegrenztes Equipment\nFür einen Monat",
+  "subscription_screen_annual_description": "Für den Preis von 10 Monaten ☕️\n\nErhalten Sie unbegrenzte Rezepte 📝\nErhalten Sie unbegrenztes Equipment\nFür ein Jahr!",
   "subscription_screen_choose_a_subscription": "Wählen Sie ein Abonnement",
   "subscription_screen_support_message": "Vielen Dank, dass Sie My Espresso unterstützen",
   "subscription_screen_subscription": "Abonnement",
@@ -542,5 +520,6 @@ Für ein Jahr!",
   "payment_initializing_form": "Zahlungsformular wird initialisiert...",
   "payment_club_not_found": "Der gesuchte Club existiert nicht.",
   "payment_court_not_found": "Der gesuchte Platz existiert nicht.",
-  "payment_already_member": "Sie sind bereits Mitglied dieses Clubs. Bitte überprüfen Sie Ihre Mitgliedschaftsdetails im Profilbereich."
+  "payment_already_member": "Sie sind bereits Mitglied dieses Clubs. Bitte überprüfen Sie Ihre Mitgliedschaftsdetails im Profilbereich.",
+  "booking_modal_share_booking": "Buchung teilen"
 }

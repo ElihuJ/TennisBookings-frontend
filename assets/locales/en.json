@@ -2,7 +2,6 @@
   "about_screen_eula": "End User License Agreement",
   "about_screen_about": "About",
   "about_screen_privacy_policy": "Privacy Policy",
-
   "email_login_screen_already_have_an_account": "Already have an account? Login",
   "email_login_screen_confirm_password": "Confirm Password",
   "email_login_screen_create_account": "Create Account",
@@ -19,12 +18,10 @@
   "email_login_screen_verification_email_sent": "Verification email sent",
   "email_login_screen_welcome_back": "Welcome back!",
   "email_login_screen_or_continue_with": "Or continue with",
-
   "empty_list_no_machines": "Press the ➕ button below to add a machine",
   "empty_list_no_beans": "Press the ➕ button below to add a bean",
   "empty_list_no_baskets": "Press the ➕ button below to add a basket",
   "empty_list_no_grinders": "Press the ➕ button below to add a grinder",
-
   "enum_strings_light": "Light",
   "enum_strings_medium": "Medium",
   "enum_strings_medium_dark": "Medium Dark",
@@ -37,7 +34,6 @@
   "enum_strings_triple": "Triple",
   "enum_strings_yes": "Yes",
   "enum_strings_no": "No",
-
   "firebase_error_email_already_in_use": "Email already in use",
   "firebase_error_invalid_email": "Invalid email",
   "firebase_error_login_failed": "Login failed",
@@ -45,7 +41,6 @@
   "firebase_error_something_went_wrong": "Something went wrong",
   "firebase_error_user_disabled": "Your account has been disabled",
   "firebase_error_weak_password": "Weak password",
-
   "filters_sort": "Sort",
   "filters_filter": "Filter",
   "filters_descending": "Descending",
@@ -54,12 +49,10 @@
   "filters_average_score": "Average score",
   "filters_name": "Name",
   "filters_total_recipes": "Total recipes",
-
   "forgot_password_description": "Enter your email and we'll send you a link to reset your password",
   "forgot_password_password_reset_email_sent": "If an account exists with that email, we\"ve sent you a link to reset your password",
   "forgot_password_request_password_reset": "Request password reset",
   "forgot_password_title": "Request password request",
-
   "general_name": "Name",
   "general_save": "Save",
   "general_cancel": "Cancel",
@@ -84,23 +77,19 @@
   "general_close": "Close",
   "general_quick_glance": "Quick Glance",
   "general_apply": "Apply",
-
   "home_screen_screen_app_title": "My Espresso",
   "home_screen_screen_welcome_message": "Welcome to the Home Screen!",
-
   "login_screen_login_with_apple": "Sign in with Apple",
   "login_screen_login_with_email": "Sign in with Email",
   "login_screen_login_with_google": "Sign in with Google",
   "login_screen_logout": "Logout",
   "login_screen_logging_in": "Logging in...",
-
   "login_sign_up_validator_confirm_password_invalid": "Passwords do not match",
   "login_sign_up_validator_confirm_password_required": "Please confirm your password",
   "login_sign_up_validator_email_invalid": "Please enter a valid email",
   "login_sign_up_validator_email_required": "Please enter your email",
   "login_sign_up_validator_password_invalid": "Password must be at least 6 characters",
   "login_sign_up_validator_password_required": "Please enter your password",
-
   "machines_strings_machines": "Machines",
   "machines_strings_add_new_machine": "Add new machine",
   "machines_strings_search_machine": "Search by machine name",
@@ -118,7 +107,6 @@
   "machines_strings_confirm_delete_machine": "Are you sure you want to delete this machine?\nIt will also delete all recipes using this machine.",
   "machines_strings_edit_machine": "Edit Machine",
   "machines_strings_limit_warning": "You have reached the limit of machines.\n\nPlease consider premium for unlimited machines.",
-
   "placeholders_missing_equipment": "You will need to add some equipment before brewing",
   "placeholders_no_history": "No history yet",
   "placeholders_no_recipes": "No recipes yet",
@@ -126,7 +114,6 @@
   "placeholders_add_a_bean": "Add a bean",
   "placeholders_add_a_basket": "Add a basket",
   "placeholders_add_a_grinder": "Add a grinder",
-
   "recipes_screen_strings_ratio": "Ratio",
   "recipes_screen_strings_edit_recipe": "Edit Recipe",
   "recipes_screen_strings_recipe_deleted": "Recipe deleted",
@@ -134,7 +121,6 @@
   "recipes_screen_strings_recipe_details": "Recipe Details",
   "recipes_screen_strings_updating_recipe": "Updating recipe...",
   "recipes_screen_strings_recipe_updated": "Recipe updated",
-
   "settings_language_dialog_select_language": "Select Language",
   "settings_language_dialog_english": "English",
   "settings_language_dialog_spanish": "Spanish",
@@ -142,7 +128,6 @@
   "settings_language_dialog_french": "French",
   "settings_language_dialog_german": "German",
   "settings_language_dialog_portuguese": "Portuguese",
-
   "settings_screen_logging_out": "Logging out...",
   "settings_screen_logout": "Logout",
   "settings_screen_select_language": "Select Language",
@@ -150,7 +135,6 @@
   "settings_screen_delete_account": "Delete Account",
   "settings_screen_deleting_account": "Deleting account...",
   "settings_screen_confirm_delete": "Are you sure you want to delete your account?\nThis action cannot be undone.",
-
   "subscription_screen_monthly": "Monthly",
   "subscription_screen_annual": "Annual",
   "subscription_screen_premium": "Premium 👑",
@@ -169,22 +153,17 @@
   "subscription_screen_free_user_explained": "As a free user you can use the app with limited equipment and recipes. To unlock all features, please subscribe.",
   "subscription_screen_manage_subscriptions": "Manage subscriptions",
   "subscription_screen_cancel_subscription_explained": "You can cancel your subscription at any time. Your subscription will remain active until the end of the current billing cycle.",
-
   "tab_bar_history": "History",
   "tab_bar_espresso": "Espresso",
   "tab_bar_recipes": "Recipes",
-
   "versioning_update_available": "Update available",
-  "versioning_please_update" : "Please update to the latest version",
+  "versioning_please_update": "Please update to the latest version",
   "general_contact_us": "Contact us",
-
   "warnings_you_have_reached_the_limit": "You have reached the limit of",
   "pleaseConsiderPremium": "Please consider premium for unlimited",
-
   "general_not_allowed": "Not allowed",
   "general_go_back": "Go Back",
   "not_found_title": "Page Not Found",
-
   "booking_modal_welcome": "Welcome",
   "booking_modal_login_to_continue": "Please log in or create a new account to continue.",
   "booking_modal_members_only": "Members only",
@@ -205,7 +184,6 @@
   "booking_modal_withdraw_btn": "Withdraw",
   "booking_modal_court_pin": "Court Pin",
   "booking_modal_club_pin": "Club Pin",
-
   "booking_form_title_label": "Title",
   "booking_form_format_label": "Format",
   "booking_form_visibility_label": "Visibility",
@@ -235,7 +213,6 @@
   "booking_form_utr_greater_than": "UTR Greater Than",
   "booking_form_singles": "Singles",
   "booking_form_doubles": "Doubles",
-
   "calendar_booking_past_title": "Booking in the past",
   "calendar_booking_past_message": "You cannot book a time in the past.",
   "calendar_booking_future_title": "Booking too far in the future",
@@ -248,7 +225,6 @@
   "calendar_day_fri": "Fri",
   "calendar_day_sat": "Sat",
   "calendar_day_sun": "Sun",
-
   "payment_processing": "Processing payment",
   "payment_succeeded": "Payment succeeded",
   "payment_failed": "Payment failed",
@@ -264,7 +240,6 @@
   "payment_booking_details_label": "Booking details are:",
   "payment_annual_fee": "Annual membership fee",
   "payment_valid_until": "Valid until",
-
   "invites_title": "My Invites",
   "invites_no_invites_title": "No Invites",
   "invites_no_invites_message": "You have no invites at the moment.",
@@ -275,7 +250,6 @@
   "invites_declined": "Invite declined!",
   "invites_decline": "Decline",
   "invites_gender_label": "Gender",
-
   "profile_name_label": "Name",
   "profile_gender_label": "Gender",
   "profile_utr_label": "UTR Rating",
@@ -289,14 +263,12 @@
   "profile_details": "Profile Details",
   "profile_memberships": "Memberships",
   "profile_logout": "Logout",
-
   "clubs_search_placeholder": "Search clubs or suburbs",
   "clubs_no_clubs_found": "No clubs found",
   "clubs_open_in_maps": "Open in Maps",
   "clubs_book_a_court": "Book a court",
   "clubs_membership_details": "Membership & details",
   "clubs_loading": "Loading clubs...",
-
   "home_hero_title": "Book. Play. Connect.",
   "home_hero_subtitle": "Find courts nearby, invite players and manage bookings — all in one beautiful app.",
   "home_features_section": "Features",
@@ -309,25 +281,21 @@
   "home_contact_section": "Contact",
   "home_footer_ready": "Ready to play?",
   "home_footer_get_started": "Get Started",
-
   "validator_end_after_start": "End time must be after start time",
   "validator_max_duration": "Max duration per booking is {hours} hour",
   "validator_min_duration": "Min duration per booking is {minutes} minutes",
   "validator_time_booked": "Time slot is already booked",
   "validator_invalid_utr": "Invalid UTR",
   "validator_utr_comparison": "UTR must be greater than or equal to Lower Limit",
-
   "update_required_message": "A new version of the app is available. Please update to continue.",
   "update_required_title": "Update Required",
   "update_required_button": "Update",
-
   "header_version_dialog_title": "Version",
   "header_version_dialog_button": "Cool!",
   "header_bookings": "Bookings",
   "header_my_invites": "My Invites",
   "header_login": "Login",
   "header_register": "Register",
-
   "profile_my_bookings": "My Bookings",
   "profile_my_bookings_upcoming": "Upcoming",
   "profile_my_bookings_past": "Past",
@@ -336,12 +304,12 @@
   "profile_my_bookings_no_past": "No past bookings",
   "profile_my_bookings_no_past_sub": "Your booking history will appear here",
   "profile_my_bookings_loading": "Loading your bookings...",
-  "profile_my_bookings_no_players": "No players yet"
-,
-  "profile_email_label": "Email", "profile_edit": "Edit Profile", "profile_save": "Save Changes", "profile_discard": "Discard"
-,
+  "profile_my_bookings_no_players": "No players yet",
+  "profile_email_label": "Email",
+  "profile_edit": "Edit Profile",
+  "profile_save": "Save Changes",
+  "profile_discard": "Discard",
   "profile_language": "Language",
-
   "clubs_is_member": "You are a Member 🎾",
   "clubs_you_are_a_member": "You are a Member",
   "clubs_not_a_member": "You are not a member",
@@ -362,12 +330,10 @@
   "clubs_contact_email": "Email",
   "clubs_contact_phone": "Phone",
   "clubs_find_subtitle": "Find clubs near you",
-
   "invites_club": "Club",
   "invites_court": "Court",
   "invites_from": "From",
   "invites_to": "To",
-
   "profile_membership_details": "Membership Details",
   "profile_membership_address": "Address:",
   "profile_membership_annual_fee": "Annual Membership Fee:",
@@ -375,14 +341,13 @@
   "profile_view_club_details": "View Club Details",
   "profile_no_memberships": "No Club Memberships",
   "profile_no_memberships_msg": "Looks like you're not a member of any club yet.",
-
   "calendar_loading_courts": "Loading courts...",
-
   "payment_loading_data": "Loading payment data...",
   "payment_error_loading": "Error loading club payment data",
   "payment_error_loading_casual": "Error loading casual payment data",
   "payment_initializing_form": "Initializing payment form...",
   "payment_club_not_found": "The club you are looking for does not exist.",
   "payment_court_not_found": "The court you are looking for does not exist.",
-  "payment_already_member": "You are already a member of this club. Please check your membership details in the profile section."
+  "payment_already_member": "You are already a member of this club. Please check your membership details in the profile section.",
+  "booking_modal_share_booking": "Share booking"
 }

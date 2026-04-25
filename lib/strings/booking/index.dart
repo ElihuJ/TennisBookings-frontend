@@ -19,6 +19,7 @@ class BookingModalStrings {
   static const withdrawBtn = 'booking_modal_withdraw_btn';
   static const courtPin = 'booking_modal_court_pin';
   static const clubPin = 'booking_modal_club_pin';
+  static const shareBooking = 'booking_modal_share_booking';
 
   BookingModalStrings._();
 }

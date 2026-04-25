@@ -58,7 +58,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
 enum ProfileOptions {
   profileDetails,
-  settings,
   memberships,
   myBookings,
 }

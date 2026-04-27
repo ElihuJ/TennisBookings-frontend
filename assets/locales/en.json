@@ -349,5 +349,7 @@
   "payment_club_not_found": "The club you are looking for does not exist.",
   "payment_court_not_found": "The court you are looking for does not exist.",
   "payment_already_member": "You are already a member of this club. Please check your membership details in the profile section.",
-  "booking_modal_share_booking": "Share booking"
+  "booking_modal_share_booking": "Share booking",
+  "payment_casual_title": "Casual Booking",
+  "payment_membership_title": "Annual Membership"
 }

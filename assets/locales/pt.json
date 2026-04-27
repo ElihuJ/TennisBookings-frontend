@@ -521,5 +521,7 @@
   "payment_club_not_found": "O clube que você está procurando não existe.",
   "payment_court_not_found": "A quadra que você está procurando não existe.",
   "payment_already_member": "Você já é membro deste clube. Verifique os detalhes da sua adesão na seção de perfil.",
-  "booking_modal_share_booking": "Compartilhar reserva"
+  "booking_modal_share_booking": "Compartilhar reserva",
+  "payment_casual_title": "Reserva Casual",
+  "payment_membership_title": "Associação Anual"
 }

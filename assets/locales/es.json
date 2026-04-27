@@ -522,5 +522,7 @@
   "payment_club_not_found": "El club que buscas no existe.",
   "payment_court_not_found": "La cancha que buscas no existe.",
   "payment_already_member": "Ya eres miembro de este club. Por favor revisa los detalles de tu membresía en la sección de perfil.",
-  "booking_modal_share_booking": "Compartir reserva"
+  "booking_modal_share_booking": "Compartir reserva",
+  "payment_casual_title": "Reserva Casual",
+  "payment_membership_title": "Membresía Anual"
 }

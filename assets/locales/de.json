@@ -521,5 +521,7 @@
   "payment_club_not_found": "Der gesuchte Club existiert nicht.",
   "payment_court_not_found": "Der gesuchte Platz existiert nicht.",
   "payment_already_member": "Sie sind bereits Mitglied dieses Clubs. Bitte überprüfen Sie Ihre Mitgliedschaftsdetails im Profilbereich.",
-  "booking_modal_share_booking": "Buchung teilen"
+  "booking_modal_share_booking": "Buchung teilen",
+  "payment_casual_title": "Gelegentliche Buchung",
+  "payment_membership_title": "Jahresmitgliedschaft"
 }

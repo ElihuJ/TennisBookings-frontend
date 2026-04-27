@@ -521,5 +521,7 @@
   "payment_club_not_found": "Il club che stai cercando non esiste.",
   "payment_court_not_found": "Il campo che stai cercando non esiste.",
   "payment_already_member": "Sei già membro di questo club. Controlla i dettagli del tuo abbonamento nella sezione profilo.",
-  "booking_modal_share_booking": "Condividi prenotazione"
+  "booking_modal_share_booking": "Condividi prenotazione",
+  "payment_casual_title": "Prenotazione Occasionale",
+  "payment_membership_title": "Abbonamento Annuale"
 }

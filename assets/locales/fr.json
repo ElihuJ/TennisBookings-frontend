@@ -521,5 +521,7 @@
   "payment_club_not_found": "Le club que vous recherchez n'existe pas.",
   "payment_court_not_found": "Le terrain que vous recherchez n'existe pas.",
   "payment_already_member": "Vous êtes déjà membre de ce club. Veuillez vérifier vos détails d'adhésion dans la section profil.",
-  "booking_modal_share_booking": "Partager la réservation"
+  "booking_modal_share_booking": "Partager la réservation",
+  "payment_casual_title": "Réservation Occasionnelle",
+  "payment_membership_title": "Adhésion Annuelle"
 }

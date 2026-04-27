@@ -6,8 +6,10 @@ import 'package:web/web.dart' as web;
 import '../../global_widgets/index.dart';
 import '../../routes/index.dart';
 import '../../strings/index.dart';
-import '../../theme/index.dart';
+import '../../theme/colors.dart';
 import '../calendar/calendar_screen.dart';
+import '../login/widgets/containers.dart';
+import 'payment_widgets.dart';
 
 class PaymentResultScreen extends StatefulHookConsumerWidget {
   const PaymentResultScreen({super.key, required this.params});
@@ -27,17 +29,6 @@ class _PaymentResultScreenState extends ConsumerState<PaymentResultScreen> {
     history.replaceState(history.state, '', '#${PaymentResultScreen.route}');
   }
 
-  String getPaymentStatus(StripePaymentRedirectStatus status) {
-    switch (status) {
-      case StripePaymentRedirectStatus.succeeded:
-        return context.localeString(PaymentStrings.succeeded);
-      case StripePaymentRedirectStatus.requiresAction:
-        return context.localeString(PaymentStrings.statusRequiresAction);
-      case StripePaymentRedirectStatus.requiresPaymentMethod:
-        return context.localeString(PaymentStrings.statusRequiresPaymentMethod);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final hasAllData = widget.params.paymentIntent.isNotEmpty && widget.params.paymentIntentClientSecret.isNotEmpty;
@@ -46,75 +37,132 @@ class _PaymentResultScreenState extends ConsumerState<PaymentResultScreen> {
       return NotFoundScreen();
     }
     if (widget.params.redirectStatus != StripePaymentRedirectStatus.succeeded) {
-      return PaymentFailed();
+      return _PaymentFailed();
     }
 
-    return PaymentSuccessful(params: widget.params);
+    return _PaymentSuccessful(params: widget.params);
   }
 }
 
-class PaymentSuccessful extends StatelessWidget {
-  const PaymentSuccessful({
-    super.key,
-    required this.params,
-  });
+class _PaymentSuccessful extends StatelessWidget {
+  const _PaymentSuccessful({required this.params});
 
   final StripePaymentQueryParams params;
 
   @override
   Widget build(BuildContext context) {
     return TbScaffold(
-      body: Center(
-        child: Column(
-          spacing: 20,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.check_circle, color: Colors.green, size: 100),
-            const SizedBox(height: 20),
-            PrettyText(context.localeString(PaymentStrings.successfulTitle)),
-            PrettyText(
-              context.localeString(PaymentStrings.successfulMessage),
-              textAlign: TextAlign.center,
+      body: ContainerWithBackground(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 480),
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                clipBehavior: Clip.antiAlias,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    PaymentResultHeader(
+                      icon: Icons.check_circle_outline,
+                      title: context.localeString(PaymentStrings.successfulTitle),
+                      isSuccess: true,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(28),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            context.localeString(PaymentStrings.successfulMessage),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(color: AppColors.textBody, fontSize: 14, height: 1.6),
+                          ),
+                          const SizedBox(height: 24),
+                          FilledButton(
+                            onPressed: () => Navigator.of(context).pushNamed(
+                              '${CalendarScreen.route}?clubId=${params.clubId}&courtId=${params.courtId}',
+                            ),
+                            style: FilledButton.styleFrom(
+                              backgroundColor: AppColors.primaryGreen,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                            child: Text(context.localeString(PaymentStrings.goToCalendar)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: 20),
-            TbTextButton(
-              onPressed: () => Navigator.of(context).pushNamed('${CalendarScreen.route}?clubId=${params.clubId}&courtId=${params.courtId}'),
-              text: context.localeString(PaymentStrings.goToCalendar),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
 
-class PaymentFailed extends StatelessWidget {
-  const PaymentFailed({
-    super.key,
-  });
+class _PaymentFailed extends StatelessWidget {
+  const _PaymentFailed();
 
   @override
   Widget build(BuildContext context) {
     return TbScaffold(
-      body: Center(
-        child: Column(
-          spacing: 20,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.error, color: Colors.red, size: 100),
-            const SizedBox(height: 20),
-            PrettyText(context.localeString(PaymentStrings.failedTitle)),
-            PrettyText(
-              context.localeString(PaymentStrings.failedSupport),
-              textAlign: TextAlign.center,
+      body: ContainerWithBackground(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 480),
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                clipBehavior: Clip.antiAlias,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    PaymentResultHeader(
+                      icon: Icons.cancel_outlined,
+                      title: context.localeString(PaymentStrings.failedTitle),
+                      isSuccess: false,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(28),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            context.localeString(PaymentStrings.failedSupport),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(color: AppColors.textBody, fontSize: 14, height: 1.6),
+                          ),
+                          const SizedBox(height: 24),
+                          OutlinedButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: AppColors.dangerRed,
+                              side: const BorderSide(color: AppColors.dangerRed),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                            child: Text(context.localeString(GeneralStrings.goBack)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: 20),
-            TbTextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              text: context.localeString(GeneralStrings.goBack),
-              color: AppColors.red,
-            ),
-          ],
+          ),
         ),
       ),
     );

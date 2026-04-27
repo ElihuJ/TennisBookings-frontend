@@ -21,6 +21,8 @@ class PaymentStrings {
   static const clubNotFound = 'payment_club_not_found';
   static const courtNotFound = 'payment_court_not_found';
   static const alreadyMember = 'payment_already_member';
+  static const casualTitle = 'payment_casual_title';
+  static const membershipTitle = 'payment_membership_title';
 
   PaymentStrings._();
 }

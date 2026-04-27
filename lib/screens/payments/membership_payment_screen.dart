@@ -10,9 +10,9 @@ import '../../global_widgets/index.dart';
 import '../../routes/index.dart';
 import '../../state/index.dart';
 import '../../strings/index.dart';
-import '../../theme/colors.dart';
 import '../login/widgets/containers.dart';
 import 'membership_payment_form.dart';
+import 'payment_widgets.dart';
 
 class MembershipPaymentScreen extends HookConsumerWidget {
   const MembershipPaymentScreen({super.key, required this.clubSelectedQueryParams});
@@ -60,6 +60,22 @@ class _PaymentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mobileView = isMobile(context);
+
+    Widget skeletonCard() => Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+            child: PaymentCardSkeleton(
+              isMobile: mobileView,
+              header: PaymentCardHeader(
+                logoUrl: clubSelected.clubLogoUrl,
+                title: clubSelected.name,
+                subtitle: context.localeString(PaymentStrings.membershipTitle),
+              ),
+            ),
+          ),
+        );
+
     return EventfulWidget(
       child: TbScaffold(
         body: ContainerWithBackground(
@@ -71,10 +87,7 @@ class _PaymentView extends StatelessWidget {
                 future: cloudFunctions.getMembershipPaymentIntent(clubId: clubSelected.id),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return LoadingScreen(
-                      message: context.localeString(PaymentStrings.loadingData),
-                      noScaffold: true,
-                    );
+                    return skeletonCard();
                   }
                   if (snapshot.hasError || snapshot.data?.data == null) {
                     snapshot.error?.tbLogger('Error loading club payment data');
@@ -102,26 +115,15 @@ class _PaymentView extends StatelessWidget {
                     future: Stripe.instance.applySettings(),
                     builder: (context, asyncSnapshot) {
                       if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-                        return LoadingScreen(
-                          message: context.localeString(PaymentStrings.initializingForm),
-                          noScaffold: true,
-                        );
+                        return skeletonCard();
                       }
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 50.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.max,
-                          spacing: 50,
-                          children: [
-                            CircleAvatar(
-                                radius: 60, backgroundImage: NetworkImage(clubSelected.clubLogoUrl), backgroundColor: AppColors.white),
-                            MembershipPaymentForm(
-                              clientSecret: clientSecret,
-                              club: clubSelected,
-                            ),
-                          ],
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+                          child: MembershipPaymentForm(
+                            clientSecret: clientSecret,
+                            club: clubSelected,
+                          ),
                         ),
                       );
                     },

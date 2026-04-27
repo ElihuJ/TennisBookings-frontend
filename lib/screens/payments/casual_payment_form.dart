@@ -7,11 +7,12 @@ import 'package:web/web.dart' as web;
 
 import '../../global_helpers/index.dart';
 import '../../global_types/index.dart';
-import '../../global_widgets/index.dart';
 import '../../models/index.dart';
 import '../../state/index.dart';
 import '../../strings/index.dart';
+import '../../theme/colors.dart';
 import 'payment_result_screen.dart';
+import 'payment_widgets.dart';
 
 String getUrlPort() => web.window.location.port;
 
@@ -44,10 +45,10 @@ class CasualPaymentForm extends StatefulHookConsumerWidget {
   final Booking booking;
 
   @override
-  ConsumerState<CasualPaymentForm> createState() => _StripePaymentFormModalState();
+  ConsumerState<CasualPaymentForm> createState() => _CasualPaymentFormState();
 }
 
-class _StripePaymentFormModalState extends ConsumerState<CasualPaymentForm> {
+class _CasualPaymentFormState extends ConsumerState<CasualPaymentForm> {
   bool formIsReady = false;
 
   Future<void> onPay() async {
@@ -72,76 +73,70 @@ class _StripePaymentFormModalState extends ConsumerState<CasualPaymentForm> {
   @override
   Widget build(BuildContext context) {
     final mobileView = isMobile(context);
-    return SizedBox(
-      width: mobileView ? 300 : 700,
-      child: Column(
-        spacing: 50,
-        children: [
-          _Title(booking: widget.booking),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: PaymentElement(
-              autofocus: true,
-              appearance: ElementAppearance(labels: ElementAppearanceLabels.floating),
-              clientSecret: widget.clientSecret,
-              onCardChanged: (input) {
-                setState(() {
-                  formIsReady = input?.complete ?? false;
-                });
-              },
-            ),
-          ),
-          TbTextButton(
-            text: 'Pay \$${widget.club.casualFee} ${widget.club.currency.value.toUpperCase()}',
-            onPressed: formIsReady ? onPay : null,
-          )
-        ],
-      ),
-    );
-  }
-}
+    final date = DateTime.fromMillisecondsSinceEpoch(widget.booking.startTime);
+    final dateStr = '${date.day} ${DateFormat.MMM().format(date)} ${date.year}';
+    final timeStr = '${getLocalTimeFromEpoch(widget.booking.startTime)} – ${getLocalTimeFromEpoch(widget.booking.endTime)}';
+    final visibilityStr = widget.booking.private
+        ? context.localeString(PaymentStrings.bookingPrivate)
+        : context.localeString(PaymentStrings.bookingPublic);
+    final amountStr = '${widget.club.casualFee} ${widget.club.currency.value.toUpperCase()}';
 
-class _Title extends StatelessWidget {
-  const _Title({
-    required this.booking,
-  });
-
-  final Booking booking;
-
-  @override
-  Widget build(BuildContext context) {
-    final date = DateTime.fromMillisecondsSinceEpoch(booking.startTime);
-    final month = DateFormat.MMM().format(date);
-    final startTimeString = getLocalTimeFromEpoch(booking.startTime);
-    final endTimeString = getLocalTimeFromEpoch(booking.endTime);
-    final mobileView = isMobile(context);
-
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: mobileView ? 380 : 520),
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        clipBehavior: Clip.antiAlias,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            PrettyText(
-              '${booking.title}'
-              '\n${booking.clubName}'
-              '\n${booking.courtName}'
-              '\n${date.day}/$month/${date.year}'
-              '\nFrom: $startTimeString to $endTimeString',
-              textAlign: TextAlign.center,
-              maxLines: 7,
-              fontSize: getFontSize(mobileView) + 4,
+            // ^ ====== Header ======
+            PaymentCardHeader(
+              logoUrl: widget.club.clubLogoUrl,
+              title: widget.booking.title,
+              subtitle: context.localeString(PaymentStrings.casualTitle),
             ),
-            SizedBox(height: 10),
-            PrettyText(
-              '${context.localeString(PaymentStrings.bookingDetailsLabel)} ${booking.private ? context.localeString(PaymentStrings.bookingPrivate) : context.localeString(PaymentStrings.bookingPublic)}',
-              textAlign: TextAlign.center,
-              fontSize: getFontSize(mobileView),
-              style: TextStyle(fontStyle: FontStyle.italic),
+            // ^ ====== Body ======
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  PaymentInfoRow(icon: Icons.sports_tennis_outlined, value: '${widget.court.name} · ${widget.club.name}'),
+                  const SizedBox(height: 8),
+                  PaymentInfoRow(icon: Icons.calendar_today_outlined, value: dateStr),
+                  const SizedBox(height: 8),
+                  PaymentInfoRow(icon: Icons.schedule_outlined, value: timeStr),
+                  const SizedBox(height: 8),
+                  PaymentInfoRow(
+                    icon: widget.booking.private ? Icons.lock_outline : Icons.public_outlined,
+                    value: visibilityStr,
+                    isLast: true,
+                  ),
+                  const SizedBox(height: 20),
+                  StripeElementContainer(
+                    child: PaymentElement(
+                      autofocus: true,
+                      appearance: ElementAppearance(labels: ElementAppearanceLabels.floating),
+                      clientSecret: widget.clientSecret,
+                      onCardChanged: (input) => setState(() => formIsReady = input?.complete ?? false),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  FilledButton(
+                    onPressed: formIsReady ? onPay : null,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: AppColors.primaryGreen,
+                      disabledBackgroundColor: AppColors.disabledGreen,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                    ),
+                    child: Text('Pay \$$amountStr'),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

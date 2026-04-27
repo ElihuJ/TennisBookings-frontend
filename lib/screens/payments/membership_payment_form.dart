@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
-import 'package:flutter_stripe_web/flutter_stripe_web.dart';
+import 'package:flutter_stripe_web/flutter_stripe_web.dart' hide Card;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:web/web.dart' as web;
 
 import '../../global_helpers/index.dart';
 import '../../global_types/index.dart';
-import '../../global_widgets/index.dart';
 import '../../state/index.dart';
 import '../../strings/index.dart';
+import '../../theme/colors.dart';
 import 'payment_result_screen.dart';
-
-String getUrlPort() => web.window.location.port;
+import 'payment_widgets.dart';
 
 String getReturnUrl(String clubId) => '${web.window.origin}#${PaymentResultScreen.route}?clubId=$clubId';
 
@@ -25,10 +24,10 @@ Future<void> pay({required String clubId}) async {
     paymentIntent.tbLogger('PaymentIntent', DebugLevel.warning);
     'Confirmation Method'.tbLogger(paymentIntent.confirmationMethod.toString());
   } on StripeError catch (e) {
-    e.tbLogger('Stripe error confirming payment', DebugLevel.error);
+    e.tbLogger('Stripe error confirming membership payment', DebugLevel.error);
     rethrow;
   } catch (e) {
-    e.tbLogger('Error confirming payment', DebugLevel.error);
+    e.tbLogger('Error confirming membership payment', DebugLevel.error);
     rethrow;
   }
 }
@@ -40,10 +39,10 @@ class MembershipPaymentForm extends StatefulHookConsumerWidget {
   final Club club;
 
   @override
-  ConsumerState<MembershipPaymentForm> createState() => _StripePaymentFormState();
+  ConsumerState<MembershipPaymentForm> createState() => _MembershipPaymentFormState();
 }
 
-class _StripePaymentFormState extends ConsumerState<MembershipPaymentForm> {
+class _MembershipPaymentFormState extends ConsumerState<MembershipPaymentForm> {
   bool formIsReady = false;
 
   Future<void> onPay() async {
@@ -68,67 +67,66 @@ class _StripePaymentFormState extends ConsumerState<MembershipPaymentForm> {
   @override
   Widget build(BuildContext context) {
     final mobileView = isMobile(context);
-
-    widget.club.currency.tbLogger('Currency', DebugLevel.warning);
-
-    return SizedBox(
-      width: mobileView ? 300 : 700,
-      child: Column(
-        spacing: 50,
-        children: [
-          _Title(club: widget.club),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: PaymentElement(
-              autofocus: true,
-              appearance: ElementAppearance(labels: ElementAppearanceLabels.floating),
-              clientSecret: widget.clientSecret,
-              onCardChanged: (input) {
-                setState(() {
-                  formIsReady = input?.complete ?? false;
-                });
-              },
-            ),
-          ),
-          TbTextButton(
-            text: 'Pay \$${widget.club.annualFee} ${widget.club.currency.value.toUpperCase()}',
-            onPressed: formIsReady ? onPay : null,
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class _Title extends StatelessWidget {
-  const _Title({
-    required this.club,
-  });
-
-  final Club club;
-
-  @override
-  Widget build(BuildContext context) {
-    final mobileView = isMobile(context);
     final now = DateTime.now();
-    final aYearFromNow = DateTime(now.year + 1, now.month, now.day);
-    final aYearFromNowString = prettyDateLocalFromEpoch(aYearFromNow.millisecondsSinceEpoch);
-    return Column(
-      children: [
-        PrettyText(
-          '${club.name}\n${context.localeString(PaymentStrings.annualFee)}',
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          fontSize: getFontSize(mobileView) + 4,
+    final validUntil = prettyDateLocalFromEpoch(DateTime(now.year + 1, now.month, now.day).millisecondsSinceEpoch);
+    final amountStr = '${widget.club.annualFee} ${widget.club.currency.value.toUpperCase()}';
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: mobileView ? 380 : 520),
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // ^ ====== Header ======
+            PaymentCardHeader(
+              logoUrl: widget.club.clubLogoUrl,
+              title: widget.club.name,
+              subtitle: context.localeString(PaymentStrings.membershipTitle),
+            ),
+            // ^ ====== Body ======
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  PaymentInfoRow(icon: Icons.card_membership_outlined, value: context.localeString(PaymentStrings.annualFee)),
+                  const SizedBox(height: 8),
+                  PaymentInfoRow(
+                    icon: Icons.event_available_outlined,
+                    value: '${context.localeString(PaymentStrings.validUntil)} $validUntil',
+                    isLast: true,
+                  ),
+                  const SizedBox(height: 20),
+                  StripeElementContainer(
+                    child: PaymentElement(
+                      autofocus: true,
+                      appearance: ElementAppearance(labels: ElementAppearanceLabels.floating),
+                      clientSecret: widget.clientSecret,
+                      onCardChanged: (input) => setState(() => formIsReady = input?.complete ?? false),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  FilledButton(
+                    onPressed: formIsReady ? onPay : null,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: AppColors.primaryGreen,
+                      disabledBackgroundColor: AppColors.disabledGreen,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                    ),
+                    child: Text('Pay \$$amountStr'),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        SizedBox(height: 10),
-        PrettyText(
-          '${context.localeString(PaymentStrings.validUntil)} $aYearFromNowString',
-          textAlign: TextAlign.center,
-          fontSize: getFontSize(mobileView),
-          style: TextStyle(fontStyle: FontStyle.italic),
-        ),
-      ],
+      ),
     );
   }
 }

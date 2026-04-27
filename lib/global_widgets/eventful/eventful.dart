@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:universal_html/html.dart' as html;
 
+import '../../global_helpers/platform/web_utils.dart';
 import '../../state/config/index.dart';
 import '../../state/event_status/event_provider.dart';
 import '../../state/event_status/event_state.dart';
@@ -40,9 +40,7 @@ class EventfulWidget extends HookConsumerWidget {
               message: context.localeString(GeneralStrings.updateRequiredMessage),
               title: context.localeString(GeneralStrings.updateRequiredTitle),
               buttonText: context.localeString(GeneralStrings.updateRequiredButton),
-              onPressed: () {
-                html.window.location.reload();
-              }),
+              onPressed: () => reloadPage()),
       ],
     );
   }

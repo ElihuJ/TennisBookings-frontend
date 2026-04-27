@@ -39,8 +39,9 @@
       "type": "dart",
       "request": "launch",
       "flutterMode": "debug",
-      "args": ["-d", "android", "--dart-define=ENV=dev"],
-      "program": "lib/main.dart"
+      "args": ["--dart-define=ENV=dev"],
+      "program": "lib/main.dart",
+      "deviceId": "emulator-5554"
     }
   ]
 }

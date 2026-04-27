@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 import '../../config/config.dart';
 import '../../global_helpers/index.dart';
 import '../../global_widgets/logo/tb_logo.dart';
@@ -50,14 +52,14 @@ class Header extends HookConsumerWidget implements PreferredSizeWidget {
       leading: mobileView ? const MobileLeading() : const DesktopLeading(),
       actions: [
         if (!mobileView) const Spacer(),
-        if (env != Environment.prod)
+        if (env != Environment.prod && (kIsWeb || !mobileView))
           _VersionChip(context: context),
         if (isLoggedIn) const InvitesButtonHeader(),
         if (isLoggedIn && !mobileView) const SizedBox(width: 8),
         const BookACourtButtonHeader(),
-        SizedBox(width: mobileView ? 12 : 24),
+        SizedBox(width: mobileView ? 4 : 24),
         Padding(
-          padding: const EdgeInsets.only(right: 20),
+          padding: EdgeInsets.only(right: mobileView ? 8 : 20),
           child: isLoggedIn ? const ProfileButton() : const LoginRegisterButton(),
         ),
       ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:web/web.dart' as web;
+import '../../global_helpers/platform/web_utils.dart';
 
 import '../../global_widgets/index.dart';
 import '../../routes/index.dart';
@@ -25,8 +25,7 @@ class _PaymentResultScreenState extends ConsumerState<PaymentResultScreen> {
   @override
   void initState() {
     super.initState();
-    final history = web.window.history;
-    history.replaceState(history.state, '', '#${PaymentResultScreen.route}');
+    replaceHistoryState('#${PaymentResultScreen.route}');
   }
 
   @override

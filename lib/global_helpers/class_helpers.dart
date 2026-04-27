@@ -13,7 +13,7 @@ String getUuid() {
 // ^ Verifies that a required prop is not null and returns the prop or a default value
 // ^ Data would come from a json map (Firestore)
 T verifyRequiredProp<T>({
-  required T? prop,
+  required Object? prop,
   required String propName,
   required T defaultValue,
 }) {
@@ -22,19 +22,23 @@ T verifyRequiredProp<T>({
     propName.tbLogger('$classString: Required Prop Missing ', DebugLevel.warning);
     return defaultValue;
   }
-
-  return prop;
+  // Firestore returns int on native but double on web for numeric fields.
+  if (T == double && prop is num) return prop.toDouble() as T;
+  if (T == int && prop is num) return prop.toInt() as T;
+  return prop as T;
 }
 
 // ^ Verifies that a not required prop is not null and returns the prop or null
 // ^ Data would come from a json map (Firestore)
-T? verifyNotRequiredProp<T>({required T? prop, required String propName}) {
+T? verifyNotRequiredProp<T>({required Object? prop, required String propName}) {
   if (prop == null) {
     final classString = getClassString(StackTrace.current);
     propName.tbLogger('$classString: Not Required Prop Missing', DebugLevel.info);
     return null;
   }
-  return prop;
+  if (T == double && prop is num) return prop.toDouble() as T;
+  if (T == int && prop is num) return prop.toInt() as T;
+  return prop as T;
 }
 
 // ^ Verifies that all props in the json map are in the props list and logs a warning if not

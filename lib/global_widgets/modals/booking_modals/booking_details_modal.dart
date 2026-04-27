@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:web/web.dart' as web;
+import '../../../global_helpers/platform/web_utils.dart';
 
 import '../../../cloud_functions/dto/delete_booking.dart';
 import '../../../cloud_functions/dto/index.dart';
@@ -158,7 +158,7 @@ class _BookingBody extends HookConsumerWidget {
             child: InkWell(
               onTap: () async {
                 final url =
-                    '${web.window.origin}#${CalendarScreen.route}?clubId=${booking.clubId}&courtId=${booking.courtId}&bookingId=${booking.id}&time=$startMs';
+                    '${getWindowOrigin()}#${CalendarScreen.route}?clubId=${booking.clubId}&courtId=${booking.courtId}&bookingId=${booking.id}&time=$startMs';
                 await Clipboard.setData(ClipboardData(text: url));
                 eventNotifier.showMessage(messageType: MessageType.success, message: context.localeString(BookingModalStrings.linkCopied));
               },

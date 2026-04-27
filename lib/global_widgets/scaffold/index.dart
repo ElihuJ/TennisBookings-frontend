@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:universal_html/html.dart' as html;
 
+import '../../global_helpers/platform/web_utils.dart';
 import '../drawer/drawer.dart';
 import '../header/index.dart';
 
@@ -32,7 +32,7 @@ class TbScaffold extends StatelessWidget {
       appBar: appBar ?? Header(),
       body: RefreshIndicator(
         child: body ?? const SizedBox.shrink(),
-        onRefresh: () async => {html.window.location.reload()},
+        onRefresh: () async => reloadPage(),
       ),
       drawer: TbDrawer(),
       backgroundColor: backgroundColor ?? Colors.transparent,

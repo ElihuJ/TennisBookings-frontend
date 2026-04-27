@@ -24,6 +24,23 @@
       "flutterMode": "release",
       "args": ["-d", "chrome", "--dart-define=ENV=prod"],
       "program": "lib/main.dart"
+    },
+    {
+      "name": "DEV-iOS",
+      "type": "dart",
+      "request": "launch",
+      "flutterMode": "debug",
+      "args": ["--dart-define=ENV=dev"],
+      "program": "lib/main.dart",
+      "deviceId": "F34DC060-091E-4849-8263-33717F6B4540"
+    },
+    {
+      "name": "DEV-Android",
+      "type": "dart",
+      "request": "launch",
+      "flutterMode": "debug",
+      "args": ["-d", "android", "--dart-define=ENV=dev"],
+      "program": "lib/main.dart"
     }
   ]
 }

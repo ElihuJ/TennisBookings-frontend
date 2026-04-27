@@ -348,7 +348,7 @@ class _ActionIcon extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(8),
         child: Padding(
-          padding: const EdgeInsets.all(6),
+          padding: const EdgeInsets.all(4),
           child: Icon(icon, size: 18, color: AppColors.primaryGreen),
         ),
       ),

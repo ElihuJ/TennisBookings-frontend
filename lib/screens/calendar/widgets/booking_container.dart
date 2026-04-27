@@ -1,9 +1,9 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:web/web.dart';
 
 import '../../../global_helpers/index.dart';
+import '../../../global_helpers/platform/web_utils.dart';
 import '../../../global_types/index.dart';
 import '../../../global_widgets/index.dart';
 import '../../../models/index.dart';
@@ -101,7 +101,7 @@ class _BookingContainerState extends State<BookingContainer> {
     if (widget.openModalOnLoad && !modalOpened) {
       Uri baseUri = Uri.parse(Uri.base.toString());
       String urlWithoutParams = baseUri.replace(queryParameters: {}).toString();
-      window.history.replaceState(null, '', urlWithoutParams);
+      replaceHistoryState(urlWithoutParams);
       Future.delayed(Duration.zero, () {
         modalOpened = true;
         if (context.mounted) {

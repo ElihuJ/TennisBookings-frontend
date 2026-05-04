@@ -51,8 +51,8 @@ class Config {
   // * VERSIONING
   static const majorVersion = 2;
   static const minorVersion = 1;
-  static const patchVersion = 3;
-  static const buildNumber = 55;
+  static const patchVersion = 4;
+  static const buildNumber = 56;
   static const latestNotes = 'Major UI Re-design';
 
   static const versionString = '$majorVersion.$minorVersion.$patchVersion ($buildNumber)';

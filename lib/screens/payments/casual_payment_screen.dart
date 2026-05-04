@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
-import 'package:flutter_stripe/flutter_stripe.dart' show Stripe;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../cloud_functions/index.dart';
@@ -26,24 +25,32 @@ class CasualPaymentScreen extends HookConsumerWidget {
   }
 }
 
-class _PaymentView extends HookConsumerWidget {
-  const _PaymentView({
-    required this.booking,
-  });
+class _PaymentView extends StatefulHookConsumerWidget {
+  const _PaymentView({required this.booking});
 
   final Booking booking;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final cloudFunctions = ref.read(cloudFunctionsProvider.notifier);
+  ConsumerState<_PaymentView> createState() => _PaymentViewState();
+}
+
+class _PaymentViewState extends ConsumerState<_PaymentView> {
+  // late final ensures the future is created exactly once; keyboard-triggered
+  // rebuilds reuse the same future so FutureBuilder never restarts.
+  late final _paymentIntentFuture = ref
+      .read(cloudFunctionsProvider.notifier)
+      .getCasualPaymentIntent(booking: widget.booking);
+
+  @override
+  Widget build(BuildContext context) {
     final clubs = ref.watch(clubsProvider);
-    final clubSelected = clubs.firstWhereOrNull((club) => club.id == booking.clubId);
+    final clubSelected = clubs.firstWhereOrNull((club) => club.id == widget.booking.clubId);
 
     if (clubSelected == null) {
       return NotFoundScreen(message: context.localeString(PaymentStrings.clubNotFound));
     }
 
-    final court = clubSelected.courts.firstWhereOrNull((court) => court.id == booking.courtId);
+    final court = clubSelected.courts.firstWhereOrNull((court) => court.id == widget.booking.courtId);
 
     if (court == null) {
       return NotFoundScreen(message: context.localeString(PaymentStrings.courtNotFound));
@@ -58,7 +65,7 @@ class _PaymentView extends HookConsumerWidget {
               isMobile: mobileView,
               header: PaymentCardHeader(
                 logoUrl: clubSelected.clubLogoUrl,
-                title: booking.title,
+                title: widget.booking.title,
                 subtitle: context.localeString(PaymentStrings.casualTitle),
               ),
             ),
@@ -73,7 +80,7 @@ class _PaymentView extends HookConsumerWidget {
             height: double.infinity,
             child: SingleChildScrollView(
               child: FutureBuilder(
-                future: cloudFunctions.getCasualPaymentIntent(booking: booking),
+                future: _paymentIntentFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return skeletonCard();
@@ -86,38 +93,22 @@ class _PaymentView extends HookConsumerWidget {
                     );
                   }
 
-                  final response = snapshot.data?.data;
-                  if (response == null) {
-                    'Client secret is null'.tbLogger();
-                    return NotFoundScreen(
-                      message: context.localeString(PaymentStrings.errorLoadingCasual),
-                      noScaffold: true,
-                    );
-                  }
+                  final response = snapshot.data!.data!;
 
-                  final clientSecret = response.clientSecret;
-                  final clubStripeAccountId = response.clubStripeAccountId;
-
-                  Stripe.stripeAccountId = clubStripeAccountId;
-
-                  return FutureBuilder(
-                    future: Stripe.instance.applySettings(),
-                    builder: (context, asyncSnapshot) {
-                      if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-                        return skeletonCard();
-                      }
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-                          child: CasualPaymentForm(
-                            clientSecret: clientSecret,
-                            club: clubSelected,
-                            booking: booking,
-                            court: court,
-                          ),
+                  return StripeSettingsLoader(
+                    stripeAccountId: response.clubStripeAccountId,
+                    skeleton: skeletonCard(),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+                        child: CasualPaymentForm(
+                          clientSecret: response.clientSecret,
+                          club: clubSelected,
+                          booking: widget.booking,
+                          court: court,
                         ),
-                      );
-                    },
+                      ),
+                    ),
                   );
                 },
               ),

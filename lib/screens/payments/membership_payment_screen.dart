@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
-import 'package:flutter_stripe/flutter_stripe.dart' show Stripe;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../cloud_functions/index.dart';
@@ -38,25 +37,31 @@ class MembershipPaymentScreen extends HookConsumerWidget {
       return NotFoundScreen(message: context.localeString(PaymentStrings.clubNotFound));
     }
 
-    final cloudFunctions = ref.read(cloudFunctionsProvider.notifier);
     final alreadyMember = user.memberships.any((membership) => membership.clubId == clubSelected.id);
 
     if (alreadyMember) {
       return NotFoundScreen(message: context.localeString(PaymentStrings.alreadyMember));
     }
 
-    return _PaymentView(cloudFunctions: cloudFunctions, clubSelected: clubSelected);
+    return _PaymentView(clubSelected: clubSelected);
   }
 }
 
-class _PaymentView extends StatelessWidget {
-  const _PaymentView({
-    required this.cloudFunctions,
-    required this.clubSelected,
-  });
+class _PaymentView extends StatefulHookConsumerWidget {
+  const _PaymentView({required this.clubSelected});
 
-  final CloudFunctionsNotifier cloudFunctions;
   final Club clubSelected;
+
+  @override
+  ConsumerState<_PaymentView> createState() => _PaymentViewState();
+}
+
+class _PaymentViewState extends ConsumerState<_PaymentView> {
+  // late final ensures the future is created exactly once; keyboard-triggered
+  // rebuilds reuse the same future so FutureBuilder never restarts.
+  late final _paymentIntentFuture = ref
+      .read(cloudFunctionsProvider.notifier)
+      .getMembershipPaymentIntent(clubId: widget.clubSelected.id);
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +73,8 @@ class _PaymentView extends StatelessWidget {
             child: PaymentCardSkeleton(
               isMobile: mobileView,
               header: PaymentCardHeader(
-                logoUrl: clubSelected.clubLogoUrl,
-                title: clubSelected.name,
+                logoUrl: widget.clubSelected.clubLogoUrl,
+                title: widget.clubSelected.name,
                 subtitle: context.localeString(PaymentStrings.membershipTitle),
               ),
             ),
@@ -84,7 +89,7 @@ class _PaymentView extends StatelessWidget {
             height: double.infinity,
             child: SingleChildScrollView(
               child: FutureBuilder(
-                future: cloudFunctions.getMembershipPaymentIntent(clubId: clubSelected.id),
+                future: _paymentIntentFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return skeletonCard();
@@ -97,36 +102,20 @@ class _PaymentView extends StatelessWidget {
                     );
                   }
 
-                  final response = snapshot.data?.data;
-                  if (response == null) {
-                    'Client secret is null'.tbLogger();
-                    return NotFoundScreen(
-                      message: context.localeString(PaymentStrings.errorLoading),
-                      noScaffold: true,
-                    );
-                  }
+                  final response = snapshot.data!.data!;
 
-                  final clientSecret = response.clientSecret;
-                  final clubStripeAccountId = response.clubStripeAccountId;
-
-                  Stripe.stripeAccountId = clubStripeAccountId;
-
-                  return FutureBuilder(
-                    future: Stripe.instance.applySettings(),
-                    builder: (context, asyncSnapshot) {
-                      if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-                        return skeletonCard();
-                      }
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-                          child: MembershipPaymentForm(
-                            clientSecret: clientSecret,
-                            club: clubSelected,
-                          ),
+                  return StripeSettingsLoader(
+                    stripeAccountId: response.clubStripeAccountId,
+                    skeleton: skeletonCard(),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+                        child: MembershipPaymentForm(
+                          clientSecret: response.clientSecret,
+                          club: widget.clubSelected,
                         ),
-                      );
-                    },
+                      ),
+                    ),
                   );
                 },
               ),

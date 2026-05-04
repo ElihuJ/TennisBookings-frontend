@@ -10,7 +10,6 @@ import '../../global_types/index.dart';
 import '../../models/index.dart';
 import '../../state/index.dart';
 import '../../strings/index.dart';
-import '../../theme/colors.dart';
 import 'payment_result_screen.dart';
 import 'payment_widgets.dart';
 
@@ -81,64 +80,37 @@ class _CasualPaymentFormState extends ConsumerState<CasualPaymentForm> {
         : context.localeString(PaymentStrings.bookingPublic);
     final amountStr = '${widget.club.casualFee} ${widget.club.currency.value.toUpperCase()}';
 
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: mobileView ? 380 : 520),
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            PaymentCardHeader(
-              logoUrl: widget.club.clubLogoUrl,
-              title: widget.booking.title,
-              subtitle: context.localeString(PaymentStrings.casualTitle),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  PaymentInfoRow(icon: Icons.sports_tennis_outlined, value: '${widget.court.name} · ${widget.club.name}'),
-                  const SizedBox(height: 8),
-                  PaymentInfoRow(icon: Icons.calendar_today_outlined, value: dateStr),
-                  const SizedBox(height: 8),
-                  PaymentInfoRow(icon: Icons.schedule_outlined, value: timeStr),
-                  const SizedBox(height: 8),
-                  PaymentInfoRow(
-                    icon: widget.booking.private ? Icons.lock_outline : Icons.public_outlined,
-                    value: visibilityStr,
-                    isLast: true,
-                  ),
-                  const SizedBox(height: 20),
-                  StripeElementContainer(
-                    child: PaymentElement(
-                      autofocus: true,
-                      appearance: ElementAppearance(labels: ElementAppearanceLabels.floating),
-                      clientSecret: widget.clientSecret,
-                      onCardChanged: (input) => setState(() => formIsReady = input?.complete ?? false),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  FilledButton(
-                    onPressed: formIsReady ? onPay : null,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: AppColors.primaryGreen,
-                      disabledBackgroundColor: AppColors.disabledGreen,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                    ),
-                    child: Text('Pay \$$amountStr'),
-                  ),
-                ],
-              ),
-            ),
-          ],
+    return PaymentFormCard(
+      isMobile: mobileView,
+      header: PaymentCardHeader(
+        logoUrl: widget.club.clubLogoUrl,
+        title: widget.booking.title,
+        subtitle: context.localeString(PaymentStrings.casualTitle),
+      ),
+      infoRows: [
+        PaymentInfoRow(icon: Icons.sports_tennis_outlined, value: '${widget.court.name} · ${widget.club.name}'),
+        const SizedBox(height: 8),
+        PaymentInfoRow(icon: Icons.calendar_today_outlined, value: dateStr),
+        const SizedBox(height: 8),
+        PaymentInfoRow(icon: Icons.schedule_outlined, value: timeStr),
+        const SizedBox(height: 8),
+        PaymentInfoRow(
+          icon: widget.booking.private ? Icons.lock_outline : Icons.public_outlined,
+          value: visibilityStr,
+          isLast: true,
+        ),
+      ],
+      paymentInput: StripeElementContainer(
+        child: PaymentElement(
+          autofocus: true,
+          appearance: ElementAppearance(labels: ElementAppearanceLabels.floating),
+          clientSecret: widget.clientSecret,
+          onCardChanged: (input) => setState(() => formIsReady = input?.complete ?? false),
         ),
       ),
+      payButtonLabel: 'Pay \$$amountStr',
+      formIsReady: formIsReady,
+      onPay: onPay,
     );
   }
 }

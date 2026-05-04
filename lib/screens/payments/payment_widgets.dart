@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart' show Stripe;
 
 import '../../theme/colors.dart';
 
@@ -162,6 +163,123 @@ class PaymentCardSkeleton extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Card shell shared by all payment forms.
+///
+/// Renders the gradient header, a scrollable info-row section, an optional
+/// payment-input widget (web Stripe element; omitted on native), and a
+/// consistently styled pay button. State (formIsReady, onPay) stays in the
+/// calling widget so each form keeps its own payment logic.
+class PaymentFormCard extends StatelessWidget {
+  const PaymentFormCard({
+    super.key,
+    required this.isMobile,
+    required this.header,
+    required this.infoRows,
+    this.paymentInput,
+    required this.payButtonLabel,
+    required this.formIsReady,
+    required this.onPay,
+  });
+
+  final bool isMobile;
+  final Widget header;
+  final List<Widget> infoRows;
+
+  /// Web-only Stripe element inserted between info rows and the pay button.
+  /// Pass null on native (payment sheet flow).
+  final Widget? paymentInput;
+
+  final String payButtonLabel;
+  final bool formIsReady;
+  final VoidCallback? onPay;
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: isMobile ? 380 : 520),
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            header,
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ...infoRows,
+                  if (paymentInput != null) ...[
+                    const SizedBox(height: 20),
+                    paymentInput!,
+                  ],
+                  const SizedBox(height: 20),
+                  FilledButton(
+                    onPressed: formIsReady ? onPay : null,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: AppColors.primaryGreen,
+                      disabledBackgroundColor: AppColors.disabledGreen,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                    ),
+                    child: Text(payButtonLabel),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Applies Stripe settings exactly once (in initState) so keyboard-triggered
+/// rebuilds on mobile don't restart the applySettings future and reload the form.
+class StripeSettingsLoader extends StatefulWidget {
+  const StripeSettingsLoader({
+    super.key,
+    required this.stripeAccountId,
+    required this.skeleton,
+    required this.child,
+  });
+
+  final String stripeAccountId;
+  final Widget skeleton;
+  final Widget child;
+
+  @override
+  State<StripeSettingsLoader> createState() => _StripeSettingsLoaderState();
+}
+
+class _StripeSettingsLoaderState extends State<StripeSettingsLoader> {
+  late final Future<void> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    Stripe.stripeAccountId = widget.stripeAccountId;
+    _future = Stripe.instance.applySettings();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: _future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return widget.skeleton;
+        }
+        return widget.child;
+      },
     );
   }
 }

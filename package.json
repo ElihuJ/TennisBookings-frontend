@@ -15,6 +15,7 @@
     "deploy-web-prod": "yarn use-prod && firebase deploy --only hosting",
     "deploy-web-uat": "yarn use-uat && firebase deploy --only hosting",
     "use-uat": "firebase use tennisbookings-uat",
-    "use-prod": "firebase use tennisbookings"
+    "use-prod": "firebase use tennisbookings",
+    "git-sync": "git checkout develop && git pull origin develop && git checkout main && git pull origin main && git checkout claude"
   }
 }
